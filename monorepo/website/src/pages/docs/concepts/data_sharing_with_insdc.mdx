@@ -1,0 +1,38 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Data Sharing with INSDC"
+---
+
+As part of our effort to enable global scientific collaboration and facilitate international public health response we share [open](/about/terms-of-use/data-use-terms#41-open-data) sequences with the [INSDC databases (ENA, DDBJ, NCBI)](https://www.insdc.org/) and ingest public sequences from the INSDC. Read more about how your sequences are shared [here](/docs/concepts/insdc_submission) and [here](/about/governance/data_submission#2-data-submission-and-access).
+
+This means that when you browse for an pathogen on Pathoplexus you should also see all other publicly available sequences of that pathogen (that satisfy our sequence alignment requirements).
+
+We download sequences from the INSDC using the [NCBI Datasets Virus Data Package](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/data-packages/virus-genome/). We then map INSDC metadata fields to Loculus metadata fields before uploading the sequences to Loculus. In order to give users access to as much data as possible we do not enforce required metadata fields on data ingested from the INSDC, however we do enforce that sequences alignment is of an acceptable quality. A quality score is based on the standard for each pathogen, defined in the [Nextclade datasets](https://docs.nextstrain.org/projects/nextclade/en/stable/user/datasets.html) that we use.
+
+Additionally, for multi-segmented organisms the INSDC often often does not offer data where segments have been grouped by isolate. To retain as much information as possible from the samples, we additionally group samples based on their isolate and other metadata fields. By default all metadata fields must be the same across segments for us to group them as one sample, with the exception of segment-specific metadata fields. These fields are either alignment-related (length, totalSnps, totalInsertedNucs, totalDeletedNucs, totalUnknownNucs, totalAmbiguousNucs, totalFrameShifts, frameShifts, completeness) or related to the INSDC-accession for that specific segment (ncbiUpdateDate, insdcAccessionBase, insdcAccessionFull, insdcVersion).
+
+## Mapping of NCBI VIirus Metadata Fields to Loculus Metadata Fields
+
+| **NCBI VIirus Field Name**       | **Loculus Field name**                                              |
+| -------------------------------- | ------------------------------------------------------------------- |
+| **Accession**                    | insdcAccessionFull (also produces insdcAccessionBase, insdcVersion) |
+| **BioProjects**                  | bioprojectAccession                                                 |
+| **BioSample accession**          | biosampleAccession                                                  |
+| **Geographic Location**          | geoLocCountry, geoLocAdmin1                                         |
+| **Geographic Region**            | geoLocAdmin2                                                        |
+| **Host Common Name**             | hostNameCommon                                                      |
+| **Host Infraspecific Names Sex** | hostGender                                                          |
+| **Host Name**                    | hostNameScientific                                                  |
+| **Host Taxonomic ID**            | hostTaxonId                                                         |
+| **Is Lab Host**                  | isLabHost                                                           |
+| **Isolate Collection date**      | sampleCollectionDate                                                |
+| **Isolate Lineage**              | specimenCollectorSampleId                                           |
+| **Purpose of Sampling**          | purposeOfSampling                                                   |
+| **Release date**                 | ncbiReleaseDate                                                     |
+| **SRA Accessions**               | sraRunAccession                                                     |
+| **Source database**              | ncbiSourceDb                                                        |
+| **Submitter Affiliation**        | authorAffiliations                                                  |
+| **Submitter Names**              | authors                                                             |
+| **Update date**                  | ncbiUpdateDate                                                      |
+| **Virus Name**                   | ncbiVirusName                                                       |
+| **Virus Taxonomic ID**           | ncbiVirusTaxId                                                      |

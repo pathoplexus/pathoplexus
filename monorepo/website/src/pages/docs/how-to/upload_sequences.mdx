@@ -1,0 +1,60 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Uploading sequences"
+order: 7
+---
+
+You can only upload sequences if you have [created an account](create_account) and are part of a [group](create_group).
+
+Before you begin this process, you should ensure your data is in the correct format. Each sequence should have a unique submissionID that can be used to associate it with its corresponding metadata entry.
+
+Loculus expects:
+
+- Sequence data in `fasta` format with a unique submissionID per sequence.
+- Metadata in `tsv` format for each sequence. You can read more about the required metadata fields [here](../concepts/metadataformat). If you need help formatting metadata we offer a metadata template for each organism on the submission page.
+
+![Metadata template.](../../../images/MetadataTemplate.png)
+
+_You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://github.com/pathoplexus/example_data) you can upload to the Demo Instance._
+
+
+### Multi-segmented Pathogens
+
+Pathoplexus expects multi-segmented pathogens to have one unique submissionID per **isolate** (pathogen sample containing all segments). However, `fasta` files should still have a separate entry/record per segment. Therefore, each record id should include the unique submissionID of the isolate and the segment name, for example: `submissionID + '_' + segmentName`. The metadata is uploaded per isolate, i.e. there will be only one row for each `submissionID` and segmented metadata parameters need to be uploaded individually, i.e. under `length_{segmentName}` etc.
+
+## Website
+
+Uploading sequences via the website is a very way to submit sequences without having to worry about any code.
+
+1. Log into your account, and then click 'Submit' in the top-right corner of the website
+2. Select the organism that you'd like to submit sequences for
+3. Drag-and-drop a `fasta` file with the sequences and a metadata file with the associated metadata into the box on the website, or click the 'Upload a file' link within the boxes to open a file-selection box
+4. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year
+5. Select 'Submit sequences' at the bottom of the page
+
+The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve_submissions).
+
+<br></br>
+_Detailed API instructions for submitting sequences will come soon, but you can read our [authentication token how-to](/docs/how-to/authentication_api) and [Swagger API documentation](/api_documentation) if you're an experienced user._
+
+{/* ## API
+
+**By using our API you agree to our [Data Use Terms](/about/terms-of-use/data-use-terms).**
+
+For full instructions on how to upload sequences via our API, you should read our [Swagger API documentation](/api_documentation).
+Before using our API endpoint, you will need to generate an [authentication token](/docs/how-to/authentication_api).
+
+As a brief introduction into using the API, you should be sure you have on-hand:
+
+- The `fasta` file of sequences you wish to submit
+- Matching metadata file
+- The abbreviation for the organism you're submitted sequences of:
+  - `cchf` (CCHF)
+  - `ebola-sudan` (Ebola Sudan)
+  - `ebola-zaire` (Ebola Zaire)
+  - `west-nile` (West Nile)
+- Your submitting Group ID (click on the group from 'My account' to see this)
+- The Data Use Terms you wish to submit under, `OPEN` or `RESTRICTED`
+  - If `RESTRICTED`, the date until which they are restricted (up to 1 year from today) in format `YYYY-MM-DD`
+
+You can then construct your API submission query. */}
