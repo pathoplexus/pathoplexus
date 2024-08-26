@@ -1,0 +1,37 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: 'Scientific Advisory Board'
+route: /
+order: 3
+---
+
+import Team from '../../components/Team.astro'
+import pardisSabeti from "../../images/pardisSabeti-square.png"
+import mangShi from "../../images/mangShi-square.png"
+import sofoniasTessema from "../../images/sofoniasTessema-square.jpg"
+
+export const members = [
+    {
+        name: "Sofonias Tessema",
+        description: "Africa CDC",
+        picture: sofoniasTessema
+    },
+    {
+        name: "Mang Shi",
+        description: "Sun Yat-sen University",
+        picture: mangShi
+    }
+];
+
+# Pathoplexus Scientific Advisory Board
+
+The Pathoplexus Scientific Advisory Board, made up of experts in virus genomics and data sharing, plays a crucial role in providing expert guidance to Pathoplexus decision-making, providing feedback to help ensure that the Pathoplexus database meets the needs of the scientific and public health communities and adheres to the [Pathoplexus Values](/about/governance/values). By sharing their expertise, the board helps maintain the database as a reliable and transparent resource for pathogen genome sharing.
+
+Pathoplexus recognizes that a diverse and active board is essential for maximizing the database's positive impact. 
+
+The Pathoplexus Scientific Advisory Board is defined and guided by the [Scientific Board Board Guidelines](/about/governance/sa_board_guidelines).
+
+**More Scientific Advisory Board members will be announced soon.**
+
+<Team members={members} />
+
