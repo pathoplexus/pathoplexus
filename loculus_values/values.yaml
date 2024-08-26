@@ -1,7 +1,7 @@
 registrationTermsMessage: >
   Do you agree to the <a href="https://pathoplexus.org/about/terms-of-use/terms_of_service">terms of use</a> and the <a href="https://pathoplexus.org/about/terms-of-use/privacy_policy">privacy policy</a>?
 runDevelopmentMainDatabase: true
-bannerMessage: This is a preview instance
+bannerMessage: This is a preview instance. Do not rely on this data for real analyses.
 runDevelopmentKeycloakDatabase: true
 dataUseTermsUrls:
   open: https://pathoplexus.org/about/terms-of-use/open-data
