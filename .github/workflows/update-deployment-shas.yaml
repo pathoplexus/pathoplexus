@@ -1,0 +1,46 @@
+name: Update Pathoplexus Deployment SHAs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      - name: Get current branch name
+        id: branch
+        run: echo "::set-output name=name::${GITHUB_REF#refs/heads/}"
+
+      - name: Get current commit SHA
+        id: sha
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+
+      - name: Checkout loculus_deployments repository
+        uses: actions/checkout@v2
+        with:
+          repository: pathoplexus/loculus_deployments
+          path: loculus_deployments
+          token: ${{ secrets.UPDATE_PATHOPLEXUS_SHA_TOKEN }}
+
+      - name: Update config file
+        run: |
+          mkdir -p loculus_deployments/deploy/${{ steps.branch.outputs.name }}
+          echo '{
+            "branch": "${{ steps.branch.outputs.name }}",
+            "special_environment": "${{ steps.branch.outputs.name }}",
+            "head_sha": "${{ steps.sha.outputs.sha }}"
+          }' > loculus_deployments/deploy/${{ steps.branch.outputs.name }}/config.json
+
+      - name: Commit and push changes
+        run: |
+          cd loculus_deployments
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update deployment config for ${{ steps.branch.outputs.name }}"
+          git push
