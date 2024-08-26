@@ -1,0 +1,20 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Authenticating via API"
+order: 14
+---
+
+Some of our endpoints require authentication in order to use them. In order to use these endpoints you need to get a JSON web token. Using curl this would look like:
+
+```bash
+KEYCLOAK_TOKEN_URL="https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+KEYCLOAK_CLIENT_ID="backend-client"
+
+USERNAME_LOCULUS="MY_USERNAME_HERE"
+PASSWORD_LOCULUS="MY_PASSWORD_HERE"
+
+jwt_keycloak=$(curl -X POST "$KEYCLOAK_TOKEN_URL" --fail-with-body -H 'Content-Type: application/x-www-form-urlencoded' -d "username=$USERNAME_LOCULUS&password=$PASSWORD_LOCULUS&grant_type=password&client_id=$KEYCLOAK_CLIENT_ID")
+jwt=$(echo "$jwt_keycloak" | jq -r '.access_token')
+
+echo "$jwt"
+```

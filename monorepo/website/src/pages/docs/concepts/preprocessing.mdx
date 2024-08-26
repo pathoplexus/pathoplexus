@@ -1,0 +1,25 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Preprocessing"
+---
+
+Pathoplexus processes submitted data to validate, harmonize, and standardize it. We ensure users have maximum flexibility in accessing the most useful data for their needs by only rejecting submissions lacking essential metadata values or sequences not identifiable as the specified pathogen.
+
+We use [Nextclade](https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli/reference.html#nextclade-run) for alignment, mutation calling, quality checks and clade assignment.
+
+The data preprocessing steps encompass:
+
+- Sequences:
+  - Verification that the sequence corresponds to the virus specified by the user.
+  - Alignment with the reference genome.
+  - Translation of genes/coding regions.
+  - Quantification of mutations by number and type (including nucleotide and amino acid variations).
+  - Identification and labeling of deletions and insertions.
+  - Assignment of specific clades/lineages.
+- Metadata:
+  - Standardization of collection date formats.
+  - Standardization of location information using [INSDC-standards](https://www.ebi.ac.uk/ena/browser/api/xml/ERC000011).
+  - Ensure required values are set
+  - Ensure metadata fields are of correct type (e.g. string, int, date)
+
+Submissions that fail to meet these requirements are rejected by the preprocessing pipeline, which provides a detailed error message explaining the reason for rejection.

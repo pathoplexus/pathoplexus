@@ -1,0 +1,26 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: 'Accessions'
+---
+
+"Accessions" are identification tags that are unique for each sequence.
+Within Pathoplexus, you will encounter two types of accessions: the Pathoplexus accession, and the INSDC (Genbank, ENA, DDBJ) accession.
+
+Pathoplexus accessions are generated for every sequence present in Pathoplexus.
+If a sequence is uploaded directly to Pathoplexus, it will receive a Pathoplexus accession before having an INSDC accession.
+If it is added to Pathoplexus from INSDC, it will have a Pathoplexus accession as well its original INSDC accession.
+
+## Pathoplexus accessions
+
+Pathoplexus accessions are generated for every sequence that is added to Pathoplexus.
+The format of Pathoplexus accessions has the prefix "`PP_`" to show the accession is from Pathoplexus, and then a number generated for the sequence.
+Sometimes you may see an additional full-stop "`.`" and number after the accession - these indicate the [**version**](versioning) of the sequence.
+
+Pathoplexus accessions are generated sequentially, but due to the time to process and approve/release sequences, accessions should not be interpreted as a strict record of order.
+
+## INSDC accessions
+
+INSDC databases also generate accession numbers for each sequence when they are submitted.
+When Pathoplexus pulls data from INSDC databases, we record and display the associated INSDC accession, so that the original source of the sequence is clear and traceable.
+
+When sequences uploaded directly to Pathoplexus are submitted to INSDC by Pathoplexus, they will additionally receive an INSDC accession, which will be displayed on Pathoplexus when they are publicly available on INSDC.
