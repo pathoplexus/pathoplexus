@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loculus-pp-{{ .Values.pathoplexusBranch | replace "_" "-" }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.pathoplexusBranch | replace "_" "-" }}
+  sources:
+  - repoURL: https://github.com/loculus-project/loculus.git
+    path: kubernetes/loculus
+    targetRevision: {{ .Values.loculusVersion }}
+    helm:
+      parameters:
+      - name: "host"
+        value: "{{ .Values.host }}"
+      - name: "sha"
+        value: "{{ .Values.loculusVersion | trunc 7 }}"
+      - name: "shortbranch"
+        value: "main"
+      - name: "branch"
+        value: "main"
+      - name: "customWebsiteImage"
+        value: "ghcr.io/pathoplexus/website:commit-{{ .Values.pathoplexusVersion | trunc 7 }}"
+
+
+      valueFiles:
+      - values.yaml
+      - $values/loculus_values/values.yaml
+{{ if .Values.special_environment }}
+      - $values/loculus_values/environment_specific_values/{{ .Values.special_environment }}.yaml
+{{ end }}
+  - repoURL: https://github.com/pathoplexus/pathoplexus.git
+    targetRevision: {{ .Values.pathoplexusVersion }}
+    ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
