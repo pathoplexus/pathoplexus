@@ -1,0 +1,65 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: 'Members'
+route: /
+order: 5
+---
+
+
+
+import Team from '../../components/Team.astro'
+import womanScientistImage from '../../images/womanscientist.jpg'
+import manScientistImage from '../../images/mannnscientist.jpg'
+import allisonBlack from "../../images/allisonBlack-square.jpg"
+import andersonBrito from "../../images/andersonBrito-square.jpg"
+import artemBabaian from "../../images/artemBabaian-square.jpg"
+import chaoranChen from "../../images/chaoranChen-square.jpg"
+import corneliusRoemer from "../../images/corneliusRoemer-square.jpg"
+import emmaHodcroft from "../../images/emmaHodcroft-square.png"
+import theoSanderson from "../../images/theoSanderson-square.jpg"
+import tanjaStadler from "../../images/tanjaStadler-square.jpg"
+import richardNeher from "../../images/richardNeher-square.jpg"
+import georgeGithinji from "../../images/georgeGithinji-square.jpg"
+import tommyLam from "../../images/tommyLam-square.png"
+import annaParker from "../../images/annaParker-square.jpg"
+import jamieSouthgate from "../../images/jamieSouthgate-square.jpg"
+import franziskaBaechler from "../../images/franziskaBaechler-square.jpg"
+import gultekinUnal from "../../images/gultekinUnal-square.jpg"
+import emilySmith from "../../images/emilySmith-square.jpg"
+import michaelBridger from "../../images/michaelBridger-square.jpg"
+import finlayMaguire from "../../images/finlayMaguire-square.jpg"
+import traceyCalvertJoshua from "../../images/traceyCalvert-Joshua-square.jpg"
+import anjaBedeker from "../../images/anjaBedeker-square.jpg"
+import emmaGriffiths from "../../images/emmaGriffiths-square.jpg"
+import nawaalWeitz from "../../images/nawaalWeitz-square.jpg"
+
+export const members = [
+    { name: "Allison Black", description: "Executive Board", picture: allisonBlack },
+    { name: "Anderson Brito", description: "Executive Board", picture: andersonBrito},
+    { name: "Anja Bedeker", description: "", picture: anjaBedeker},
+    { name: "Anna Parker", description: "", picture: annaParker },
+    { name: "Artem Babaian", description: "", picture: artemBabaian },
+    { name: "Chaoran Chen", description: "", picture: chaoranChen },
+    { name: "Cornelius Roemer", description: "", picture: corneliusRoemer },
+    { name: "Emily Smith", description: "", picture: emilySmith},
+    { name: "Emma Griffiths", description: "", picture: emmaGriffiths},
+    { name: "Emma Hodcroft", description: "Executive Board (Chair)", picture: emmaHodcroft },
+    { name: "Finlay Maguire", description: "", picture: finlayMaguire},
+    { name: "Franziska Bächler", description: "", picture: franziskaBaechler},
+    { name: "George Githinji", description: "Executive Board", picture: georgeGithinji},
+    { name: "Gültekin Ünal", description: "", picture: gultekinUnal}, 
+    { name: "Jamie Southgate", description: "", picture: jamieSouthgate},
+    { name: "Michael Bridger", description: "Auditor", picture: michaelBridger},
+    { name: "Nawaal Weitz", description: "Auditor", picture: nawaalWeitz},
+    { name: "Richard Neher", description: "", picture: richardNeher },
+    { name: "Tanja Stadler", description: "", picture: tanjaStadler },
+    { name: "Theo Sanderson", description: "", picture: theoSanderson },
+    { name: "Tommy Lam", description: "Executive Board", picture: tommyLam},
+    { name: "Tracey Calvert-Joshua", description: "", picture: traceyCalvertJoshua},
+];
+
+## Pathoplexus Members
+
+The members of Pathoplexus are a large part of what makes it possible. Members select the Executive Board and approve the overall direction of Pathoplexus.
+
+<Team members={members} />

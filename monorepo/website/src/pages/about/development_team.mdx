@@ -1,0 +1,69 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: 'Development Team'
+route: /
+order: 6
+---
+
+
+import Team from '../../components/Team.astro'
+import womanScientistImage from '../../images/womanscientist.jpg'
+import manScientistImage from '../../images/mannnscientist.jpg'
+import emmaHodcroft from "../../images/emmaHodcroft-square.png"
+import theoSanderson from "../../images/theoSanderson-square.jpg"
+import chaoranChen from "../../images/chaoranChen-square.jpg"
+import corneliusRoemer from "../../images/corneliusRoemer-square.jpg"
+import alexTaepper from "../../images/alexTaepper-square.jpg"
+import tanjaStadler from "../../images/tanjaStadler-square.jpg"
+import richardNeher from "../../images/richardNeher-square.jpg"
+import fabianEngelniederhammer from "../../images/fabianEngelniderhammer-square.jpg"
+import tobiasKampmann from "../../images/tobiasKampmann-square.jpg"
+import jonasKellerer from "../../images/jonasKellerer-square.jpg"
+import artemBabaian from "../../images/artemBabaian-square.jpg"
+import alexMorales from "../../images/alexMorales-square.jpg"
+import annaParker from "../../images/annaParker-square.jpg"
+import lukePereira from "../../images/lukePereira-square.jpg"
+import gultekinUnal from "../../images/gultekinUnal-square.jpg"
+import emilySmith from "../../images/emilySmith-square.jpg"
+
+export const members = [
+    { name: "Emma Hodcroft", description: "Swiss TPH; University of Basel", picture: emmaHodcroft },
+    { name: "Theo Sanderson", description: "Francis Crick Institute", picture: theoSanderson },
+    { name: "Chaoran Chen", description: "ETH Zurich", picture: chaoranChen },
+    { name: "Cornelius Roemer", description: "University of Basel", picture: corneliusRoemer },
+    { name: "Alex Taepper", description: "ETH Zurich", picture: alexTaepper },
+    { name: "Anna Parker", description: "ETH Zurich", picture: annaParker },
+    { name: "Tanja Stadler", description: "ETH Zurich", picture: tanjaStadler },
+    { name: "Richard Neher", description: "University of Basel", picture: richardNeher },
+    { name: "Fabian Engelniederhammer", description: "TNG", picture: fabianEngelniederhammer },
+    { name: "Tobias Kampmann", description: "TNG", picture: tobiasKampmann },
+    { name: "Jonas Kellerer", description: "TNG", picture: jonasKellerer },
+    { name: "Artem Babaian", description: "University of Toronto", picture: artemBabaian },
+    { name: "Alex Morales", description: "University of Toronto", picture: alexMorales },
+    { name: "Luke Pereira", description: "University of Toronto", picture: lukePereira },
+];
+
+export const curators = [
+    { name: "Emily Smith", description: "Theiagen Genomics", picture: emilySmith},
+    { name: "Gültekin Ünal", description: "Ankara University", picture: gultekinUnal}, 
+    { name: "Emma Hodcroft", description: "Swiss TPH; University of Basel", picture: emmaHodcroft },
+    { name: "Theo Sanderson", description: "Francis Crick Institute", picture: theoSanderson },
+    { name: "Chaoran Chen", description: "ETH Zurich", picture: chaoranChen },
+    { name: "Cornelius Roemer", description: "University of Basel", picture: corneliusRoemer },
+];
+
+## The Development Team
+
+Pathoplexus was set up in collaboration with [PHA4GE](https://pha4ge.org/) and the [Loculus team](https://loculus.org/#team).
+Here's who has been key in the software development of Pathoplexus:
+
+<Team members={members} />
+
+## Curators
+
+In addition we're happy to have a set of dedicated Curators who assess and evaluate potential issues with sequences and metadata.
+You can read about how they make decisions in data curation [here](/docs/how-to/curator_sop).
+
+If you are interested in helping to curate Pathoplexus, contact us at [curators@pathoplexus.org](mailto:curators@pathoplexus.org)
+
+<Team members={curators} />

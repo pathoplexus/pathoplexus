@@ -1,0 +1,19 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: 'Versioning'
+---
+
+Pathoplexus 'versions' all sequences it holds.
+This means that whenever any part of a sequence or its associated [metadata](metadataformat) is updated, a new record is generated and linked to the old data, which is preserved.
+
+The version of a sequence is indicated by the numbers after the full-stop (`.`) in the [**accession number**](accession).
+For example, the initial version of a new sequence may have an accession such as: `PP_0000AE.1`
+If later, the group who uploaded the sequence realized the collection date was wrong, and corrected this, the latest version of the accession number would now be `PP_0000AE.2`
+
+When viewing a sequence record online, you can view all previous versions of a sequence by using the drop-down menu to the top-right of the page.
+The version status of the sequence is also displayed as part of the metadata.
+
+If you are viewing an outdated version (not the current version) you will also see a banner at the top of the page, which you can use to link to the current version.
+
+Note that URLs linking directly to sequences also include versions - allowing you to link to a previous version if you wish.
+If you link to a URL without a version at the end of the accession, it will redirect you to the most recent version.

@@ -1,0 +1,54 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: 'Executive Board'
+route: /
+order: 2
+---
+
+import Team from '../../components/Team.astro'
+import allisonBlack from "../../images/allisonBlack-square.jpg"
+import emmaHodcroft from "../../images/emmaHodcroft-square.png"
+import georgeGithinji from "../../images/georgeGithinji-square.jpg"
+import andersonBrito from "../../images/andersonBrito-square.jpg"
+import tommyLam from "../../images/tommyLam-square.png"
+
+export const members = [
+    {
+        name: "Emma Hodcroft",
+        description: "Evolution, phylogenetics",
+        picture: emmaHodcroft
+    },
+    {
+        name: "George Githinji",
+        description: "Evolution, phylogenetics",
+        picture: georgeGithinji
+    },
+    {
+        name: "Allison Black",
+        description: "Public health, molecular epidemiology",
+        picture: allisonBlack
+    },
+    {
+        name: "Anderson Brito",
+        description: "Phylogenetics, public health",
+        picture: andersonBrito
+    },
+    {
+        name: "Tommy Lam",
+        description: "Software development, evolution",
+        picture: tommyLam
+    }
+];
+
+# Pathoplexus Executive Board
+
+Pathoplexus is run by an Executive Board, who have dedicated themselves to following the 
+[Pathoplexus Values](/about/governance/values)
+and aiming to ensure the Pathoplexus database is efficient, effective, transparent, and at the service of the pathogen genome sharing comunity.
+
+Pathoplexus believes a diverse, active board is key to ensuring the database can maximise the good it does.
+Our board is committed to serving in two-year terms, and is accountable to the Pathoplexus Membership.
+
+The Pathoplexus Executive Board is defined and guided by the [Pathoplexus Statutes](/about/governance/pathoplexus_statutes) and [Executive Board Guidelines](/about/governance/exec_board_guidelines).
+
+<Team members={members} />

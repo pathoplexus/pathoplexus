@@ -1,0 +1,28 @@
+---
+import { type ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+type Member = {
+    name: string;
+    description: string;
+    picture: ImageMetadata;
+};
+
+export interface Props {
+    members: Member[];
+}
+
+const { members } = Astro.props;
+---
+
+<div class='flex flex-row flex-wrap gap-6 justify-center'>
+    {
+        members.map((member) => (
+            <div class='w-40 '>
+                <Image src={member.picture} alt={'Picture of ' + member.name} width={160} height={160} />
+                <div class='text-lg font-semibold'>{member.name}</div>
+                <div class='text-sm'>{member.description}</div>
+            </div>
+        ))
+    }
+</div>
