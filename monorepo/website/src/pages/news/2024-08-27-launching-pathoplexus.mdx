@@ -1,0 +1,72 @@
+---
+layout: ../../layouts/MdLayout.astro
+title: "Introducing Pathoplexus"
+---
+
+<div>
+    <a href="/news">News</a> > <b>Introducing Pathoplexus</b>
+</div>
+
+# Introducing Pathoplexus
+
+*By the Pathoplexus Team - 27 August 2024*
+
+We are announcing **Pathoplexus**, a specialised genomic database for viruses of public health importance. By combining modern open-source software with transparent governance structures, Pathoplexus fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both data submitters and users and striving to improve equity. Today we launch with four virus species, Ebolavirus sudan, Ebolavirus zaire, West Nile virus and Crimean-Congo haemorrhagic fever virus.
+
+Pathoplexus aims to offer the best features of existing platforms, and to supplement these with new approaches that optimise data utility and preserve data autonomy. In particular, data submitters can easily [share](#ease-of-submission) their data via Pathoplexus and receive credit through [citable Pathoplexus datasets](#new-tools-for-recognising-contributions). Submitters can choose to have their data immediately deposited in the International Nucleotide Sequence Database Collaboration (INSDC) databases, without additional effort. Alternatively, submitters can choose to submit [data with a time-limited restriction](#as-open-as-possible-as-closed-as-necessary), during which use in publications is not permitted without involvement of the submitters. Only after this restriction ends is the data released to the INSDC. However, all users can freely access, explore, and download all data hosted in Pathoplexus. [Data querying](#pathogen-tailored-tools-for-search-and-retrieval) can be done both in an interactive and programmable fashion, the latter enabling the embedding of Pathoplexus into other tools.
+
+Pathoplexus is powered by a new [open-source software](#open-source-and-community-focused) package, **Loculus**. Loculus is a general purpose tool for running virus sequence databases: anyone can use it to launch their own database for their pathogens of interest. These might include internal laboratory databases, or databases for collaborations or consortia.
+
+Pathoplexus is a [transparent](#transparency-and-governance), non-profit association with members from 10 countries in 5 continents. The [Executive Board](https://pathoplexus.org/about/exec_board) of Pathoplexus consists of five members from North and South America, Africa, Asia, and Europe. We are really excited to engage with the community - please check out our [website](http://pathoplexus.org), connect with us on [Mastodon](https://mstdn.science/@pathoplexus), [Bluesky](https://bsky.app/profile/pathoplexus.org), or [Twitter](https://x.com/pathoplexus), or join our open-source community on [GitHub](https://github.com/pathoplexus/pathoplexus).
+
+<br></br>
+Here’s an introduction to the key features of Pathoplexus:
+
+## Ease of submission
+
+Submission can be carried out either through a web interface or an API to support automated workflows. After submission, the website aligns sequences to a publicly available reference genome, and provides quality control (QC) metrics. Automated QC is also performed in seconds on the submitted metadata, allowing submitters the opportunity to correct any issues identified before completing the submission, and users the chance to evaluate sequence quality.
+
+## Pathogen-tailored tools for search and retrieval
+
+Within Pathoplexus, each reference-aligned genome is stored in an easily queryable database. This makes it straightforward to identify all the sequences that have a particular mutation, or to find all the sequences from a particular country over a certain time period. Any of these searches - and more - can be performed either interactively from an intuitive website or from an API that enables programmatic access, and interfaces well with other tools.
+
+## As open as possible, as closed as necessary
+
+All users have access to all Pathoplexus data, but data submitters specify how they want their sequences to be used. Users can select "open" conditions of use, which means that Pathoplexus will share the data immediately with the open INSDC databases (Genbank, EMBL-EBI, and Database of Japan), ensuring the maximum potential for data re-use -- though open data should still be used ethically and in accordance with scientific etiquette. 
+
+However, we recognise that there are legitimate concerns from some submitters that immediate open sharing may prevent them from receiving appropriate credit for their contributions. To mitigate this, users can choose to delay the open release of their sequences on the INSDC databases until a specified date, ensuring that they have time, for example, to submit a manuscript about their findings to a journal. If users choose this option their sequences will only be available under the Pathoplexus restricted terms of use until their release date. During this time, others cannot publish or preprint using restricted data as "focal data", i.e. the data can only be used for bulk analyses or to provide a context in which to understand other sequences. At any time, e.g. upon early publication, users can choose to shift their sequences into the open model.
+
+## New tools for recognising contributions
+
+In addition to allowing submitters to restrict the use of their data for a period, we also want to allow new ways for those who build on sequence data to give credit to those who generated the data that their analyses are based on. We achieve this by allowing them to create Pathoplexus “SeqSets” (pronounced at “seek-sets”). These represent a set of sequences used in an analysis, and are cited in publications using a DOI. Importantly, these DOIs will allow us to display how each submitter's contributions have been used by other researchers and have enabled their analyses. Imagine it as Google Scholar, but for genome sequences – offering a clear measure of the impact made by those who contribute sequencing data.
+
+## Open source and community-focused
+
+Pathoplexus is an open source project. All the code that powers our software is available on [GitHub](https://github.com/pathoplexus/pathoplexus). We welcome bug reports to that repository, and would be especially grateful to volunteers who want to make improvements to the code, or to help add new features.
+
+Our belief is that core scholarly infrastructure should be open and should welcome feedback. We are very keen to engage with the community: you can get involved on our **Discussion board \[here]** and discuss anything related to sequence submission, retrieval, and much more. You can also connect with us on [Mastodon](https://mstdn.science/@pathoplexus), [Bluesky](https://bsky.app/profile/pathoplexus.org), or [Twitter](https://x.com/pathoplexus) .
+
+## Transparency and governance
+
+Ultimately, the value of a database comes from the research and public health community that uses it to deposit and retrieve data. We believe it is crucial that we are accountable to that community. Our members, dedicated to furthering public health pathogen genomics worldwide, are at the heart of Pathoplexus, and are tasked with electing our Executive Board and overseeing our strategy and decisions. Similarly, our Executive Board is chosen to reflect the diversity of the community we aim to represent. The minutes of our meetings are available on our [governance page](https://pathoplexus.org/about/governance).
+
+Transparency is a priority throughout Pathoplexus: all sequence history is versioned so that users can see when and why sequences or metadata were updated over time. Full links are made between Pathoplexus and the INSDC databases to establish provenance, whether that's an INSDC sequence that was ingested into Pathoplexus, or a case where a Pathoplexus sequence was deposited in INSDC.
+
+## Commitment to equity
+
+Pathoplexus recognises that the decision to share pathogen sequences is inextricably tied to global science and public health equity. Sequence generators may choose not to share sequences both due to fears of being ‘scooped’ (having their data used before they can publish on it) and concerns about whether their region or country will benefit from innovations and advances that stem from those sequences, such as vaccines. Pathoplexus aims to immediately address the first problem, by allowing sequences to be made publicly available for public health use while being protected from publication by others. Pathoplexus is also dedicated to the larger goal of finding better ways for global, equitable pathogen access and benefit sharing (“PABS”), and commits to [adhering to future](https://pathoplexus.org/about/governance/values#article-4-beneficial-sharing) consensus-driven international PABS agreements.
+
+Further, Pathoplexus recognises that it’s important that sequence generators are both represented by and intrinsically involved in databases where they chose to share their data. One of our most important future plans is to actualise this via a ‘Pathoplexus Network’ of globally-distributed Pathoplexus nodes, each operating under the same data-sharing rules and exchanging sequences in a federated manner. As well as allowing regional ‘ownership’ of shared data, this federated network prevents loss if any one node fails and ensures long-term availability of the data and resilience against both technical and organisational risks.
+
+## Going forward…
+
+Pathoplexus is committed to fostering a transparent, open, and equitable environment for pathogen sequence sharing, addressing both immediate concerns of data protection and the broader issues of global access and benefit sharing. By combining cutting-edge tools, community-driven governance, and a commitment to fairness, we aim to build a platform that supports not only scientific progress but also the values of collaboration and inclusion. We are excited to see Pathoplexus grow and evolve with input from users, contributors, and curators across the globe.
+
+Further reading:
+
+- Check out [Pathoplexus.org](http://pathoplexus.org) to view our pathogens!
+- [Pathoplexus Values](http://pathoplexus.org/about/governance/values)
+- [Data Use Terms](https://pathoplexus.org/about/terms-of-use/data-use-terms)
+- Contribute to our code on [Github](https://github.com/pathoplexus/pathoplexus)
+
+Connect with us: [Mastodon](https://mstdn.science/@pathoplexus), [Bluesky](https://bsky.app/profile/pathoplexus.org), [Twitter](https://x.com/pathoplexus), Discussion Board, [email](mailto:hello@pathoplexus.org)

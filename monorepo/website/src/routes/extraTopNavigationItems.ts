@@ -1,5 +1,9 @@
 export const extraTopNavigationItems = [
     {
+        text: 'News',
+        path: '/news',
+    },
+    {
         text: 'About',
         path: '/about',
     },
