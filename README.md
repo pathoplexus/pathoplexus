@@ -20,6 +20,7 @@ to copy the monorepo into this repository, with .gitignore ignoring its contents
 
 You can then cd to the `monorepo/website` directory and follow the [Loculus website development instructions](https://github.com/loculus-project/loculus/blob/main/website/README.md).
 
+
 ### Scope
 
 By default, changes to most existing Loculus files will be ignored.
