@@ -1,3 +1,4 @@
+accessionPrefix: "PP_"
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
