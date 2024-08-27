@@ -7,17 +7,21 @@ Pathoplexus aims to offer the best features of existing platforms, and to supple
 For the full Pathoplexus experience, head over to [Pathoplexus.org](https://pathoplexus.org/) to [browse our database](https://pathoplexus.org/organism-selector/search), [submit your own samples](https://pathoplexus.org/docs/how-to/upload_sequences), or read more about our [aims and governance](https://pathoplexus.org/about).
 
 ### Our software
-Pathoplexus is powered by a new open-source software package, [Loculus](https://loculus.org). Loculus is a general purpose tool for running virus sequence databases: anyone can use it to launch their own database for their pathogens of interest. These might include internal laboratory databases, or databases for collaborations or consortia. (Check out their [GitHub](https://github.com/loculus-project/loculus))
+Pathoplexus is powered by a new open-source software package, **[Loculus](https://loculus.org)**. Loculus is a general purpose tool for running virus sequence databases: anyone can use it to launch their own database for their pathogens of interest. These might include internal laboratory databases, or databases for collaborations or consortia. (Check out the [Loculus GitHub](https://github.com/loculus-project/loculus))
 <br>
 <br>
 <br>
 <br>
 <br>
+
+## Contributing
+
+For most contributions to new Pathoplexus features, please add new features to the underlying database software [Loculus](https://github.com/loculus-project/loculus). If you are contributing changes to the Pathoplexus documentation and configuration, please use this repository.
 
 ## The Technical Bit
 
-### How we relate to the Loculus code
-This repo builds the specific images (just website at least for now) for anything in Loculus that needs a custom image for Pathoplexus.
+### How this repository works
+This repo builds the Pathoplexus website, which consists of the Loculus website code with a number of files overlaid on top of it. It also configures the version of Loculus that Pathoplexus is built against, and that is used for the other components,  and it contains the _values_ that are used to configure the Loculus deployment.
 
 This repository is an **overlay** over the [loculus monorepo](https://github.com/loculus-project/loculus). One can imagine this as the monorepo folder within this repository being copied on-top of the loculus monorepo. Then build the website image is built. This means this repository only contains Pathoplexus-specific files.
 
