@@ -7,11 +7,6 @@ dataUseTermsUrls:
   open: https://pathoplexus.org/about/terms-of-use/open-data
   restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
 secrets:
-  basicauth:
-    type: rawhtpasswd
-    data:
-      username: pathoplexus
-      password: pandasflydispassionately
   smtp-password:
     type: sealedsecret
     clusterWide: "true"
