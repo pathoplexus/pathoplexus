@@ -24,7 +24,7 @@ const { members } = Astro.props;
                 <div class='text-lg font-semibold'>{member.name}</div>
                 <div class='text-sm'>{member.description}</div>
                 { member.affiliation !== undefined &&
-                    <div class='text-sm italic pt-1'>{member.description}</div>
+                    <div class='text-sm italic pt-1'>{member.affiliation}</div>
                 }
             </div>
         ))
