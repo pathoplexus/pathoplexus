@@ -21,7 +21,7 @@ const { members } = Astro.props;
             <div class='w-40 '>
                 <Image src={member.picture} alt={'Picture of ' + member.name} width={160} height={160} />
                 <div class='text-lg font-semibold'>{member.name}</div>
-                <div class='text-sm'>{member.description}</div>
+                <div class='text-sm whitespace-pre-line'>{member.description}</div>
             </div>
         ))
     }
