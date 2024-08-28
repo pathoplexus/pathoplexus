@@ -11,8 +11,6 @@ Pathoplexus is powered by a new open-source software package, **[Loculus](https:
 <br>
 <br>
 <br>
-<br>
-<br>
 
 ## Contributing
 
@@ -23,7 +21,7 @@ For most contributions to new Pathoplexus features, please add new features to t
 ### How this repository works
 This repo builds the Pathoplexus website, which consists of the Loculus website code with a number of files overlaid on top of it. It also configures the version of Loculus that Pathoplexus is built against, and that is used for the other components,  and it contains the _values_ that are used to configure the Loculus deployment.
 
-This repository is an **overlay** over the [loculus monorepo](https://github.com/loculus-project/loculus). One can imagine this as the monorepo folder within this repository being copied on-top of the loculus monorepo. Then build the website image is built. This means this repository only contains Pathoplexus-specific files.
+This repository is an **overlay** over the [loculus monorepo](https://github.com/loculus-project/loculus). One can imagine this as the monorepo folder within this repository being copied on-top of the loculus monorepo. Then the website image is built. This means this repository only contains Pathoplexus-specific files for the website - others are inherited from Loculus.
 
 ### How to develop & run locally
 
