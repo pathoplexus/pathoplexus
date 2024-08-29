@@ -3,6 +3,7 @@ runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
 subdomainSeparator: "."
+noindex: false
 secrets:
   keycloak-admin:
     type: sealedsecret
