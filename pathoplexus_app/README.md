@@ -1,6 +1,6 @@
 # Pathoplexus_app
 
-This directory is a tiny Helm chart used to deploy instances of Pathoplexus. It creates a kubernetes resource for an ArgoCD `Application`. _That application_ deploys the (large) _Loculus_ Helm chart. The version (SHA) of Loculus to be used is defined by the `Values.yaml` in this directory.
+This directory is a tiny Helm chart used to deploy instances of Pathoplexus. It creates a kubernetes resource for an ArgoCD `Application`. That application deploys the (large) [Loculus Helm chart](https://github.com/loculus-project/loculus/tree/main/kubernetes). The version of Loculus, that should be used, is defined by the `Values.yaml` in this directory by setting the commit SHA.
 
 All the specific Loculus configuration is defined in `loculus_values` in the parent directory. The end result is that each version (commit) of this _pathoplexus_ repository contains a reference, in this `values.yaml` to a particular version of Loculus, which is used:
   - to combine with the `monorepo` directory to build the Pathoplexus website image
