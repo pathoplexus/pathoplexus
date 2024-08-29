@@ -1048,8 +1048,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
-    silo:
-      dateToSortBy: sampleCollectionDate
     extraInputFields: &extraInputFields
       - name: submissionId
         displayName: Submission ID
