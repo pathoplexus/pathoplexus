@@ -1,0 +1,54 @@
+name: Create PR to bump main pathoplexus's Loculus version to latest
+on:
+  workflow_dispatch:
+jobs:
+  update-loculus-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v3
+
+      - name: Get latest commit SHA from loculus/loculus
+        id: get_loculus_commit
+        run: |
+          COMMIT_INFO=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/loculus/loculus/commits/main)
+          LATEST_SHA=$(echo $COMMIT_INFO | jq -r .sha)
+          echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
+
+      - name: Get current Loculus version
+        id: get_current_version
+        run: |
+          CURRENT_VERSION=$(yq e '.loculusVersion' pathoplexus_app/values.yaml)
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update values.yaml
+        run: |
+          yq e -i '.loculusVersion = "${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"' pathoplexus_app/values.yaml
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          CHANGELOG=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/loculus/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}" | \
+            jq -r '.commits[] | "- " + .commit.message' | sed 's/\\n/\n  /g')
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          body: |
+            ${{ github.actor }} wants to update the Loculus version from ${{ steps.get_current_version.outputs.CURRENT_VERSION }} to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
+
+            ### Changelog:
+            ${{ steps.changelog.outputs.CHANGELOG }}
+
+            ### Comparison:
+            https://github.com/loculus/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
+          branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
+          base: main
