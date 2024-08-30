@@ -8,12 +8,12 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v3
 
-      - name: Get latest commit SHA from loculus/loculus
+      - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
         run: |
-          COMMIT_INFO=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/loculus/loculus/commits/main)
-          LATEST_SHA=$(echo $COMMIT_INFO | jq -r .sha)
+          git clone https://github.com/loculus/loculus.git loculus_repo
+          cd loculus_repo
+          LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
 
       - name: Get current Loculus version
@@ -29,9 +29,8 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          CHANGELOG=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/loculus/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}" | \
-            jq -r '.commits[] | "- " + .commit.message' | sed 's/\\n/\n  /g')
+          cd loculus_repo
+          CHANGELOG=$(git log --pretty=format:"- %s" ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }})
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
