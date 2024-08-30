@@ -11,7 +11,7 @@ jobs:
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
         run: |
-          git clone https://github.com/loculus/loculus.git loculus_repo
+          git clone https://github.com/loculus-project/loculus.git loculus_repo
           cd loculus_repo
           LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
