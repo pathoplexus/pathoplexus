@@ -48,6 +48,6 @@ jobs:
             ${{ steps.changelog.outputs.CHANGELOG }}
 
             ### Comparison:
-            https://github.com/loculus/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
+            https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
           branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
           base: main
