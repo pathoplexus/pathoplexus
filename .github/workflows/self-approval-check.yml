@@ -1,0 +1,57 @@
+name: PR Self-Approval Check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  check-pr-self-approval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR from GitHub Actions is self-approved
+        id: check-self-approval
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get PR creator and body
+          PR_INFO=$(gh pr view ${{ github.event.pull_request.number }} --json author,body)
+          PR_CREATOR=$(echo "$PR_INFO" | jq -r .author.login)
+          PR_BODY=$(echo "$PR_INFO" | jq -r .body)
+          
+          # Check if PR is created by GitHub Actions
+          if [[ "$PR_CREATOR" == "github-actions[bot]" ]]; then
+            echo "PR created by GitHub Actions, extracting actor from body..."
+            
+            # Extract actor from PR body
+            ACTOR=$(echo "$PR_BODY" | grep -oP '^\K[^ ]+(?= wants to)' | head -n1)
+            
+            if [[ -z "$ACTOR" ]]; then
+              echo "Could not extract actor from PR body"
+              exit 1
+            fi
+            
+            echo "Actor extracted from PR body: $ACTOR"
+            
+            # Check for approval from the actor
+            SELF_APPROVED=$(gh pr view ${{ github.event.pull_request.number }} --json reviews --jq '.reviews[] | select(.author.login == "'"$ACTOR"'" and .state == "APPROVED")')
+            
+            if [[ -n "$SELF_APPROVED" ]]; then
+              echo "Error: PR created by GitHub Actions has been self-approved by $ACTOR"
+              exit 1
+            else
+              echo "No self-approval detected, check passed"
+            fi
+          else
+            echo "PR not created by GitHub Actions, skipping self-approval check"
+          fi
+
+      - name: PR Self-Approval Status
+        run: |
+          if [[ ${{ steps.check-self-approval.outcome }} == 'failure' ]]; then
+            echo "::error::This PR was created by GitHub Actions and has been self-approved. This is not allowed for security reasons."
+            exit 1
+          else
+            echo "PR self-approval check passed."
+          fi
