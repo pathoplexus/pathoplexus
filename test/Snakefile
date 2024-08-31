@@ -1,0 +1,36 @@
+# Define the URL construction function
+def url(w):
+    url_segment = "" if w.segment == "main" else f"/{w.segment}"
+    length_query = "" if w.segment == "main" else f"&length_{w.segment}From=1"
+    match w.instance:
+        case "prod":
+            subdomain = ""
+        case "staging":
+            subdomain = "-demo"
+        case _:
+            subdomain = "-preview-" + w.instance
+    base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+    rest = (
+        url_segment
+        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&isRevocation=false&dataUseTerms=OPEN&compression=zstd"
+        + length_query
+    )
+    match w.extension:
+        case "fasta":
+            return base + "unalignedNucleotideSequences" + rest
+        case "tsv":
+            return base + "details" + rest + "&dataFormat=TSV"
+        case _:
+            raise ValueError(f"Unknown extension: {w.extension}")
+
+
+# Snakefile rule
+rule download:
+    output:
+        "results/{organism}_{segment}_{instance}.{extension}",
+    params:
+        url=url,
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
