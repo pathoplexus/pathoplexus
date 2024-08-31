@@ -52,3 +52,4 @@ crossRef:
   organization: "Pathoplexus"
   hostUrl: "https://pathoplexus.org"
 enableCrossRefCredentials: true
+podPriorityClassName: production
