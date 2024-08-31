@@ -4,7 +4,7 @@ This document is only intended for Pathoplexus sysadmins.
 
 ## To develop new versions of Pathoplexus
 
-Work in a development branch. You can choose what version of Loculus to target by adjusting the `loculusVersion` in  `pathoplexus_app/values.yaml` (use a Loculus commit SHA). Adding the `preview` logo will create a preview.
+Work in a development branch. You can choose what version of Loculus to target by adjusting the `loculusVersion` in  `pathoplexus_app/values.yaml` (use a Loculus commit SHA). Adding the `preview` label will create a preview.
 
 ## To simply bump the version of Loculus used in Pathoplexus `main`
 We have a GitHub workflow for this. Click Actions -> Create PR to bump main pathoplexus.. -> Run workflow -> Run workflow. This will create a PR, which someone else will need to approve. The PR will contain a changelist for Loculus, which you should carefully review for breaking changes.
