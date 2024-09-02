@@ -2,7 +2,7 @@ accessionPrefix: "PP_"
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
-robotsNoindexHeader: true
+robotsNoindexHeader: false
 subdomainSeparator: "."
 secrets:
   keycloak-admin:
