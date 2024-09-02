@@ -1,0 +1,18 @@
+name: data-integrity
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.12
+  - snakemake
+  - tsv-utils
+  - coreutils
+  - moreutils
+  - ncbi-datasets-cli >=16.21.0
+  - curl
+  - seqkit
+  - zstd
+  - biopython
+  - click
+  - orjsonl

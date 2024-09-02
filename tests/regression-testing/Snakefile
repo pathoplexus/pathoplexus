@@ -134,7 +134,7 @@ rule invariant_subset:
             -f "submissionId" \
             --rest last \
             {input} \
-        | keep-header - -- tsv-sort -k1,1 \
+        | keep-header - -- ./bin/tsv-sort -k1,1 \
         > {output}
         """
 
