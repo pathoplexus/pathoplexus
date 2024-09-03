@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
@@ -15,6 +15,7 @@ jobs:
           cd loculus_repo
           LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
+          echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
 
       - name: Get current Loculus version
         id: get_current_version
@@ -40,18 +41,18 @@ jobs:
           rm -rf loculus_repo
       
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
-          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
           body: |
-            ${{ github.actor }} wants to update the Loculus version from ${{ steps.get_current_version.outputs.CURRENT_VERSION }} to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
+            ${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} tohttps://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
 
             ### Changelog:
             ${{ steps.changelog.outputs.CHANGELOG }}
 
             ### Comparison:
             https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
-          branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
+          branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT}}
           base: main
