@@ -51,6 +51,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
           title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
+          # Warning: The PR self approval workflow depends on the exact format
+          # of the author name here
           body: |
             @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
 
