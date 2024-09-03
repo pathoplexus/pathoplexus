@@ -5,6 +5,7 @@ on:
     types: [opened, reopened, synchronize]
   pull_request_review:
     types: [submitted]
+  workflow_dispatch:
 
 jobs:
   check-pr-self-approval:
@@ -25,7 +26,7 @@ jobs:
             echo "PR created by GitHub Actions, extracting actor from body..."
             
             # Extract actor from PR body
-            ACTOR=$(echo "$PR_BODY" | grep -oP '^\K[^ ]+(?= wants to)' | head -n1)
+            ACTOR=$(echo "$PR_BODY" | grep -oP '@\S+' | sed 's/@//' | head -n1)
             
             if [[ -z "$ACTOR" ]]; then
               echo "Could not extract actor from PR body"

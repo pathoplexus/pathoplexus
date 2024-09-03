@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
@@ -15,6 +15,8 @@ jobs:
           cd loculus_repo
           LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
+          echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
+          echo "BRANCH_NAME=update-loculus-${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
 
       - name: Get current Loculus version
         id: get_current_version
@@ -30,7 +32,11 @@ jobs:
         id: changelog
         run: |
           cd loculus_repo
-          CHANGELOG=$(git log --pretty=format:"- %s" ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }})
+          CHANGELOG=$( \
+            git log --pretty=format:"- %s" \
+            ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
+            | sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/'
+          )
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -40,18 +46,25 @@ jobs:
           rm -rf loculus_repo
       
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
-          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
+          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
+          # Warning: The PR self approval workflow depends on the exact format
+          # of the author name here
           body: |
-            ${{ github.actor }} wants to update the Loculus version from ${{ steps.get_current_version.outputs.CURRENT_VERSION }} to ${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
+            @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
 
-            ### Changelog:
+            ### Changelog
             ${{ steps.changelog.outputs.CHANGELOG }}
 
-            ### Comparison:
+            ### Comparison
             https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
-          branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
+
+            ### Preview
+            https://preview-${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}.pathoplexus.org
+
+          branch: ${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}
           base: main
+          labels: preview
