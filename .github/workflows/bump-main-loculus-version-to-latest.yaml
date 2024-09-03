@@ -16,6 +16,7 @@ jobs:
           LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
           echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
+          echo "BRANCH_NAME=update-loculus-${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
 
       - name: Get current Loculus version
         id: get_current_version
@@ -34,7 +35,7 @@ jobs:
           CHANGELOG=$( \
             git log --pretty=format:"- %s" \
             ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
-            | sed 's/(#\([0-9]\+\))/\(loculus-project\/loculus#\1\)/g' \
+            | sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/'
           )
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
@@ -53,10 +54,15 @@ jobs:
           body: |
             @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
 
-            ### Changelog:
+            ### Changelog
             ${{ steps.changelog.outputs.CHANGELOG }}
 
-            ### Comparison:
+            ### Comparison
             https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
-          branch: update-loculus-${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT}}
+
+            ### Preview
+            https://preview-${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}.pathoplexus.org
+
+          branch: ${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}
           base: main
+          labels: preview
