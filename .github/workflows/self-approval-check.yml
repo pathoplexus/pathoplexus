@@ -5,7 +5,7 @@ on:
     types: [opened, reopened, synchronize]
   pull_request_review:
     types: [submitted]
-  workflow_dispatch:
+  # workflow_dispatch: Do not enable, it allows bypass
 
 jobs:
   check-pr-self-approval:
