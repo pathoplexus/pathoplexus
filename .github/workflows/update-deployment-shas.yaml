@@ -20,12 +20,17 @@ jobs:
         id: sha
         run: echo "::set-output name=sha::$(git rev-parse HEAD)"
 
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.UPDATE_PATHOPLEXUS_DEPLOY_KEY }}
+
       - name: Checkout loculus_deployments repository
         uses: actions/checkout@v2
         with:
           repository: pathoplexus/loculus_deployments
           path: loculus_deployments
-          token: ${{ secrets.UPDATE_PATHOPLEXUS_SHA_TOKEN }}
+          ssh-key: ${{ secrets.UPDATE_PATHOPLEXUS_DEPLOY_KEY }}
 
       - name: Update config file
         run: |
