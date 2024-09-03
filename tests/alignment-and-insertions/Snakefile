@@ -1,0 +1,116 @@
+wildcard_constraints:
+    organism=r"[^_.]+",
+    segment=r"[^_.]+",
+    instance=r"[^_.]+",
+    type=r"[^_.]+",
+
+
+LOG_LEVEL = "DEBUG"
+ORGANISMS = ["cchf", "west-nile", "ebola-zaire", "ebola-sudan"]
+
+
+def segments(w):
+    return ["L", "M", "S"] if w.organism == "cchf" else ["main"]
+
+
+def taxon_id(w):
+    match w.organism:
+        case "cchf":
+            taxon_id = 3052518
+        case "west-nile":
+            taxon_id = 3048448
+        case "ebola-zaire":
+            taxon_id = 186538
+        case "ebola-sudan":
+            taxon_id = 3052460
+    return taxon_id
+
+
+def url(w):
+    if hasattr(w, "segment"):
+        url_segment = "" if w.segment == "main" else f"/{w.segment}"
+        length_query = "" if w.segment == "main" else f"&length_{w.segment}From=1"
+    else:
+        url_segment = length_query = ""
+    match w.instance:
+        case "prod":
+            subdomain = ""
+        case "staging":
+            subdomain = "-demo"
+        case _:
+            subdomain = "-preview-" + w.instance
+    base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+    rest = (
+        url_segment
+        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&isRevocation=false&dataUseTerms=OPEN&compression=zstd"
+        + length_query
+    )
+    match w.type:
+        case "unalignedNucleotideSequences":
+            return base + "unalignedNucleotideSequences" + rest
+        case "alignedNucleotideSequences":
+            return base + "alignedNucleotideSequences" + rest
+        case _:
+            raise RuntimeError(f"Unknown endpoint: {type=}")
+
+
+# rule all:
+#     input:
+#         expand(
+#             "results/seq_{organism}_{instance}.diff",
+#             organism=ORGANISMS,
+#             instance=config["instance"],
+#         ),
+
+
+rule sequence_download:
+    output:
+        "results/{type}_{organism}_{instance}_{segment}.fasta",
+    params:
+        url=lambda w: url(w),
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
+
+
+rule join_sequences:
+    input:
+        script="scripts/join_sequences.py",
+        sequences_input=expand(
+            "results/{{type}}_{{organism}}_{{instance}}_{segment}.fasta",
+            segment=segments,
+        ),
+    output:
+        result="results/{type}_{organism}_{instance}.fasta",
+    params:
+        sequences=lambda w: expand(
+            "--input-files results/{type}_{organism}_{instance}_{segment}.fasta",
+            segment=segments,
+            organism=w.organism,
+            instance=w.instance,
+            type=w.type,
+        ),
+    shell:
+        """
+        python {input.script} {params.sequences} \
+            --output-file {output.result} \
+        """
+
+
+rule recreate_original_alignment:
+    input:
+        script="scripts/recreate_original_alignment.py",
+        aligned_sequences_input="results/alignedNucleotideSequences_{organism}_{instance}.fasta",
+        unaligned_sequences_input="results/unalignedNucleotideSequences_{organism}_{instance}.fasta",
+    output:
+        compared="results/{organism}_{instance}.diff",
+    params:
+        log_level=LOG_LEVEL,
+    shell:
+        """
+        python {input.script} \
+            --aligned-seq {input.aligned_sequences_input} \
+            --unaligned-seq {input.unaligned_sequences_input} \
+            --output {output.compared}
+        """

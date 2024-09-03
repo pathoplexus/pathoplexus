@@ -6,6 +6,11 @@ This script gets unaligned sequences and metadata from NCBI virus for each virus
 
 This script can be run on pathoplexus production, demo and preview instances using:
 
+```bash
+micromamba create -f environment.yml
+micromamba activate data-integrity
+```
+
 ```
 snakemake --config instance=prod
 ```
