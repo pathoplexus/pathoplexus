@@ -69,7 +69,7 @@ rule sequence_download:
     output:
         "results/{organism}_{instance}_{segment}.fasta",
     params:
-        url=url,
+        url=lambda w: url(w),
     shell:
         """
         curl "{params.url}" | zstdcat > {output}
@@ -80,7 +80,7 @@ rule metadata_download:
     output:
         "results/{organism}_{instance}.tsv",
     params:
-        url=url,
+        url=lambda w: url(w),
     shell:
         """
         curl "{params.url}" | zstdcat > {output}
