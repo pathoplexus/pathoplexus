@@ -34,7 +34,11 @@ jobs:
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
+      
+      - name: Remove temporary loculus_repo
+        run: |
+          rm -rf loculus_repo
+      
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
