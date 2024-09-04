@@ -21,7 +21,7 @@ A little after the PR is merged, changes will be reflected at http://demo.pathop
 
 Once you have new release candidate you can point the production server at it by changing the head_sha in the `production` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
 
-The appropriate way to do this is with the GitHub action in the `loculus_deployments` repository which will copy the SHA from staging to production, creating a PR: https://github.com/pathoplexus/loculus_deployments/actions
+The appropriate way to do this is with the GitHub action "Create PR to Promote Staging to Production" in the `loculus_deployments` repository which will copy the SHA from staging to production, creating a PR: https://github.com/pathoplexus/loculus_deployments/actions
 
 After merging, the changes will be reflected at http://production.pathoplexus.org . You should check ArgoCD to monitor the health of the application.
 
