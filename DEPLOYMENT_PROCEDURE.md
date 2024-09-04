@@ -13,7 +13,7 @@ We have a GitHub workflow for this. Go to the "Actions" tab -> Open the "Create 
 
 Once you have new release candidate on main, you can point the staging server at it by changing the head_sha in the `staging` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
 
-The easiest way to do this is with the GitHub action in the `loculus_deployments` repository: https://github.com/pathoplexus/loculus_deployments/actions
+The easiest way to do this is with the GitHub action "Create PR to bump staging to latest" in the `loculus_deployments` repository: https://github.com/pathoplexus/loculus_deployments/actions
 
 A little after the PR is merged, changes will be reflected at http://demo.pathoplexus.org . You should also check the health of the application in ArgoCD.
 
