@@ -11,7 +11,7 @@ We have a GitHub workflow for this. Go to the "Actions" tab -> Open the "Create 
 
 ## Staging the latest main
 
-Once you have new release candidate on main, you can point the staging server at it by changing the head_sha in the `staging` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
+Once you have new release candidate on main, you can point the staging server at it by changing the `head_sha` value in at https://github.com/pathoplexus/loculus_deployments/blob/main/deploy/staging/config.json .
 
 The easiest way to do this is with the GitHub action "Create PR to bump staging to latest" in the `loculus_deployments` repository: https://github.com/pathoplexus/loculus_deployments/actions
 
@@ -19,7 +19,7 @@ A little after the PR is merged, changes will be reflected at http://demo.pathop
 
 ## Promoting a new version from staging to production
 
-Once you have new release candidate you can point the production server at it by changing the head_sha in the `production` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
+Once you have new release candidate you can point the production server at it by changing the `head_sha` value in the `production` folder in https://github.com/pathoplexus/loculus_deployments/blob/main/deploy/production/config.json .
 
 The appropriate way to do this is with the GitHub action "Create PR to Promote Staging to Production" in the `loculus_deployments` repository which will copy the SHA from staging to production, creating a PR: https://github.com/pathoplexus/loculus_deployments/actions
 
