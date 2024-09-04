@@ -4,23 +4,26 @@ This document is only intended for Pathoplexus sysadmins.
 
 ## To develop new versions of Pathoplexus
 
-Work in a development branch. You can choose what version of Loculus to target by adjusting the `loculusVersion` in  `pathoplexus_app/values.yaml`. Use a Loculus commit SHA.
+Work in a development branch. You can choose what version of Loculus to target by adjusting the `loculusVersion` in  `pathoplexus_app/values.yaml` (use a Loculus commit SHA). Adding the `preview` label will create a preview.
 
-## Merging to main
+## To simply bump the version of Loculus used in Pathoplexus `main`
+We have a GitHub workflow for this. Go to the "Actions" tab -> Open the "Create PR to bump main pathoplexus.." action -> Open the "Run workflow" dropdown -> Click on the "Run workflow" button. This will create a PR, which someone else will need to approve. The PR will contain a changelist for Loculus, which you should carefully review for breaking changes.
 
-Open a PR to merge into main. The current main is visible at http://preview-main.pathoplexus.org.
+## Staging the latest main
 
-## Staging a new version
+Once you have new release candidate on main, you can point the staging server at it by changing the `head_sha` value in at https://github.com/pathoplexus/loculus_deployments/blob/main/deploy/staging/config.json .
 
-Once you have new release candidate you can point the staging server at it by changing the head_sha in the `staging` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
+The easiest way to do this is with the GitHub action "Create PR to bump staging to latest" in the `loculus_deployments` repository: https://github.com/pathoplexus/loculus_deployments/actions
 
-The changes will be reflected at http://demo.pathoplexus.org . You should also check the health of the application in ArgoCD.
+A little after the PR is merged, changes will be reflected at http://demo.pathoplexus.org . You should also check the health of the application in ArgoCD.
 
-## Deploying a new version to production
+## Promoting a new version from staging to production
 
-Once you have new release candidate you can point the staging server at it by changing the head_sha in the `production` folder in https://github.com/pathoplexus/loculus_deployments/tree/main/deploy .
+Once you have new release candidate you can point the production server at it by changing the `head_sha` value in the `production` folder in https://github.com/pathoplexus/loculus_deployments/blob/main/deploy/production/config.json .
 
-The changes will be reflected at http://production.pathoplexus.org . You should check ArgoCD to monitor the health of the application.
+The appropriate way to do this is with the GitHub action "Create PR to Promote Staging to Production" in the `loculus_deployments` repository which will copy the SHA from staging to production, creating a PR: https://github.com/pathoplexus/loculus_deployments/actions
+
+After merging, the changes will be reflected at http://production.pathoplexus.org . You should check ArgoCD to monitor the health of the application.
 
 # What determines the configuration of an instance?
 
