@@ -34,7 +34,7 @@ Add new pages by entering the [monorepo/website/src/pages](./monorepo/website/sr
 If you want to work with a dev preview, you need to clone the repo, then run
 
 ```bash
-./sync.sh -l
+./sync.sh
 ```
 
 to copy the monorepo into this repository, with .gitignore ignoring its contents.
