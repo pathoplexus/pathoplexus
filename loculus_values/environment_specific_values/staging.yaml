@@ -1,7 +1,7 @@
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 accessionPrefix: "PPD_"
-bannerMessage: "This is a demo instance. You can upload any data you like, including test data to try things out. You can find test data to upload in the <a href='https://github.com/pathoplexus/example_data' class='font-semibold underline'>example data</a> repository. This instance should not be used for analysis."
+bannerMessage: "This is a staging instance. You should not rely on it for analysis."
 secrets:
   keycloak-admin:
     type: sealedsecret
