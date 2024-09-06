@@ -18,9 +18,7 @@ jobs:
       checks: read
     steps:
       - uses: actions/checkout@v4
-      - run: ./sync.sh -a
-        env:
-          LOCULUS_PAT: ${{ secrets.LOCULUS_PAT }}
+      - run: ./sync.sh
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
