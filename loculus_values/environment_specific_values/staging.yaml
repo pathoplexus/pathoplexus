@@ -1,7 +1,7 @@
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 accessionPrefix: "PP_"
-bannerMessage: "This is a staging instance. You should not rely on it for analysis."
+bannerMessage: "This is a staging instance. You should not use it for analysis as it may contain inaccurate test data."
 secrets:
   keycloak-admin:
     type: sealedsecret
