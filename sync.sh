@@ -60,4 +60,4 @@ rsync -av --ignore-existing --exclude='.git' "$TEMP_DIR/master_repo/" "$DESCENDA
 # Remove the temporary directory
 rm -rf "$TEMP_DIR"
 
-echo "Synchronisation of files from Locculus completed successfully."
+echo "Synchronisation of files from Loculus completed successfully."
