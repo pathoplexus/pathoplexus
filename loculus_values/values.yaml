@@ -26,7 +26,7 @@ secrets:
     encryptedData:
       .dockerconfigjson: AgBWKhV1q88KGSfzJq6Dq7qopEjILAWmKY4Wmc3+ryvtvfVkMkx/Tvbyhj8fQ5nerkPfJE+TQVqeBMn1Vln64ZYcw44Nv4yrGLZbpBVRusp6siKvNDPBG+PRnrYYxhuWFovSyCDfjZqIGk8P2URDfrxTTlKzsEOoqEHxQoTwV08ZUlBy+Aqpm9ljjBPLga9gwYkWdjb5vG2DTPOYJ46fsLaFH4wMWdWCY1hgrBXzMV1T12RFH0SXG5+qCnexiyhx98tVt+3bt3tdJYi6AJRC0eQ/OQM0n5OV0HHch+10id5Jy8DMNm25OECwFEp3YO9Er30iLekP7ARvQTAlYwT6OxLjG1zMPtnHGwJB8NiFOsQqZFjupe4pCygdQJU4/wlEYyl3dQvxygwqMDIMx5X3e0iOleJ1JN8VHXzBbWKiy1igujA3Mob4iRC9Stz0jjKOvUSsUbpP54dsU/zyGEKLKUeqWlMuTFL/lmKy/IKZwBnd+98rrZuL6cF0mx6d7TcuVhtvNAVgTp8a8ac7vhJvGF6IZUbLS5D24agZU+RuhOeKPFTvhNgxT8WNCMu4f8gkJPbY6y8qkHcG1oLJQncCSITnXl5tBIIAGijdOf83bX4KEi9uQ2B3l8SjbyAsbZUTZrqfc/7OVJlm2rr0qO2exoIPM6Lq1/06OOtNe483e9CUoBgQTRwKN6807R6uscnrHqy+KdRlhevJCPtxcGiDc7U1MnwuNXnuEnGMbp9KbZDVuPDM9GRXw6SgO3t48im17npls1Lj6CNys26paqM4qQQ/pwX14LMoNVigFlhkSaK+M400AQaYlpV3D5LRVzD2FJzB9AO9JsPEayifUgjNl8gezoEg867c/Cpx4Xf18jzahTHzMGbs44POATM=
 name: Pathoplexus
-accessionPrefix: "PP_"
+accessionPrefix: "PPD_"
 additionalHeadHTML: '<script defer data-domain="pathoplexus.org" src="https://plausible.io/js/script.js"></script><meta property="og:type" content="website" /><meta property="og:image" content="https://pathoplexus.org/images/pathoplexus-preview.png" /><meta property="og:description" content="Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data, fostering global collaboration and public health response." />'
 auth:
   smtp:
