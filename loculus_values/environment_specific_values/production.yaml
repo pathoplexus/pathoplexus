@@ -4,6 +4,7 @@ runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
 robotsNoindexHeader: false
 subdomainSeparator: "."
+additionalHeadHTML: '<script defer data-domain="pathoplexus.org" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script><script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script><meta property="og:type" content="website" /><meta property="og:image" content="https://pathoplexus.org/images/pathoplexus-preview.png" /><meta property="og:description" content="Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data, fostering global collaboration and public health response." />'
 secrets:
   keycloak-admin:
     type: sealedsecret
