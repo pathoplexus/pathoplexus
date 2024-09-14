@@ -11,7 +11,6 @@ on:
   push:
     branches:
       - main
-      - broken-link-action
   schedule:
     - cron: '9 9 * * *'
 jobs:
@@ -29,26 +28,44 @@ jobs:
           else
             echo "has-preview-label=false" >> $GITHUB_OUTPUT
           fi
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            echo "matrix={\"subdomain\":[\"preview-main\",\"preview-staging\",\"preview-demo\",\"\"]}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.custom_subdomain }}" ]]; then
+            echo "matrix={\"subdomain\":[\"${{ github.event.inputs.custom_subdomain }}\"]}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "matrix={\"subdomain\":[\"preview-${{ github.ref_name }}\"]}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "matrix={\"subdomain\":[\"preview-${{ github.head_ref }}\"]}" >> $GITHUB_OUTPUT
+          else
+            echo "matrix={\"subdomain\":[\"\"]}" >> $GITHUB_OUTPUT
+          fi
   broken-link-checker:
-    needs: check-preview-label
+    needs: [check-preview-label, generate-matrix]
     if: >
       github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.check-preview-label.outputs.has-preview-label == 'true')
 
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set URL
         id: set-url
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.custom_subdomain }}" ]]; then
-            echo "url=https://${{ github.event.inputs.custom_subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "url=https://preview-${GITHUB_REF##*/}.pathoplexus.org" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "url=https://preview-${{ github.head_ref }}.pathoplexus.org" >> $GITHUB_OUTPUT
-          else
+          if [[ -z "${{ matrix.subdomain }}" ]]; then
             echo "url=https://pathoplexus.org" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
       - name: Check broken links
         uses: ruzickap/action-my-broken-link-checker@v2
