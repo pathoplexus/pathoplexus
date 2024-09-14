@@ -43,6 +43,11 @@ jobs:
             echo "matrix={\"subdomain\":[\"\"]}" >> $GITHUB_OUTPUT
             echo "run_check=true" >> $GITHUB_OUTPUT
           fi
+      - name: Wait for 180 seconds if triggered by push or pull request
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        run: |
+          echo "Waiting for 180 seconds to allow preview to be up..."
+          sleep 180
   broken-link-checker:
     needs: generate-matrix
     if: needs.generate-matrix.outputs.run_check == 'true'
@@ -59,11 +64,6 @@ jobs:
           else
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
-      - name: Wait for 180 seconds if triggered by push or pull request
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
-        run: |
-          echo "Waiting for 180 seconds to allow preview to be up..."
-          sleep 180
       - name: Check broken links using muffet
         uses: ruzickap/action-my-broken-link-checker@v2
         with:
