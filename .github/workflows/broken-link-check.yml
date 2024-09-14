@@ -33,6 +33,7 @@ jobs:
     needs: check-preview-label
     if: >
       github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.check-preview-label.outputs.has-preview-label == 'true')
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -45,7 +46,7 @@ jobs:
           elif [[ "${{ github.event_name }}" == "push" ]]; then
             echo "url=https://preview-${GITHUB_REF##*/}.pathoplexus.org" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "url=https://preview-pr-${{ github.event.pull_request.number }}.pathoplexus.org" >> $GITHUB_OUTPUT
+            echo "url=https://preview-${{ github.head_ref }}.pathoplexus.org" >> $GITHUB_OUTPUT
           else
             echo "url=https://pathoplexus.org" >> $GITHUB_OUTPUT
           fi
