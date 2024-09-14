@@ -1,5 +1,7 @@
 name: broken-link-check
 on:
+  pull_request:
+    types: [opened, reopened, labeled, unlabeled, synchronize]
   workflow_dispatch:
     inputs:
       custom_subdomain:
@@ -13,11 +15,28 @@ on:
   schedule:
     - cron: '9 9 * * *'
 jobs:
+  check-preview-label:
+    runs-on: ubuntu-latest
+    outputs:
+      has-preview-label: ${{ steps.check-label.outputs.has-preview-label }}
+    steps:
+      - name: Check for preview label
+        id: check-label
+        if: github.event_name == 'pull_request'
+        run: |
+          if [[ ${{ contains(github.event.pull_request.labels.*.name, 'preview') }} == 'true' ]]; then
+            echo "has-preview-label=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-preview-label=false" >> $GITHUB_OUTPUT
+          fi
   broken-link-checker:
+    needs: check-preview-label
+    if: >
+      github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.check-preview-label.outputs.has-preview-label == 'true')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set URL
         id: set-url
         run: |
@@ -25,6 +44,8 @@ jobs:
             echo "url=https://${{ github.event.inputs.custom_subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "push" ]]; then
             echo "url=https://preview-${GITHUB_REF##*/}.pathoplexus.org" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "url=https://preview-pr-${{ github.event.pull_request.number }}.pathoplexus.org" >> $GITHUB_OUTPUT
           else
             echo "url=https://pathoplexus.org" >> $GITHUB_OUTPUT
           fi
