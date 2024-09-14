@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       custom_subdomain:
-        description: 'Custom subdomain for link checking'
+        description: 'Custom subdomain for link checking, e.g. preview-main. By default checks main, preview, staging, and demo.'
         required: false
         type: string
   push:
@@ -14,51 +14,43 @@ on:
   schedule:
     - cron: '9 9 * * *'
 jobs:
-  check-preview-label:
-    runs-on: ubuntu-latest
-    outputs:
-      has-preview-label: ${{ steps.check-label.outputs.has-preview-label }}
-    steps:
-      - name: Check for preview label
-        id: check-label
-        if: github.event_name == 'pull_request'
-        run: |
-          if [[ ${{ contains(github.event.pull_request.labels.*.name, 'preview') }} == 'true' ]]; then
-            echo "has-preview-label=true" >> $GITHUB_OUTPUT
-          else
-            echo "has-preview-label=false" >> $GITHUB_OUTPUT
-          fi
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      run_check: ${{ steps.set-matrix.outputs.run_check }}
     steps:
-      - name: Set matrix
+      - name: Set matrix and check conditions
         id: set-matrix
         run: |
           if [[ "${{ github.event_name }}" == "schedule" ]]; then
             echo "matrix={\"subdomain\":[\"preview-main\",\"preview-staging\",\"preview-demo\",\"\"]}" >> $GITHUB_OUTPUT
+            echo "run_check=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.custom_subdomain }}" ]]; then
             echo "matrix={\"subdomain\":[\"${{ github.event.inputs.custom_subdomain }}\"]}" >> $GITHUB_OUTPUT
+            echo "run_check=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "push" ]]; then
             echo "matrix={\"subdomain\":[\"preview-${{ github.ref_name }}\"]}" >> $GITHUB_OUTPUT
+            echo "run_check=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "matrix={\"subdomain\":[\"preview-${{ github.head_ref }}\"]}" >> $GITHUB_OUTPUT
+            if [[ ${{ contains(github.event.pull_request.labels.*.name, 'preview') }} == 'true' ]]; then
+              echo "run_check=true" >> $GITHUB_OUTPUT
+            else
+              echo "run_check=false" >> $GITHUB_OUTPUT
+            fi
           else
             echo "matrix={\"subdomain\":[\"\"]}" >> $GITHUB_OUTPUT
+            echo "run_check=true" >> $GITHUB_OUTPUT
           fi
   broken-link-checker:
-    needs: [check-preview-label, generate-matrix]
-    if: >
-      github.event_name != 'pull_request' || (github.event_name == 'pull_request' && needs.check-preview-label.outputs.has-preview-label == 'true')
-
+    needs: generate-matrix
+    if: needs.generate-matrix.outputs.run_check == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
       - name: Set URL
         id: set-url
         run: |
@@ -67,8 +59,9 @@ jobs:
           else
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
-      - name: Check broken links
+      - name: Check broken links using muffet
         uses: ruzickap/action-my-broken-link-checker@v2
         with:
           url: ${{ steps.set-url.outputs.url }}
-          cmd_params: '--buffer-size=8192 --max-connections=10 --color=always --header="User-Agent:curl/7.54.0" --timeout=20'
+          # see https://github.com/raviqqe/muffet for details
+          cmd_params: '--buffer-size=8192 --max-connections=10 --color=always --accepted-status-codes="200..300,403,429" --rate-limit=20 --timeout=20'
