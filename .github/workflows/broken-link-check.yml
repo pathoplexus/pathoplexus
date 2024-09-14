@@ -7,10 +7,9 @@ on:
         required: false
         type: string
   push:
-    paths:
-      - .github/workflows/periodic-broken-link-checks.yml
     branches:
       - main
+      - broken-link-action
   schedule:
     - cron: '9 9 * * *'
 jobs:
