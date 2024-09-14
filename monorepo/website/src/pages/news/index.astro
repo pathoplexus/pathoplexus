@@ -1,33 +1,34 @@
 ---
 import MdLayout from '../../layouts/MdLayout.astro';
----
 
+// Add new news items here
+const newsItems = [
+    {
+        slug: '2024-09-13-two-weeks',
+        title: 'Two Weeks of Pathoplexus',
+        date: '13 September 2024',
+        excerpt: "Since Pathoplexus launched on 27 August, we've been humbled by the incredibly positive reaction from the pathogen research, bioinformatics, and public health communities. And it's been a busy two weeks! We're thrilled so many people have taken the time to explore the website…"
+    },
+    {
+        slug: '2024-08-27-hello-world',
+        title: 'Introducing Pathoplexus',
+        date: '27 August 2024',
+        excerpt: 'We are announcing <b>Pathoplexus</b>, a specialised genomic database for viruses of public health importance. By combining modern open-source software with transparent governance structures, Pathoplexus fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both data submitters and users and striving to improve equity…'
+    }
+];
+---
 <MdLayout frontmatter={{ title: 'News' }}>
     <h1>News</h1>
-    <div class='mt-8'>
-        <h2>
-            <a href='/news/2024-09-13-two-weeks'>Two Weeks of Pathoplexus</a>
-        </h2>
-        <div class='italic mb-4'>By the Pathoplexus Team - 13 September 2024</div>
-        <div>
-            Since Pathoplexus launched on 27 August, we’ve been humbled by the incredibly positive reaction from
-             the pathogen research, bioinformatics, and public health communities. And it’s been a busy two weeks! 
-             We’re thrilled so many people have taken the time to explore the website… 
-             <a href='/news/2024-09-12-two-weeks'>Read more</a>
+    {newsItems.map(item => (
+        <div class='mt-8'>
+            <h2>
+                <a href={`/news/${item.slug}`}>{item.title}</a>
+            </h2>
+            <div class='italic mb-4'>By the Pathoplexus Team - {item.date}</div>
+            <div>
+                {item.excerpt}
+                <a href={`/news/${item.slug}`}>Read more</a>
+            </div>
         </div>
-    </div>
-    <div class='mt-8'>
-        <h2>
-            <a href='/news/2024-08-27-hello-world'>Introducing Pathoplexus</a>
-        </h2>
-        <div class='italic mb-4'>By the Pathoplexus Team - 27 August 2024</div>
-        <div>
-            We are announcing <b>Pathoplexus</b>, a specialised genomic database for viruses of public health
-            importance. By combining modern open-source software with transparent governance structures, Pathoplexus
-            fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both
-            data submitters and users and striving to improve equity… <a href='/news/2024-08-27-hello-world'
-                >Read more</a
-            >
-        </div>
-    </div>
+    ))}
 </MdLayout>
