@@ -23,10 +23,7 @@ jobs:
       - name: Set matrix and check conditions
         id: set-matrix
         run: |
-          if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            echo "matrix={\"subdomain\":[\"preview-main\",\"preview-staging\",\"preview-demo\",\"\"]}" >> $GITHUB_OUTPUT
-            echo "run_check=true" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.custom_subdomain }}" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.custom_subdomain }}" ]]; then
             echo "matrix={\"subdomain\":[\"${{ github.event.inputs.custom_subdomain }}\"]}" >> $GITHUB_OUTPUT
             echo "run_check=true" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "push" ]]; then
@@ -40,7 +37,7 @@ jobs:
               echo "run_check=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "matrix={\"subdomain\":[\"\"]}" >> $GITHUB_OUTPUT
+            echo "matrix={\"subdomain\":[\"preview-main\",\"staging\",\"demo\",\"\"]}" >> $GITHUB_OUTPUT
             echo "run_check=true" >> $GITHUB_OUTPUT
           fi
       - name: Wait for 180 seconds if triggered by push or pull request
