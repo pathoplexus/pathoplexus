@@ -112,7 +112,7 @@ resources:
 defaultResources:
     requests:
       memory: "200Mi"
-      cpu: "1000m"
+      cpu: "200m"
     limits:
        memory: "1Gi"
-       cpu: "200m"
+       cpu: "1000m"
