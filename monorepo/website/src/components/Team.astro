@@ -6,6 +6,7 @@ type Member = {
     name: string;
     description: string;
     picture: ImageMetadata;
+    affiliation?: string;
 };
 
 export interface Props {
@@ -22,6 +23,9 @@ const { members } = Astro.props;
                 <Image src={member.picture} alt={'Picture of ' + member.name} width={160} height={160} />
                 <div class='text-lg font-semibold'>{member.name}</div>
                 <div class='text-sm'>{member.description}</div>
+                { member.affiliation !== undefined &&
+                    <div class='text-sm italic pt-1'>{member.affiliation}</div>
+                }
             </div>
         ))
     }
