@@ -54,13 +54,13 @@ def url(w):
             raise RuntimeError(f"Unknown endpoint: {type=}")
 
 
-# rule all:
-#     input:
-#         expand(
-#             "results/seq_{organism}_{instance}.diff",
-#             organism=ORGANISMS,
-#             instance=config["instance"],
-#         ),
+rule all:
+    input:
+        expand(
+            "results/{organism}_{instance}.diff",
+            organism=ORGANISMS,
+            instance=config["instance"],
+        ),
 
 
 rule sequence_download:
