@@ -1,7 +1,5 @@
 name: broken-link-check
 on:
-  pull_request:
-    types: [opened, reopened, labeled, unlabeled, synchronize]
   workflow_dispatch:
     inputs:
       custom_subdomain:
