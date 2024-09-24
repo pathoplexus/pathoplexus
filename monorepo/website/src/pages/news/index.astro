@@ -7,28 +7,33 @@ const newsItems = [
         slug: '2024-09-13-two-weeks',
         title: 'Two Weeks of Pathoplexus',
         date: '13 September 2024',
-        excerpt: "Since Pathoplexus launched on 27 August, we've been humbled by the incredibly positive reaction from the pathogen research, bioinformatics, and public health communities. And it's been a busy two weeks! We're thrilled so many people have taken the time to explore the website…"
+        excerpt:
+            "Since Pathoplexus launched on 27 August, we've been humbled by the incredibly positive reaction from the pathogen research, bioinformatics, and public health communities. And it's been a busy two weeks! We're thrilled so many people have taken the time to explore the website…",
     },
     {
         slug: '2024-08-27-hello-world',
         title: 'Introducing Pathoplexus',
         date: '27 August 2024',
-        excerpt: 'We are announcing <b>Pathoplexus</b>, a specialised genomic database for viruses of public health importance. By combining modern open-source software with transparent governance structures, Pathoplexus fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both data submitters and users and striving to improve equity…'
-    }
+        excerpt:
+            'We are announcing <b>Pathoplexus</b>, a specialised genomic database for viruses of public health importance. By combining modern open-source software with transparent governance structures, Pathoplexus fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both data submitters and users and striving to improve equity…',
+    },
 ];
 ---
+
 <MdLayout frontmatter={{ title: 'News' }}>
     <h1>News</h1>
-    {newsItems.map(item => (
-        <div class='mt-8'>
-            <h2>
-                <a href={`/news/${item.slug}`}>{item.title}</a>
-            </h2>
-            <div class='italic mb-4'>By the Pathoplexus Team - {item.date}</div>
-            <div>
-                <Fragment set:html={item.excerpt} />
-                <a href={`/news/${item.slug}`}>Read more</a>
+    {
+        newsItems.map((item) => (
+            <div class='mt-8'>
+                <h2>
+                    <a href={`/news/${item.slug}`}>{item.title}</a>
+                </h2>
+                <div class='italic mb-4'>By the Pathoplexus Team - {item.date}</div>
+                <div>
+                    <Fragment set:html={item.excerpt} />
+                    <a href={`/news/${item.slug}`}>Read more</a>
+                </div>
             </div>
-        </div>
-    ))}
+        ))
+    }
 </MdLayout>
