@@ -46,4 +46,56 @@ You can also always view your released sequences by going to 'Browse' in the top
 
 # API
 
-_Instructions coming soon. See the [Swagger API documentation](/api-documentation)_
+The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token an include the token in the HTTP header `Authorization: Bearer <authentication token>`.
+
+You can retrieve a list of uploaded but not released sequences by sending a GET request to the endpoint `https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS` where the available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`. The `sequenceEntries` field of the returned object contains a list of sequences with their corresponding `status`:
+
+- Sequence that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
+- Sequences that are in the status `IN_PROCESSING` are currently being processed, please wait a few more moments.
+- Sequences that are in the status `HAS_ERRORS` contain errors. To find out details, we recommend going to the review page on the website: you can find it by going to the Submission Portal and clicking on "Review".
+- Sequences that are in the status `AWAITING_APPROVAL` have passed the processing and quality checks and can be approved.
+
+A cURL request could be:
+
+```
+curl -X 'GET' \
+  'https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<grou id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <authentication token>'
+```
+
+You can either approve selected sequences or approve all sequences that are in the status `AWAITING_APPROVAL`. To do that, send a POST request to `https://backend.pathoplexus.org/<organism>/approve-processed-data` with the following request body:
+
+```
+// For a specific list of sequences:
+{
+  "accessionVersionsFilter": [
+    { "accession": "<accession>", "version": <version> },
+    …
+  ],
+  "groupIdsFilter": [<group id>],
+  "scope": "ALL"
+}
+
+To approve everything:
+{
+  "groupIdsFilter": [<group id>],
+  "scope": "ALL"
+}
+```
+
+A cURL request could be:
+
+```
+curl -X 'POST' \
+  'https://backend.pathoplexus.org/<organism>/approve-processed-data' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <authentication token>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "groupIdsFilter": [<group id>],
+  "scope": "ALL"
+}'
+```
+
+Further information can be found in our [Swagger API documentation](https://backend.pathoplexus.org/swagger-ui/index.html#/submission-controller).
