@@ -15,6 +15,8 @@ Loculus expects:
 
 ![Metadata template.](../../../images/MetadataTemplate.png)
 
+The files can also be compressed, accepted formats are .zst, .gz, .zip and .xz.
+
 _You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance._
 
 
@@ -34,27 +36,37 @@ Uploading sequences via the website is a very way to submit sequences without ha
 
 The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
 
-<br></br>
-_Detailed API instructions for submitting sequences will come soon, but you can read our [authentication token how-to](/docs/how-to/authentication-api) and [Swagger API documentation](/api-documentation) if you're an experienced user._
 
-{/* ## API
+## API
 
 **By using our API you agree to our [Data Use Terms](/about/terms-of-use/data-use-terms).**
 
-For full instructions on how to upload sequences via our API, you should read our [Swagger API documentation](/api-documentation).
-Before using our API endpoint, you will need to generate an [authentication token](/docs/how-to/authentication-api).
+It is possible to upload sequences through an HTTP API.
 
-As a brief introduction into using the API, you should be sure you have on-hand:
+1. Retrieve an authentication JSON web token: see the [Authenticating via API guide](/docs/how-to/authentication-api).
+2. Identify the Group ID of your group: you can find it on the page of your group (which can be reached from your [user page](https://pathoplexus.org/user)).
+3. Send a POST request:
+    - To upload sequences with an **open use term**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<   group-id>&dataUseTermsType=OPEN`
+    - To upload sequences with a **restricted use term**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<group-id>&dataUseTermsType=RESTRICTED&restrictedUntil=<restricted-until-date>`
+    - The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`.
+    - The restricted-until date must be provided in the ISO format (e.g., 2024-08-27).
+    - The header should contain
+        - `Authorization: Bearer <authentication-token>`
+        - `Content-Type: multipart/form-data`
+    - The request body should contain the FASTA and metadata files with the keys `sequenceFile` and `metadataFile`
 
-- The `fasta` file of sequences you wish to submit
-- Matching metadata file
-- The abbreviation for the organism you're submitted sequences of:
-  - `cchf` (CCHF)
-  - `ebola-sudan` (Ebola Sudan)
-  - `ebola-zaire` (Ebola Zaire)
-  - `west-nile` (West Nile)
-- Your submitting Group ID (click on the group from 'My account' to see this)
-- The Data Use Terms you wish to submit under, `OPEN` or `RESTRICTED`
-  - If `RESTRICTED`, the date until which they are restricted (up to 1 year from today) in format `YYYY-MM-DD`
+With cURL, the corresponding command for sending the POST request can be:
 
-You can then construct your API submission query. */}
+```
+curl -X 'POST' \
+  'https://backend.pathoplexus.org/<organism>/submit?groupId=<group id>&dataUseTermsType=OPEN' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <authentication token>' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'metadataFile=@<metadata file name>' \
+  -F 'sequenceFile=@<fasta file name>'
+```
+
+Further information can be found in our [Swagger API documentation](https://backend.pathoplexus.org/swagger-ui/index.html#/submission-controller/submit).
+
+As with the website, data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
