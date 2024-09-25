@@ -103,15 +103,15 @@ load_database() {
     # Prepare the database
     prepare_database "$db_name"
 
-    # # Drop the target database if it exists
-    # echo "Dropping $db_name database if it exists..."
-    # dropdb --force --if-exists "$db_name"
-    # check_command "Failed to drop $db_name database"
+    # Drop the target database if it exists
+    echo "Dropping $db_name database if it exists..."
+    dropdb --force --if-exists "$db_name"
+    check_command "Failed to drop $db_name database"
 
-    # # Create a new target database
-    # echo "Creating new $db_name database..."
-    # createdb "$db_name"
-    # check_command "Failed to create $db_name database"
+    # Create a new target database
+    echo "Creating new $db_name database..."
+    createdb "$db_name"
+    check_command "Failed to create $db_name database"
 
     # Restore the dump to the target database
     echo "Restoring dump to $db_name database..."
