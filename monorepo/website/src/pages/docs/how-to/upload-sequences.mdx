@@ -15,7 +15,8 @@ Loculus expects:
 
 ![Metadata template.](../../../images/MetadataTemplate.png)
 
-The files can also be compressed, accepted formats are .zst, .gz, .zip and .xz.
+The files can also be compressed: accepted formats are .zst, .gz, .zip and .xz.
+
 
 _You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance._
 
@@ -41,19 +42,25 @@ The data will now be processed, and you will have to approve your submission bef
 
 **By using our API you agree to our [Data Use Terms](/about/terms-of-use/data-use-terms).**
 
-It is possible to upload sequences through an HTTP API.
+It is currently possible to upload sequences through an HTTP API. We also plan to release a command-line interface before the end of 2024.
+
+To upload sequences through the HTTP API you will need to:
+
 
 1. Retrieve an authentication JSON web token: see the [Authenticating via API guide](/docs/how-to/authentication-api).
 2. Identify the Group ID of your group: you can find it on the page of your group (which can be reached from your [user page](https://pathoplexus.org/user)).
 3. Send a POST request:
-    - To upload sequences with an **open use term**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<   group-id>&dataUseTermsType=OPEN`
-    - To upload sequences with a **restricted use term**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<group-id>&dataUseTermsType=RESTRICTED&restrictedUntil=<restricted-until-date>`
+    - To upload sequences with the **open use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<   group-id>&dataUseTermsType=OPEN`
+
+    - To upload sequences with the **restricted use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<group-id>&dataUseTermsType=RESTRICTED&restrictedUntil=<restricted-until-date>`
+
     - The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`.
     - The restricted-until date must be provided in the ISO format (e.g., 2024-08-27).
     - The header should contain
         - `Authorization: Bearer <authentication-token>`
         - `Content-Type: multipart/form-data`
-    - The request body should contain the FASTA and metadata files with the keys `sequenceFile` and `metadataFile`
+    - The request body should contain the FASTA and metadata TSV files with the keys `sequenceFile` and `metadataFile`
+
 
 With cURL, the corresponding command for sending the POST request can be:
 
