@@ -31,7 +31,7 @@ dump_database() {
     local db_name="$1"
     local dump_file="$2"
     echo "Dumping $db_name database to $dump_file..."
-    pg_dump --create --clean "$db_name" > "$dump_file"
+    pg_dump "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
     echo "Database dump completed successfully!"
     echo "Dump file: $dump_file"
@@ -113,13 +113,13 @@ load_database() {
     createdb "$db_name"
     check_command "Failed to create $db_name database"
 
+    # Restore normal access
+    restore_access "$db_name"
+
     # Restore the dump to the target database
     echo "Restoring dump to $db_name database..."
     psql "$db_name" < "$dump_file"
     check_command "Failed to restore dump to $db_name database"
-
-    # Restore normal access
-    restore_access "$db_name"
 
     # Change ownership of tables
     if [ -n "$new_owner" ]; then
