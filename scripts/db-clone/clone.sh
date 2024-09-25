@@ -2,12 +2,10 @@
 
 set -x
 
-# Unified PostgreSQL Database Dump and Load Script
 
 export PGHOST=pathoplexus3.cluster-che6ccwa8oie.eu-central-1.rds.amazonaws.com
 export PGUSER=postgres
 
-# Function to print usage
 print_usage() {
     echo "Usage: $0 <action> <database> <file> [new_owner_username]"
     echo "Actions:"
@@ -18,7 +16,6 @@ print_usage() {
     echo "  $0 load staging temp_dump.sql staging_keycloak_user"
 }
 
-# Function to check if a command was successful
 check_command() {
     if [ $? -ne 0 ]; then
         echo "Error: $1"
@@ -26,7 +23,6 @@ check_command() {
     fi
 }
 
-# Function to dump database
 dump_database() {
     local db_name="$1"
     local dump_file="$2"
@@ -37,7 +33,6 @@ dump_database() {
     echo "Dump file: $dump_file"
 }
 
-# Function to prepare database for loading
 prepare_database() {
     local db_name="$1"
     echo "Preparing database $db_name..."
@@ -51,18 +46,29 @@ EOF
     check_command "Failed to prepare database $db_name"
 }
 
-# Function to restore normal access
-restore_access() {
+restore_limited_access() {
     local db_name="$1"
-    echo "Restoring normal access to $db_name..."
+    echo "Restoring limited access for postgres user only on $db_name..."
+    psql -d postgres <<EOF
+        SELECT pg_terminate_backend(pid) 
+        FROM pg_stat_activity 
+        WHERE datname = '$db_name' AND pid <> pg_backend_pid();
+        REVOKE CONNECT ON DATABASE $db_name FROM public;
+        ALTER DATABASE $db_name CONNECTION LIMIT 1;
+EOF
+    check_command "Failed to restore limited access to $db_name"
+}
+
+restore_full_access() {
+    local db_name="$1"
+    echo "Restoring full access for all users on $db_name..."
     psql -d postgres <<EOF
         GRANT CONNECT ON DATABASE $db_name TO public;
         ALTER DATABASE $db_name CONNECTION LIMIT -1;
 EOF
-    check_command "Failed to restore normal access to $db_name"
+    check_command "Failed to restore full access to $db_name"
 }
 
-# Function to change ownership of tables
 change_ownership() {
     local db_name="$1"
     local new_owner="$2"
@@ -88,40 +94,34 @@ EOF
     check_command "Failed to change ownership"
 }
 
-# Function to load database
 load_database() {
     local db_name="$1"
     local dump_file="$2"
     local new_owner="$3"
 
-    # Check if dump file exists
     if [ ! -f "$dump_file" ]; then
         echo "Error: Dump file $dump_file not found!"
         exit 1
     fi
 
-    # Prepare the database
     prepare_database "$db_name"
 
-    # Drop the target database if it exists
     echo "Dropping $db_name database if it exists..."
     dropdb --force --if-exists "$db_name"
     check_command "Failed to drop $db_name database"
 
-    # Create a new target database
     echo "Creating new $db_name database..."
     createdb "$db_name"
     check_command "Failed to create $db_name database"
 
-    # Restore normal access
-    restore_access "$db_name"
+    restore_limited_access "$db_name"
 
-    # Restore the dump to the target database
     echo "Restoring dump to $db_name database..."
     psql "$db_name" < "$dump_file"
     check_command "Failed to restore dump to $db_name database"
 
-    # Change ownership of tables
+    restore_full_access "$db_name"
+
     if [ -n "$new_owner" ]; then
         change_ownership "$db_name" "$new_owner"
     fi
@@ -129,19 +129,15 @@ load_database() {
     echo "Database loading completed successfully!"
 }
 
-# Main script execution starts here
-
-# Check if correct number of arguments is provided
 if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
     print_usage
     exit 1
 fi
 
-# Set variables from command-line arguments
 ACTION="$1"
 DB_NAME="$2"
 FILE="$3"
-NEW_OWNER="${4:-}"  # Use fourth argument if provided, otherwise empty
+NEW_OWNER="${4:-}"
 
 case "$ACTION" in
     dump)
