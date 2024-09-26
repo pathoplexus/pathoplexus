@@ -48,7 +48,13 @@ You can also always view your released sequences by going to 'Browse' in the top
 
 The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token an include the token in the HTTP header `Authorization: Bearer <authentication token>`.
 
-You can retrieve a list of uploaded but not released sequences by sending a GET request to the endpoint `https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS` where the available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`. The `sequenceEntries` field of the returned object contains a list of sequences with their corresponding `status`:
+You can retrieve a list of uploaded but not released sequences by sending a GET request to the endpoint:
+
+```
+https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS
+```
+
+The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`. The `sequenceEntries` field of the returned object contains a list of sequences with their corresponding `status`:
 
 - Sequence that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
 - Sequences that are in the status `IN_PROCESSING` are currently being processed, please wait a few more moments.
@@ -59,7 +65,7 @@ A cURL request could be:
 
 ```
 curl -X 'GET' \
-  'https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<grou id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS' \
+  'https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group id>&statusesFilter=RECEIVED&statusesFilter=IN_PROCESSING&statusesFilter=HAS_ERRORS&statusesFilter=AWAITING_APPROVAL&warningsFilter=INCLUDE_WARNINGS' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer <authentication token>'
 ```
