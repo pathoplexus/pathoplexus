@@ -111,7 +111,7 @@ load_database() {
     check_command "Failed to drop $db_name database"
 
     echo "Creating new $db_name database..."
-    createdb "$db_name"
+    createdb "$db_name" -O "$new_owner"
     check_command "Failed to create $db_name database"
 
     restore_limited_access "$db_name"
