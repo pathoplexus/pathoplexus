@@ -48,29 +48,13 @@ EOF
 
 restore_limited_access() {
     local db_name="$1"
-    echo "Restoring limited access for postgres superuser only on $db_name..."
+    echo "Restoring limited access for postgres user only on $db_name..."
     psql -d postgres <<EOF
-        -- Terminate all existing connections
         SELECT pg_terminate_backend(pid) 
         FROM pg_stat_activity 
         WHERE datname = '$db_name' AND pid <> pg_backend_pid();
-
-        -- Revoke all privileges from public
-        REVOKE ALL ON DATABASE $db_name FROM public;
-
-        -- Revoke all privileges from all roles except postgres
-        DO \$\$
-        DECLARE
-            r record;
-        BEGIN
-            FOR r IN SELECT rolname FROM pg_roles WHERE rolname != 'postgres' LOOP
-                EXECUTE 'REVOKE ALL ON DATABASE $db_name FROM ' || quote_ident(r.rolname);
-            END LOOP;
-        END
-        \$\$;
-
-        -- Restrict access to the postgres user only
-        GRANT ALL ON DATABASE $db_name TO postgres;
+        REVOKE CONNECT ON DATABASE $db_name FROM public;
+        ALTER DATABASE $db_name CONNECTION LIMIT 1;
 EOF
     check_command "Failed to restore limited access to $db_name"
 }
@@ -132,12 +116,6 @@ load_database() {
 
     restore_limited_access "$db_name"
 
-    if [ -n "$new_owner" ]; then
-        echo "Changing ownership of $db_name database to $new_owner..."
-        psql -c "ALTER DATABASE $db_name OWNER TO $new_owner"
-        check_command "Failed to change ownership of $db_name database"
-    fi
-
     echo "Restoring dump to $db_name database..."
     psql "$db_name" < "$dump_file"
     check_command "Failed to restore dump to $db_name database"
@@ -146,6 +124,12 @@ load_database() {
 
     if [ -n "$new_owner" ]; then
         change_ownership "$db_name" "$new_owner"
+    fi
+
+    if [ -n "$new_owner" ]; then
+        echo "Changing ownership of $db_name database to $new_owner..."
+        psql -c "ALTER DATABASE $db_name OWNER TO $new_owner"
+        check_command "Failed to change ownership of $db_name database"
     fi
 
     echo "Database loading completed successfully!"
