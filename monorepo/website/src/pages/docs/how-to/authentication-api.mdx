@@ -10,7 +10,9 @@ The retrieved token expires after 10 hours.
 
 ## Send request with cURL
 
-The following script demonstrates how you can retrieve a token with a POST request using cURL. It only works if you use a simple username-password authentication. If you only use ORCiD for authentication and do not have a password, you need to add a password (see how to [edit your account](edit-account)). This solution also does not work if you activated two-factor authentication. In these cases, you can retrieve a token from the browser (see section below).
+*To use the [demo instance](https://demo.pathoplexus.org) instead of the main instance, please replace `authentication.pathoplexus.org` with `authentication-demo.pathoplexus.org`.*
+
+The following script demonstrates how you can retrieve a token with a POST request using cURL. It only works if you use a simple username-password authentication. If you only use ORCiD for authentication and do not have a password, you need to add a password (see how to [edit your account](/docs/how-to/edit-account)). This solution also does not work if you activated two-factor authentication. In these cases, you can retrieve a token from the browser (see section below).
 
 ```bash
 KEYCLOAK_TOKEN_URL="https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
@@ -27,4 +29,4 @@ echo "$jwt"
 
 ## Retrieve token from browser
 
-After you have logged in on [pathoplexus.org](https://pathoplexus.org), an access token is stored in your browser as a cookie. The token is called `access_token` and you can manually retrieve it from the browser. Instructions on how to do it can be found in the documentation of the browsers: [Google Chrome](https://developer.chrome.com/docs/devtools/application/cookies), [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/index.html) and [Safari](https://www.cookieserve.com/knowledge-base/website-cookies/how-do-i-check-cookies-in-safari/).
+After you have logged in on [pathoplexus.org](https://pathoplexus.org) (or [demo.pathoplexus.org](https://demo.pathoplexus.org) for the demo instance), an access token is stored in your browser as a cookie. The token is called `access_token` and you can manually retrieve it from the browser. Instructions on how to do it can be found in the documentation of the browsers: [Google Chrome](https://developer.chrome.com/docs/devtools/application/cookies), [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/index.html) and [Safari](https://www.cookieserve.com/knowledge-base/website-cookies/how-do-i-check-cookies-in-safari/).
