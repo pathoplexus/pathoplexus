@@ -69,10 +69,10 @@ podPriorityClassName: production
 resources:
   website:
     requests:
-      memory: "200Mi"
+      memory: "1Gi"
       cpu: "1000m"
     limits:
-      memory: "1Gi"
+      memory: "5Gi"
   ena-submission:
     requests:
       memory: "80Mi"
@@ -88,20 +88,20 @@ resources:
       memory: "10Gi"
   keycloak:
     requests:
-      memory: "500Mi"
+      memory: "3Gi"
       cpu: "1000m"
     limits:
       memory: "3Gi"
   silo:
     requests:
-      memory: "100Mi"
-      cpu: "1000m"
+      memory: "500Mi"
+      cpu: "500m"
     limits:
       memory: "10Gi"
   lapis:
     requests:
       memory: "220Mi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "5Gi"
   silo-preprocessing:
@@ -112,13 +112,14 @@ resources:
       memory: "10Gi"
   backend:
     requests:
-      memory: "640Mi"
+      memory: "1Gi"
       cpu: "1000m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
   preprocessing:
     requests:
-      memory: "20Mi"
+      memory: "100Mi"
+      cpu: "500m"
     limits:
       memory: "3Gi"
 defaultResources:
