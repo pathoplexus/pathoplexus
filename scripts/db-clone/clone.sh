@@ -102,28 +102,34 @@ load_database() {
     local dump_file="$2"
     local new_owner="$3"
 
-    if [ ! -f "$dump_file" ]; then
-        echo "Error: Dump file $dump_file not found!"
-        exit 1
-    fi
+    psql -U postgres -d postgres -c "
+        SELECT pg_terminate_backend(pid)
+        FROM pg_stat_activity
+        WHERE pid <> pg_backend_pid()
+        AND datname = '$db_name';
+    "
 
-    prepare_database "$db_name" "$new_owner"
+    psql -U postgres -d postgres -c "REVOKE postgres FROM $new_owner"
+    psql -U postgres -d postgres -c "REVOKE $new_owner FROM postgres"
+    psql -U postgres -d postgres -c "GRANT $new_owner TO postgres"
 
-    echo "Dropping $db_name database if it exists..."
-    dropdb --force --if-exists "$db_name" -U "$new_owner"
-    check_command "Failed to drop $db_name database"
+    psql -U $new_owner -d postgres -c "DROP DATABASE IF EXISTS \"$db_name\";"
 
-    echo "Creating new $db_name database..."
-    createdb "$db_name" -U "$new_owner"
-    check_command "Failed to create $db_name database"
+    psql -U postgres -d postgres -c "CREATE DATABASE \"$db_name\" WITH OWNER = \"$new_owner\";"
+    psql -U postgres -d postgres -c "REVOKE CONNECT ON DATABASE $db_name FROM \"$new_owner\";"
 
-    restore_limited_access "$db_name" "$new_owner"
+    psql -U postgres -d postgres -c "REVOKE $new_owner FROM postgres"
 
-    echo "Restoring dump to $db_name database..."
-    psql "$db_name" < "$dump_file" -U "$new_owner"
-    check_command "Failed to restore dump to $db_name database"
-
-    restore_full_access "$db_name" "$new_owner"
+    psql -U postgres -d "$db_name" <<EOF
+GRANT postgres TO "$new_owner";
+BEGIN;
+SET ROLE "$new_owner";
+-- Load the dump file
+\i "$dump_file";
+COMMIT;
+SET ROLE "postgres";
+REVOKE postgres FROM "$new_owner";
+EOF
 
     echo "Database loading completed successfully!"
 }
