@@ -27,7 +27,7 @@ dump_database() {
     local db_name="$1"
     local dump_file="$2"
     echo "Dumping $db_name database to $dump_file..."
-    pg_dump "$db_name" > "$dump_file"
+    pg_dump --if-exists --no-owner --clean "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
     echo "Database dump completed successfully!"
     echo "Dump file: $dump_file"
@@ -107,28 +107,28 @@ load_database() {
     prepare_database "$db_name"
 
     echo "Dropping $db_name database if it exists..."
-    dropdb --force --if-exists "$db_name"
+    dropdb --force --if-exists "$db_name" -U "$new_owner"
     check_command "Failed to drop $db_name database"
 
     echo "Creating new $db_name database..."
-    createdb "$db_name"
+    createdb "$db_name" -U "$new_owner"
     check_command "Failed to create $db_name database"
 
     restore_limited_access "$db_name"
 
     echo "Restoring dump to $db_name database..."
-    psql "$db_name" < "$dump_file"
+    psql "$db_name" < "$dump_file" -U "$new_owner"
     check_command "Failed to restore dump to $db_name database"
 
-    restore_full_access "$db_name"
+    restore_full_access "$db_name" -U "$new_owner"
 
     if [ -n "$new_owner" ]; then
-        change_ownership "$db_name" "$new_owner"
+        change_ownership "$db_name" "$new_owner" -U "$new_owner"
     fi
 
     if [ -n "$new_owner" ]; then
         echo "Changing ownership of $db_name database to $new_owner..."
-        psql -c "ALTER DATABASE $db_name OWNER TO $new_owner"
+        psql -c "ALTER DATABASE $db_name OWNER TO $new_owner" -U "$new_owner"
         check_command "Failed to change ownership of $db_name database"
     fi
 
