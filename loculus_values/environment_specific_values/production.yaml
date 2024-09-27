@@ -66,6 +66,10 @@ crossRef:
   hostUrl: "https://pathoplexus.org"
 enableCrossRefCredentials: true
 podPriorityClassName: production
+disableEnaSubmission: false
+submitToEnaProduction: true
+enaDbName: Pathoplexus
+enaUniqueSuffix: Pathoplexus
 resources:
   website:
     requests:
