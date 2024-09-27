@@ -35,8 +35,9 @@ dump_database() {
 
 prepare_database() {
     local db_name="$1"
+    local db_user="$2"
     echo "Preparing database $db_name..."
-    psql -d postgres <<EOF
+    psql -d postgres -U "$db_user" <<EOF
         SELECT pg_terminate_backend(pid) 
         FROM pg_stat_activity 
         WHERE datname = '$db_name' AND pid <> pg_backend_pid();
@@ -48,8 +49,9 @@ EOF
 
 restore_limited_access() {
     local db_name="$1"
+    local db_user="$2"
     echo "Restoring limited access for postgres user only on $db_name..."
-    psql -d postgres <<EOF
+    psql -d postgres -U "$db_user" <<EOF
         SELECT pg_terminate_backend(pid) 
         FROM pg_stat_activity 
         WHERE datname = '$db_name' AND pid <> pg_backend_pid();
@@ -61,8 +63,9 @@ EOF
 
 restore_full_access() {
     local db_name="$1"
+    local db_user="$2"
     echo "Restoring full access for all users on $db_name..."
-    psql -d postgres <<EOF
+    psql -d postgres -U "$db_user" <<EOF
         GRANT CONNECT ON DATABASE $db_name TO public;
         ALTER DATABASE $db_name CONNECTION LIMIT -1;
 EOF
@@ -104,7 +107,7 @@ load_database() {
         exit 1
     fi
 
-    prepare_database "$db_name"
+    prepare_database "$db_name" "$new_owner"
 
     echo "Dropping $db_name database if it exists..."
     dropdb --force --if-exists "$db_name" -U "$new_owner"
@@ -114,13 +117,13 @@ load_database() {
     createdb "$db_name" -U "$new_owner"
     check_command "Failed to create $db_name database"
 
-    restore_limited_access "$db_name"
+    restore_limited_access "$db_name" "$new_owner"
 
     echo "Restoring dump to $db_name database..."
     psql "$db_name" < "$dump_file" -U "$new_owner"
     check_command "Failed to restore dump to $db_name database"
 
-    restore_full_access "$db_name" -U "$new_owner"
+    restore_full_access "$db_name" "$new_owner"
 
     echo "Database loading completed successfully!"
 }
