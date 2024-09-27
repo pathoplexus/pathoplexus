@@ -1073,6 +1073,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
       taxon_id: 186538
+      scientific_name: "Zaire ebolavirus"
   referenceGenomes:
     nucleotideSequences:
       - name: "main"
@@ -1134,6 +1135,7 @@ organisms:
       <<: *ingest
       configFile:
         taxon_id: 3052460
+        scientific_name: "Sudan ebolavirus"
     referenceGenomes:
       nucleotideSequences:
         - name: "main"
@@ -1208,6 +1210,7 @@ organisms:
       <<: *ingest
       configFile:
         taxon_id: 3048448
+        scientific_name: "West Nile virus"
     referenceGenomes:
       nucleotideSequences:
         - name: main
@@ -1290,6 +1293,7 @@ organisms:
       configFile:
         <<: *ingestConfigFile
         taxon_id: 3052518
+        scientific_name: "Orthonairovirus haemorrhagiae"
         nucleotide_sequences:
           - L
           - M
