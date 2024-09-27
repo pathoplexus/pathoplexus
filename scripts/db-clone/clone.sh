@@ -122,16 +122,6 @@ load_database() {
 
     restore_full_access "$db_name" -U "$new_owner"
 
-    if [ -n "$new_owner" ]; then
-        change_ownership "$db_name" "$new_owner" -U "$new_owner"
-    fi
-
-    if [ -n "$new_owner" ]; then
-        echo "Changing ownership of $db_name database to $new_owner..."
-        psql -c "ALTER DATABASE $db_name OWNER TO $new_owner" -U "$new_owner"
-        check_command "Failed to change ownership of $db_name database"
-    fi
-
     echo "Database loading completed successfully!"
 }
 
