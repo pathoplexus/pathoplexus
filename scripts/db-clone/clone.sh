@@ -125,7 +125,7 @@ GRANT postgres TO "$new_owner";
 BEGIN;
 SET ROLE "$new_owner";
 -- Load the dump file
-\i "$dump_file";
+\i $dump_file;
 COMMIT;
 SET ROLE "postgres";
 REVOKE postgres FROM "$new_owner";
