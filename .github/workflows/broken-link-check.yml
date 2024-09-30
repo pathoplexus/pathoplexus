@@ -71,7 +71,7 @@ jobs:
             --max-connections=10 
             --color=always 
             --accepted-status-codes="200..300,403,429" 
-            --rate-limit=20 
+            --rate-limit=10 
             --timeout=500 
             --ignore-fragments
   broken-internal-link-checker:
@@ -97,11 +97,11 @@ jobs:
           # see https://github.com/raviqqe/muffet for parameter details
           # Use stricter mode for internal links
           cmd_params: |
-            --exclude "^(?!.*pathoplexus).*"
+            --include "pathoplexus" 
             --buffer-size=8192 
             --max-connections=5 
             --color=always 
             --accepted-status-codes="200..300" 
             --rate-limit=10 
-            --timeout=10 
+            --timeout=100 
             --ignore-fragments
