@@ -66,14 +66,7 @@ jobs:
         with:
           url: ${{ steps.set-url.outputs.url }}
           # see https://github.com/raviqqe/muffet for parameter details
-          cmd_params: |
-            --buffer-size=8192 
-            --max-connections=10 
-            --color=always 
-            --accepted-status-codes="200..300,403,429" 
-            --rate-limit=10 
-            --timeout=500 
-            --ignore-fragments
+          cmd_params: --buffer-size=8192 --max-connections=5 --color=always --accepted-status-codes="200..300,403,429" --rate-limit=10 --timeout=500 --ignore-fragments
   broken-internal-link-checker:
     needs: generate-matrix
     if: needs.generate-matrix.outputs.run_check == 'true'
@@ -96,12 +89,4 @@ jobs:
           url: ${{ steps.set-url.outputs.url }}
           # see https://github.com/raviqqe/muffet for parameter details
           # Use stricter mode for internal links
-          cmd_params: |
-            --include "pathoplexus" 
-            --buffer-size=8192 
-            --max-connections=5 
-            --color=always 
-            --accepted-status-codes="200..300" 
-            --rate-limit=10 
-            --timeout=100 
-            --ignore-fragments
+          cmd_params: --include=pathoplexus --buffer-size=8192 --max-connections=5 --color=always --accepted-status-codes="200..300" --rate-limit=10 --timeout=100 --ignore-fragments
