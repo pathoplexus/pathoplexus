@@ -28,7 +28,7 @@ perform_sed_replacements() {
     echo "Performing sed replacements on $file..."
     # Abort the script if a line with `@` contains the word "prod" to prevent altering sensitive data
     if grep '@' "$file" | grep -q 'prod'; then
-        echo "Error: Found 'prod' in $file. Aborting to prevent changing sensitive data."
+        echo "Error: Found 'prod' in line with '@' in $file. Aborting to prevent changing sensitive data."
         exit 1
     fi
 
