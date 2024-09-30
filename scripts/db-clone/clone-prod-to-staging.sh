@@ -27,11 +27,9 @@ perform_sed_replacements() {
     local file="$1"
     echo "Performing sed replacements on $file..."
     # Abort the script if a line with `@` contains the word "prod" to prevent altering sensitive data
-    if grep -q '@' "$file"; then
-        if grep -q 'prod' "$file"; then
-            echo "Error: Found 'prod' in $file. Aborting to prevent changing sensitive data."
-            exit 1
-        fi
+    if grep '@' "$file" | grep -q 'prod'; then
+        echo "Error: Found 'prod' in $file. Aborting to prevent changing sensitive data."
+        exit 1
     fi
 
     sed -i 's/prod/staging/g' "$file"
