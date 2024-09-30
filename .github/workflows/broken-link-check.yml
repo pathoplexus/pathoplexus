@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "Waiting for 180 seconds to allow preview to be up..."
           sleep 180
-  broken-link-checker:
+  broken-external-link-checker:
     needs: generate-matrix
     if: needs.generate-matrix.outputs.run_check == 'true'
     runs-on: ubuntu-latest
@@ -61,9 +61,32 @@ jobs:
           else
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
-      - name: Check broken links using muffet
+      - name: Check broken external links using muffet
         uses: ruzickap/action-my-broken-link-checker@v2
         with:
           url: ${{ steps.set-url.outputs.url }}
-          # see https://github.com/raviqqe/muffet for details
-          cmd_params: '--buffer-size=8192 --max-connections=10 --color=always --accepted-status-codes="200..300,403,429" --rate-limit=20 --timeout=20 --ignore-fragments'
+          # see https://github.com/raviqqe/muffet for parameter details
+          cmd_params: --buffer-size=8192 --max-connections=5 --color=always --accepted-status-codes="200..300,403,429" --rate-limit=10 --timeout=500 --ignore-fragments
+  broken-internal-link-checker:
+    needs: generate-matrix
+    if: needs.generate-matrix.outputs.run_check == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    steps:
+      - name: Set URL
+        id: set-url
+        run: |
+          if [[ -z "${{ matrix.subdomain }}" ]]; then
+            echo "url=https://pathoplexus.org" >> $GITHUB_OUTPUT
+          else
+            echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
+          fi
+      - name: Check broken internal links using muffet
+        uses: ruzickap/action-my-broken-link-checker@v2
+        with:
+          url: ${{ steps.set-url.outputs.url }}
+          # see https://github.com/raviqqe/muffet for parameter details
+          # Use stricter mode for internal links
+          cmd_params: --include=pathoplexus --buffer-size=8192 --max-connections=5 --color=always --accepted-status-codes="200..300" --rate-limit=10 --timeout=100 --ignore-fragments
