@@ -62,8 +62,17 @@ jobs:
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
       - name: Check broken links using muffet
-        uses: ruzickap/action-my-broken-link-checker@v2
+        uses: Wandalen/wretry.action@v3
         with:
-          url: ${{ steps.set-url.outputs.url }}
-          # see https://github.com/raviqqe/muffet for details
-          cmd_params: '--buffer-size=8192 --max-connections=10 --color=always --accepted-status-codes="200..300,403,429" --rate-limit=20 --timeout=500 --ignore-fragments'
+          action: ruzickap/action-my-broken-link-checker@v2
+          with: |
+            url: ${{ steps.set-url.outputs.url }}
+            # see https://github.com/raviqqe/muffet for parameter details
+            cmd_params: |
+              --buffer-size=8192 
+              --max-connections=10 
+              --color=always 
+              --accepted-status-codes="200..300,403,429" 
+              --rate-limit=20 
+              --timeout=500 
+              --ignore-fragments
