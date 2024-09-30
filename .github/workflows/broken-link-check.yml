@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'pull_request'
         run: |
           echo "Waiting for 180 seconds to allow preview to be up..."
-          sleep 180
+          # sleep 180
   broken-external-link-checker:
     needs: generate-matrix
     if: needs.generate-matrix.outputs.run_check == 'true'
