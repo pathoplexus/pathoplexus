@@ -1208,6 +1208,7 @@ organisms:
       configFile:
         taxon_id: 3048448
         scientific_name: "West Nile virus"
+        log_level: DEBUG
     referenceGenomes:
       nucleotideSequences:
         - name: main
