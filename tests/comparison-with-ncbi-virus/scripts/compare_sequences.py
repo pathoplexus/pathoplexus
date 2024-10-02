@@ -49,6 +49,8 @@ def compare_sequences(
 
     accession_map: dict[str, str] = {}
     for record in metadata:
+        if record["submitter"] != "insdc_ingest_user":
+            continue
         if config.segmented:
             for segment in config.nucleotide_sequences:
                 if record.get("insdcAccessionBase" + "_" + segment):
@@ -68,6 +70,9 @@ def compare_sequences(
     with open(sequences_input, encoding="utf-8") as f_in:
         records = SeqIO.parse(f_in, "fasta")
         for record in records:
+            if not record.id.split(".")[0] in accession_map:
+                print(f"Accession {record.id.split('.')[0]} not found in metadata")
+                continue
             if str(record.seq) != ncbi_sequences[accession_map[record.id.split(".")[0]]]:
                 inaccurate_accessions.append(record.id)
 
