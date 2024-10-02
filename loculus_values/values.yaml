@@ -679,6 +679,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
         example: "SAMN12345678"
         oneHeader: true
+      - name: gcaAccession
+        displayName: GCA accession
+        customDisplay:
+          type: link
+          url: "https://www.ncbi.nlm.nih.gov/datasets/genome/__value__"
+        header: "INSDC"
+        noInput: true
+        oneHeader: true
       - name: cultureId
         displayName: Culture ID
         header: Sample details
