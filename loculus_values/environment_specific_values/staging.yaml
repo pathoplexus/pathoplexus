@@ -3,6 +3,11 @@ runDevelopmentKeycloakDatabase: false
 accessionPrefix: "PP_"
 bannerMessage: "This is a staging instance. You should not use it for analysis as it may contain inaccurate test data."
 secrets:
+  basicauth:
+    type: sealedsecret
+    clusterWide: true
+    encryptedData:
+      users: AgAD+1AiAj59kHkb9Yz+LXATMxWjnJcIXXcKM5yP156vN+XFdZ9Gih6PeKwsn0VvpIxNt5h8B1rkZhJ4GPVEA6FWKUqbhImB7gI3fqqYXhhjY3/GPgDE5BlkDS1uVQXpIsx0HKNLp+6W7l0tG83rmEwdvksGe5qC7xWrzmfuiGWEHxxl7awj4jfvcrcrXxp7bi5DvLfmVM/12ZmQQdW+sjOHf35Q5aMiw7ch7rOami0+hgss5EI/Tf3+SaahXFq6NLi95UB82JQveJztVIu0ZkfW9bBF9R/PxtLnp6ZLrNalhR4QAM4/cApxlO4oguuncMcGyMQHUCfvzEiRp2duLc8Ep7izwfNtH99sBxGler6wFJBeF+fADgo/OHLTmfzEwjoc0nvBiwKeWdxDGvQJT+ueEhT1/YKq0uS1X07A9MUdbFfP4uK16WYzRIej7ojnPpHsAYDohtZybCLeLcS1o120Rbh2zdnQKZVOjIRNmttUqwzPceI2128505/KzEM6Rjdq8bCZAONRRIvibyFyBTeHz2RFnSiN1Aa1iD8TMDG7hRLoJoLUGqxQIatJa8xnfnu8ZPzyNisXZgFW+Ci3kgoIUa43kpBjF/hTbZTMD5/HS/LcNT8QP6xMshoa5nKX1ctM36RvFgjzvB98+ix08xlDiIzfd5DjkbdJ16ew2GkIy5CDN+BnPEqWgKRwrQW+XGP9jT3mTem4tJbiyIPwKAadUpddMbjRR2uqmEcS1Z4BKSS8mBMlLamq
   keycloak-admin:
     type: sealedsecret
     clusterWide: "true"
