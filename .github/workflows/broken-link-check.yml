@@ -43,8 +43,8 @@ jobs:
       - name: Wait for 180 seconds if triggered by push or pull request
         if: github.event_name == 'push' || github.event_name == 'pull_request'
         run: |
-          echo "Waiting for 180 seconds to allow preview to be up..."
-          sleep 180
+          echo "Waiting to allow preview to go up..."
+          sleep 240
   broken-external-link-checker:
     needs: generate-matrix
     if: needs.generate-matrix.outputs.run_check == 'true'
