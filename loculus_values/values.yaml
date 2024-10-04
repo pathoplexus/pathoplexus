@@ -1071,6 +1071,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     configFile: &ingestConfigFile
       taxon_id: 186538
       scientific_name: "Zaire ebolavirus"
+      molecule_type: "genomic RNA"
   referenceGenomes:
     nucleotideSequences:
       - name: "main"
@@ -1133,6 +1134,7 @@ organisms:
       configFile:
         taxon_id: 3052460
         scientific_name: "Sudan ebolavirus"
+        molecule_type: "genomic RNA"
     referenceGenomes:
       nucleotideSequences:
         - name: "main"
@@ -1208,6 +1210,7 @@ organisms:
       configFile:
         taxon_id: 3048448
         scientific_name: "West Nile virus"
+        molecule_type: "genomic RNA"
         log_level: DEBUG
     referenceGenomes:
       nucleotideSequences:
@@ -1292,6 +1295,7 @@ organisms:
         <<: *ingestConfigFile
         taxon_id: 3052518
         scientific_name: "Orthonairovirus haemorrhagiae"
+        molecule_type: "genomic RNA"
         nucleotide_sequences:
           - L
           - M
