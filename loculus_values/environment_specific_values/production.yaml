@@ -70,6 +70,7 @@ disableEnaSubmission: false
 submitToEnaProduction: true
 enaDbName: Pathoplexus
 enaUniqueSuffix: Pathoplexus
+enaIsBroker: True
 resources:
   website:
     requests:
