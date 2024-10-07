@@ -1138,7 +1138,7 @@ organisms:
         taxon_id: 3052460
     enaDeposition:
       configFile:
-        taxon_id: 3052460
+        taxon_id: 186540 
         scientific_name: "Sudan ebolavirus"
         molecule_type: "genomic RNA"
     referenceGenomes:
