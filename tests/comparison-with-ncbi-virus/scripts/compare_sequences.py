@@ -71,7 +71,7 @@ def compare_sequences(
         records = SeqIO.parse(f_in, "fasta")
         for record in records:
             if not record.id.split(".")[0] in accession_map:
-                print(f"Accession {record.id.split('.')[0]} not found in metadata")
+                print(f"Accession {record.id.split('.')[0]} not found in metadata submitted by insdc_ingest_user")
                 continue
             if str(record.seq) != ncbi_sequences[accession_map[record.id.split(".")[0]]]:
                 inaccurate_accessions.append(record.id)
