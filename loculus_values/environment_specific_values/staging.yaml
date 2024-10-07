@@ -56,3 +56,4 @@ disableEnaSubmission: false
 submitToEnaProduction: false
 enaDbName: Pathoplexus
 enaUniqueSuffix: Pathoplexus
+enaIsBroker: True
