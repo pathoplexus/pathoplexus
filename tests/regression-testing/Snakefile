@@ -9,8 +9,8 @@ wildcard_constraints:
 rule all:
     input:
         expand(
-            "results/{organism}.{difftype}.prod.old-state.diff",
-            organism=["cchf", "west-nile"],
+            "results/{organism}.{difftype}.prod.staging.diff",
+            organism=["cchf", "west-nile", "ebola-zaire", "ebola-sudan"],
             difftype=["seq", "meta"],
         ),
 
@@ -168,5 +168,5 @@ rule diff:
         "results/{organism}.{difftype}.{a}.{b}.diff",
     shell:
         """
-        diff -u {input} > {output} || echo "Differences found"
+        csv-diff {input} --key=submissionId  --format=tsv > {output} || echo "Differences found"
         """
