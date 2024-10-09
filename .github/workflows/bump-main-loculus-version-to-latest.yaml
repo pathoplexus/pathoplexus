@@ -21,9 +21,12 @@ jobs:
             git checkout ${{ github.event.inputs.target_sha }}
           fi
           LATEST_SHA=$(git rev-parse HEAD)
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
           echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
           echo "BRANCH_NAME=update-loculus-${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
+          echo "TARGET_BRANCH=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "IS_CUSTOM_TARGET=${{ github.event.inputs.target_sha != '' }}" >> $GITHUB_OUTPUT
       - name: Get current Loculus version
         id: get_current_version
         run: |
@@ -65,7 +68,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
-          title: "${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'Breaking: ' || '' }}Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
+          title: "${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'Breaking: ' || '' }}Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format(' (non-main: {0})', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}"
           # Warning: The PR self approval workflow depends on the exact format
           # of the author name (github.actor) here
           body: |
@@ -80,8 +83,12 @@ jobs:
 
             ### Preview
             https://preview-${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}.pathoplexus.org
+
+            ${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format('> **Note:** This PR targets a non-main branch: `{0}`', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}
           branch: ${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}
           base: main
           labels: |-
             preview
             ${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'breaking' || '' }}
+            ${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && 'non-main-target' || '' }}
+          draft: ${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' }}
