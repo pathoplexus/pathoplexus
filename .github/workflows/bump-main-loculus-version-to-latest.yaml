@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PATHOPLEXUS_PUSH_PAT }}
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
         run: |
