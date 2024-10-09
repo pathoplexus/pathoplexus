@@ -70,7 +70,7 @@ jobs:
         with:
           token: ${{ secrets.PATHOPLEXUS_PUSH_PAT }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
-          title: "${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'Breaking: ' || '' }}Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format(' (non-main: {0})', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}"
+          title: "feat(deps): update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format(' (non-main: {0})', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}"
           # Warning: The PR self approval workflow depends on the exact format
           # of the author name (github.actor) here
           body: |
