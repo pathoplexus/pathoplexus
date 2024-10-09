@@ -1,70 +1,74 @@
 name: Create PR to bump main pathoplexus's Loculus version to latest
 on:
   workflow_dispatch:
+    inputs:
+      target_sha:
+        description: 'Target Loculus SHA (leave empty for latest)'
+        required: false
+        default: ''
 jobs:
   update-loculus-version:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
-
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
         run: |
           git clone https://github.com/loculus-project/loculus.git loculus_repo
           cd loculus_repo
+          if [ -n "${{ github.event.inputs.target_sha }}" ]; then
+            git checkout ${{ github.event.inputs.target_sha }}
+          fi
           LATEST_SHA=$(git rev-parse HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
           echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
           echo "BRANCH_NAME=update-loculus-${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
-
       - name: Get current Loculus version
         id: get_current_version
         run: |
           CURRENT_VERSION=$(yq e '.loculusVersion' pathoplexus_app/values.yaml)
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-
       - name: Update values.yaml
         run: |
           yq e -i '.loculusVersion = "${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"' pathoplexus_app/values.yaml
-
-      - name: Generate changelog
+      - name: Generate changelog and detect breaking changes
         id: changelog
         run: |
           cd loculus_repo
-          CHANGELOG=$( \
-            git log --pretty=format:"- %s" \
-            ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
-            | sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/'
-          )
+          CHANGELOG=$(git log --pretty=format:"- %s" ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} | sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/')
+          BREAKING_CHANGES=$(echo "$CHANGELOG" | grep -iE '^- (.*!.*|.*breaking.*)' || true)
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-      
+          if [ ! -z "$BREAKING_CHANGES" ]; then
+            echo "HAS_BREAKING_CHANGES=true" >> $GITHUB_OUTPUT
+            echo "BREAKING_CHANGES<<EOF" >> $GITHUB_OUTPUT
+            echo "### 🚨 Breaking Changes" >> $GITHUB_OUTPUT
+            echo "$BREAKING_CHANGES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "HAS_BREAKING_CHANGES=false" >> $GITHUB_OUTPUT
+          fi
       - name: Remove temporary loculus_repo
-        run: |
-          rm -rf loculus_repo
-      
+        run: rm -rf loculus_repo
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
-          title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
-          # Warning: The PR self approval workflow depends on the exact format
-          # of the author name here
+          title: "${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'Breaking: ' || '' }}Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}"
           body: |
             @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
-
+            ${{ steps.changelog.outputs.BREAKING_CHANGES }}
             ### Changelog
             ${{ steps.changelog.outputs.CHANGELOG }}
-
             ### Comparison
             https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
-
             ### Preview
             https://preview-${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}.pathoplexus.org
-
           branch: ${{ steps.get_loculus_commit.outputs.BRANCH_NAME }}
           base: main
-          labels: preview
+          labels: |-
+            preview
+            ${{ steps.changelog.outputs.HAS_BREAKING_CHANGES == 'true' && 'breaking' || '' }}
