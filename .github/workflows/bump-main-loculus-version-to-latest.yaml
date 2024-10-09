@@ -6,6 +6,8 @@ on:
         description: 'Target Loculus SHA (leave empty for latest)'
         required: false
         default: ''
+  repository_dispatch:
+    types: [create_preview_pr]
 jobs:
   update-loculus-version:
     runs-on: ubuntu-latest
@@ -19,16 +21,14 @@ jobs:
         run: |
           git clone https://github.com/loculus-project/loculus.git loculus_repo
           cd loculus_repo
-          if [ -n "${{ github.event.inputs.target_sha }}" ]; then
-            git checkout ${{ github.event.inputs.target_sha }}
-          fi
+          git checkout ${{ github.event.inputs.target_sha || github.event.client_payload.target_sha || 'main' }}
           LATEST_SHA=$(git rev-parse HEAD)
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           echo "LATEST_SHA=$LATEST_SHA" >> $GITHUB_OUTPUT
           echo "LATEST_SHA_SHORT=${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
           echo "BRANCH_NAME=update-loculus-${LATEST_SHA:0:6}" >> $GITHUB_OUTPUT
           echo "TARGET_BRANCH=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "IS_CUSTOM_TARGET=${{ github.event.inputs.target_sha != '' }}" >> $GITHUB_OUTPUT
+          echo "IS_CUSTOM_TARGET=${{ (github.event.inputs.target_sha != '' || github.event.client_payload.target_sha != '') && 'true' || 'false' }}" >> $GITHUB_OUTPUT
       - name: Get current Loculus version
         id: get_current_version
         run: |
