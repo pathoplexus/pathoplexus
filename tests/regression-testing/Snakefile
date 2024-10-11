@@ -34,8 +34,10 @@ def url(w):
         case "staging":
             subdomain = "-staging"
         case _:
-            subdomain = "-preview-" + w.instance
-    base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+            subdomain = "-" + w.instance
+    #base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+    base = f"https://lapis{subdomain}.loculus.org/{w.organism}/sample/"
+
     rest = (
         url_segment
         + "?downloadAsFile=true&versionStatus=LATEST_VERSION&isRevocation=false&dataUseTerms=OPEN&compression=zstd"
@@ -125,6 +127,7 @@ rule invariant_subset:
                 "submittedAtTimestamp",
                 "displayName",
                 "versionStatus",
+                "authors",
             }
         ),
     shell:
