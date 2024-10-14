@@ -3,7 +3,7 @@ layout: ../../../layouts/DocLayout.astro
 title: "Authenticating via API"
 order: 60
 ---
-import InfoBox from '../../../components/InfoBox.astro';
+import InfoBox from '../../../components/asides/InfoBox.astro';
 
 Some of our endpoints require authentication in order to use them. In order to use these endpoints you need to get a JSON web token. You can obtain the token either by sending a request to our Keycloak authentication server or by retrieving the corresponding cookie from the browser.
 
@@ -12,7 +12,7 @@ The retrieved token expires after 10 hours.
 ## Send request with cURL
 
 <InfoBox>
-    To use the <a href="https://demo.pathoplexus.org" class="!text-white">demo instance</a> instead of the main instance, please replace `authentication.pathoplexus.org` with `authentication-demo.pathoplexus.org`.
+    To use the <a href="https://demo.pathoplexus.org" class="!text-black">demo instance</a> instead of the main instance, please replace `authentication.pathoplexus.org` with `authentication-demo.pathoplexus.org`.
 </InfoBox>
 
 The following script demonstrates how you can retrieve a token with a POST request using cURL. It only works if you use a simple username-password authentication. If you only use ORCiD for authentication and do not have a password, you need to add a password (see how to [edit your account](/docs/how-to/edit-account)). This solution also does not work if you activated two-factor authentication. In these cases, you can retrieve a token from the browser (see section below).
