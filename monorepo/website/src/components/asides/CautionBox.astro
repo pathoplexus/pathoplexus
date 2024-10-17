@@ -3,8 +3,11 @@ import MaterialSymbolsWarningOutline from '~icons/material-symbols/warning-outli
 ---
 
 <div class='bg-amber-300 p-3 my-4 rounded-lg mx-auto box text-sm'>
-    <span style={{ fontSize: '1.0rem' }}>
-        <MaterialSymbolsWarningOutline />
+    <span class='text-base inline-flex items-center'>
+        <span class='inline-block mr-2'>
+            <MaterialSymbolsWarningOutline />
+        </span>
+        Caution
     </span>
     <slot />
 </div>

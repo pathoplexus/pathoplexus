@@ -13,8 +13,11 @@ import MaterialSymbolsInfoOutline from '~icons/material-symbols/info-outline';
 </style>
 
 <div class='bg-primary-200 p-3 my-4 rounded-lg mx-auto box text-sm info-box-link'>
-    <span style={{ fontSize: '1.0rem' }}>
-        <MaterialSymbolsInfoOutline />
+    <span class='text-base inline-flex items-center'>
+        <span class='inline-block mr-2'>
+            <MaterialSymbolsInfoOutline />
+        </span>
+        Note
     </span>
     <slot />
 </div>
