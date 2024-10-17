@@ -1,0 +1,23 @@
+---
+import MaterialSymbolsInfoOutline from '~icons/material-symbols/info-outline';
+---
+
+<style is:global>
+    .info-box-link a {
+        @apply text-black;
+    }
+
+    .info-box-link a:hover {
+        @apply text-primary-800;
+    }
+</style>
+
+<div class='bg-primary-200 p-3 my-4 rounded-lg mx-auto box text-sm info-box-link'>
+    <span class='text-base inline-flex items-center'>
+        <span class='inline-block mr-2'>
+            <MaterialSymbolsInfoOutline />
+        </span>
+        Note
+    </span>
+    <slot />
+</div>
