@@ -2,7 +2,17 @@
 import MaterialSymbolsInfoOutline from '~icons/material-symbols/info-outline';
 ---
 
-<div class='bg-primary-300 p-3 my-4 rounded-lg mx-auto box text-sm'>
+<style is:global>
+    .info-box-link a {
+        @apply text-black;
+    }
+
+    .info-box-link a:hover {
+        @apply text-primary-800;
+    }
+</style>
+
+<div class='bg-primary-200 p-3 my-4 rounded-lg mx-auto box text-sm info-box-link'>
     <span style={{ fontSize: '1.0rem' }}>
         <MaterialSymbolsInfoOutline />
     </span>
