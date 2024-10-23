@@ -1103,7 +1103,6 @@ organisms:
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
       - <<: *preprocessing
-        version: 2
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
@@ -1133,8 +1132,6 @@ organisms:
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
       - <<: *preprocessing
-        version: 2
-        dockerTag: commit-6e05226
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
@@ -1219,8 +1216,6 @@ organisms:
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
       - <<: *preprocessing
-        version: 2
-        dockerTag: commit-6e05226
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
@@ -1314,8 +1309,6 @@ organisms:
           nucleotideSequences: [L, M, S]
           genes: [RdRp, GPC, NP]
       - <<: *preprocessing
-        version: 2
-        dockerTag: commit-6e05226
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
