@@ -1098,7 +1098,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version: 1
-        dockerTag: commit-6e05226
+        dockerTag: commit-9704260
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
@@ -1214,7 +1214,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version: 1
-        dockerTag: commit-6e05226
+        dockerTag: commit-9704260
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
@@ -1307,7 +1307,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version: 1
-        dockerTag: commit-6e05226
+        dockerTag: commit-9704260
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
