@@ -1104,7 +1104,6 @@ organisms:
           nextclade_dataset_name: nextstrain/ebola/zaire
       - <<: *preprocessing
         version: 2
-        dockerTag: commit-6e05226
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
