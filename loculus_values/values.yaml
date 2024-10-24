@@ -1204,6 +1204,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 10
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
