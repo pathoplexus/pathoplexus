@@ -435,6 +435,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Authors
         truncateColumnDisplayTo: 15
         ingest: ncbiSubmitterNames
+        preprocessing:
+          function: check_authors
+          inputs:
+            authors: authors
       - name: authorAffiliations
         displayName: Author affiliations
         generateIndex: true
@@ -1050,7 +1054,8 @@ defaultOrganismConfig: &defaultOrganismConfig
     extraInputFields: []
   preprocessing:
     - &preprocessing
-      version: 1
+      replicas: 5 # Nice and fast
+      version: 2
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
@@ -1199,6 +1204,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 10
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
