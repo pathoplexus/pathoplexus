@@ -1050,6 +1050,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     extraInputFields: []
   preprocessing:
     - &preprocessing
+      replicas: 5
       version: 1
       dockerTag: commit-9704260  # current loculus-main head
       image: ghcr.io/loculus-project/preprocessing-nextclade
@@ -1102,21 +1103,6 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1136,11 +1122,6 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/sudan
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
@@ -1219,36 +1200,6 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
@@ -1334,46 +1285,6 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
-          genes: [RdRp, GPC, NP]
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
