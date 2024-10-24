@@ -1052,7 +1052,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     - &preprocessing
       replicas: 5
       version: 1
-      dockerTag: commit-9704260  # current loculus-main head
+      dockerTag: commit-cced1ab
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
