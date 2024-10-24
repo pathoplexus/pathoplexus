@@ -1050,7 +1050,9 @@ defaultOrganismConfig: &defaultOrganismConfig
     extraInputFields: []
   preprocessing:
     - &preprocessing
+      replicas: 5
       version: 1
+      dockerTag: commit-cced1ab
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
