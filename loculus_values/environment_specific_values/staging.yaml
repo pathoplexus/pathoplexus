@@ -57,3 +57,5 @@ submitToEnaProduction: false
 enaDbName: Pathoplexus
 enaUniqueSuffix: Pathoplexus
 enaIsBroker: True
+replicas:
+  backend: 2
