@@ -1,23 +1,18 @@
 name: broken-link-check
 on:
-  pull_request:
-    types: [opened, reopened, labeled, unlabeled, synchronize]
+  # pull_request:
+  #   types: [opened, reopened, labeled, unlabeled, synchronize]
   workflow_dispatch:
     inputs:
       custom_subdomain:
         description: 'Custom subdomain for link checking, e.g. preview-main. By default checks main, preview, staging, and demo.'
         required: false
         type: string
-      check_external:
-        description: 'Check external links'
-        required: false
-        type: boolean
-        default: false
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '9 9 * * *'
+  # push:
+  #   branches:
+  #     - main
+  # schedule:
+  #   - cron: '9 9 * * *'
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
@@ -52,8 +47,7 @@ jobs:
           sleep 240
   broken-external-link-checker:
     needs: generate-matrix
-    # if: needs.generate-matrix.outputs.run_check == 'true'
-    if: needs.generate-matrix.outputs.run_check == 'true' && github.event.inputs.check_external == 'true'
+    if: needs.generate-matrix.outputs.run_check == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
