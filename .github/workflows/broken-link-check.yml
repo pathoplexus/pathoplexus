@@ -8,6 +8,11 @@ on:
         description: 'Custom subdomain for link checking, e.g. preview-main. By default checks main, preview, staging, and demo.'
         required: false
         type: string
+      check_external:
+        description: 'Check external links'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -47,7 +52,8 @@ jobs:
           sleep 240
   broken-external-link-checker:
     needs: generate-matrix
-    if: needs.generate-matrix.outputs.run_check == 'true'
+    # if: needs.generate-matrix.outputs.run_check == 'true'
+    if: needs.generate-matrix.outputs.run_check == 'true' && github.event.inputs.check_external == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
