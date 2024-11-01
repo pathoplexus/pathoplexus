@@ -1092,7 +1092,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     extraInputFields: []
   preprocessing:
     - &preprocessing
-      replicas: 1
+      replicas: 3
       version: 4
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
