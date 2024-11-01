@@ -60,27 +60,25 @@ This process ensures that all curators' viewpoints are considered and that decis
 
 ## Actioning approved corrections
 
-Once a Github issue is approved for correction:
+Once a Github issue is approved for correction you can proceed with revision - note that the procedure differs slightly for sequences submitted directly to Pathoplexus and those submitted to an INSDC database and visible on Pathoplexus.
 
-Note that if you download the sequences and metadata _from_ Pathoplexus in order to prepare a revision, the Fasta files headers will be the Pathoplexus accession. You will need to rename these to the `submissionID` (provided in the metadata or on Pathoplexus) before submitting the revision. 
-
-If you prepare the revision from files _not_ from Pathoplexus (ex: the original submission files) remember to add an `accession` column to the metadata file and populate this with the Pathoplexus accessions.
+In both cases is important that you revise sequences using the originally submitted, unprocessed metadata. At the moment this means that unless you have access to the originally submitted metadata (for example if you are the original submitter) you should always revise sequences using the revise button at the bottom of a sequence page and _not_ using the revise page where you are asked to re-upload all data. We are working on making it easier for curators to download the original metadata.
 
 ### Direct submission:
 
 If the problem involves sequences submitted directly to Pathoplexus, contact the submitting group via the email address provided and alert them to the suspected problem. Coordinate with them on whether they can prepare the revision, or if you (or another curator) should. _Be sure_ you or they include a link to the Github issue discussing the revision in the `versionComment` field of the metadata, so that the reason for the revision can be easily traced.
 
-**Do not prepare a revision without establishing contact with the submitting group, as they could accept it without realizing.** If they would like you to prepare the revision, do so, and alert them when it's ready to be accepted.
+**Do not prepare a revision without establishing contact with the submitting group, as they could accept it without realizing.** If they would like you to prepare the revision, do so by signing into your curator account and clicking the revise button at the bottom of the sequence page. This will allow you to edit the originally submitted metadata. Revise the submission as agreed upon in the Github issue and add a link to that issue in the `Version Comment` metadata field. Alert the submitting group when the revision is ready to be accepted.
 
 **Do not accept the revision. Only the submitting group can do this.**
 
 ### INSDC submission:
 
-If the sequence data originates from INSDC, **two different curators** may prepare and accept revisions. They should coordinate so that the revision does not 'remain open' for too long. When both curators are ready, the first curator should prepare the revision and submit it Pathoplexus, but not approve it. The second curator should then review the revision and ensure it is as agreed to resolve the problem. The second curator can then accept the revision.
+If the sequence data originates from INSDC, **two different curators** should prepare and accept revisions. When both curators are ready, the first should sign into their curator account and click the revise button at the bottom of the sequence page. They should revise the agreed upon fields and add a link to the Github issue in the `Version Comment` metadata field. They should not approve the revision themselves. The second curator should then review the revision and ensure it is as agreed to resolve the problem. The second curator can then accept the revision.
 
-_Be sure_ you include a link to the Github issue discussing the revision in the `versionComment` field of the metadata, so that the reason for the revision can be easily traced.
+## Bulk curations
 
-After a revision is accepted, be sure to close the Github issue.
+Bulk revisions should only be made if a curator has access to the original metadata. As this will not be the case for most curators, please contact us if you need to perform a bulk curation and using the revise button is insufficient.
 
 ## Documentation and communication
 
