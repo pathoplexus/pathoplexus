@@ -4,6 +4,7 @@ runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
 robotsNoindexHeader: false
 subdomainSeparator: "."
+bannerMessage: "Some portions of our website are experiencing intermittent outages, and some requests may take longer than normal to complete. We apologize for the inconvenience and thank you for your patience as we resolve the issue."
 secrets:
   keycloak-admin:
     type: sealedsecret
