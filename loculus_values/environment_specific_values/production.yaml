@@ -4,7 +4,6 @@ runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
 robotsNoindexHeader: false
 subdomainSeparator: "."
-bannerMessage: "We are rolling out a new version of the Pathoplexus processing pipeline. Sequences may take longer to process and there may be downtime of our query API. We apologise for any inconvenience."
 secrets:
   keycloak-admin:
     type: sealedsecret
