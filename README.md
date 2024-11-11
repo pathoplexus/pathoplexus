@@ -50,5 +50,5 @@ To bring a file into scope, remove it from `monorepo/.gitignore`.
 
 #### Clean up
 
-To clean up so you can see your real files run `python delete_ignored.py`. (Don't do this before you have updated `.gitignore` or the files will be deleted.)
+To clean up so you can see your real files run `git clean -fX monorepo`. (Don't do this before you have updated `.gitignore` or the files will be deleted.)
 
