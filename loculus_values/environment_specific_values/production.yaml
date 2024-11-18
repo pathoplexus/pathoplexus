@@ -57,14 +57,15 @@ secrets:
 replicas:
   backend: 2
   website: 3
-crossRef:
-  DOIPrefix: "10.62599"
-  endpoint: "https://doi.crossref.org"
-  databaseName: "Pathoplexus Database"
-  email: "dois@pathoplexus.org"
-  organization: "Pathoplexus"
-  hostUrl: "https://pathoplexus.org"
-enableCrossRefCredentials: true
+seqSets:
+  enabled: true
+  crossRef:
+    DOIPrefix: "10.62599"
+    endpoint: "https://doi.crossref.org"
+    databaseName: "Pathoplexus Database"
+    email: "dois@pathoplexus.org"
+    organization: "Pathoplexus"
+    hostUrl: "https://pathoplexus.org"
 podPriorityClassName: production
 disableEnaSubmission: false
 submitToEnaProduction: true

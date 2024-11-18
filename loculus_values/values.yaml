@@ -467,10 +467,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Isolate name
         header: Sample details
         ingest: ncbiIsolateName
+        enableSubstringSearch: true
       - name: authors
         displayName: Authors
         type: authors
         header: Authors
+        enableSubstringSearch: true
         truncateColumnDisplayTo: 15
         ingest: ncbiSubmitterNames
         preprocessing:
@@ -484,6 +486,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         truncateColumnDisplayTo: 15
         header: Authors
         ingest: ncbiSubmitterAffiliation
+        enableSubstringSearch: true
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
         generateIndex: true
@@ -1332,17 +1335,12 @@ organisms:
           log_level: DEBUG
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          nucleotideSequences: [L, M, S]
           genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
         <<: *ingestConfigFile
         taxon_id: 3052518
-        nucleotide_sequences:
-          - L
-          - M
-          - S
         nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
         nextclade_dataset_name: nextstrain/cchfv/linked
     enaDeposition:

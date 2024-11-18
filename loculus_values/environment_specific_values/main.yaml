@@ -1,1 +1,4 @@
 bannerMessage: "This is the main branch"
+seqSets:
+  enabled: True
+  crossRef: null
