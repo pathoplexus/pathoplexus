@@ -1621,7 +1621,7 @@ organisms:
     referenceGenomes:
       nucleotideSequences:
         - name: "main"
-          sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/mpox/reference.fasta]]"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/mpox/reference.fasta]]"
           insdcAccessionFull: NC_063383.1
       genes:
         - name: OPG001
