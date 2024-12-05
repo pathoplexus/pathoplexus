@@ -1376,7 +1376,6 @@ organisms:
     schema:
       <<: *schema
       organismName: "Mpox Virus"
-      nucleotideSequences: [L, M, S]
       image: "/images/organisms/mpox_small.jpg"
       metadataAdd:
         - name: clade
