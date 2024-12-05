@@ -446,7 +446,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         header: Sample details
         ingest: division
-        columnWidth: 75
+        columnWidth: 150
+        truncateColumnDisplayTo: 15
       - name: geoLocAdmin2
         displayName: Collection subdivision level 2
         generateIndex: true
