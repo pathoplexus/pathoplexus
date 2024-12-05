@@ -1429,11 +1429,13 @@ organisms:
         tableColumns:
           - sampleCollectionDate
           - geoLocCountry
+          - geoLocAdmin1
           - authors
           - authorAffiliations
           - ncbiReleaseDate
           - clade
           - lineage
+          - length
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
