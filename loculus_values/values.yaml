@@ -5,6 +5,7 @@ runDevelopmentMainDatabase: true
 bannerMessage: This is a preview instance. Do not rely on this data for real analyses.
 gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/website/
 runDevelopmentKeycloakDatabase: true
+developmentDatabasePersistence: true # TODO: revert before merging
 dataUseTermsUrls:
   open: https://pathoplexus.org/about/terms-of-use/open-data
   restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
