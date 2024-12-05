@@ -1155,7 +1155,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
     - &nextPreprocessing
-      replicas: 1
+      replicas: 5
       version: 5
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
@@ -1481,7 +1481,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 90
+          columnWidth: 60
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
