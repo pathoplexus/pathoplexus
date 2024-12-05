@@ -1161,7 +1161,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         batch_size: 100
     - &nextPreprocessing
       replicas: 5
-      version: 5
+      version: 6
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
