@@ -83,7 +83,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       #   type: date
       - name: sampleCollectionDate
         displayName: Collection date
-        initiallyVisible: true
+        initiallyVisible: false
         header: Sample details
         ingest: ncbiCollectionDate
         preprocessing:
@@ -97,7 +97,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
         type: date
-        initiallyVisible: false
+        initiallyVisible: true
         header: Sample details
         preprocessing:
           function: parse_date_into_range
@@ -114,7 +114,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sampleCollectionDateRangeUpper
         displayName: Collection date (upper bound)
         type: date
-        initiallyVisible: false
+        initiallyVisible: true
         header: Sample details
         preprocessing:
           function: parse_date_into_range
