@@ -89,6 +89,40 @@ defaultOrganismConfig: &defaultOrganismConfig
             date: sampleCollectionDate
         required: true
         columnWidth: 90
+      - name: sampleCollectionDateRangeLower
+        displayName: Collection date (lower bound)
+        type: date
+        initiallyVisible: false
+        header: Sample details
+        preprocessing:
+          function: parse_date_into_range
+          inputs:
+            date: sampleCollectionDate
+            releaseDate: ncbiReleaseDate
+          args:
+            fieldType: dateRangeLower
+        rangeOverlapSearch:
+          rangeName: sampleCollectionDateRange
+          rangeDisplayName: Collection date
+          bound: lower
+        noInput: true
+      - name: sampleCollectionDateRangeUpper
+        displayName: Collection date (upper bound)
+        type: date
+        initiallyVisible: false
+        header: Sample details
+        preprocessing:
+          function: parse_date_into_range
+          inputs:
+            date: sampleCollectionDate
+            releaseDate: ncbiReleaseDate
+          args:
+            fieldType: dateRangeUpper
+        rangeOverlapSearch:
+          rangeName: sampleCollectionDateRange
+          rangeDisplayName: Collection date
+          bound: upper
+        noInput: true
       - name: displayName
         preprocessing:
           function: concatenate
@@ -1120,6 +1154,17 @@ defaultOrganismConfig: &defaultOrganismConfig
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
+    - &nextPreprocessing
+      replicas: 1
+      version: 5
+      image: ghcr.io/loculus-project/preprocessing-nextclade
+      args:
+        - "prepro"
+      configFile: &nextPreprocessingConfigFile
+        log_level: DEBUG
+        nextclade_dataset_name: nextstrain/ebola/zaire
+        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+        batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
@@ -1162,6 +1207,11 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
+      - <<: *nextPreprocessing
+        configFile:
+          <<: *nextPreprocessingConfigFile
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1184,6 +1234,11 @@ organisms:
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/sudan
+      - <<: *nextPreprocessing
+        configFile:
+          <<: *nextPreprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
     ingest:
@@ -1262,6 +1317,12 @@ organisms:
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
+          nextclade_dataset_name: nextstrain/wnv/all-lineages
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
+          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *nextPreprocessing
+        configFile:
+          <<: *nextPreprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
@@ -1347,6 +1408,13 @@ organisms:
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
+          log_level: DEBUG
+          nextclade_dataset_name: nextstrain/cchfv/linked
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+          genes: [RdRp, GPC, NP]
+      - <<: *nextPreprocessing
+        configFile:
+          <<: *nextPreprocessingConfigFile
           log_level: DEBUG
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
@@ -1441,7 +1509,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile:
+        configFile: &mpoxPreprocessingConfigFile
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/mpox/all-clades
           nextclade_dataset_version: 2024-11-19--14-18-53Z
@@ -1622,6 +1690,9 @@ organisms:
             - OPG208
             - OPG209
             - OPG210
+      - <<: *nextPreprocessing
+        configFile:
+          <<: *mpoxPreprocessingConfigFile
     ingest:
       <<: *ingest
       configFile:
