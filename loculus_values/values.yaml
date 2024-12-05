@@ -128,7 +128,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         ingest: country
         required: true
-        columnWidth: 75
+        columnWidth: 150
+        truncateColumnDisplayTo: 15
         preprocessing:
           function: process_options
           inputs:
@@ -489,7 +490,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: check_authors
           inputs:
             authors: authors
-        columnWidth: 100
+        columnWidth: 150
       - name: authorAffiliations
         displayName: Author affiliations
         generateIndex: true
@@ -498,7 +499,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Authors
         ingest: ncbiSubmitterAffiliation
         enableSubstringSearch: true
-        columnWidth: 100
+        columnWidth: 150
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
         generateIndex: true
@@ -1402,7 +1403,7 @@ organisms:
           autocomplete: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
-          columnWidth: 75
+          columnWidth: 90
         - name: lineage
           header: "Clade & Lineage"
           noInput: true
@@ -1411,7 +1412,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 50
+          columnWidth: 90
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
