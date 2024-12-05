@@ -88,7 +88,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             date: sampleCollectionDate
         required: true
-        columnWidth: 75
+        columnWidth: 90
       - name: displayName
         preprocessing:
           function: concatenate
@@ -108,7 +108,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             timestamp: ncbiReleaseDate
         noInput: true
-        columnWidth: 75
+        columnWidth: 90
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
