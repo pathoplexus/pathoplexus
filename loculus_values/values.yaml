@@ -88,6 +88,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             date: sampleCollectionDate
         required: true
+        columnWidth: 75
       - name: displayName
         preprocessing:
           function: concatenate
@@ -107,6 +108,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             timestamp: ncbiReleaseDate
         noInput: true
+        columnWidth: 75
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
@@ -126,6 +128,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         ingest: country
         required: true
+        columnWidth: 75
         preprocessing:
           function: process_options
           inputs:
@@ -442,6 +445,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         header: Sample details
         ingest: division
+        columnWidth: 75
       - name: geoLocAdmin2
         displayName: Collection subdivision level 2
         generateIndex: true
@@ -485,6 +489,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: check_authors
           inputs:
             authors: authors
+        columnWidth: 100
       - name: authorAffiliations
         displayName: Author affiliations
         generateIndex: true
@@ -493,6 +498,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Authors
         ingest: ncbiSubmitterAffiliation
         enableSubstringSearch: true
+        columnWidth: 100
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
         generateIndex: true
@@ -950,6 +956,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         perSegment: true
         displayName: Length
+        columnWidth: 50
       - name: hostNameScientific
         generateIndex: true
         autocomplete: true
@@ -1387,6 +1394,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          columnWidth: 50
         - name: outbreak
           header: "Clade & Lineage"
           noInput: true
@@ -1394,6 +1402,7 @@ organisms:
           autocomplete: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
+          columnWidth: 75
         - name: lineage
           header: "Clade & Lineage"
           noInput: true
@@ -1402,6 +1411,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
+          columnWidth: 50
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
