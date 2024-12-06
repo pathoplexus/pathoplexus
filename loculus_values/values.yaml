@@ -1721,8 +1721,12 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG002.fa]]"
         - name: OPG003
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG003.fa]]"
+        - name: OPG005
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG005.fa]]"
         - name: OPG015
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG015.fa]]"
+        - name: OPG016
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG016.fa]]"
         - name: OPG019
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG019.fa]]"
         - name: OPG021
@@ -2061,7 +2065,3 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
-        - name: OPG005
-          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG005.fa]]"
-        - name: OPG016
-          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG016.fa]]"
