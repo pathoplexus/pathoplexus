@@ -1481,7 +1481,7 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           columnWidth: 50
-          order: 50
+          order: 5
         - name: outbreak
           header: "Clade & Lineage"
           noInput: true
@@ -1490,7 +1490,7 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
           columnWidth: 90
-          order: 55
+          order: 6
         - name: lineage
           header: "Clade & Lineage"
           noInput: true
@@ -1500,7 +1500,7 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
           columnWidth: 60
-          order: 60
+          order: 7
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
