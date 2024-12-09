@@ -90,7 +90,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
         type: date
-        initiallyVisible: true
+        initiallyVisible: false
         header: Sample details
         preprocessing:
           function: parse_date_into_range
@@ -99,15 +99,15 @@ defaultOrganismConfig: &defaultOrganismConfig
             releaseDate: ncbiReleaseDate
           args:
             fieldType: dateRangeLower
-        rangeOverlapSearch:
-          rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
-          bound: lower
+        # rangeOverlapSearch:
+        #   rangeName: sampleCollectionDateRange
+        #   rangeDisplayName: Collection date
+        #   bound: lower
         noInput: true
       - name: sampleCollectionDateRangeUpper
         displayName: Collection date (upper bound)
         type: date
-        initiallyVisible: true
+        initiallyVisible: false
         header: Sample details
         preprocessing:
           function: parse_date_into_range
@@ -116,10 +116,10 @@ defaultOrganismConfig: &defaultOrganismConfig
             releaseDate: ncbiReleaseDate
           args:
             fieldType: dateRangeUpper
-        rangeOverlapSearch:
-          rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
-          bound: upper
+        # rangeOverlapSearch:
+        #   rangeName: sampleCollectionDateRange
+        #   rangeDisplayName: Collection date
+        #   bound: upper
         noInput: true
       - name: displayName
         preprocessing:
@@ -1145,9 +1145,16 @@ defaultOrganismConfig: &defaultOrganismConfig
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
     - &preprocessingNext
-      <<*: *preprocessing
-      version: 5
       replicas: 5
+      version: 5
+      image: ghcr.io/loculus-project/preprocessing-nextclade
+      args:
+        - "prepro"
+      configFile: &preprocessingConfigFileNext
+        log_level: DEBUG
+        nextclade_dataset_name: nextstrain/ebola/zaire
+        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+        batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
