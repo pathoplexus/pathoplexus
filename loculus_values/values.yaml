@@ -1001,7 +1001,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         perSegment: true
         displayName: Length
-        columnWidth: 50
+        columnWidth: 100
         order: 80
       - name: hostNameScientific
         generateIndex: true
