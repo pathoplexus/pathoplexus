@@ -1494,7 +1494,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 10
+        replicas: 20
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/mpox/all-clades
