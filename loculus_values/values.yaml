@@ -1528,8 +1528,9 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile: &mpoxPreprocessingConfigFile
+        configFile:
           <<: *preprocessingConfigFile
+          replicas: 10
           nextclade_dataset_name: nextstrain/mpox/all-clades
           nextclade_dataset_version: 2024-11-19--14-18-53Z
           batch_size: 5
@@ -1709,9 +1710,6 @@ organisms:
             - OPG208
             - OPG209
             - OPG210
-      - <<: *nextPreprocessing
-        configFile:
-          <<: *mpoxPreprocessingConfigFile
     ingest:
       <<: *ingest
       configFile:
