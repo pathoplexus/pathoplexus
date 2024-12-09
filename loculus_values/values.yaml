@@ -1304,7 +1304,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.clade}
-          order: 50
+          order: 5
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
