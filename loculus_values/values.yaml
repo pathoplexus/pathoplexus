@@ -78,10 +78,6 @@ defaultOrganismConfig: &defaultOrganismConfig
 
     ## TODO: Allow extra metadata field by particular organisms (e.g. clade/lineage)
     metadata:
-      #     function: parse_and_assert_past_date
-      #     inputs:
-      #       date: sampleCollectionDate
-      #   type: date
       - name: sampleCollectionDate
         displayName: Collection date
         initiallyVisible: false
