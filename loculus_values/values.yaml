@@ -1,4 +1,4 @@
-preprocessingTimeout: 120
+preprocessingTimeout: 600
 robotsNoindexHeader: true
 registrationTermsMessage: >
   Do you agree to the <a href="https://pathoplexus.org/about/terms-of-use/terms-of-service">terms of use</a> and the <a href="https://pathoplexus.org/about/terms-of-use/privacy-policy">privacy policy</a>?
@@ -1138,22 +1138,11 @@ defaultOrganismConfig: &defaultOrganismConfig
   preprocessing:
     - &preprocessing
       replicas: 1
-      version: 5
-      image: ghcr.io/loculus-project/preprocessing-nextclade
-      args:
-        - "prepro"
-      configFile: &preprocessingConfigFile
-        log_level: DEBUG
-        nextclade_dataset_name: nextstrain/ebola/zaire
-        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
-        batch_size: 100
-    - &preprocessingNext
-      replicas: 5
       version: 6
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
-      configFile: &preprocessingConfigFileNext
+      configFile: &preprocessingConfigFile
         log_level: DEBUG
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
@@ -1200,11 +1189,6 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessingNext
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1225,12 +1209,6 @@ organisms:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
       - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/sudan
-      - <<: *preprocessingNext
-        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
@@ -1309,13 +1287,6 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessingNext
-        replicas: 10
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
@@ -1401,13 +1372,6 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessingNext
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
