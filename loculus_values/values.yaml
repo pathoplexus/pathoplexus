@@ -5,6 +5,7 @@ registrationTermsMessage: >
 runDevelopmentMainDatabase: true
 bannerMessage: This is a preview instance. Do not rely on this data for real analyses.
 gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/website/
+gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 developmentDatabasePersistence: false
 dataUseTermsUrls:
