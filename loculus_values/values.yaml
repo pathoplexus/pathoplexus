@@ -863,13 +863,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: Canada, Vancouver; USA, Seattle; Italy, Milan
         displayName: Travel history
         header: Host
-      - name: exposureEvent
-        ontology_id: GENEPIO:0001417
-        definition: Event leading to exposure.
-        guidance: "You can use the look-up service: https://www.ebi.ac.uk/ols4/ontologies/ecto to select a value."
-        example: Mass Gathering [GENEPIO:0100237]
-        displayName: Exposure event
-        header: Host
       - name: hostRole
         ontology_id: GENEPIO:0001419
         definition: The role of the host in relation to the exposure setting.
@@ -878,7 +871,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Host
       - name: exposureSetting
         ontology_id: GENEPIO:0001428
-        definition: The setting leading to exposure.
+        definition: The setting or event leading to exposure.
+        guidance: Select the host exposure setting(s) from the pick list provided in the template. If a desired term is missing, contact the curation team.
         example: Healthcare Setting [GENEPIO:0100201]
         displayName: Exposure setting
         header: Host
@@ -893,11 +887,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols/ontologies/doid."
         example: COVID-19
         displayName: Previous infection (disease)
-        header: Host
-      - name: previousInfectionOrganism
-        definition: The name of the pathogen causing the disease previously experienced by the host.
-        example: Sudden Acute Respiratory Syndrome Coronavirus 2 (SARS-CoV-2)
-        displayName: Previous infection (organism)
         header: Host
       - name: hostVaccinationStatus
         ontology_id: GENEPIO:0001404
@@ -993,13 +982,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: Nanostripper 1.2.3
         displayName: Dehosting method
         header: Sequencing
-      - name: assemblyReferenceGenomeAccession
-        ontology_id: GENEPIO:0001485
-        definition: A persistent, unique identifier of a genome database entry.
-        guidance: Provide the INSDC accession number of the reference genome used for mapping/assembly.
-        example: NC_045512.2
-        displayName: Reference genome accession
-        header: Sequencing
       - name: consensusSequenceSoftwareName
         ontology_id: GENEPIO:0001463
         definition: The name of software used to generate the consensus sequence.
@@ -1030,40 +1012,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "95"
         displayName: Breadth of coverage
         type: int
-        header: Sequencing
-      - name: qualityControlMethodName
-        ontology_id: GENEPIO:0100557
-        definition: The name of the method used to assess whether a sequence passed a predetermined quality control threshold.
-        guidance: Method names can be provided as the name of a pipeline or a link to a GitHub repository. Multiple methods should be listed and separated by a semi-colon.
-        example: ncov-tools
-        displayName: Quality control method name
-        header: Sequencing
-      - name: qualityControlMethodVersion
-        ontology_id: GENEPIO:0100558
-        definition: The version number of the method used to assess whether a sequence passed a predetermined quality control threshold.
-        guidance: If multiple methods were used, record the version numbers in the same order as the method names. Separate the version numbers using a semi-colon.
-        example: "1.2.3"
-        displayName: Quality control method version
-        header: Sequencing
-      - name: qualityControlDetermination
-        ontology_id: GENEPIO:0100559
-        definition: The determination (result) of a quality control assessment.
-        #guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
-        example: sequence failed quality control
-        displayName: Quality control determination
-        header: Sequencing
-      - name: qualityControlIssues
-        ontology_id: GENEPIO:0100560
-        definition: The reason contributing to, or causing, a low quality determination in a quality control assessment.
-        #guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
-        example: low average genome coverage
-        displayName: Quality control issues
-        header: Sequencing
-      - name: qualityControlDetails
-        ontology_id: GENEPIO:0100561
-        definition: The details surrounding a low quality determination in a quality control assessment.
-        example: CT value of 39. Low viral load. Low DNA concentration after amplification.
-        displayName: Quality control details
         header: Sequencing
       - name: diagnosticMeasurementMethod
         displayName: Diagnostic measurement - method
