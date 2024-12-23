@@ -1000,7 +1000,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: The details surrounding a low quality determination in a quality control assessment.
         example: CT value of 39. Low viral load. Low DNA concentration after amplification.
         displayName: Quality control details
-        header: Diagnostics
+        header: Sequencing
       - name: diagnosticMeasurementMethod
         displayName: Diagnostic measurement method
         header: Diagnostics
@@ -1061,13 +1061,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Host"
         ingest: ncbiHostTaxId
         definition: "Taxon ID for the host"
+        guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
       - name: isLabHost
         generateIndex: true
         autocomplete: true
         header: "Host"
         ingest: ncbiIsLabHost
-        definition: " If a laboratory host (e.g. cultured cell line) was used to propagate the sample."
+        definition: "If a laboratory host (e.g. cultured cell line) was used to propagate the sample."
         example: "True"
       - name: cellLine
         generateIndex: true
