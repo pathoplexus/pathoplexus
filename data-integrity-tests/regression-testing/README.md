@@ -18,7 +18,7 @@ It's crucial for maintaining the reliability and consistency of the Pathoplexus 
 2. Create and activate the environment:
 
 ```bash
-micromamba create -f environment.yml
+micromamba create -f environment.yaml
 micromamba activate pp-integrity
 ```
 
