@@ -12,3 +12,4 @@ dependencies:
   - curl
   - seqkit
   - zstd
+  - csv-diff
