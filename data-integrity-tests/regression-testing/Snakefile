@@ -32,6 +32,8 @@ def url(w):
         case "prod":
             subdomain = ""
         case "staging":
+            subdomain = "-staging"
+        case "demo":
             subdomain = "-demo"
         case _:
             subdomain = "-preview-" + w.instance
