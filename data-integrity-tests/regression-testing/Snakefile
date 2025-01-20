@@ -33,6 +33,8 @@ def url(w):
             subdomain = ""
         case "staging":
             subdomain = "-staging"
+        case "demo":
+            subdomain = "-demo"
         case _:
             subdomain = "-preview-" + w.instance
     base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
