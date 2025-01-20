@@ -44,7 +44,7 @@ Results are stored in the `results/` directory. Key files to inspect:
     ```bash
     for diff in results/*.diff; do
         echo "Differences in $diff:"
-        grep '^[+-]' "$diff" | wc -l
+        cat "$diff" | wc -l
     done
     ```
 
