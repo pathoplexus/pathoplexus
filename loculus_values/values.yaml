@@ -1,10 +1,13 @@
+preprocessingTimeout: 600
 robotsNoindexHeader: true
 registrationTermsMessage: >
   Do you agree to the <a href="https://pathoplexus.org/about/terms-of-use/terms-of-service">terms of use</a> and the <a href="https://pathoplexus.org/about/terms-of-use/privacy-policy">privacy policy</a>?
 runDevelopmentMainDatabase: true
 bannerMessage: This is a preview instance. Do not rely on this data for real analyses.
 gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/website/
+gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
+developmentDatabasePersistence: false
 dataUseTermsUrls:
   open: https://pathoplexus.org/about/terms-of-use/open-data
   restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
@@ -78,15 +81,56 @@ defaultOrganismConfig: &defaultOrganismConfig
     metadata:
       - name: sampleCollectionDate
         displayName: Collection date
-        type: date
-        initiallyVisible: true
+        initiallyVisible: false
         header: Sample details
         ingest: ncbiCollectionDate
         preprocessing:
-          function: parse_and_assert_past_date
+          function: parse_date_into_range
           inputs:
             date: sampleCollectionDate
+          args:
+            fieldType: dateRangeString
         required: true
+        columnWidth: 90
+        notSearchable: true
+        order: 10
+        definition: "The date on which the sample was collected."
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
+        example: "2020-03-15"
+      - name: sampleCollectionDateRangeLower
+        displayName: Collection date (lower bound)
+        type: date
+        initiallyVisible: true
+        header: Sample details
+        preprocessing:
+          function: parse_date_into_range
+          inputs:
+            date: sampleCollectionDate
+            releaseDate: ncbiReleaseDate
+          args:
+            fieldType: dateRangeLower
+        rangeOverlapSearch:
+          rangeName: sampleCollectionDateRange
+          rangeDisplayName: Collection date
+          bound: lower
+        noInput: true
+      - name: sampleCollectionDateRangeUpper
+        displayName: Collection date (upper bound)
+        type: date
+        initiallyVisible: true
+        header: Sample details
+        preprocessing:
+          function: parse_date_into_range
+          inputs:
+            date: sampleCollectionDate
+            releaseDate: ncbiReleaseDate
+          args:
+            fieldType: dateRangeUpper
+        rangeOverlapSearch:
+          rangeName: sampleCollectionDateRange
+          rangeDisplayName: Collection date
+          bound: upper
+        noInput: true
       - name: displayName
         preprocessing:
           function: concatenate
@@ -106,6 +150,8 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             timestamp: ncbiReleaseDate
         noInput: true
+        columnWidth: 90
+        order: 90
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
@@ -125,6 +171,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         ingest: country
         required: true
+        columnWidth: 150
+        truncateColumnDisplayTo: 15
+        order: 20
+        definition: "The country from which the sample was collected."
+        guidance: "Please choose a country or ocean/sea from the list of options defined by INSDC standards."
+        example: "Canada"
         preprocessing:
           function: process_options
           inputs:
@@ -441,20 +493,30 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         header: Sample details
         ingest: division
+        columnWidth: 150
+        truncateColumnDisplayTo: 15
+        order: 30
+        definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)"
+        example: "Ontario"
+        desired: true
       - name: geoLocAdmin2
         displayName: Collection subdivision level 2
         generateIndex: true
         autocomplete: true
         header: Sample details
+        definition: "A local administrative region from which the sample was collected (ex: county or municipality)"
+        desired: true
+        example: "City of Toronto"
       - name: geoLocCity
         displayName: Collection city
         generateIndex: true
         autocomplete: true
         header: Sample details
+        definition: "The city from which the sample was collected."
+        example: "Toronto"
       - name: geoLocSite
         ontology_id: GENEPIO:0100436
         definition: The name of a specific geographical location e.g. Credit River (rather than river).
-        guidance: Provide the name of the specific geographical site using a specific noun (a word that names a certain place, thing).
         example: Credit River
         displayName: Collection site
         header: Sample details
@@ -462,17 +524,24 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Latitude
         header: Sample details
         type: float
-        guidance: Geo-coordinate latitude in decimal degree (WGS84) format, i.e. values in range -90 to 90, where positive values are north of the Equator.
+        definition: Geo-coordinate latitude in decimal degree (WGS84) format
+        guidance: Provide values in range -90 to 90, where positive values are north of the Equator.
+        example: -34.603722
       - name: geoLocLongitude
         displayName: Longitude
         header: Sample details
         type: float
-        guidance: Geo-coordinate longitude in decimal degree (WGS84) format, i.e. values in range -180 to 180, where positive values are east of the Prime Meridian.
+        definition: Geo-coordinate longitude in decimal degree (WGS84) format
+        guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
+        example: -58.381592
       - name: specimenCollectorSampleId
         displayName: Isolate name
         header: Sample details
         ingest: ncbiIsolateName
         enableSubstringSearch: true
+        definition: "Any other non-identifiable sample ID attached to the sequence."
+        example: "Isolate 1"
+        desired: true
       - name: authors
         displayName: Authors
         type: authors
@@ -484,6 +553,12 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: check_authors
           inputs:
             authors: authors
+        columnWidth: 150
+        order: 40
+        definition: "List of authors who should be listed on the sample."
+        guidance: "Authors should be separated by semi-colons. Each author's name should be in the format `last name, first name;`. Last name(s) is mandatory, only ASCII alphabetical characters A-Z are allowed."
+        example: "Smith, Anna; Perez, Tom J.; Xu,;"
+        desired: true
       - name: authorAffiliations
         displayName: Author affiliations
         generateIndex: true
@@ -492,6 +567,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Authors
         ingest: ncbiSubmitterAffiliation
         enableSubstringSearch: true
+        columnWidth: 150
+        order: 50
+        desired: true
+        definition: "List of author affiliations"
+        guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author"
+        example: "EVE Group, MPI Department, Swiss TPH, Basel, Switzerland;  Anderson Group, IEB Department, School of Biology, University of Edinburgh, Edinburgh, Scotland"
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
         generateIndex: true
@@ -539,10 +620,13 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: cultureId
         displayName: Culture ID
         header: Sample details
+        definition: "An ID useful to linking to a culture"
+        example: "Plate7-1124"
+        desired: true
       - name: sampleReceivedDate
         ontology_id: GENEPIO:0001177
         definition: The date on which the sample was received by the laboratory.
-        guidance: Alternative if "sampleCollectionDate" is not available. Record the date the sample was received by the laboratory. Required granularity includes year, month and day. Before sharing this data, ensure this date is not considered identifiable information. If this date is considered identifiable, it is acceptable to add "jitter" to the received date by adding or subtracting calendar days. Do not change the received date in your original records. Alternatively, collection_date may be used as a substitute in the data you share. The date should be provided in ISO 8601 standard format "YYYY-MM-DD".
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year. Before sharing this data, ensure this date is not considered identifiable information."
         example: '2020-03-20'
         displayName: Sample received date
         type: date
@@ -551,111 +635,112 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             date: sampleReceivedDate
         header: Sample details
+        desired: true
       - name: sampleType
         displayName: Sample type
         header: Sampling
+        definition: "Method of sampling."
+        example: "Nasopharyngeal Swabs"
       - name: purposeOfSampling
         ontology_id: GENEPIO:0001198
         definition: The reason that the sample was collected.
-        guidance: Select a value from the pick list in the template
         example: Diagnostic testing
         header: Sampling
         ingest: ncbiPurposeOfSampling
       - name: presamplingActivity
-        ontology_id: GENEPIO:0100433
-        definition: The activities or variables introduced upstream of sample collection that may affect the sample collected.
-        guidance: If there was presampling activity that would affect the sample prior to collection (this is different than sample processing which happens after the sample is collected), provide the experimental activities by selecting one or more values from the template pick list. If the information is unknown or cannot be provided, leave blank or provide a null value.
+        definition: Any activities or variables introduced upstream of sample collection that would affect the sample prior to collection (this is different than sample processing which happens after the sample is collected).
         example: Antimicrobial pre-treatment [GENEPIO:0100537]
         displayName: Presampling activity
         header: Sampling
       - name: anatomicalMaterial
         ontology_id: GENEPIO:0001211
-        definition: A substance obtained from an anatomical part of an organism e.g. tissue, blood.
-        guidance: 'Provide a descriptor if an anatomical material was sampled. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
+        definition: A substance obtained from an anatomical part of an organism e.g. tissue, blood, saliva, fluid (Cerebrospinal (CSF), Pericardial, Pleural, Vaginal, Amniotic).
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
         example: Blood [UBERON:0000178]
         displayName: Anatomical material
         header: Sampling
       - name: anatomicalPart
         ontology_id: GENEPIO:0001214
         definition: An anatomical part of an organism e.g. oropharynx.
-        guidance: 'Provide a descriptor if an anatomical part was sampled. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
         example: Nasopharynx (NP) [UBERON:0001728]
         displayName: Anatomical part
         header: Sampling
       - name: bodyProduct
         ontology_id: GENEPIO:0001216
         definition: A substance excreted/secreted from an organism e.g. feces, urine, sweat.
-        guidance: 'Provide a descriptor if a body product was sampled. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/uberon. If not applicable, leave blank.'
         example: Feces [UBERON:0001988]
         displayName: Body product
         header: Sampling
       - name: environmentalMaterial
         ontology_id: GENEPIO:0001223
         definition: A substance obtained from the natural or man-made environment e.g. soil, water, sewage, door handle, bed handrail, face mask.
-        guidance: 'Provide a descriptor if an environmental material was sampled. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/envo. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/envo. If not applicable, leave blank.'
         example: Face mask [OBI:0002787]
         displayName: Environmental material
         header: Sampling
       - name: environmentalSite
         ontology_id: GENEPIO:0001232
         definition: An environmental location may describe a site in the natural or built environment e.g. hospital, wet market, bat cave.
-        guidance: 'Provide a descriptor if an environmental site was sampled. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/envo. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/envo. If not applicable, leave blank.'
         example: Hospital [ENVO:00002173]
         displayName: Environmental site
         header: Sampling
       - name: collectionDevice
         ontology_id: GENEPIO:0001234
         definition: The instrument or container used to collect the sample e.g. swab.
-        guidance: 'Provide a descriptor if a collection device was used for sampling. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/obi. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/obi. If not applicable, leave blank.'
         example: Swab [GENEPIO:0100027]
         displayName: Collection device
         header: Sampling
+        desired: true
       - name: collectionMethod
         ontology_id: GENEPIO:0001241
         definition: The process used to collect the sample e.g. phlebotomy, necropsy.
-        guidance: 'Provide a descriptor if a collection method was used for sampling. Use the pick list provided in the template. If a desired term is missing from the pick list, use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/obi. If not applicable, leave blank.'
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols/ontologies/obi. If not applicable, leave blank.'
         example: Bronchoalveolar lavage (BAL) [GENEPIO:0100032]
         displayName: Collection method
         header: Sampling
+        desired: true
       - name: foodProduct
         ontology_id: GENEPIO:0100444
-        definition: A material consumed and digested for nutritional value or enjoyment.
-        guidance: This field includes animal feed. If applicable, select the standardized term and ontology ID for the anatomical material from the picklist provided. Multiple values can be provided, separated by a semi-colon.
+        definition: A material consumed and digested for nutritional value or enjoyment, including animal feed.
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols4/ontologies/foodon. If not applicable, leave blank.'
         example: Feather meal [FOODON:00003927]; Bone meal [ENVO:02000054]; Chicken breast [FOODON:00002703]
         displayName: Food product
         header: Sampling
       - name: foodProductProperties
         ontology_id: GENEPIO:0100445
-        definition: Any characteristic of the food product pertaining to its state, processing, a label claim, or implications for consumers.
-        guidance: Provide any characteristics of the food product including whether it has been cooked, processed, preserved, any known information about its state (e.g. raw, ready-to-eat), any known information about its containment (e.g. canned), and any information about a label claim (e.g. organic, fat-free).
+        definition: Any characteristic of the food product pertaining to its state, processing, a label claim, or implications for consumers (e.g. cooked, preserved, processed, raw, ready-to-eat).
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols4/ontologies/foodon. If not applicable, leave blank.'
         example: Food (chopped) [FOODON:00002777]; Ready-to-eat (RTE) [FOODON:03316636]
         displayName: Food product properties
         header: Sampling
       - name: specimenProcessing
         ontology_id: GENEPIO:0100435
         definition: The processing applied to samples post-collection, prior to further testing, characterization, or isolation procedures.
-        guidance: Provide the sample processing information by selecting a value from the template pick list. If the information is unknown or cannot be provided, leave blank or provide a null value.
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi. If not applicable, leave blank.'
         example: Samples pooled [OBI:0600016]
         displayName: Specimen processing
         header: Specimen processing
       - name: specimenProcessingDetails
         ontology_id: GENEPIO:0100311
         definition: Detailed information regarding the processing applied to a sample during or after receiving the sample.
-        guidance: Provide a free text description of any processing details applied to a sample.
         example: 25 swabs were pooled and further prepared as a single sample during library prep.
         displayName: Specimen processing details
         header: Specimen processing
       - name: experimentalSpecimenRoleType
         ontology_id: GENEPIO:0100921
-        definition: The type of role that the sample represents in the experiment.
-        guidance: Samples can play different types of roles in experiments. A sample under study in one experiment may act as a control or be a replicate of another sample in another experiment. This field is used to distinguish samples under study from controls, replicates, etc.  If the sample acted as an experimental control or a replicate, select a role type from the picklist. If the sample was not a control, leave blank or select "Not Applicable".
+        definition: The type of role that the sample represents in the experiment (control, replicate, sample under study).
+        guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols4/ontologies/efo. If not applicable, leave blank.'
         example: Positive experimental control [GENEPIO:0101018]
         displayName: Experimental specimen role type
         header: Specimen processing
       - name: hostAge
         ontology_id: GENEPIO:0001392
         definition: Age of host at the time of sampling.
-        guidance: If known, provide age. Age-binning is also acceptable.
+        guidance: In case of privacy concerns use hostAgeBin.
         example: "79"
         displayName: Host age
         type: int
@@ -664,14 +749,13 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostAgeBin
         ontology_id: GENEPIO:0001394
         definition: The age category of the host at the time of sampling.
-        guidance: Age bins in 10 year intervals have been provided. If a host's age cannot be specified due to provacy concerns, an age bin can be used as an alternative.
+        guidance: Age bins in 10 year intervals.
         example: 50 - 59 [GENEPIO:0100054]
         displayName: Host age bin
         header: Host
       - name: hostGender
         ontology_id: GENEPIO:0001395
         definition: The gender of the host at the time of sample collection.
-        guidance: If known, select a value from the pick list.
         example: Male [NCIT:C46109]
         displayName: Host gender
         header: Host
@@ -679,103 +763,95 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostOriginCountry
         ontology_id: GENEPIO:0100438
         definition: The country of origin of the host.
-        guidance: If a sample is from a human or animal host that originated from outside of Canada, provide the the name of the country where the host originated by selecting a value from the template pick list. If the information is unknown or cannot be provided, leave blank or provide a null value.
-        example: South Africa [GAZ:00001094]
+        example: South Africa
+        guidance: Please add if host origin differs from sample collection location.
         displayName: Host origin country
         header: Host
       - name: hostDisease
         ontology_id: GENEPIO:0001391
         definition: The name of the disease experienced by the host.
-        guidance: "This field is only required if the Pathogen.cl package was selected. If the host was sick, provide the name of the disease.The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols/ontologies/doid If the disease is not known, put “missing”."
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols/ontologies/doid."
         example: mastitis, gastroenteritis
         displayName: Host disease
         header: Host
       - name: signsAndSymptoms
-        ontology_id: GENEPIO:0001400
         definition: A perceived change in function or sensation, (loss, disturbance or appearance) indicative of a disease, reported by a patient.
-        guidance: Select all of the symptoms experienced by the host from the pick list.
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/symp."
         example: Cough [HP:0012735], Fever [HP:0001945],  Rigors (fever shakes) [HP:0025145]
         displayName: Signs and symptoms
         header: Host
       - name: hostHealthState
         ontology_id: GENEPIO:0001388
         definition: Health status of the host at the time of sample collection.
-        guidance: If known, select a value from the pick list.
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
         example: Asymptomatic [NCIT:C3833]
         displayName: Host health state
         header: Host
       - name: hostHealthOutcome
         ontology_id: GENEPIO:0001390
         definition: Disease outcome in the host.
-        guidance: If known, select a value from the pick list.
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
         example: Recovered [NCIT:C49498]
         displayName: Host health outcome
         header: Host
       - name: travelHistory
         ontology_id: GENEPIO:0001416
-        definition: Travel history in last six months.
-        guidance: Specify the countries (and more granular locations if known) travelled in the last six months; can include multiple travels. Separate multiple travel events with a semicolon. Provide as free text.
+        guidance: Specify the countries travelled in the last six months; separate multiple travel events with a semicolon.
         example: Canada, Vancouver; USA, Seattle; Italy, Milan
         displayName: Travel history
         header: Host
       - name: exposureEvent
         ontology_id: GENEPIO:0001417
         definition: Event leading to exposure.
-        guidance: If known, select the exposure event from the pick list.
+        guidance: "You can use the look-up service: https://www.ebi.ac.uk/ols4/ontologies/ecto to select a value."
         example: Mass Gathering [GENEPIO:0100237]
         displayName: Exposure event
         header: Host
       - name: hostRole
         ontology_id: GENEPIO:0001419
         definition: The role of the host in relation to the exposure setting.
-        guidance: Select the host's personal role(s) from the pick list provided in the template. If the desired term is missing, contact the curation team.
         example: Patient [OMRSE:00000030]
         displayName: Host role
         header: Host
       - name: exposureSetting
         ontology_id: GENEPIO:0001428
         definition: The setting leading to exposure.
-        guidance: Select the host exposure setting(s) from the pick list provided in the template. If a desired term is missing, contact the curation team.
         example: Healthcare Setting [GENEPIO:0100201]
         displayName: Exposure setting
         header: Host
       - name: exposureDetails
         ontology_id: GENEPIO:0001431
         definition: Additional host exposure information.
-        guidance: Free text description of the exposure.
         example: "Host role - Other: Bus Driver"
         displayName: Exposure details
         header: Host
-      - name: previousInfectionDisease
         definition: The name of the disease previously experienced by the host.
-        guidance: Provide the name(s) of the previous of ongoing disease(s). Multiple diseases can be separated by a semi-colon.
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols/ontologies/doid."
         example: COVID-19
         displayName: Previous infection (disease)
         header: Host
       - name: previousInfectionOrganism
         definition: The name of the pathogen causing the disease previously experienced by the host.
-        guidance: Provide the name(s) of the pathogen(s) causing the previous or ongoing infections. Multiple pathogen names can be separated using a semi-colon.
         example: Sudden Acute Respiratory Syndrome Coronavirus 2 (SARS-CoV-2)
         displayName: Previous infection (organism)
         header: Host
       - name: hostVaccinationStatus
         ontology_id: GENEPIO:0001404
-        definition: The vaccination status of the host (fully vaccinated, partially vaccinated, or not vaccinated).
-        guidance: Select the vaccination status of the host from the pick list.
+        definition: The vaccination status of the host (fully vaccinated, partially vaccinated, or not vaccinated) in relation to the sequenced pathogen.
         example: Fully Vaccinated [GENEPIO:0100100]
         displayName: Host vaccination status
         header: Host
       - name: purposeOfSequencing
         ontology_id: GENEPIO:0001445
         definition: The reason that the sample was sequenced.
-        guidance: The reason why a sample was originally collected may differ from the reason why it was selected for sequencing. The reason a sample was sequenced may provide information about potential biases in sequencing strategy. Provide the purpose of sequencing from the picklist in the template. The reason for sample collection should be indicated in the "purpose of sampling" field.
+        guidance: The reason why a sample was originally collected may differ from the reason why it was selected for sequencing. The reason a sample was sequenced may provide information about potential biases in sequencing strategy.
         example: Baseline surveillance (random sampling) [GENEPIO:0100005]
         displayName: Purpose of sequencing
         header: Sequencing
       - name: sequencingDate
         ontology_id: GENEPIO:0001447
         definition: The date the sample was sequenced.
-        guidance: Provide the sequencing date in ISO 8601 standard format "YYYY-MM-DD".
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2021-04-26"
         displayName: Sequencing date
         type: date
@@ -784,59 +860,58 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             date: sequencingDate
         header: Sequencing
+        desired: true
       - name: ampliconPcrPrimerScheme
         ontology_id: GENEPIO:0001456
         definition: The specifications of the primers (primer sequences, binding positions, fragment size generated etc) used to generate the amplicons to be sequenced.
-        guidance: Provide the name and version of the primer scheme used to generate the amplicons for sequencing.
         example: https://github.com/joshquick/artic-ncov2019/blob/master/primer_schemes/nCoV-2019/V3/nCoV-2019.tsv
         displayName: Amplicon PCR primer scheme
         header: Sequencing
       - name: ampliconSize
         ontology_id: GENEPIO:0001449
-        definition: The length of the amplicon generated by PCR amplification.
-        guidance: Provide the amplicon size, including the units.
+        definition: The length of the amplicon generated by PCR amplification including units.
         example: 300bp
         displayName: Amplicon size
         header: Sequencing
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
-        definition: The model of the sequencing instrument used.
-        guidance: Select the sequencing instrument from the pick list.
+        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your model, if not add your model in free text."
         example: Oxford Nanopore MinION [GENEPIO:0100142]
         displayName: Sequencing instrument
         header: Sequencing
+        desired: true
       - name: sequencingProtocol
         ontology_id: GENEPIO:0001454
         definition: The protocol used to generate the sequence.
-        guidance: 'Provide a free text description of the methods and materials used to generate the sequence. Suggested text, fill in information where indicated.: "Viral sequencing was performed following a tiling amplicon strategy using the <fill in> primer scheme. Sequencing was performed using a <fill in> sequencing instrument. Libraries were prepared using <fill in> library kit. "'
+        guidance: Provide methods and materials used to generate the sequence (e.g. amplicon strategy, primer scheme, sequencing instrument, library kit).
         example: Genomes were generated through amplicon sequencing of 1200 bp amplicons with Freed schema primers. Libraries were created using Illumina DNA Prep kits, and sequence data was produced using Miseq Micro v2 (500 cycles) sequencing kits.
         displayName: Sequencing protocol
         header: Sequencing
+        desired: true
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
-        definition: The overarching sequencing methodology that was used to determine the sequence of a biomaterial.
-        guidance: 'Example Guidance: Provide the name of the DNA or RNA sequencing technology used in your study. If unsure refer to the protocol documentation, or provide a null value.'
+        definition: The overarching DNA or RNA sequencing methodology that was used to determine the sequence of a biomaterial.
+        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your assay, if not add your methodology in free text."
         example: whole genome sequencing assay [OBI:0002117]
         displayName: Sequencing assay type
         header: Sequencing
       - name: sequencedByOrganization
         ontology_id: GENEPIO:0100416
         definition: The name of the agency, organization or institution responsible for sequencing the isolate's genome.
-        guidance: Provide the name of the agency, organization or institution that performed the sequencing in full (avoid abbreviations). If the information is unknown or cannot be provided, leave blank or provide a null value.
         example: Public Health Agency of Canada (PHAC) [GENEPIO:0100551]
         displayName: Sequenced by
         header: Sequencing
       - name: sequencedByContactName
         ontology_id: GENEPIO:0100471
         definition: The name or title of the contact responsible for follow-up regarding the sequence.
-        guidance: Provide the name of an individual or their job title. As personnel turnover may render the contact's name obsolete, it is more prefereable to provide a job title for ensuring accuracy of information and institutional memory. If the information is unknown or cannot be provided, leave blank or provide a null value.
+        guidance: As personnel turnover may render the contact's name obsolete, it is more prefereable to provide a job title for ensuring accuracy of information and institutional memory.
         example: Enterics Lab Manager
         displayName: Sequenced by - contact name
         header: Sequencing
       - name: sequencedByContactEmail
         ontology_id: GENEPIO:0100422
         definition: The email address of the contact responsible for follow-up regarding the sequence.
-        guidance: Provide the email associated with the listed contact. As personnel turnover may render an individual's email obsolete, it is more prefereable to provide an address for a position or lab, to ensure accuracy of information and institutional memory. If the information is unknown or cannot be provided, leave blank or provide a null value.
+        guidance: As personnel turnover may render an individual's email obsolete, it is more prefereable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
         example: enterics@lab.ca
         displayName: Sequenced by - contact email
         header: Sequencing
@@ -857,7 +932,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: referenceGenomeAccession
         ontology_id: GENEPIO:0001485
         definition: A persistent, unique identifier of a genome database entry.
-        guidance: Provide the accession number of the reference genome used for mapping/assembly.
+        guidance: Provide the INSDC accession number of the reference genome used for mapping/assembly.
         example: NC_045512.2
         displayName: Reference genome accession
         header: Sequencing
@@ -879,68 +954,78 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0001474
         definition: The average number of reads representing a given nucleotide in the reconstructed sequence.
         guidance: Provide value as a fold of coverage (as a number).
-        example: 400
+        example: "400"
         displayName: Depth of coverage
         type: int
         header: Sequencing
+        desired: true
       - name: breadthOfCoverage
         ontology_id: GENEPIO:0001475
-        definition: The threshold used as a cut-off for the depth of coverage.
-        guidance: Provide the threshold fold coverage (as a number)
-        example: 100
+        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (depthOfCoverage).
+        guidance: Provide the percentage (as a number)
+        example: "95"
         displayName: Breadth of coverage
         type: int
         header: Sequencing
       - name: qualityControlMethodName
         ontology_id: GENEPIO:0100557
         definition: The name of the method used to assess whether a sequence passed a predetermined quality control threshold.
-        guidance: Providing the name of the method used for quality control is very important for interpreting the rest of the QC information. Method names can be provided as the name of a pipeline or a link to a GitHub repository. Multiple methods should be listed and separated by a semi-colon. Do not include QC tags in other fields if no method name is provided.
+        guidance: Method names can be provided as the name of a pipeline or a link to a GitHub repository. Multiple methods should be listed and separated by a semi-colon.
         example: ncov-tools
         displayName: Quality control method name
         header: Sequencing
       - name: qualityControlMethodVersion
         ontology_id: GENEPIO:0100558
         definition: The version number of the method used to assess whether a sequence passed a predetermined quality control threshold.
-        guidance: Methods updates can make big differences to their outputs. Provide the version of the method used for quality control. The version can be expressed using whatever convention the developer implements (e.g. date, semantic versioning). If multiple methods were used, record the version numbers in the same order as the method names. Separate the version numbers using a semi-colon.
+        guidance: If multiple methods were used, record the version numbers in the same order as the method names. Separate the version numbers using a semi-colon.
         example: "1.2.3"
         displayName: Quality control method version
         header: Sequencing
       - name: qualityControlDetermination
         ontology_id: GENEPIO:0100559
-        definition: The determination of a quality control assessment.
-        guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
+        definition: The determination (result) of a quality control assessment.
+        #guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
         example: sequence failed quality control
         displayName: Quality control determination
         header: Sequencing
       - name: qualityControlIssues
         ontology_id: GENEPIO:0100560
         definition: The reason contributing to, or causing, a low quality determination in a quality control assessment.
-        guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
+        #guidance: Select a value from the pick list provided. If a desired value is missing, submit a new term request to the PHA4GE QC Tag GitHub issuetracker using the New Term Request form.
         example: low average genome coverage
         displayName: Quality control issues
         header: Sequencing
       - name: qualityControlDetails
         ontology_id: GENEPIO:0100561
         definition: The details surrounding a low quality determination in a quality control assessment.
-        guidance: Provide notes or details regarding QC results using free text.
         example: CT value of 39. Low viral load. Low DNA concentration after amplification.
         displayName: Quality control details
-        header: Diagnostics
+        header: Sequencing
       - name: diagnosticMeasurementMethod
         displayName: Diagnostic measurement method
         header: Diagnostics
+        definition: "Type of diagnostic test performed"
+        example: "RT-PCR test"
       - name: diagnosticTargetPresence
         displayName: Diagnostic target presence
         header: Diagnostics
+        definition: "Boolean value, if the diagnostic target was present."
+        example: "True"
       - name: diagnosticTargetGeneName
         displayName: Gene name
         header: Diagnostics
+        definition: "Name of the gene targeted by the diagnostic RT-PCR test."
+        example: "E gene (orf4)"
       - name: diagnosticMeasurementValue
         displayName: Diagnostic measurement value
         header: Diagnostics
+        defintion: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test"
+        example: "39"
       - name: diagnosticMeasurementUnit
         displayName: Diagnostic measurement unit
         header: Diagnostics
+        definition: "Unit of the diagnostic measurement value"
+        example: "Cycle threshold (CT)"
       - name: length
         type: int
         header: "Alignment states and QC metrics"
@@ -949,16 +1034,24 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         perSegment: true
         displayName: Length
+        columnWidth: 100
+        order: 80
       - name: hostNameScientific
         generateIndex: true
         autocomplete: true
         header: "Host"
         ingest: ncbiHostName
+        order: 70
+        definition: "The scientific name of the host from which the sample was collected."
+        example: "Homo sapiens"
+        desired: true
       - name: hostNameCommon
         generateIndex: true
         autocomplete: true
         header: "Host"
         ingest: ncbiHostCommonName
+        definition: "The common name of the host from which the sample was collected."
+        example: "Human"
       - name: hostTaxonId
         type: int
         autocomplete: true
@@ -967,22 +1060,32 @@ defaultOrganismConfig: &defaultOrganismConfig
           url: "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=info&id=__value__"
         header: "Host"
         ingest: ncbiHostTaxId
+        definition: "Taxon ID for the host"
+        guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
+        example: "9606"
       - name: isLabHost
         generateIndex: true
         autocomplete: true
         header: "Host"
         ingest: ncbiIsLabHost
+        definition: "If a laboratory host (e.g. cultured cell line) was used to propagate the sample."
+        example: "True"
       - name: cellLine
         generateIndex: true
         autocomplete: true
         header: "Host"
+        definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions"
       - name: passageNumber
         type: int
         header: "Host"
+        definition: "The number of times a cell culture has been subcultured or transferred from one vessel to another."
+        example: "12"
       - name: passageMethod
         generateIndex: true
         autocomplete: true
         header: "Host"
+        definition: "The techniques used to subculture cells"
+        example: "Enzymatic Detachment"
       - name: ncbiSourceDb
         generateIndex: true
         autocomplete: true
@@ -1004,8 +1107,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         hideOnSequenceDetailsPage: true
         noInput: true
         header: "INSDC"
-      - name: sraRunAccession
-        displayName: SRA run accession
+      - name: insdcRawReadsAccession
+        displayName: Raw reads accession
         customDisplay:
           type: link
           url: "https://www.ncbi.nlm.nih.gov/sra/?term=__value__"
@@ -1096,12 +1199,12 @@ defaultOrganismConfig: &defaultOrganismConfig
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
     silo:
-      dateToSortBy: sampleCollectionDate
+      dateToSortBy: sampleCollectionDateRangeUpper
     extraInputFields: []
   preprocessing:
     - &preprocessing
       replicas: 1
-      version: 4
+      version: 7
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
@@ -1224,6 +1327,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
         - name: totalStopCodons
           type: int
           header: "Alignment states and QC metrics"
@@ -1371,3 +1475,614 @@ organisms:
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/GPC.fasta]]"
         - name: NP
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/NP.fasta]]"
+  mpox:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Mpox Virus"
+      image: "/images/organisms/mpox_small.jpg"
+      metadataAdd:
+        - name: clade
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          columnWidth: 50
+          order: 5
+        - name: outbreak
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          preprocessing:
+            inputs: {input: nextclade.customNodeAttributes.outbreak}
+          columnWidth: 90
+          order: 6
+        - name: lineage
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.customNodeAttributes.lineage}
+          columnWidth: 60
+          order: 7
+        - name: totalStopCodons
+          type: int
+          header: "Alignment states and QC metrics"
+          noInput: true
+          preprocessing:
+            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
+        - name: stopCodons
+          header: "Alignment states and QC metrics"
+          noInput: true
+          preprocessing:
+            inputs: {input: nextclade.qc.stopCodons.stopCodons}
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - geoLocCountry
+          - geoLocAdmin1
+          - authors
+          - authorAffiliations
+          - ncbiReleaseDate
+          - clade
+          - lineage
+          - length
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: nextstrain/mpox/all-clades
+          nextclade_dataset_version: 2024-11-19--14-18-53Z
+          batch_size: 5
+          genes:
+            - OPG001
+            - OPG002
+            - OPG003
+            - OPG005
+            - OPG015
+            - OPG016
+            - OPG019
+            - OPG021
+            - OPG022
+            - OPG023
+            - OPG024
+            - OPG025
+            - OPG027
+            - OPG029
+            - OPG030
+            - OPG031
+            - OPG034
+            - OPG035
+            - OPG036
+            - OPG037
+            - OPG038
+            - OPG039
+            - OPG040
+            - OPG042
+            - OPG043
+            - OPG044
+            - OPG045
+            - OPG046
+            - OPG047
+            - OPG048
+            - OPG049
+            - OPG050
+            - OPG051
+            - OPG052
+            - OPG053
+            - OPG054
+            - OPG055
+            - OPG056
+            - OPG057
+            - OPG058
+            - OPG059
+            - OPG060
+            - OPG061
+            - OPG062
+            - OPG063
+            - OPG064
+            - OPG065
+            - OPG066
+            - OPG068
+            - OPG069
+            - OPG070
+            - OPG071
+            - OPG072
+            - OPG073
+            - OPG074
+            - OPG075
+            - OPG076
+            - OPG077
+            - OPG078
+            - OPG079
+            - OPG080
+            - OPG081
+            - OPG082
+            - OPG083
+            - OPG084
+            - OPG085
+            - OPG086
+            - OPG087
+            - OPG088
+            - OPG089
+            - OPG090
+            - OPG091
+            - OPG092
+            - OPG093
+            - OPG094
+            - OPG095
+            - OPG096
+            - OPG097
+            - OPG098
+            - OPG099
+            - OPG100
+            - OPG101
+            - OPG102
+            - OPG103
+            - OPG104
+            - OPG105
+            - OPG106
+            - OPG107
+            - OPG108
+            - OPG109
+            - OPG110
+            - OPG111
+            - OPG112
+            - OPG113
+            - OPG114
+            - OPG115
+            - OPG116
+            - OPG117
+            - OPG118
+            - OPG119
+            - OPG120
+            - OPG121
+            - OPG122
+            - OPG123
+            - OPG124
+            - OPG125
+            - OPG126
+            - OPG127
+            - OPG128
+            - OPG129
+            - OPG130
+            - OPG131
+            - OPG132
+            - OPG133
+            - OPG134
+            - OPG135
+            - OPG136
+            - OPG137
+            - OPG138
+            - OPG139
+            - OPG140
+            - OPG141
+            - OPG142
+            - OPG143
+            - OPG144
+            - OPG145
+            - OPG146
+            - OPG147
+            - OPG148
+            - OPG149
+            - OPG150
+            - OPG151
+            - OPG153
+            - OPG154
+            - OPG155
+            - OPG156
+            - OPG157
+            - OPG158
+            - OPG159
+            - OPG160
+            - OPG161
+            - OPG162
+            - OPG163
+            - OPG164
+            - OPG165
+            - OPG166
+            - OPG167
+            - OPG170
+            - OPG171
+            - OPG172
+            - OPG173
+            - OPG174
+            - OPG175
+            - OPG176
+            - OPG178
+            - OPG180
+            - OPG181
+            - OPG185
+            - OPG187
+            - OPG188
+            - OPG189
+            - OPG190
+            - OPG191
+            - OPG192
+            - OPG193
+            - OPG195
+            - OPG197
+            - OPG198
+            - OPG199
+            - OPG200
+            - OPG204
+            - OPG205
+            - OPG208
+            - OPG209
+            - OPG210
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *ingestConfigFile
+        taxon_id: 10244
+    enaDeposition:
+      configFile:
+        taxon_id: 10244
+        scientific_name: "Monkeypox virus"
+        molecule_type: "genomic DNA"
+    referenceGenomes:
+      nucleotideSequences:
+        - name: "main"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/mpox/reference.fasta]]"
+          insdcAccessionFull: NC_063383.1
+      genes:
+        - name: OPG001
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG001.fa]]"
+        - name: OPG002
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG002.fa]]"
+        - name: OPG003
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG003.fa]]"
+        - name: OPG005
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG005.fa]]"
+        - name: OPG015
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG015.fa]]"
+        - name: OPG016
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG016.fa]]"
+        - name: OPG019
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG019.fa]]"
+        - name: OPG021
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG021.fa]]"
+        - name: OPG022
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG022.fa]]"
+        - name: OPG023
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG023.fa]]"
+        - name: OPG024
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG024.fa]]"
+        - name: OPG025
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG025.fa]]"
+        - name: OPG027
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG027.fa]]"
+        - name: OPG029
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG029.fa]]"
+        - name: OPG030
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG030.fa]]"
+        - name: OPG031
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG031.fa]]"
+        - name: OPG034
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG034.fa]]"
+        - name: OPG035
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG035.fa]]"
+        - name: OPG036
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG036.fa]]"
+        - name: OPG037
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG037.fa]]"
+        - name: OPG038
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG038.fa]]"
+        - name: OPG039
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG039.fa]]"
+        - name: OPG040
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG040.fa]]"
+        - name: OPG042
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG042.fa]]"
+        - name: OPG043
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG043.fa]]"
+        - name: OPG044
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG044.fa]]"
+        - name: OPG045
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG045.fa]]"
+        - name: OPG046
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG046.fa]]"
+        - name: OPG047
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG047.fa]]"
+        - name: OPG048
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG048.fa]]"
+        - name: OPG049
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG049.fa]]"
+        - name: OPG050
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG050.fa]]"
+        - name: OPG051
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG051.fa]]"
+        - name: OPG052
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG052.fa]]"
+        - name: OPG053
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG053.fa]]"
+        - name: OPG054
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG054.fa]]"
+        - name: OPG055
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG055.fa]]"
+        - name: OPG056
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG056.fa]]"
+        - name: OPG057
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG057.fa]]"
+        - name: OPG058
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG058.fa]]"
+        - name: OPG059
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG059.fa]]"
+        - name: OPG060
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG060.fa]]"
+        - name: OPG061
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG061.fa]]"
+        - name: OPG062
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG062.fa]]"
+        - name: OPG063
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG063.fa]]"
+        - name: OPG064
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG064.fa]]"
+        - name: OPG065
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG065.fa]]"
+        - name: OPG066
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG066.fa]]"
+        - name: OPG068
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG068.fa]]"
+        - name: OPG069
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG069.fa]]"
+        - name: OPG070
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG070.fa]]"
+        - name: OPG071
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG071.fa]]"
+        - name: OPG072
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG072.fa]]"
+        - name: OPG073
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG073.fa]]"
+        - name: OPG074
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG074.fa]]"
+        - name: OPG075
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG075.fa]]"
+        - name: OPG076
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG076.fa]]"
+        - name: OPG077
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG077.fa]]"
+        - name: OPG078
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG078.fa]]"
+        - name: OPG079
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG079.fa]]"
+        - name: OPG080
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG080.fa]]"
+        - name: OPG081
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG081.fa]]"
+        - name: OPG082
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG082.fa]]"
+        - name: OPG083
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG083.fa]]"
+        - name: OPG084
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG084.fa]]"
+        - name: OPG085
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG085.fa]]"
+        - name: OPG086
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG086.fa]]"
+        - name: OPG087
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG087.fa]]"
+        - name: OPG088
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG088.fa]]"
+        - name: OPG089
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG089.fa]]"
+        - name: OPG090
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG090.fa]]"
+        - name: OPG091
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG091.fa]]"
+        - name: OPG092
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG092.fa]]"
+        - name: OPG093
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG093.fa]]"
+        - name: OPG094
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG094.fa]]"
+        - name: OPG095
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG095.fa]]"
+        - name: OPG096
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG096.fa]]"
+        - name: OPG097
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG097.fa]]"
+        - name: OPG098
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG098.fa]]"
+        - name: OPG099
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG099.fa]]"
+        - name: OPG100
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG100.fa]]"
+        - name: OPG101
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG101.fa]]"
+        - name: OPG102
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG102.fa]]"
+        - name: OPG103
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG103.fa]]"
+        - name: OPG104
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG104.fa]]"
+        - name: OPG105
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG105.fa]]"
+        - name: OPG106
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG106.fa]]"
+        - name: OPG107
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG107.fa]]"
+        - name: OPG108
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG108.fa]]"
+        - name: OPG109
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG109.fa]]"
+        - name: OPG110
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG110.fa]]"
+        - name: OPG111
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG111.fa]]"
+        - name: OPG112
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG112.fa]]"
+        - name: OPG113
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG113.fa]]"
+        - name: OPG114
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG114.fa]]"
+        - name: OPG115
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG115.fa]]"
+        - name: OPG116
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG116.fa]]"
+        - name: OPG117
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG117.fa]]"
+        - name: OPG118
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG118.fa]]"
+        - name: OPG119
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG119.fa]]"
+        - name: OPG120
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG120.fa]]"
+        - name: OPG121
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG121.fa]]"
+        - name: OPG122
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG122.fa]]"
+        - name: OPG123
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG123.fa]]"
+        - name: OPG124
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG124.fa]]"
+        - name: OPG125
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG125.fa]]"
+        - name: OPG126
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG126.fa]]"
+        - name: OPG127
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG127.fa]]"
+        - name: OPG128
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG128.fa]]"
+        - name: OPG129
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG129.fa]]"
+        - name: OPG130
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG130.fa]]"
+        - name: OPG131
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG131.fa]]"
+        - name: OPG132
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG132.fa]]"
+        - name: OPG133
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG133.fa]]"
+        - name: OPG134
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG134.fa]]"
+        - name: OPG135
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG135.fa]]"
+        - name: OPG136
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG136.fa]]"
+        - name: OPG137
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG137.fa]]"
+        - name: OPG138
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG138.fa]]"
+        - name: OPG139
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG139.fa]]"
+        - name: OPG140
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG140.fa]]"
+        - name: OPG141
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG141.fa]]"
+        - name: OPG142
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG142.fa]]"
+        - name: OPG143
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG143.fa]]"
+        - name: OPG144
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG144.fa]]"
+        - name: OPG145
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG145.fa]]"
+        - name: OPG146
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG146.fa]]"
+        - name: OPG147
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG147.fa]]"
+        - name: OPG148
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG148.fa]]"
+        - name: OPG149
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG149.fa]]"
+        - name: OPG150
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG150.fa]]"
+        - name: OPG151
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG151.fa]]"
+        - name: OPG153
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG153.fa]]"
+        - name: OPG154
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG154.fa]]"
+        - name: OPG155
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG155.fa]]"
+        - name: OPG156
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG156.fa]]"
+        - name: OPG157
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG157.fa]]"
+        - name: OPG158
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG158.fa]]"
+        - name: OPG159
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG159.fa]]"
+        - name: OPG160
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG160.fa]]"
+        - name: OPG161
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG161.fa]]"
+        - name: OPG162
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG162.fa]]"
+        - name: OPG163
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG163.fa]]"
+        - name: OPG164
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG164.fa]]"
+        - name: OPG165
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG165.fa]]"
+        - name: OPG166
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG166.fa]]"
+        - name: OPG167
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG167.fa]]"
+        - name: OPG170
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG170.fa]]"
+        - name: OPG171
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG171.fa]]"
+        - name: OPG172
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG172.fa]]"
+        - name: OPG173
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG173.fa]]"
+        - name: OPG174
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG174.fa]]"
+        - name: OPG175
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG175.fa]]"
+        - name: OPG176
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG176.fa]]"
+        - name: OPG178
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG178.fa]]"
+        - name: OPG180
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG180.fa]]"
+        - name: OPG181
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG181.fa]]"
+        - name: OPG185
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG185.fa]]"
+        - name: OPG187
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG187.fa]]"
+        - name: OPG188
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG188.fa]]"
+        - name: OPG189
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG189.fa]]"
+        - name: OPG190
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG190.fa]]"
+        - name: OPG191
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG191.fa]]"
+        - name: OPG192
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG192.fa]]"
+        - name: OPG193
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG193.fa]]"
+        - name: OPG195
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG195.fa]]"
+        - name: OPG197
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG197.fa]]"
+        - name: OPG198
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG198.fa]]"
+        - name: OPG199
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG199.fa]]"
+        - name: OPG200
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG200.fa]]"
+        - name: OPG204
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG204.fa]]"
+        - name: OPG205
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG205.fa]]"
+        - name: OPG208
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG208.fa]]"
+        - name: OPG209
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
+        - name: OPG210
+          sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"

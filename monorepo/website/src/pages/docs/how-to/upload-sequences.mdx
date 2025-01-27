@@ -38,6 +38,21 @@ Uploading sequences via the website is a very way to submit sequences without ha
 
 The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
 
+## Uploading raw reads
+
+Pathoplexus currently only accepts consensus sequence submissions. If you wish to upload raw reads, you can do so directly through the [INSDC submission portal](https://ena-docs.readthedocs.io/en/latest/submit/reads.html).
+
+To ensure your raw reads are linked to your consensus sequence in the INSDC, both must be associated with the same biosample and bioproject at the time of submission.
+
+#### Submission Scenarios:
+- Submitting the Consensus Sequence First (via Pathoplexus):
+After submitting your consensus sequence to Pathoplexus, use the biosample and bioproject accessions we provide (e.g., Bioproject Accession: PRJEB80643, Biosample Accession: SAMEA116354847) when submitting your raw reads to the INSDC.
+
+- Submitting Raw Reads First (via INSDC):
+If you submit raw reads to the INSDC first, create a biosample and bioproject during the upload process. Then, provide the raw reads accession in the metadata.tsv (e.g., insdcRawReadsAccession=SRR27477368) when submitting your consensus sequence to Pathoplexus. This allows us to link your consensus sequence to the raw reads in the INSDC.
+
+Please contact us at `submission@pathoplexus.org` if you have any questions about submitting raw reads. 
+
 
 ## API
 
@@ -53,7 +68,7 @@ To upload sequences through the HTTP API you will need to:
 
 
 1. Retrieve an authentication JSON web token: see the [Authenticating via API guide](/docs/how-to/authentication-api).
-2. Identify the Group ID of your group: you can find it on the page of your group (which can be reached from your [user page](https://pathoplexus.org/user)).
+2. Identify the Group ID of your group: you can find it on the page of your group (which can be reached from your [user page](/user)).
 3. Send a POST request:
     - To upload sequences with the **open use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<   group id>&dataUseTermsType=OPEN`
 
