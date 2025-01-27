@@ -125,7 +125,7 @@ resources:
   preprocessing:
     requests:
       memory: "100Mi"
-      cpu: "200m"
+      cpu: "500m"
     limits:
       memory: "3Gi"
 defaultResources:
