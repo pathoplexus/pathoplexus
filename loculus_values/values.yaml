@@ -825,6 +825,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Host role - Other: Bus Driver"
         displayName: Exposure details
         header: Host
+      - name: previousInfectionDisease
         definition: The name of the disease previously experienced by the host.
         guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols/ontologies/doid."
         example: COVID-19
