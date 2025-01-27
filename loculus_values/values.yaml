@@ -95,7 +95,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         notSearchable: true
         order: 10
         definition: "The date on which the sample was collected."
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `20XX-XX-XX`, and provide at least year"
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -626,7 +626,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sampleReceivedDate
         ontology_id: GENEPIO:0001177
         definition: The date on which the sample was received by the laboratory.
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `20XX-XX-XX`, and provide at least year. Before sharing this data, ensure this date is not considered identifiable information."
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year. Before sharing this data, ensure this date is not considered identifiable information."
         example: '2020-03-20'
         displayName: Sample received date
         type: date
@@ -851,7 +851,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingDate
         ontology_id: GENEPIO:0001447
         definition: The date the sample was sequenced.
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `20XX-XX-XX`, and provide at least year"
+        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2021-04-26"
         displayName: Sequencing date
         type: date
