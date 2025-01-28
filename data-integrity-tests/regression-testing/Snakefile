@@ -10,7 +10,7 @@ rule all:
     input:
         expand(
             "results/{organism}.{difftype}.prod.staging.diff",
-            organism=["cchf", "west-nile", "ebola-zaire", "ebola-sudan"],
+            organism=["cchf", "west-nile", "ebola-zaire", "ebola-sudan", "mpox"],
             difftype=["seq", "meta"],
         ),
 
