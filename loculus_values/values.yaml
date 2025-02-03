@@ -1108,14 +1108,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         hideOnSequenceDetailsPage: true
         noInput: true
         header: "INSDC"
-      - name: sraRunAccession
-        displayName: SRA run accession
+      - name: insdcRawReadsAccession
+        displayName: Raw reads accession
         customDisplay:
           type: link
           url: "https://www.ncbi.nlm.nih.gov/sra/?term=__value__"
         header: "INSDC"
         ingest: ncbiSraAccessions
-        noInput: true
+        guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
+        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
       - name: totalSnps
         type: int
         header: "Alignment states and QC metrics"
