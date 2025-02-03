@@ -1,4 +1,5 @@
 preprocessingTimeout: 600
+getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
 registrationTermsMessage: >
   Do you agree to the <a href="https://pathoplexus.org/about/terms-of-use/terms-of-service">terms of use</a> and the <a href="https://pathoplexus.org/about/terms-of-use/privacy-policy">privacy policy</a>?
