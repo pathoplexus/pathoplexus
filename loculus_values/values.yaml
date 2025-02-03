@@ -8,6 +8,7 @@ gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/we
 gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 developmentDatabasePersistence: false
+getSubmissionListLimitSeconds: 3600
 dataUseTermsUrls:
   open: https://pathoplexus.org/about/terms-of-use/open-data
   restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
