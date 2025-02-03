@@ -1265,7 +1265,6 @@ organisms:
       metadataTemplate: 
         - geoLocCountry  
         - sampleCollectionDate  
-        - submissionId  
         - authorAffiliations  
         - authors  
         - collectionDevice  
