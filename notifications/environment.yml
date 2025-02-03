@@ -4,4 +4,3 @@ channels:
   - nodefaults
 dependencies:
   - requests
-  - ipykernel
