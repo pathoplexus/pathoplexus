@@ -91,7 +91,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           args:
             fieldType: dateRangeString
         required: true
-        columnWidth: 90
+        columnWidth: 100
         notSearchable: true
         order: 10
         definition: "The date on which the sample was collected."
@@ -1510,7 +1510,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.clade}
-          columnWidth: 50
+          columnWidth: 70
           order: 5
         - name: outbreak
           header: "Clade & Lineage"
@@ -1529,7 +1529,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 60
+          columnWidth: 80
           order: 7
         - name: totalStopCodons
           type: int
