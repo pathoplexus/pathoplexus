@@ -50,10 +50,18 @@ for organism in organisms:
         thread_header = (
             f"{len(new_sequences)} new releases for {organism}: "
         )
-        requests.post(
+        print(f"Sending notification for {organism}")
+        res=requests.post(
             slack_webhook_url, json={"text": message, "header": thread_header, "filterUrl": filter_url}
         )
+        if res.status_code != 200:
+            print(f"Failed to send notification for {organism}")
+            print(res.text)
+            continue
+        print(f"Notification successfully sent for {organism}")
         with open(notified_file, "a") as f:
             for seq in new_sequences:
                 f.write(seq["accessionVersion"] + "\n")
         sleep(5)
+    else:
+        print(f"No new sequences for {organism}")
