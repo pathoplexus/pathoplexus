@@ -930,7 +930,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: Nanostripper 1.2.3
         displayName: Dehosting method
         header: Sequencing
-      - name: referenceGenomeAccession
+      - name: assemblyReferenceGenomeAccession
         ontology_id: GENEPIO:0001485
         definition: A persistent, unique identifier of a genome database entry.
         guidance: Provide the INSDC accession number of the reference genome used for mapping/assembly.
