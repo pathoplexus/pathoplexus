@@ -1206,15 +1206,15 @@ defaultOrganismConfig: &defaultOrganismConfig
     metadataTemplate:
       - geoLocCountry  
       - sampleCollectionDate  
-      - authorAffiliations  
       - authors  
+      - authorAffiliations  
+      - hostNameScientific  
       - collectionDevice  
       - collectionMethod  
       - cultureId  
       - depthOfCoverage  
       - geoLocAdmin1  
       - geoLocAdmin2  
-      - hostNameScientific  
       - sampleReceivedDate  
       - sequencingDate  
       - sequencingInstrument  
