@@ -1203,6 +1203,24 @@ defaultOrganismConfig: &defaultOrganismConfig
     silo:
       dateToSortBy: sampleCollectionDateRangeUpper
     extraInputFields: []
+    metadataTemplate:
+      - geoLocCountry  
+      - sampleCollectionDate  
+      - authorAffiliations  
+      - authors  
+      - collectionDevice  
+      - collectionMethod  
+      - cultureId  
+      - depthOfCoverage  
+      - geoLocAdmin1  
+      - geoLocAdmin2  
+      - hostNameScientific  
+      - sampleReceivedDate  
+      - sequencingDate  
+      - sequencingInstrument  
+      - sequencingProtocol  
+      - specimenCollectorSampleId  
+      - versionComment  
   preprocessing:
     - &preprocessing
       replicas: 1
@@ -1263,24 +1281,6 @@ organisms:
       <<: *schema
       organismName: "Ebola Sudan"
       image: "/images/organisms/ebolasudan_small.jpg"
-      metadataTemplate: 
-        - geoLocCountry  
-        - sampleCollectionDate  
-        - authorAffiliations  
-        - authors  
-        - collectionDevice  
-        - collectionMethod  
-        - cultureId  
-        - depthOfCoverage  
-        - geoLocAdmin1  
-        - geoLocAdmin2  
-        - hostNameScientific  
-        - sampleReceivedDate  
-        - sequencingDate  
-        - sequencingInstrument  
-        - sequencingProtocol  
-        - specimenCollectorSampleId  
-        - versionComment    
       metadataAdd:
         - name: totalStopCodons
           type: int
