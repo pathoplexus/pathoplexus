@@ -162,13 +162,24 @@ rule invariant_subsets:
         """
 
 
-rule diff:
+rule diff_meta:
     input:
-        "results/{organism}_{a}.invariant.{difftype}.tsv",
-        "results/{organism}_{b}.invariant.{difftype}.tsv",
+        "results/{organism}_{a}.invariant.meta.tsv",
+        "results/{organism}_{b}.invariant.meta.tsv",
     output:
-        "results/{organism}.{difftype}.{a}.{b}.diff",
+        "results/{organism}.meta.{a}.{b}.diff",
     shell:
         """
         csv-diff {input} --key=submissionId --format=tsv > {output} || echo "Differences found"
+        """
+
+rule diff_seqs:
+    input:
+        "results/{organism}_{a}.invariant.seqs.tsv",
+        "results/{organism}_{b}.invariant.seqs.tsv",
+    output:
+        "results/{organism}.seqs.{a}.{b}.diff",
+    shell:
+        """
+        diff {input} > {output} || echo "Differences found"
         """
