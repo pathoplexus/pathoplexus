@@ -181,5 +181,5 @@ rule diff_seqs:
         "results/{organism}.seqs.{a}.{b}.diff",
     shell:
         """
-        diff {input} --key=submissionId --format=tsv > {output} || echo "Differences found"
+        diff {input} > {output} || echo "Differences found"
         """
