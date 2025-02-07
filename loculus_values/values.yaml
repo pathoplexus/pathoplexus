@@ -46,6 +46,19 @@ auth:
     from: "noreply@pathoplexus.org"
     envelopeFrom: "noreply@pathoplexus.org"
 disableEnaSubmission: true
+depositionBlockingFields:
+  - ncbiReleaseDate
+  - ncbiUpdateDate
+  - ncbiSubmitterCountry
+  - insdcAccessionBase
+  - insdcVersion
+  - insdcAccessionFull
+  - bioprojectAccession
+  - gcaAccession
+  - biosampleAccession
+  - ncbiSourceDb
+  - ncbiVirusName
+  - ncbiVirusTaxId
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
