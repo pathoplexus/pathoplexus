@@ -51,7 +51,7 @@ disableEnaSubmission: true
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
-    organismName: "Ebola Zaire"
+    organismName: "Zaire Ebola Virus"
     image: "/images/organisms/ebolazaire_small.jpg"
     earliestReleaseDate:
       enabled: true
@@ -1292,7 +1292,7 @@ organisms:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Ebola Sudan"
+      organismName: "Sudan Ebola Virus"
       image: "/images/organisms/ebolasudan_small.jpg"
       metadataAdd:
         - name: totalStopCodons
