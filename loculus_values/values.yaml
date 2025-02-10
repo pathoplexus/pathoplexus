@@ -1205,7 +1205,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     website: &website
       tableColumns:
         - sampleCollectionDate
-        - ncbiReleaseDate
+        - earliestReleaseDate
         - authors
         - authorAffiliations
         - geoLocCountry
