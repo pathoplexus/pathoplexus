@@ -1378,7 +1378,7 @@ organisms:
         <<: *website
         tableColumns:
           - sampleCollectionDate
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - authors
           - authorAffiliations
           - geoLocCountry
@@ -1465,7 +1465,7 @@ organisms:
           - geoLocAdmin1
           - authors
           - authorAffiliations
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - hostNameScientific
           - length_M
           - length_S
@@ -1565,7 +1565,7 @@ organisms:
           - geoLocAdmin1
           - authors
           - authorAffiliations
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - clade
           - lineage
           - length
