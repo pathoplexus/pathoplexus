@@ -53,6 +53,10 @@ defaultOrganismConfig: &defaultOrganismConfig
     loadSequencesAutomatically: true
     organismName: "Ebola Zaire"
     image: "/images/organisms/ebolazaire_small.jpg"
+    earliestReleaseDate:
+      enabled: true
+      externalFields:
+        - ncbiReleaseDate
     ### Field list
     ## General fields
     # name: Key used across app to refer to this field (required)
@@ -155,6 +159,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         columnWidth: 90
         order: 90
+      - name: earliestReleaseDate
+        displayName: Earliest release date
+        header: Sample details
+        type: date
+        rangeSearch: true
+        noInput: true
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
