@@ -165,6 +165,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         rangeSearch: true
         noInput: true
+        columnWidth: 95
+        order: 90
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
@@ -1205,7 +1207,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     website: &website
       tableColumns:
         - sampleCollectionDate
-        - ncbiReleaseDate
+        - earliestReleaseDate
         - authors
         - authorAffiliations
         - geoLocCountry
@@ -1376,7 +1378,7 @@ organisms:
         <<: *website
         tableColumns:
           - sampleCollectionDate
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - authors
           - authorAffiliations
           - geoLocCountry
@@ -1463,7 +1465,7 @@ organisms:
           - geoLocAdmin1
           - authors
           - authorAffiliations
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - hostNameScientific
           - length_M
           - length_S
@@ -1563,7 +1565,7 @@ organisms:
           - geoLocAdmin1
           - authors
           - authorAffiliations
-          - ncbiReleaseDate
+          - earliestReleaseDate
           - clade
           - lineage
           - length
