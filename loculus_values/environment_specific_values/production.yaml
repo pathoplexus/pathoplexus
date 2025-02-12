@@ -147,6 +147,11 @@ resources:
           memory: "1Gi"
         limits:
           memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "3Gi"
+        limits:
+          memory: "3Gi"
 defaultResources:
   requests:
     memory: "200Mi"
