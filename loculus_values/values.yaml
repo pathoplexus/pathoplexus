@@ -2119,3 +2119,85 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
+resources:
+  organismSpecific:
+    mpox:
+      silo:
+        requests:
+          memory: "5Gi"
+        limits:
+          memory: "5Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "3Gi"
+        limits:
+          memory: "3Gi"
+    ebola-sudan:
+      silo:
+        requests:
+          memory: "500Mi"
+        limits:
+          memory: "500Mi"
+      lapis:
+        requests:
+          memory: "500Mi"
+        limits:
+          memory: "500Mi"
+      silo-preprocessing:
+        requests:
+          memory: "200Mi"
+        limits:
+          memory: "200Mi"
+    ebola-zaire:
+      silo:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "500Mi"
+        limits:
+          memory: "500Mi"
+    west-nile:
+      silo:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "500Mi"
+        limits:
+          memory: "500Mi"
+    cchf:
+      silo:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "500Mi"
+        limits:
+          memory: "500Mi"
