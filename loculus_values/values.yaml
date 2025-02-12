@@ -539,14 +539,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: float
         definition: Geo-coordinate latitude in decimal degree (WGS84) format
         guidance: Provide values in range -90 to 90, where positive values are north of the Equator.
-        example: -34.603722
+        example: "-34.603722"
       - name: geoLocLongitude
         displayName: Longitude
         header: Sample details
         type: float
         definition: Geo-coordinate longitude in decimal degree (WGS84) format
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
-        example: -58.381592
+        example: "-58.381592"
       - name: specimenCollectorSampleId
         displayName: Isolate name
         header: Sample details
