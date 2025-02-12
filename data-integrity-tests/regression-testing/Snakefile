@@ -40,7 +40,7 @@ def url(w):
     base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
     rest = (
         url_segment
-        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&isRevocation=false&dataUseTerms=OPEN&compression=zstd"
+        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&compression=zstd"
         + length_query
     )
     match filetype:
@@ -175,10 +175,10 @@ rule diff_meta:
 
 rule diff_seqs:
     input:
-        "results/{organism}_{a}.invariant.seqs.tsv",
-        "results/{organism}_{b}.invariant.seqs.tsv",
+        "results/{organism}_{a}.invariant.seq.tsv",
+        "results/{organism}_{b}.invariant.seq.tsv",
     output:
-        "results/{organism}.seqs.{a}.{b}.diff",
+        "results/{organism}.seq.{a}.{b}.diff",
     shell:
         """
         diff {input} > {output} || echo "Differences found"
