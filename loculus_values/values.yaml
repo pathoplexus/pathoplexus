@@ -2129,12 +2129,12 @@ resources:
           memory: "5Gi"
       lapis:
         requests:
-          memory: "1Gi"
+          memory: "400Mi"
         limits:
           memory: "1Gi"
       silo-preprocessing:
         requests:
-          memory: "3Gi"
+          memory: "1Gi"
         limits:
           memory: "3Gi"
     ebola-sudan:
@@ -2145,59 +2145,59 @@ resources:
           memory: "500Mi"
       lapis:
         requests:
-          memory: "500Mi"
+          memory: "300Mi"
         limits:
           memory: "500Mi"
       silo-preprocessing:
         requests:
-          memory: "200Mi"
+          memory: "100Mi"
         limits:
           memory: "200Mi"
     ebola-zaire:
       silo:
         requests:
-          memory: "1Gi"
+          memory: "500Mi"
         limits:
           memory: "1Gi"
       lapis:
         requests:
-          memory: "1Gi"
+          memory: "400Mi"
         limits:
           memory: "1Gi"
       silo-preprocessing:
         requests:
-          memory: "500Mi"
+          memory: "100Mi"
         limits:
           memory: "500Mi"
     west-nile:
       silo:
         requests:
-          memory: "1Gi"
+          memory: "500Mi"
         limits:
           memory: "1Gi"
       lapis:
         requests:
-          memory: "1Gi"
+          memory: "400Mi"
         limits:
           memory: "1Gi"
       silo-preprocessing:
         requests:
-          memory: "500Mi"
+          memory: "100Mi"
         limits:
           memory: "500Mi"
     cchf:
       silo:
         requests:
-          memory: "1Gi"
+          memory: "500Mi"
         limits:
           memory: "1Gi"
       lapis:
         requests:
-          memory: "1Gi"
+          memory: "400Mi"
         limits:
           memory: "1Gi"
       silo-preprocessing:
         requests:
-          memory: "500Mi"
+          memory: "100Mi"
         limits:
           memory: "500Mi"
