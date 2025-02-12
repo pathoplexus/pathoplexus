@@ -135,6 +135,23 @@ resources:
       cpu: "200m"
     limits:
       memory: "3Gi"
+  organismSpecific:
+    mpox:
+      silo:
+        requests:
+          memory: "10Gi"
+        limits:
+          memory: "10Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "3Gi"
+        limits:
+          memory: "3Gi"
 defaultResources:
   requests:
     memory: "200Mi"
