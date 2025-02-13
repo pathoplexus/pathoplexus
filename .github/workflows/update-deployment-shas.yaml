@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get current branch name
         id: branch
@@ -20,12 +20,17 @@ jobs:
         id: sha
         run: echo "::set-output name=sha::$(git rev-parse HEAD)"
 
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.UPDATE_PATHOPLEXUS_DEPLOY_KEY }}
+
       - name: Checkout loculus_deployments repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: pathoplexus/loculus_deployments
           path: loculus_deployments
-          token: ${{ secrets.UPDATE_PATHOPLEXUS_SHA_TOKEN }}
+          ssh-key: ${{ secrets.UPDATE_PATHOPLEXUS_DEPLOY_KEY }}
 
       - name: Update config file
         run: |

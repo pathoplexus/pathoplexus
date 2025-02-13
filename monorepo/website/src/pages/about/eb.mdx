@@ -1,6 +1,7 @@
 ---
 layout: ../../layouts/AboutLayout.astro
-title: 'Executive Board'
+menuTitle: 'Executive Board'
+title: Pathoplexus Executive Board
 route: /
 order: 2
 ---
@@ -15,32 +16,36 @@ import tommyLam from "../../images/tommyLam-square.png"
 export const members = [
     {
         name: "Emma Hodcroft",
-        description: "Evolution, phylogenetics",
+        description: "Evolution, phylogenetics", 
+        affiliation: "Swiss TPH; University of Basel; SIB: Switzerland",
         picture: emmaHodcroft
     },
     {
         name: "George Githinji",
-        description: "Evolution, phylogenetics",
+        description: "Evolution, phylogenetics", 
+        affiliation: "KEMRI-Wellcome Trust Research Programme: Kenya",
         picture: georgeGithinji
     },
     {
         name: "Allison Black",
-        description: "Public health, molecular epidemiology",
+        description: "Public health, molecular epidemiology", 
+        affiliation: "Washington, USA",
         picture: allisonBlack
     },
     {
         name: "Anderson Brito",
-        description: "Phylogenetics, public health",
+        description: "Virology, public health", 
+        affiliation: "Instituto Todos pela Saúde: Brazil",
         picture: andersonBrito
     },
     {
         name: "Tommy Lam",
-        description: "Software development, evolution",
+        description: "Software development, evolution", 
+        affiliation: "The University of Hong Kong: Hong Kong",
         picture: tommyLam
     }
 ];
 
-# Pathoplexus Executive Board
 
 Pathoplexus is run by an Executive Board, who have dedicated themselves to following the 
 [Pathoplexus Values](/about/governance/values)
@@ -49,6 +54,9 @@ and aiming to ensure the Pathoplexus database is efficient, effective, transpare
 Pathoplexus believes a diverse, active board is key to ensuring the database can maximise the good it does.
 Our board is committed to serving in two-year terms, and is accountable to the Pathoplexus Membership.
 
-The Pathoplexus Executive Board is defined and guided by the [Pathoplexus Statutes](/about/governance/pathoplexus-statutes) and [Executive Board Guidelines](/about/governance/eb-guidelines).
+The Pathoplexus Executive Board is defined and guided by the [Pathoplexus Statutes](/about/governance/pathoplexus-statutes) and [Executive Board Guidelines](/about/governance/eb-guidelines). Executive Board members serve in a personal capacity; their affiliations are listed solely to highlight their areas of expertise.
+
+<div class="h-12">
+</div>
 
 <Team members={members} />

@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Search & download sequences via API"
-order: 14
+order: 61
 ---
 
 ### Contents:
@@ -41,7 +41,7 @@ Combined with a single accession, the resulting count will be one. Combined with
 Example of all Ebola-Zaire sequences from Uganda:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=Uganda
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=Uganda
 ```
 
 ### Metadata
@@ -55,7 +55,7 @@ Note that data is returned in JSON format and will often need to be parsed befor
 Example of all Ebola-Zaire sequences from the USA:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=USA
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=USA
 ```
 
 ### Sequences
@@ -68,7 +68,7 @@ sequences that meet the specified criteria.
 Example of all Ebola-Zaire sequences from the USA:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=USA
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=USA
 ```
 
 # How to Call Queries via API
@@ -87,7 +87,7 @@ For `aggregated` and `metadata` it's most sensible to save these as `.json` file
 Here's an example of how one might download all Ebola Zaire sequences from Uganda into a `fasta` file:
 
 ```
-curl "https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda" -o uganda_ebola_zaire.fasta
+curl "https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda" -o uganda_ebola_zaire.fasta
 ```
 
 # Download All Sequences of an Organism
@@ -95,19 +95,19 @@ curl "https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequence
 To download all **unaligned** sequences, use the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/unalignedNucleotideSequences
+https://lapis.pathoplexus.org/[ORG]/sample/unalignedNucleotideSequences
 ```
 
 To download all **aligned** sequences, use the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences
 ```
 
 **Note that for CCHF**, you need to specify the segment (`S`, `M`, `L`) that you want after the main part of the URL:
 
 ```
-https://lapis-pathoplexus.org/cchf/sample/alignedNucleotideSequences/L
+https://lapis.pathoplexus.org/cchf/sample/alignedNucleotideSequences/L
 ```
 
 # Download Specific Sequences by Accession
@@ -124,19 +124,19 @@ To download the latest version of a particular accession, use the accession numb
 Use the URL format:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]
 ```
 
 To download a specific version of a particular accession, use the accession number with the version ending, and use `accessionVersion` in the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accessionVersion=[PP_ACCESS.1]
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accessionVersion=[PP_ACCESS.1]
 ```
 
 **Note that for CCHF**, you need to specify the segment (`S`, `M`, `L`) that you want after the main part of the URL. For example:
 
 ```
-https://lapis-pathoplexus.org/cchf/sample/alignedNucleotideSequences/L?accession=[PP_ACCESS]
+https://lapis.pathoplexus.org/cchf/sample/alignedNucleotideSequences/L?accession=[PP_ACCESS]
 ```
 
 # Download Sequences by Search
@@ -155,19 +155,19 @@ You can search by sample collection date exactly using `sampleCollectionDate`, o
 Ebola Zaire samples in September 2020:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?sampleCollectionDateFrom=2020-09-01&sampleCollectionDateTo=2020-09-30
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?sampleCollectionDateFrom=2020-09-01&sampleCollectionDateTo=2020-09-30
 ```
 
 You can use `geoLocCountry` to search by country - here's an example with the UK:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=United%20Kingdom
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=United%20Kingdom
 ```
 
 You can use `length`, `lengthFrom`, and `lengthTo` to search for sequences by length:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?lengthFrom=100&lengthTo=500
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?lengthFrom=100&lengthTo=500
 ```
 
 If searching CCHF, you need to specify the length per segment, using terms like `length_L`, `length_LFrom`, and `length_LTo`.
@@ -175,7 +175,7 @@ If searching CCHF, you need to specify the length per segment, using terms like 
 You can also combine search terms together to make a search more specific:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda&geoLocCountry=United%20Kingdom&dataUseTerms=OPEN
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda&geoLocCountry=United%20Kingdom&dataUseTerms=OPEN
 ```
 
 # Searching by Mutations via API
@@ -191,7 +191,7 @@ that the query should return sequences with any mutation at the given position.
 An example searching for the count of sequences with nucleotide mutations from `C` to `T` at position 180:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?nucleotideMutations=C180T
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?nucleotideMutations=C180T
 ```
 
 Specifying amino-acid mutations is similar, but requires also specifying the gene, and does not require the 'from amino-acid'. (Though providing it is ok.)
@@ -203,5 +203,5 @@ As with the nucleotide mutations, you can also leave out the 'to amino-acid' to 
 An example searching for the count of sequences with amino-acid mutations to `G` in the `GP` gene at position 440:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?aminoAcidMutations=GP:440G
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?aminoAcidMutations=GP:440G
 ```

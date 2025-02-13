@@ -1,0 +1,15 @@
+name: pp-integrity
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.12
+  - snakemake
+  - tsv-utils
+  - coreutils
+  - moreutils
+  - curl
+  - seqkit
+  - zstd
+  - csv-diff

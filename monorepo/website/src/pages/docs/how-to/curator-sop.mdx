@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Curator Standard Operating Procedure (SOP)"
-order: 17
+order: 70
 ---
 
 This document provides guidelines for curators on how to review, evaluate, and act upon potential problems reported by users regarding sequence data or metadata errors.
@@ -12,11 +12,11 @@ You can see a list of our curators [here](/about/development-team#curators).
 
 Curators are responsible for ensuring the accuracy and integrity of the Pathoplexus database. This SOP outlines the steps to follow when reviewing reported problems, the type of evidence to look for, and the process for making decisions on whether to correct, leave open, or close an issue.
 
-## Accessing Reported Problems
+## Accessing reported problems
 
 All reported problems are submitted by users to the [Pathoplexus Curation Reports GitHub repository](https://github.com/pathoplexus/curation_reports). Curators should regularly monitor this repository for new Github issues.
 
-## Login as Curator
+## Login as curator
 
 For day-to-day use of Pathoplexus please ensure you use your regular user account. When undertaking curation, please log in as a curator. _Ensure you log out after you finish curating!_
 
@@ -58,36 +58,44 @@ For day-to-day use of Pathoplexus please ensure you use your regular user accoun
 
 This process ensures that all curators' viewpoints are considered and that decisions are made fairly and collaboratively, maintaining the integrity of the Pathoplexus database.
 
-## Actioning Approved Corrections
+## Actioning approved corrections
 
-Once a Github issue is approved for correction:
+Once a Github issue is approved for correction you can proceed with revision - note that the procedure differs slightly for sequences submitted directly to Pathoplexus and those submitted to an INSDC database visible on Pathoplexus.
 
-Note that if you download the sequences and metadata _from_ Pathoplexus in order to prepare a revision, the Fasta files headers will be the Pathoplexus accession. You will need to rename these to the `submissionID` (provided in the metadata or on Pathoplexus) before submitting the revision. 
+In both cases is important that you revise sequences using the originally submitted, unprocessed metadata. At the moment this means that unless you have access to the originally submitted metadata (for example if you are the original submitter) you should always revise sequences using the **Revise this Sequence** button at the bottom of a sequence's details page and _not_ using the revise option on the submission portal where you are asked to re-upload all data. We are working on making it easier for curators to download the original metadata.
 
-If you prepare the revision from files _not_ from Pathoplexus (ex: the original submission files) remember to add an `accession` column to the metadata file and populate this with the Pathoplexus accessions.
+![Revise Button.](../../../images/CurationReviseButton.png)
 
-### Direct Submission:
+### Direct submission:
 
 If the problem involves sequences submitted directly to Pathoplexus, contact the submitting group via the email address provided and alert them to the suspected problem. Coordinate with them on whether they can prepare the revision, or if you (or another curator) should. _Be sure_ you or they include a link to the Github issue discussing the revision in the `versionComment` field of the metadata, so that the reason for the revision can be easily traced.
 
-**Do not prepare a revision without establishing contact with the submitting group, as they could accept it without realizing.** If they would like you to prepare the revision, do so, and alert them when it's ready to be accepted.
+![Revision Form.](../../../images/CurationRevisionForm.png)
+
+![Version Comment.](../../../images/CurationVersionComment.png)
+
+**Do not prepare a revision without establishing contact with the submitting group, as they could accept it without realizing.** If they would like you to prepare the revision, do so by signing into your curator account and clicking the revise button at the bottom of the sequence details page (see image above). This will allow you to edit the originally submitted metadata. Revise the submission as agreed upon in the Github issue and add a link to that issue in the `Version Comment` metadata field. Alert the submitting group when the revision is ready to be accepted.
 
 **Do not accept the revision. Only the submitting group can do this.**
 
-### INSDC Submission:
+Once the revision is accepted you can close the Github issue.
 
-If the sequence data originates from INSDC, **two different curators** may prepare and accept revisions. They should coordinate so that the revision does not 'remain open' for too long. When both curators are ready, the first curator should prepare the revision and submit it Pathoplexus, but not approve it. The second curator should then review the revision and ensure it is as agreed to resolve the problem. The second curator can then accept the revision.
+### INSDC submission:
 
-_Be sure_ you include a link to the Github issue discussing the revision in the `versionComment` field of the metadata, so that the reason for the revision can be easily traced.
+If the sequence data originates from INSDC, **two different curators** should prepare and accept revisions. When both curators are ready, the first should sign into their curator account and click the revise button at the bottom of the sequence details page (see image above). They should revise the agreed upon fields and add a link to the Github issue in the `Version Comment` metadata field (see image above). They should not approve the revision themselves. The second curator should then review the revision and ensure it is as agreed to resolve the problem. The second curator can then accept the revision.
 
-After a revision is accepted, be sure to close the Github issue.
+Once the revision is accepted you can close the Github issue.
 
-## Documentation and Communication
+## Bulk curations
+
+Bulk revisions should only be made if a curator has access to the original metadata. As this will not be the case for most curators, please _contact us_ at [revisions@pathoplexus.org](mailto:revisions@pathoplexus.org) if you need to perform a bulk curation and using the revise button is insufficient.
+
+## Documentation and communication
 
 - **Document Decisions:** Record all decisions, including the rationale, in the GitHub issue thread for transparency.
 - **Communicate with Users:** Provide feedback to the user who reported the problem, informing them of the outcome, whether their proposed correction was accepted, and any further actions that will be taken. If the data was directly submitted to Pathoplexus, ensure you also communicate with the submitting group.
 
-## Ongoing Responsibilities
+## Ongoing responsibilities
 
 - **Continuous Monitoring:** Curators should continually monitor the [Curation Reports GitHub repository](https://github.com/pathoplexus/curation_reports) for new issues.
 - **Review Open Issues:** Periodically review open Github issues to determine if new evidence has surfaced or if additional curatorial input is needed.

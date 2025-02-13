@@ -1,6 +1,8 @@
+accessionPrefix: "PP_"
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
+robotsNoindexHeader: false
 subdomainSeparator: "."
 secrets:
   keycloak-admin:
@@ -14,9 +16,8 @@ secrets:
     encryptedData:
       backendUserPassword: AgBHQMXRH4iD5lsHHY1JAUT6mMb4nlAj/4L2SEiXPDxYdcrRBGT3U5yfNftNAn+9YkyqIZtXBZKPDHQ/YFHUh2ET5x9EZni9INdULcYUeu/scwt0n+as7TnoWKsP0q0BBU50g7d2t8CzUOeF8N3IvZSHYYKwCGB2gXOey8Dq4CrCL5Yw5MDWTZ5/FwpdRX/m/nLpSGj/5AotiV7kWBCBHfKSmHgLo4kp7ix3JB++idwIhRgfUtzYEtGt2qEbwWYYX7UeA1fI82Il/ftrC3ivrPB/qU+EktEEouKJRdRjTqddIAcrR+0zgXB2YZjcq9tjQhh10IxQhImvihHPhA53N2SEtT/3oxh3LgDVa9zUR6m4bRVOyxyZecu5TUpSWl6ZO0gZINbVRNKlxxh3pARYwEfex+jQ4A0378styEKg5hNs9hIkwwBvTsPJHxueryj0+bK8pnS0TsasYbtkCPkXxbXfHGa3hOl9EXJBDuAycB+HVZkMy//N19M1BYKYJ3KuzFmgJHmnLBBIFuyt1CuyqVesX+Uc1Bk2MKJU/Yz+8BmI30W1cpnm08pD61AZ/xyQqyuGfFX7Ng3URtCp/oBk15XQnc0dQ6HbVKR3m4YP59KX2fhtVdaJwKOtDjucV2HR1QGFGAFEDXutYj0tPpDNIyyoVJRmPCvTaAVrKMMVm6g7se0iPs6lRnEphHE856f4Kp1juHd4dCehgRlr3Gm7SqI30IhsVg==
       externalMetadataUpdaterPassword: AgB1Z438OnbpJN9jT2/RVnVFILZ1l9fD1kT58Dn0zuKeqTMSr0TO6cvaniPLEeFPRz7aKrex1qw2fFeymxeNA23oI4j8OlMJxspVe0oNvNiwlDXiH3yKRNc703FHVhKPZN65jpVEh15Eu05m++N+b/82Q2Vvy0NaD8Xs+8uckPnXoq4TYVZrZfFJ4nRqRi5pLF2FZgltvAfwSgYruTJPxzks7BUaKC0h1OeA2b+tqNeJVpCqGhtd0TTFHLCgqqSDlGDohKmSm8URz9zjdWHqyhsZST0BOUmo9uIE8QJvJUV2FsoLWNuJ0mExOOGsR76MFVR6Ro31Fa4BzbokFs9RoVzfVNFtCUpTPY7NeQBtsApwzp5oomFj7poQExWSn2q2t1Sf5+F14unUrj7D5Afozv8Gay/DMOOW5KgnCKRR6IsTY+U2d+8/sjACU8dToxymm1BEc6Wfy/2/b5fRwRmOWHSFyp/XqfK8IGoUnSxKZizq2QfROmGc5sT33WcS0wLA6z3XBJYW1XVdkczLjAwRWFO+5N7zl6dFL1b/Hz/DU9TMqeb4iaAVtkI+8UWoMFnmZMG0AqEOedrKe4FAYazoZRDrwP1rGwFZ4835PumUHPc0voq/hhIyNDdSwrH9ZGPu0oACiMAmzbnW9I0C/R6FjFq5DnLBuSJt7F5FrGOouVBJUzUYm1/2HR75bful5TS4HES4tWmeEXYesl4FoAH4gFpJDcpHCcwPOw==
-      preprocessingPipelinePassword: AgBfkwmtZWSX7hcrJYeUwYozsbYycBr0zHWE0RbNPylVugpavVwFdj/K/y3awoGfRIpSIufgO/lTd52Jl9l0TYkd+kyH7LIuBDHD5utV6Aw4tE6CVULx+zESwDxyXhrtQAUBDk2CSpLhzH9fVEJrqAP6YMPG9bF4LtYhHYUUwn62pOMmb2gN7rEitMMxcDD0CKUFczbsVvM84khqgwA0gkehnnld5iLu5M2JLikCXMXTLi9EQ/I9Kkolb5H7hh5Eebuu8rAw+jgyrJhKTbhjz41YS16Qa5+WjJ0bQwU0CYsJB/oNl3xo8L5MdEirlEMXK9gNtp774UNoycpAhU/7a3HrIMcgYVlXtBlXmR5KOYrwz6aaH7Djft1tVKVkYIxnrF4Xs7OQjtH+rbcKDMadBRcYhzhjHM/dlZQ/lJj3MNHo7dCte48CvXuWVnC3E9xo3frl/cFGkBrOp4Ugj4+k4x2aTOkBPV8HgpC75fHGHwucEX+8wrUNfkYJykGlszs6wTgycysKNX0D1xlO+74oNS0QmEtMavDwW80R8lMi038OEL3fnpyKYGg6QHavbk1Hf0SGE7g3HKBuDnJIeIUJiozeaKZzjtzs1dYtMuqw/6XKqjpmJapmYv1om1Bdxq4zqk1ktVUzcIgS6TsgypK2UF+RBLEnWQdSFbVsxSK269XKuH7bEfixSCN5Sn/034aV20aNd0l72ORMzl6Ux1xBVZldXKUJRXkiMw==
       insdcIngestUserPassword: AgBz6FYEAv3dG/zqUdNjq7tvVYNcF5GiNrwRfUm9E7Af4keHzeA4akYJoECaS7L/sjrWw+VwsHAuRJ9aQZldOmX+YSFTd6rwQEYz9ZiGEagxeU6IbIMc2BUmytN/WxhulIcMUhahnWYCPoL9GduJEWdxY7M2P5r3wRSQUi7mBr6acaR1bnBntQRS4GUtoq77jTlBZ7UjzvAH4ZAMC30hRm3Rb9jIHC0Q6Vb7ODKnmTD8AufuQTWPzbAMvsUKzLu3zsYCeVEbdYBAtANNSAP1gk44WZJhTssXDH/stTwEiK01l8tD4xdQRbM+xNHernCwI12ZWgrJcDSCnvRLVUmGF+57NzRqSNMS9t6Q0RFbvYOGBsjhO+qZFTcF43AxoKVpOTqNMe50P93gaYHSpQ905q2JgDNzkWTg3bMbWIDFmZUx6acwOmpTsqochRvAhKU83M1anNKfnw2KGYvsiDNSFZIwhMfeS6gvngavegPT4yrEtPTLJTjjh2tGbYV1cgv0YGvsRdVAwAKejuJ6/OUg7xgmpH/lWpiSggOL7av3wNabQJPsn9JQ0NcaGGyX8ipIpA26SEECyUo+Y5+kGqG8dXdKHGyO/gcCZTxB4VLNnb8xpv3W/i4r1pytiFgh8beZnXZEX+ajWviLff7zTGrkpGUScP8Oa4VwPNPbPhLE9SZaxXq2ulA9OSwMuOjFfqnqT1Nqz6z85ErlbqBp/0UXzk/fW2D6kPw=
-      siloImportJobPassword: AgAYKVrJ4D+zptJjRZ6FcTAtCmPfHd5VdufbeablzGdUymvGmgOjvj05iVXipIdl6Yqkojf/jYAoM2CvK3cNafBSXDKkXSm1lpCvk4Smk5RtVLCCLByBS+O1ch39icXfDyz43VXrOBBCjOfajSC4MYGIOKkzVwr1JbjXJt4V9RZcwQURUqBygZ1hkeTM0bKB3cHN+9jqbpSZPeQ0fAEL5zx0j+gQzpID3qebROy/2WQ/HnNebt8coC4GtOSKpvsgM7JwTzyZLsRhXj5cbVXZNoC4fjYw2rRorZ5FG7h6O5cr9LgST8w8hhd8XoU3oKtRm7b+WwTqeFlXD8o3JwmyCo3HjKYZRY80solA44lGwlA1lJaBrOjbDyG+L4kgC9g2iM4JHAI2w6nEvQEmunjxrIYhQ2PSShMcmbrRqCSzm6KDyC4ctxwbvAQR8MBps77eTypbeJXzp4p9RgrzzhuTrC/6gIjpvjE69295BGLpxKFXfDXJxUNbYtDcAV48ZhLyu3m70ZGvhUPIiPghdxD06L9KcQnlj4TK9AcRzFAvpbT4lzrFrh6pXxIAOKtP5KdvHsSLwJw7eLiGbh4YWmssmZ+onfCBlHAGD9RROkGwoyBPst2ZrcK49hj5Z2FdkvoSoc6TPnVz/N90MigLMYgZ266T1CfN1/J/NwZ9amL+Y5pEdCMqy4jv/wp0YmpafVDK9wsxxBLaw1AJL4l98VjZkSijbek=
+      preprocessingPipelinePassword: AgBfkwmtZWSX7hcrJYeUwYozsbYycBr0zHWE0RbNPylVugpavVwFdj/K/y3awoGfRIpSIufgO/lTd52Jl9l0TYkd+kyH7LIuBDHD5utV6Aw4tE6CVULx+zESwDxyXhrtQAUBDk2CSpLhzH9fVEJrqAP6YMPG9bF4LtYhHYUUwn62pOMmb2gN7rEitMMxcDD0CKUFczbsVvM84khqgwA0gkehnnld5iLu5M2JLikCXMXTLi9EQ/I9Kkolb5H7hh5Eebuu8rAw+jgyrJhKTbhjz41YS16Qa5+WjJ0bQwU0CYsJB/oNl3xo8L5MdEirlEMXK9gNtp774UNoycpAhU/7a3HrIMcgYVlXtBlXmR5KOYrwz6aaH7Djft1tVKVkYIxnrF4Xs7OQjtH+rbcKDMadBRcYhzhjHM/dlZQ/lJj3MNHo7dCte48CvXuWVnC3E9xo3frl/cFGkBrOp4Ugj4+k4x2aTOkBPV8HgpC75fHGHwucEX+8wrUNfkYJykGlszs6wTgycysKNX0D1xlO+74oNS0QmEtMavDwW80R8lMi038OEL3fnpyKYGg6QHavbk1Hf0SGE7g3HKBuDnJIeIUJiozeaKZzjtzs1dYtMuqw/6XKqjpmJapmYv1om1Bdxq4zqk1ktVUzcIgS6TsgypK2UF+RBLEnWQdSFbVsxSK269XKuH7bEfixSCN5Sn/034aV20aNd0l72ORMzl6Ux1xBVZldXKUJRXkiMw==
   crossref:
     type: sealedsecret
     clusterWide: "true"
@@ -30,7 +31,7 @@ secrets:
       password: AgDThwfCt2A8gNPvMny053j7zSzAAHAKdNPFU5IsOW/9ebQRAqHNuegqllqOAxDFkv5eOIpCrbvhTsT8eBhlMpwe2ZrU1FLXRhVkQb4powf5gqjjmsFJWJf4NxPLHuNGt8fJu7RPzQ9/i2qfxqtPvRnfwO9smUgzTMrUEY21bHMjHFZvtTK0z+CoHzKm17KSINaGXRiQQz1EbwMdbVtooqeR850eX8zEnnaX+5qBWp6KUl5wD3isJWiXVaqDyGOGMnXYtE7IzlIZl7a1pwkk1bYrgBhi4o++00aeDq+QqL8qxounqjCBmN98LGBpx3f8HzXlWZhHxCCvgS3R8uqnFvzjb7m6+cNMjETeZMQYVawV8AV3ATe/AH7v4bBkNp8VWVDUu1+ozsLvhKnUeTfXMOHDTDfslsltiIxJcyyRm8nBshnZ36mnQl0QALrP3x24jU2/gLj4hwSHxQLhz2itLWq4c035EIWrsNuPz053P05Ju2EgunLw7b8NzqP1rA77BzSxI/h9ZIQ3ZepbG/qtj12oUunFO1BBLD3BKUf9GVI9AOUSAA8hRhY6WgwcFfNdl+0IZIFWMi9mJXP3TMGqg7jXYLoaz9CLvaX7HdvhfOQ7fHLGND6UBuCFwNivbX1km42L96v5SCa5TayGGcVhgyntAc6VM+oarIZcFA26ruNK0DBz6B0I4BIkzCw0FNH6Q/OsDjGXzS5MdhC9BD2XoAYO/bLr3A==
       url: AgC0euwNZ79IDQTA6x+MzYoW63keN53YwFVVyWjp91z54lOWYqHQWxx/y530IBk/JfJVurSetRRLvvW0K2FIF1BCntxyfUzNV+RCJJx8gsd7O9AEq+1HIbLvapFGDeu0r+fXeIOwmWS+78NzWFxiRTsLOKpLhbrqX4Toh6MRtvrMXpyCF+BZCDpdhSF5onk7W8Styl5ilhj/x5VpBX5K6hEV8sOFFvRHdDBimLzzka6GCS0/ECk6zpLoAJYjcoPXvxT1835ETtd19nAJqDiuroIiUn5+eBVF3JmjYtUKG7OzaqXdEwD3EosKf7CG4d8qi3ekqUl8h8bPo0ydv+Oszs/5FnOQizXnTeBHeEZvVQ1gee4RUVU7zNwFuhho88FL/fw3+BNQ1j5onS1iokTIhdFWjS9mJMzyotqibLaRBykorKSixxcQg7YpHVILvznTz50EU347EVr0oCfHJXq2utJBdBIvW0yGhIxnIpveH6p+lS/NP2a2y3Hql6G8qJowPa2DYYQVkFGOvwH5bWoymYecXBdHtbL8f/n5l8Q2wwPR3sljxL7MP3wY2S1E4z6AflqsJJJyvP4fVW/E6m+gU05Js1vh3ZnsE8RMYglDGDzGQ8a+UFINJOfkUPiI5FMC1gLQKfmt4OGALWZTR74lcvDj1nwKYRJB4eGn2yH//VKeZbNMz74qPn3R4hM5b78MN7S6qjUj+MZKgb3OuvWBWYQZxmvctdgzvk4h+DVwYoBSO8qzAMEbZISzGZ+pYEUg49MOGiI8SYZIQJSWqbsUQ3ZVSdAgyRKxPLR2mgwByxOlwf+Q4YYsjXq2uJh91RE79hypLYiIxHFppblT/g==
       username: AgCVsForafhGd6476UHYnWFs9TjZeikvgWteZIwdVRxRItdjBRyel3bPV/wJyKh/eIE7P6OtRVqdcM05ksDGVO5ptJrgiTT3v3QSQwf6y6fGrYK085qODRnHvU1HGq3Z58tQJRbr+Nv+pfKlHr+XemJ6SdGA4AFEsja+z+HLiPJzlYqwf63dbIT5WxxKBE4/Tucjr0ps0NvNPQqw3K/kXNf5IGKAr2OLh7GFQ1/StNpkWmQBUU31FvVMwQALkT1x32+2wdsfAGbazXsLxTlP9G600EpP3dVSaLwDTcS13eD9PyLwNd+ZRU4hOMWcVY2NSbswY7uSd4rHNeeuyXiBbAmTLwnVQrlfJ1Wq5TaCDqkGQR3zfl6EfQQNZKXhjKqfclFNdgwoYViDHzpj4JVFpKj5BXta14UCVuIKaKdyg6D6cb9UaOAMYrDqY8eHztS8oI41RklXZuk79NdU08dAnUu1pGir6SpBOZpwJqqKYIrr7OfTgTI38LkljLSTcErwb3YJx51cC2UdpVLIMWndCurn297djMtrMmcBNEOrS3s2pPMAshitO+ZfCRQwPQ7Y3pNAkS+yqkRRjOH2JIhxziya2waxnj3bL/fRNVo5NNbSKgFZXDZSceyQNKzwR3DguZDPNN3mZiOVmGUsxWJ7OPXtsMtcLR1M20eT16KHLUGceL5LvSs2Zs4yjFeNZJVrKAMN6XrEQpvZL6mW8mCFOw/VLw==
-      host: AgCk8CURGjV2raeTiwDAxn39zp1Ni0QM/1iHzBWyJBKzTaHl/GES6UZ+lUS+ZlWhi+XTgTGYuhHz4UJPnUNX3H47r6xczAdCsSRt37eZm3bOOObKGh+GS9E5Ju9Kr18q2wsGq2eJ6z9UCiPWS3okMwc6ciVFVymzRtFfqiDtdN0WBvnYI6raupV8Lw8mwoy4KATZXZRDejFKSKWEMsMjCDMEP6M8AoTzc6MfVKsg6DCazWm8LDzHsguJXlF5LjTEMsysZ6I3qT0WYmUVZcRjZxcJBzB1sXbkYyu9hZZYhG0kO/g/RfZDhcOTTEbkGHGiGAqqYt2SqVJzUMMVvHzYZOeU0eU/zRP9/MxlvTCiZJyG3CruZPyPobXWG71npXS2YwGmA7oL7g1GXuUAbOBwV1nYLL2djW7nXnchiZLkBYNmU8hDPHKRnWui94Cxz065RlvIRBoxq6hU0a5YJ6lhaldjIxqIBIeeqpwOUtiPGxcBPA9cmmj6vEidz8+DMXIHLJGjPHvRMKjohd5xMp+l0A/dX/Zym0nI8iBUvoQlMm8CNg4hpkJj+v6lBTJSkBYl6WKycEyGIugmMWZ+AbBSEw22qAfnmJNZM1UorWp7xYbGgN3ttdUK1ax/1qr8yeUFNXUWUB0OEmwIh8sgxpAWutIlHBfnN3rCpO+v2oDhYg64uEMGRWJeDDJoJaI67O32YGSzqCEkc7M0JcWZkEt0ax4DNWcammcXrHvON4pOmjCiHtO26eSpIPY/xHQlyoB9LOY2+z0c5r9mkLYoOqkOc/6X  
+      host: AgCk8CURGjV2raeTiwDAxn39zp1Ni0QM/1iHzBWyJBKzTaHl/GES6UZ+lUS+ZlWhi+XTgTGYuhHz4UJPnUNX3H47r6xczAdCsSRt37eZm3bOOObKGh+GS9E5Ju9Kr18q2wsGq2eJ6z9UCiPWS3okMwc6ciVFVymzRtFfqiDtdN0WBvnYI6raupV8Lw8mwoy4KATZXZRDejFKSKWEMsMjCDMEP6M8AoTzc6MfVKsg6DCazWm8LDzHsguJXlF5LjTEMsysZ6I3qT0WYmUVZcRjZxcJBzB1sXbkYyu9hZZYhG0kO/g/RfZDhcOTTEbkGHGiGAqqYt2SqVJzUMMVvHzYZOeU0eU/zRP9/MxlvTCiZJyG3CruZPyPobXWG71npXS2YwGmA7oL7g1GXuUAbOBwV1nYLL2djW7nXnchiZLkBYNmU8hDPHKRnWui94Cxz065RlvIRBoxq6hU0a5YJ6lhaldjIxqIBIeeqpwOUtiPGxcBPA9cmmj6vEidz8+DMXIHLJGjPHvRMKjohd5xMp+l0A/dX/Zym0nI8iBUvoQlMm8CNg4hpkJj+v6lBTJSkBYl6WKycEyGIugmMWZ+AbBSEw22qAfnmJNZM1UorWp7xYbGgN3ttdUK1ax/1qr8yeUFNXUWUB0OEmwIh8sgxpAWutIlHBfnN3rCpO+v2oDhYg64uEMGRWJeDDJoJaI67O32YGSzqCEkc7M0JcWZkEt0ax4DNWcammcXrHvON4pOmjCiHtO26eSpIPY/xHQlyoB9LOY2+z0c5r9mkLYoOqkOc/6X
   keycloak-database:
     type: sealedsecret
     clusterWide: "true"
@@ -40,14 +41,121 @@ secrets:
       username: AgCbD6vWJovZUmNntBAtvljQzJBPQdYfZ5akZUXNx9xIhBxzwztsmYNLgo1MbVeWAMP/uYVWOnh+bR5ssxdpppLswcUu7ihiMt/djqN8Vf1bowInVR/TmjjMfr/6635DnvSS8hvDXhswjIysXbpH1DAMMF7KizsxHmj/m/XVCLvAishWkPBNLogOzOCMOfl3jNxPOGre6SBsIxxbc5CG1gyHnNledMOyD6ajpCVcdp/amZNrjV9Nov6tWhtkOBuJGqlGKcRVJNa4XA0wxF7ayyuhth4bqYps3wjgE5wCNdnznqhWkmNjLOpl9TumiwAOYt6nlDYUhzXNWhcJSd/RD1r9y1Pn2ZQ644Qt+fga7sovBChfvmpeTd8QNoGpmP2NIw1bHzYaE55jbdgcZJ2V9w2nAGRBHO6J3Tl2ZdxQDTrl3nzjDlwZn1S8WgLC9jWmkszmAruQTNFBJZM9YXSNmxKX5gbkKzJICCv6FQW354PcPeCf/P8tsJNp1NPLWm1Y/Wb8SuMD80doQ3R7J6l5NUzS0IXzyrCti4P+F30EpiI9BdIzUS7wS/uooutP58ehnLgBC+B1BgMhoqeA78sLy7a76bed/pRLMQjXyQRBMNoazkMamXFAYYRIZksyMr2rXHXTKevsdSFxxS9aXj6irVxnTxyfQEdIg/E7k74wOCGrkPHlXMZuMfQTdJ1rgM79zzHRkNIQkXScX31ebtjnwpotuRQ=
       addr: AgCdra6kmXGQN3C3/1a+ygtTMmkljJlnHzfLjyOQJ7RKnFndWztxCF+PGJbqYTr8Wf5oRX/yvIfRpbtdHI6lzVFZaH0TCIdr6xTosDIAKz5D8YtFhn9uMBqJ9jbxpbzW11+j1LgLvWzWodrUL+MPOvHRYVaFmFubt4PusBOTKFt9ShstU7E7AEF7Oa2iUinBNpgz345rNAGnx9+w+MUpiKOF3plh3pnf67s/3V6BUuexblBHyvnZB1/s4g3VWJ1LkCQVP0zCfAaV2rv7h3xti22YK71LtRH+wkFCMSA742mT2ANX7fX0onm6lIe2EkWIAX1wMBQdGDmTQQe5U1uQxaP2c1sa6QT/SDfNdayNhyAprvZPq08bKJpjHXQ8F86GraG/wynz47yl8upCDRG7QABZzbao8a9lCdGeStXltoAbU6uGa9lMUfxFNF1YtxhDq3g4eLiarWSywDdCRwxMlv2Iazbrxa5wn9opbV3rGZ5HMgOcSS9MwMHMamsmRAqX91uNDo4hfcqTtfY6rV7Fsz6prRuE4Ug7GJuN42jw+DFRWlEo7KxLJ0LJ9HeTNf41dP0cbcfEmGgP9ip2EgFdw2cvjyLy+mKlqzKcPO49NAddcwC1Z3Da3UvusnLFFfVeWRYo0aFXMEKd3hBePAne2dPXIRxUKLUFZqj1py7CY/Xmwa0exG/oz6G1g1RejuK5IzEPj70HTNgQC/VBHPLs0bLw2GqY1fMlWXcLXyEluTaaGs/wzE38HDeMu5wJmiWW4CsD80YbqmPbZY9NVbun8xNC
       port: AgAooUvP8ncOhcdkqkjjY/W/8+E6wxafVzuPM3qQzQdCRkOF10uHSCOClbWNPC4AgrWfYMkK4E/bo94LI/koqn/rOPMOjepBYVutkckpMKnZ6nCWtM30MByMRoOhrQSSpA6mXpzEUBHdsXxuv/Lx1U3ca0L7Aii0YWX51Fpi+88gjKVDyyRPGxorEiPiWWByww3j7+xNOjcdPGwF+fIF3mALapJPUz5JgN3ctr+pEJ+zM0Kr0R6C/cfhT4Y6DVpQgeln8EZdDzeKKRxFZTCdjScWmMIGXf9eYtAh0Lz1L+OdWWdHfNk2dDnqWf3SFzizbytGmFQ1C+CAkM+uhFKFIu0ZjnujlCFKAO9CR26gWL737fN8tcRGxgNNzhxRWulzaZmmw614PAo5TJnkEqaIqqaQi1HjRjSplFo4llT+0Gx/U7DpQONr4B8uznhfcPiYX+d/5qn+5L0vty3EJAdDZ7WHfS2oTapKW/HRHyiMnrkgeaNAJCVY6Ic7moCSE7NiR+kJN1mkNdpHAAGiVjgE17SMb4RzfDcjlJfK3wY7+fMt79dWyxkTTbZMlvK/YEkuj4jxa+iEs2e/QQkWzyIYluU0Q386DvSQD0HErOkw+ShHrB9+pm7HV8c6vjZfDIacKDfty6rjMgCRJCHR3m04Q14bXioJ+7dCPf0a705qVA242znDRJHhtS+sMLOckn1w4NaVOn1Y
+  ena-submission:
+    type: sealedsecret
+    clusterWide: "true"
+    encryptedData:
+      username: AgBkMWNKFk7ehceIlzBi4tNTKlj61WXaVB7x4w2onO1/QJlXlhLteeL3+ti17HeH6dhmRFWtRuLtH8i4QxIgdRQu3QaeETX/eYRYOfFR2L8gg5+Nach/2W5JXg63a4Jyx9TdQXDJNBzYcn0H/HFCPUerryvCC/41CMUj8cKQfrpypVRXkKIiEtZ8ipKwV7Ab7VQCFr+LeboOxD+VQR6NCHbVnVkmnuv6xotJ5OZL/AOKaWifWjl2+/6DDdS/kGMYBqZqR901Dq304pZAUlmnXXIOuDnVIK/xfeHFW8EzmAgWtDItqJgkwiR6QLrOfi6xCIeCGneQ1IKG0lJNt8vn6CCUhgjQ9qDfsDZVbjirWZ0SQ1M6QsM1ZWJWP3d+fYKt93l59ZIA3MGv/SswAaGxoBGq2Ziqb4Zn3HVjhniWavIUYimLe2+1pzogN7FZ3WkVvi69AWu82F6An5RX6IDUUuIYt3MInUyijpB2j+DXtebIhHdXriwDnMkW1fK7YI1R5I5Nvmjzp+0WIRkBGqyXQ+io16bd0dHWuTqBNqA9kcyDIJcnfekLYL49r/a8uQwdgJuJMOmYXp9mHzWsyFs2lK/xdWI3mu6A5x63cx0ZfIca0llcEijv9nGyFZLPSSeNkDaTrfOhIsslUOB5mRAt0zeJYF4noZ+Ahg7AyUtEPFGdtTQpcpym2EiAU6ArFyGve7u5Bun7ISHGBwqpVw==
+      password: AgCXd6vTnTeNBHKFGv00jUeT3X8/qm9ZvnibBaZ2USlgaoRZuGGSTFMUfGrs7NjaHFwD6+uitUbV59OKCWUSYGM2Pia2wqD7vK6STjH1pEIl/z2Xnf0RA50CBwLaenA4xUI4yuNwxfC7fRtj3IfpYcpQpdZLKxGVzVeN/9HuzNzVxw3r5o9f7xYMduQFgr1Z/VIgLxEHmuSOD1CCxXaN1PfVnhYOXxR1HpR0/L+hHvyekN5RJCRbtneGNcgBDMIsxRVbwF959aKhGUnCT9RxMtyIzOw72B4hfMlfRau/QKhi2MTfGxiy1V/I69vafKNJlgU1AxZ9nJa/R70YfTM/Dce3d7t2yHdN7xGSFTXN8htXOXav1ql53mqU8O0FNiQ+HU+XwCTFaYRc/W75/rQAwT+RWNo7epgmoJA7FXnoYQu6CGKgBFtaQejsIdPWq+0UZVlMvYXxIMHSVk3jFdD6EEageG0pmic4rGFIADL6bHTUeJi68sffB7IAXrjuOqRO43qH2c5H7unK9bkqi7qKPQxU91j7t0dsR0osWUH2/+j9LFR0SykOxh2iKKD91Xb/Cc7Dcf6VRzmUJqABthF2fBz+rigE+ymkIxmSJLR7zFmiEk6cf5rw0nusKV9aB0zWvotDid/fYduy7wW9GtKWVl10YPL50asWbuLibIfveRRc1BmxT20yEUMnMrWT8XRUdypanuajvrOs51xHsOAw9Jc=
+  slack-notifications:
+    type: sealedsecret
+    clusterWide: "true"
+    encryptedData:
+      slack-hook: AgAmsijcsJu7xeVU00I+Aej984+VN/+iB3gTqZ2KbqSAA+gLjTwIS+DH9xxwidB+OuO+0nxCb85NAvlO6i3BUagTXfmFOpzf/1rXq7KIy0uZRHRCbqKSxi96jyP5tENPjNmAlFHc84wYdK9Z0v3J/ozB3vZAj2PXsFvW1OeSnE4K99GL4jtltzJhwXMOqL63kJD9gVaU8wuMieiiqDW39uz63IvGdC1TzzWtbkAYw2Fvddzuw8nAljMsgWUIAd9u0LtGzp7WBwcaSp3QZBjJcM5JdUcOz8aRq4sJGDEgG1gFmAYCPEQLlDtRAO25YirSOBd1L0lBN6FdqGLQ/DF7Mya60YnECs4joYcMhGtb0YRwwMjRMltERqjX6xCEWYmfIpPIe8VWnAUxtxLwAifJpS9SVAmYiyEz7k3ijz2D1OfD7zYrz0o6Uf+rJx6OWceYkmL0IH1y6vdlXnWzjESCScjev36jCgMYCh/AEWoIOC6eJ1p/nrpeRu9PCOR+//CrvadN9++bU4DHZIMXpH9jS3kFtcpSZ+USBdE6Yco2NNaY9IEZlHngz50iczMhKZXDoWcp6wUp0slx+VH7TP/CXujGEYQGgINO41BTig3pW5szKqpkowhTJ8adGJkpWX8FRi5yE29NiZyxnZz2U9wMLTEJTmYWQb4hR5N+ceamnpunnaVqzra10BJuC8SMQLmA13zZuKRxG7WTKFJ2ySyyOMUCV1NLBhMNhR+IcqjPZdR4waNcOOwyXhxJTz33o/z0JUA2t+pFkJZustZp/JGLW5yx/Ubqvn7lZmMYGLLZCGvJMWo=
+      # Channel: #pathoplexus-notifications
+      slack-channel-id: AgC20tHAimgSbE3RFL2AT700eGzBgKFd1ElR7S4brf+AJU20lEjI2tPmE0VPULAwkiIwzfFd5Nr0JVk+TtTzULTBNAYzC2lNGRSLWGT9dFHUtnnk5gRXDbqc6gudbkGv9R3XI++9xP6KkHI/1w5mQh+BktSL3h/BUNaWqeeCCTKPHJh+oFVgyR9O1pe84JxkW55urKSXok1sswbWe7ypYCluwcT4C5mCxVeBkWBp99toJINWxqZ5Fcc6G+V9K8PN1SHo6qG6DlZ1lbCLlIo2lsxvtWjIMdMtCxdoT7SmWDTAmhPSbsHflFjXR2UBjqb33qB+XhP4jPDaazKIn4sdOA1iJ8aXjd6C5FFVMaELChDVZselZ9f4J5QC20vLcdFHYHrDhhP6X/Mgv1NEVCg15emQEf4MPVrFzaxR+Yk2SvcaKcux8B1QuchD0S23C2cu7DzBtUGiNA2oKvoozO9v0HC+L66+F44f6iB1Jhozrs57XbhVkl1W9S3grTHbsomGq9+kXD15OCi+BSS9ykP4eB/CnJ/qmREX81X81pI1BF7N4l+xuK4ONmC71HbiSHG4gPB9h4HP8KfZ9JaweZlAqDVhTxO25W9pZAVntAEh0BkspO47uptYqOlm9k1mf25cZeKU5gfL7ypuZ8Ig+h3hYzwvfVZpHW6ukXhj3KRfmIuNDRjnRSD73N23JqY1gM6JwLG3U5JbDoWu/G51UQ==
+      slack-token: AgBo9Li49WiC2PcK50vk2AHIvjs9xUTIcCTupSTKnEv3z5QYBrAwqvodhExQU7gLUJXLGTGCt/fZuPJ1h7alpNOcn1jy8Zfr9YSjmlojUcjBcSbIhH5dKwUjNbPrI+fY79B8MovMfqSflSOi8yPIEoaSTrCRilFh+qvPaYGNN7SD6P7eD6dvhTfkeAaGiIXcBI7Opy32YusutJAC+pU8Z1S19xxSTWylE/4j4lHPVRb9CN4qGNJOJ9uRnHnoj5IQXduWDpfGjcS5QmLcS5nxIJSeLhIRUfzG3/UjKYRqTZdlLvqrARQIdgV/qbnw3AFiS+QYWKk5zP87uN4USCkKmhMAO9mrUCUUOX4qIe4JYU64xzUlSLY2W8NQ0wdDjccMo7FcsBZRqPxx3qx/aL8LiqglpPXLJ4eHI8t3NIrY3SFLWufBwO5zOubV7pTKE68V3currdVDCIof4dq8JwsZTAHK/V4InHX5INTFAPGaKLPLUVX+iCUm+8JEMO5lTvMxqtxnYE0pPqB/roda0elunpxJ/Ta2N1vGx7QRIXcJUfYVxyosvJLkZUp/Ht+2ttjqA5p86KfO7HtICYaL2InlUse3yuzaK60Sp7x/2cqldDmag730mXE1lQhu5CzeJ2e0kpDyrbu/G0CBFZPD5hUgftnIYjcVCZwjj44e3FAA+kF3HYHA2yrYrKtddv5sCxc+0TTr4vfbGCDrZsoRB/svwJGdTzG9qAJY0hgiK3pozfjz6okVTaNFpG2J09mJFwnUSZTMP3VsG0+YMi4=
 replicas:
- backend: 2
- website: 3
-crossRef:
-  DOIPrefix: "10.62599"
-  endpoint: "https://doi.crossref.org"
-  databaseName: "Pathoplexus Database"
-  email: "dois@pathoplexus.org"
-  organization: "Pathoplexus"
-  hostUrl: "https://pathoplexus.org"
-enableCrossRefCredentials: true
+  backend: 2
+  website: 3
+seqSets:
+  enabled: true
+  crossRef:
+    DOIPrefix: "10.62599"
+    endpoint: "https://doi.crossref.org"
+    databaseName: "Pathoplexus Database"
+    email: "dois@pathoplexus.org"
+    organization: "Pathoplexus"
+    hostUrl: "https://pathoplexus.org"
+podPriorityClassName: production
+disableEnaSubmission: false
+submitToEnaProduction: true
+enaDbName: Pathoplexus
+enaUniqueSuffix: Pathoplexus
+enaIsBroker: True
+resources:
+  website:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "5Gi"
+  ena-submission:
+    requests:
+      memory: "80Mi"
+      cpu: "200m"
+    limits:
+      memory: "10Gi"
+  ena-submission-list-cronjob:
+    requests:
+      memory: "80Mi"
+      cpu: "200m"
+    limits:
+      memory: "10Gi"
+  ingest:
+    requests:
+      memory: "1Gi"
+      cpu: "200m"
+    limits:
+      cpu: "1000m"
+      memory: "10Gi"
+  keycloak:
+    requests:
+      memory: "1500Mi"
+      cpu: "1000m"
+    limits:
+      memory: "3Gi"
+  silo:
+    requests:
+      memory: "500Mi"
+      cpu: "1000m"
+    limits:
+      memory: "10Gi"
+  lapis:
+    requests:
+      memory: "220Mi"
+      cpu: "1000m"
+    limits:
+      memory: "5Gi"
+  silo-preprocessing:
+    requests:
+      memory: "20Mi"
+      cpu: "1000m"
+    limits:
+      memory: "10Gi"
+  backend:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "3Gi" # Backend requires at least 635741K of memory
+  preprocessing:
+    requests:
+      memory: "100Mi"
+      cpu: "200m"
+    limits:
+      memory: "3Gi"
+  organismSpecific:
+    mpox:
+      silo:
+        requests:
+          memory: "10Gi"
+        limits:
+          memory: "10Gi"
+      lapis:
+        requests:
+          memory: "1Gi"
+        limits:
+          memory: "1Gi"
+      silo-preprocessing:
+        requests:
+          memory: "3Gi"
+        limits:
+          memory: "3Gi"
+defaultResources:
+  requests:
+    memory: "200Mi"
+    cpu: "200m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"

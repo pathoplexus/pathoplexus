@@ -8,6 +8,8 @@ order: 3
 import Team from '../../components/Team.astro'
 import mangShi from "../../images/mangShi-square.png"
 import sofoniasTessema from "../../images/sofoniasTessema-square.jpg"
+import pardisSabeti from "../../images/pardisSabeti-square.png"
+import silhouette from "../../images/silhouette-square.jpg"
 
 export const members = [
     {
@@ -16,9 +18,19 @@ export const members = [
         picture: sofoniasTessema
     },
     {
+        name: "Pardis Sabeti",
+        description: "Broad Institute, Harvard University, HHMI",
+        picture: pardisSabeti
+    },
+    {
         name: "Mang Shi",
         description: "Sun Yat-sen University",
         picture: mangShi
+    },
+    {
+        name: "Meera Chand",
+        description: "UKHSA",
+        picture: silhouette
     }
 ];
 
@@ -30,7 +42,7 @@ Pathoplexus recognizes that a diverse and active board is essential for maximizi
 
 The Pathoplexus Scientific Advisory Board is defined and guided by the [Scientific Board Board Guidelines](/about/governance/sab-guidelines).
 
-**More Scientific Advisory Board members will be announced soon.**
+**More Scientific Advisory Board members will be announced soon.** <br /><br />
 
 <Team members={members} />
 

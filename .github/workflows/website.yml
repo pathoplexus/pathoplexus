@@ -7,11 +7,6 @@ on:
 env:
   DOCKER_IMAGE_NAME: ghcr.io/pathoplexus/website
 
-
-concurrency:
-  group: ci-${{ github.ref == 'refs/heads/main' && github.run_id || github.ref }}-website
-  cancel-in-progress: true
-
 jobs:
 
   dockerImage:
@@ -23,9 +18,7 @@ jobs:
       checks: read
     steps:
       - uses: actions/checkout@v4
-      - run: ./sync.sh -a
-        env:
-          LOCULUS_PAT: ${{ secrets.LOCULUS_PAT }}
+      - run: ./sync.sh
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
@@ -44,7 +37,7 @@ jobs:
             type=sha,prefix=commit-
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
       - name: Build and push image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./monorepo/website
           push: true

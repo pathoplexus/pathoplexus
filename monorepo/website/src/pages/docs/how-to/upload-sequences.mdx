@@ -1,8 +1,9 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Uploading sequences"
-order: 7
+order: 40
 ---
+import InfoBox from '../../../components/asides/InfoBox.astro';
 
 You can only upload sequences if you have [created an account](create-account) and are part of a [group](create-group).
 
@@ -15,7 +16,10 @@ Loculus expects:
 
 ![Metadata template.](../../../images/MetadataTemplate.png)
 
-_You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://github.com/pathoplexus/example_data) you can upload to the Demo Instance._
+The files can also be compressed: accepted formats are .zst, .gz, .zip and .xz.
+
+
+_You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance._
 
 
 ### Multi-segmented Pathogens
@@ -34,27 +38,62 @@ Uploading sequences via the website is a very way to submit sequences without ha
 
 The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
 
-<br></br>
-_Detailed API instructions for submitting sequences will come soon, but you can read our [authentication token how-to](/docs/how-to/authentication-api) and [Swagger API documentation](/api-documentation) if you're an experienced user._
+## Uploading raw reads
 
-{/* ## API
+Pathoplexus currently only accepts consensus sequence submissions. If you wish to upload raw reads, you can do so directly through the [INSDC submission portal](https://ena-docs.readthedocs.io/en/latest/submit/reads.html).
+
+To ensure your raw reads are linked to your consensus sequence in the INSDC, both must be associated with the same biosample and bioproject at the time of submission.
+
+#### Submission Scenarios:
+- Submitting the Consensus Sequence First (via Pathoplexus):
+After submitting your consensus sequence to Pathoplexus, use the biosample and bioproject accessions we provide (e.g., Bioproject Accession: PRJEB80643, Biosample Accession: SAMEA116354847) when submitting your raw reads to the INSDC.
+
+- Submitting Raw Reads First (via INSDC):
+If you submit raw reads to the INSDC first, create a biosample and bioproject during the upload process. Then, provide the raw reads accession in the metadata.tsv (e.g., insdcRawReadsAccession=SRR27477368) when submitting your consensus sequence to Pathoplexus. This allows us to link your consensus sequence to the raw reads in the INSDC.
+
+Please contact us at `submission@pathoplexus.org` if you have any questions about submitting raw reads. 
+
+
+## API
+
+<InfoBox>
+    To use the [demo instance](https://demo.pathoplexus.org) instead of the main instance, please replace `backend.pathoplexus.org` with `backend-demo.pathoplexus.org`.
+</InfoBox>
 
 **By using our API you agree to our [Data Use Terms](/about/terms-of-use/data-use-terms).**
 
-For full instructions on how to upload sequences via our API, you should read our [Swagger API documentation](/api-documentation).
-Before using our API endpoint, you will need to generate an [authentication token](/docs/how-to/authentication-api).
+It is currently possible to upload sequences through an HTTP API. We also plan to release a command-line interface before the end of 2024.
 
-As a brief introduction into using the API, you should be sure you have on-hand:
+To upload sequences through the HTTP API you will need to:
 
-- The `fasta` file of sequences you wish to submit
-- Matching metadata file
-- The abbreviation for the organism you're submitted sequences of:
-  - `cchf` (CCHF)
-  - `ebola-sudan` (Ebola Sudan)
-  - `ebola-zaire` (Ebola Zaire)
-  - `west-nile` (West Nile)
-- Your submitting Group ID (click on the group from 'My account' to see this)
-- The Data Use Terms you wish to submit under, `OPEN` or `RESTRICTED`
-  - If `RESTRICTED`, the date until which they are restricted (up to 1 year from today) in format `YYYY-MM-DD`
 
-You can then construct your API submission query. */}
+1. Retrieve an authentication JSON web token: see the [Authenticating via API guide](/docs/how-to/authentication-api).
+2. Identify the Group ID of your group: you can find it on the page of your group (which can be reached from your [user page](/user)).
+3. Send a POST request:
+    - To upload sequences with the **open use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<   group id>&dataUseTermsType=OPEN`
+
+    - To upload sequences with the **restricted use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<group id>&dataUseTermsType=RESTRICTED&restrictedUntil=<restricted-until-date>`
+
+    - The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`.
+    - The restricted-until date must be provided in the ISO format (e.g., 2024-08-27).
+    - The header should contain
+        - `Authorization: Bearer <authentication-token>`
+        - `Content-Type: multipart/form-data`
+    - The request body should contain the FASTA and metadata TSV files with the keys `sequenceFile` and `metadataFile`
+
+
+With cURL, the corresponding command for sending the POST request can be:
+
+```
+curl -X 'POST' \
+  'https://backend.pathoplexus.org/<organism>/submit?groupId=<group id>&dataUseTermsType=OPEN' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <authentication token>' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'metadataFile=@<metadata file name>' \
+  -F 'sequenceFile=@<fasta file name>'
+```
+
+Further information can be found in our [Swagger API documentation](https://backend.pathoplexus.org/swagger-ui/index.html#/submission-controller/submit).
+
+As with the website, data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
