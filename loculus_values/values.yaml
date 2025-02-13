@@ -165,7 +165,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         rangeSearch: true
         noInput: true
-        columnWidth: 95
+        columnWidth: 110
         order: 90
       - name: ncbiUpdateDate
         type: date
