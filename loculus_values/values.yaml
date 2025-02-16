@@ -1044,7 +1044,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Cycle threshold (CT)"
       - name: length
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         initiallyVisible: true
@@ -1134,7 +1134,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
       - name: totalSnps
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1143,7 +1143,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1152,7 +1152,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1161,7 +1161,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Total deleted nucs
       - name: totalAmbiguousNucs
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1170,7 +1170,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
         type: int
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1180,14 +1180,14 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: totalFrameShifts
         type: int
         rangeSearch: true
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         perSegment: true
         displayName: Total frame shifts
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         perSegment: true
         displayName: Frame shifts
@@ -1195,7 +1195,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.frameShifts}
       - name: completeness
         type: float
-        header: "Alignment states and QC metrics"
+        header: "Alignment and QC metrics"
         noInput: true
         perSegment: true
         displayName: Completeness
@@ -1299,12 +1299,12 @@ organisms:
       metadataAdd:
         - name: totalStopCodons
           type: int
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
@@ -1365,12 +1365,12 @@ organisms:
           order: 5
         - name: totalStopCodons
           type: int
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
@@ -1448,12 +1448,12 @@ organisms:
           initiallyVisible: true
         - name: totalStopCodons
           type: int
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
@@ -1548,12 +1548,12 @@ organisms:
           order: 7
         - name: totalStopCodons
           type: int
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
-          header: "Alignment states and QC metrics"
+          header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
