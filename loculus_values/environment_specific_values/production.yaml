@@ -107,10 +107,10 @@ resources:
       memory: "3Gi"
   silo:
     requests:
-      memory: "500Mi"
+      memory: "2Gi"
       cpu: "1000m"
     limits:
-      memory: "10Gi"
+      memory: "2Gi"
   lapis:
     requests:
       memory: "220Mi"
@@ -139,9 +139,9 @@ resources:
     mpox:
       silo:
         requests:
-          memory: "10Gi"
+          memory: "15Gi"
         limits:
-          memory: "10Gi"
+          memory: "15Gi"
       lapis:
         requests:
           memory: "1Gi"
