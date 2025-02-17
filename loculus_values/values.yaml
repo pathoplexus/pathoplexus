@@ -2126,7 +2126,7 @@ resources:
         requests:
           memory: "5Gi"
         limits:
-          memory: "5Gi"
+          memory: "15Gi"
       lapis:
         requests:
           memory: "400Mi"
