@@ -624,16 +624,16 @@ defaultOrganismConfig: &defaultOrganismConfig
           url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
         header: "INSDC"
         ingest: bioprojects
-        guidance: "Only add this field if you want your sequences to be linked to an existing public bioproject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a bioproject for you on submission of your consensus sequence."
-        definition: "Accession of public bioproject in the INSDC your consensus sequences should be uploaded tp"
+        guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
+        definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
         example: "PRJNA123456"
       - name: biosampleAccession
         customDisplay:
           type: link
           url: "https://www.ncbi.nlm.nih.gov/biosample/__value__"
         header: "INSDC"
-        guidance: "Only add this field if you have already submitted the raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new biosample for you and assume you have submitted all required metadata in the linked biosample."
-        definition: "Accession of corresponding public biosample of the raw reads in the INSDC"
+        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
+        definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
         example: "SAMN12345678"
         oneHeader: true
       - name: cultureId
