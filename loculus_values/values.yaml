@@ -47,7 +47,7 @@ auth:
     replyTo: "noreply@pathoplexus.org"
     from: "noreply@pathoplexus.org"
     envelopeFrom: "noreply@pathoplexus.org"
-disableEnaSubmission: true
+disableEnaSubmission: false
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -2125,3 +2125,7 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
+submitToEnaProduction: false
+enaDbName: Pathoplexus
+enaUniqueSuffix: Pathoplexus
+enaIsBroker: True
