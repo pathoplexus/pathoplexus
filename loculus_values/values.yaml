@@ -1314,6 +1314,7 @@ organisms:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
       - <<: *preprocessing
+        version: 8
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
