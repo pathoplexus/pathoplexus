@@ -152,6 +152,12 @@ resources:
           memory: "3Gi"
         limits:
           memory: "3Gi"
+    west-nile:
+      silo:
+        requests:
+          memory: "5Gi"
+        limits:
+          memory: "5Gi"
 defaultResources:
   requests:
     memory: "200Mi"
