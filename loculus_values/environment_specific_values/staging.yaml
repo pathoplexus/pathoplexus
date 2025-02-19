@@ -62,3 +62,6 @@ enaIsBroker: True
 seqSets:
   enabled: True
   crossRef: null
+sequenceFlagging:
+  github:
+    issueTemplate: sequence-metadata-issue.md
