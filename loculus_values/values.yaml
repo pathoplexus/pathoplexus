@@ -1095,6 +1095,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiIsLabHost
         definition: "If a laboratory host (e.g. cultured cell line) was used to propagate the sample."
         example: "True"
+        type: boolean
       - name: cellLine
         generateIndex: true
         autocomplete: true
