@@ -105,6 +105,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         required: true
         columnWidth: 100
         notSearchable: true
+        includeInDownloadsByDefault: true
         order: 10
         definition: "The date on which the sample was collected."
         guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
@@ -170,6 +171,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         rangeSearch: true
         noInput: true
+        includeInDownloadsByDefault: true
         columnWidth: 95
         order: 90
       - name: ncbiUpdateDate
@@ -188,6 +190,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
+        includeInDownloadsByDefault: true
         header: Sample details
         ingest: country
         required: true
@@ -511,6 +514,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
+        includeInDownloadsByDefault: true
         header: Sample details
         ingest: division
         columnWidth: 150
@@ -523,6 +527,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Collection subdivision level 2
         generateIndex: true
         autocomplete: true
+        includeInDownloadsByDefault: true
         header: Sample details
         definition: "A local administrative region from which the sample was collected (ex: county or municipality)"
         desired: true
@@ -531,6 +536,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Collection city
         generateIndex: true
         autocomplete: true
+        includeInDownloadsByDefault: true
         header: Sample details
         definition: "The city from which the sample was collected."
         example: "Toronto"
@@ -1057,6 +1063,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         initiallyVisible: true
+        includeInDownloadsByDefault: true
         perSegment: true
         displayName: Length
         columnWidth: 100
@@ -1066,6 +1073,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         autocomplete: true
         header: "Host"
         ingest: ncbiHostName
+        includeInDownloadsByDefault: true
         order: 70
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
