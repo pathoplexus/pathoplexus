@@ -1089,7 +1089,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
       - name: isLabHost
-        generateIndex: true
         autocomplete: true
         header: "Host"
         ingest: ncbiIsLabHost
