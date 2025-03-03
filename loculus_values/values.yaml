@@ -162,7 +162,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             timestamp: ncbiReleaseDate
         noInput: true
-        columnWidth: 74
+        columnWidth: 80
         order: 90
       - name: earliestReleaseDate
         displayName: Earliest release date
@@ -170,7 +170,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         rangeSearch: true
         noInput: true
-        columnWidth: 74
+        columnWidth: 80
         order: 90
       - name: ncbiUpdateDate
         type: date
