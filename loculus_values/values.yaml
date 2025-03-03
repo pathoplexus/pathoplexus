@@ -48,11 +48,6 @@ auth:
     from: "noreply@pathoplexus.org"
     envelopeFrom: "noreply@pathoplexus.org"
 disableEnaSubmission: true
-sequenceFlagging:
-  github:
-    organization: pathoplexus
-    repository: curation_reports
-    issueTemplate: test-sequence-metadata-issue.md
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
