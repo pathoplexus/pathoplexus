@@ -37,3 +37,5 @@ podPriorityClassName: staging
 seqSets:
   enabled: True
   crossRef: null
+ingest:
+  mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
