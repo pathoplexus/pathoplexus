@@ -64,6 +64,4 @@ seqSets:
   crossRef: null
 sequenceFlagging:
   github:
-    organization: pathoplexus
-    repository: curation_reports
     issueTemplate: sequence-metadata-issue.md
