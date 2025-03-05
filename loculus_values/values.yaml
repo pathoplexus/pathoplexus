@@ -103,7 +103,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           args:
             fieldType: dateRangeString
         required: true
-        columnWidth: 100
+        columnWidth: 84
         notSearchable: true
         order: 10
         definition: "The date on which the sample was collected."
@@ -162,7 +162,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             timestamp: ncbiReleaseDate
         noInput: true
-        columnWidth: 90
+        columnWidth: 80
         order: 90
       - name: earliestReleaseDate
         displayName: Earliest release date
@@ -170,7 +170,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         rangeSearch: true
         noInput: true
-        columnWidth: 95
+        columnWidth: 80
         order: 90
       - name: ncbiUpdateDate
         type: date
@@ -191,7 +191,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         ingest: country
         required: true
-        columnWidth: 150
+        columnWidth: 134
         truncateColumnDisplayTo: 15
         order: 20
         definition: "The country from which the sample was collected."
@@ -513,7 +513,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         header: Sample details
         ingest: division
-        columnWidth: 150
+        columnWidth: 134
         truncateColumnDisplayTo: 15
         order: 30
         definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)"
@@ -573,7 +573,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: check_authors
           inputs:
             authors: authors
-        columnWidth: 150
+        columnWidth: 134
         order: 40
         definition: "List of authors who should be listed on the sample."
         guidance: "Authors should be separated by semi-colons. Each author's name should be in the format `last name, first name;`. Last name(s) is mandatory, only ASCII alphabetical characters A-Z are allowed."
@@ -587,7 +587,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Authors
         ingest: ncbiSubmitterAffiliation
         enableSubstringSearch: true
-        columnWidth: 150
+        columnWidth: 134
         order: 50
         desired: true
         definition: "List of author affiliations"
@@ -1059,7 +1059,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         initiallyVisible: true
         perSegment: true
         displayName: Length
-        columnWidth: 100
+        columnWidth: 84
         order: 80
       - name: hostNameScientific
         generateIndex: true
@@ -1494,8 +1494,10 @@ organisms:
       configFile:
         <<: *ingestConfigFile
         taxon_id: 3052518
-        nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-        nextclade_dataset_name: nextstrain/cchfv/linked
+        segment_identification:
+          method: "align"
+          nextclade_dataset_name: nextstrain/cchfv/linked
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
     enaDeposition:
       configFile:
         taxon_id: 3052518
@@ -1534,7 +1536,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.clade}
-          columnWidth: 70
+          columnWidth: 60
           order: 5
         - name: outbreak
           header: "Clade & Lineage"
@@ -1543,7 +1545,7 @@ organisms:
           autocomplete: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
-          columnWidth: 90
+          columnWidth: 74
           order: 6
         - name: lineage
           header: "Clade & Lineage"
@@ -1553,7 +1555,7 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 80
+          columnWidth: 64
           order: 7
         - name: totalStopCodons
           type: int
