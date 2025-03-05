@@ -2132,3 +2132,5 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
+ingest:
+  mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
