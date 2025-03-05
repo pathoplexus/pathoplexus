@@ -167,4 +167,6 @@ defaultResources:
     cpu: "1000m"
 sequenceFlagging:
   github:
+    organization: pathoplexus
+    repository: curation_reports
     issueTemplate: sequence-metadata-issue.md
