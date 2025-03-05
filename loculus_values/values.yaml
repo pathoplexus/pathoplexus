@@ -1248,7 +1248,7 @@ defaultOrganismConfig: &defaultOrganismConfig
   preprocessing:
     - &preprocessing
       replicas: 1
-      version: 7
+      version: 8
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
