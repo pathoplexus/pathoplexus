@@ -47,10 +47,10 @@ auth:
     replyTo: "noreply@pathoplexus.org"
     from: "noreply@pathoplexus.org"
     envelopeFrom: "noreply@pathoplexus.org"
-verifyEmail: true
-identityProviders:
-  orcid:
-    clientId: "APP-P1P7N7T9YVBHQ4EH"
+  verifyEmail: true
+  identityProviders:
+    orcid:
+      clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 sequenceFlagging:
   github:
