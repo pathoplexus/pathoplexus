@@ -60,6 +60,7 @@ sequenceFlagging:
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
+    richFastaHeaderFields: ["displayName"]
     organismName: "Ebola Zaire"
     image: "/images/organisms/ebolazaire_small.jpg"
     earliestReleaseDate:
