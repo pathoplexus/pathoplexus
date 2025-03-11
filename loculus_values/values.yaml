@@ -47,6 +47,10 @@ auth:
     replyTo: "noreply@pathoplexus.org"
     from: "noreply@pathoplexus.org"
     envelopeFrom: "noreply@pathoplexus.org"
+  verifyEmail: true
+  identityProviders:
+    orcid:
+      clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 sequenceFlagging:
   github:
@@ -56,6 +60,7 @@ sequenceFlagging:
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
+    richFastaHeaderFields: ["displayName"]
     organismName: "Ebola Zaire"
     image: "/images/organisms/ebolazaire_small.jpg"
     earliestReleaseDate:
