@@ -58,7 +58,7 @@ secrets:
 replicas:
   backend: 2
   website: 3
-  lapis: 5
+  lapis: 1
 seqSets:
   enabled: true
   crossRef:
