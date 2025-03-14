@@ -145,9 +145,9 @@ resources:
           memory: "15Gi"
       lapis:
         requests:
-          memory: "8Gi"
+          memory: "2Gi"
         limits:
-          memory: "8Gi"
+          memory: "2Gi"
       silo-preprocessing:
         requests:
           memory: "3Gi"
