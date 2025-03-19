@@ -58,6 +58,7 @@ secrets:
 replicas:
   backend: 2
   website: 3
+  lapis: 1
 seqSets:
   enabled: true
   crossRef:
@@ -144,9 +145,9 @@ resources:
           memory: "15Gi"
       lapis:
         requests:
-          memory: "1Gi"
+          memory: "2Gi"
         limits:
-          memory: "1Gi"
+          memory: "2Gi"
       silo-preprocessing:
         requests:
           memory: "3Gi"
