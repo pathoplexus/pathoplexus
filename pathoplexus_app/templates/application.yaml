@@ -24,9 +24,10 @@ spec:
         value: "main"
       - name: "branch"
         value: "main"
-      - name: "customWebsiteImage"
-        value: "ghcr.io/pathoplexus/website:commit-{{ .Values.pathoplexusVersion | trunc 7 }}"
-
+      - name: "images.website.repository"
+        value: "ghcr.io/pathoplexus/website"
+      - name: "images.website.tag"
+        value: "commit-{{ .Values.pathoplexusVersion | trunc 7 }}"
 
       valueFiles:
       - values.yaml
