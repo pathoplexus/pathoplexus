@@ -1239,7 +1239,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
-    silo:
     extraInputFields: []
     metadataTemplate:
       - geoLocCountry  
