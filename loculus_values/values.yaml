@@ -1240,7 +1240,6 @@ defaultOrganismConfig: &defaultOrganismConfig
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
     silo:
-      dateToSortBy: sampleCollectionDateRangeUpper
     extraInputFields: []
     metadataTemplate:
       - geoLocCountry  
