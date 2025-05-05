@@ -2188,7 +2188,8 @@ organisms:
           noInput: true
           ingest: subtype
           header: "INSDC"
-      website: &website
+      website:
+        <<: *website
         tableColumns:
           - sampleCollectionDate
           - earliestReleaseDate
@@ -2264,18 +2265,19 @@ organisms:
           noInput: true
           ingest: subtype
           header: "INSDC"
-      website: &website
-      tableColumns:
-        - sampleCollectionDate
-        - earliestReleaseDate
-        - authors
-        - authorAffiliations
-        - geoLocCountry
-        - geoLocAdmin1
-        - length
-        - lineage
-      defaultOrderBy: sampleCollectionDate
-      defaultOrder: descending
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - lineage
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
         configFile:
@@ -2336,7 +2338,8 @@ organisms:
           initiallyVisible: true
           preprocessing:
             inputs: { input: nextclade.clade }
-      website: &website
+      website: 
+        <<: *website
         tableColumns:
           - sampleCollectionDate
           - earliestReleaseDate
