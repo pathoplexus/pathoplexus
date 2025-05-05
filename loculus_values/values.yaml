@@ -2158,6 +2158,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "RSV-A"
+      image: "/images/organisms/rsv.jpg"
       metadataAdd:
         - name: lineage
           header: "Clade & Lineage"
@@ -2221,6 +2222,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "RSV-B"
+      image: "/images/organisms/rsv.jpg"
       metadataAdd:
         - name: lineage
           header: "Clade & Lineage"
@@ -2284,6 +2286,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "HMPV"
+      image: "/images/organisms/hmpv.png"
       metadataAdd:
         - name: lineage
           header: "Clade & Lineage"
