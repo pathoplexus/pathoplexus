@@ -1473,12 +1473,6 @@ organisms:
       nucleotideSequences: [L, M, S]
       image: "/images/organisms/cchf_small.jpg"
       metadataAdd:
-        - name: hostNameScientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          initiallyVisible: true
         - name: totalStopCodons
           type: int
           header: "Alignment and QC metrics"
@@ -2166,7 +2160,6 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
-
   rsv-a:
     <<: *defaultOrganismConfig
     schema:
