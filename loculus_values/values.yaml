@@ -2182,7 +2182,6 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
-
   rsv-a:
     <<: *defaultOrganismConfig
     schema:
