@@ -2152,5 +2152,185 @@ organisms:
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG209.fa]]"
         - name: OPG210
           sequence: "[[URL:https://theosanderson.github.io/mpox/OPG210.fa]]"
+
+  rsv-a:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "RSV-A"
+      metadataAdd:
+        - name: lineage
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+        - name: subtype
+          noInput: true
+          ingest: subtype
+          header: "INSDC"
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/rsv/a"
+          genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 11250
+        minimizer_index: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+        minimizer_parser: # Name of each '_' - separated entry in the minimizer index
+          - subtype
+        metadata_filter: 
+          subtype: rsv-a
+    enaDeposition:
+      configFile:
+        taxon_id: 208893
+        scientific_name: "Human respiratory syncytial virus A"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      nucleotideSequences:
+        - name: "main"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/reference.fasta]]"
+          insdcAccessionFull: PP109421.1
+      genes:
+        - name: "F"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/F.fasta]]"
+        - name: "G"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/G.fasta]]"
+        - name: "L"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/L.fasta]]"
+        - name: "M"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M.fasta]]"
+        - name: "N"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/N.fasta]]"
+        - name: "NS1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS1.fasta]]"
+        - name: "NS2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS2.fasta]]"
+        - name: "P"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/P.fasta]]"
+        - name: "SH"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/SH.fasta]]"
+
+  rsv-b:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "RSV-B"
+      metadataAdd:
+        - name: lineage
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+        - name: subtype
+          noInput: true
+          ingest: subtype
+          header: "INSDC"
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/rsv/b"
+          genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 11250
+        minimizer_index: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+        minimizer_parser: # Name of each '_' - separated entry in the minimizer index
+          - subtype
+        metadata_filter: 
+          subtype: rsv-b
+    enaDeposition:
+      configFile:
+        taxon_id: 208895
+        scientific_name: "Human respiratory syncytial virus B"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      nucleotideSequences:
+        - name: "main"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/reference.fasta]]"
+          insdcAccessionFull: OP975389.1
+      genes:
+        - name: "F"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/F.fasta]]"
+        - name: "G"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/G.fasta]]"
+        - name: "L"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/L.fasta]]"
+        - name: "M"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M.fasta]]"
+        - name: "N"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/N.fasta]]"
+        - name: "NS1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS1.fasta]]"
+        - name: "NS2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS2.fasta]]"
+        - name: "P"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/P.fasta]]"
+        - name: "SH"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/SH.fasta]]"
+
+  hmpv:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "HMPV"
+      metadataAdd:
+        - name: lineage
+          header: "Clade & Lineage"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 162145
+    enaDeposition:
+      configFile:
+        taxon_id: 162145
+        scientific_name: "Human Metapneumovirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      nucleotideSequences:
+        - name: "main"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/reference.fasta]]"
+          insdcAccessionFull: NC_039199.1
+      genes:
+        - name: "F"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/F.fasta]]"
+        - name: "G"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/G.fasta]]"
+        - name: "L"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/L.fasta]]"
+        - name: "M"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M.fasta]]"
+        - name: "M2-1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-1.fasta]]"
+        - name: "M2-2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-2.fasta]]"
+        - name: "N"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/N.fasta]]"
+        - name: "P"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
+        - name: "SH"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
