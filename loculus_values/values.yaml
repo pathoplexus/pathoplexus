@@ -2177,17 +2177,25 @@ organisms:
       image: "/images/organisms/rsv.jpg"
       metadataAdd:
         - name: lineage
-          header: "Clade & Lineage"
+          displayName: Lineage
           noInput: true
+          header: "Lineage"
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
+          includeInDownloadsByDefault: true
           preprocessing:
             inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
         - name: subtype
+          displayName: Subtype
           noInput: true
-          ingest: subtype
           header: "INSDC"
+          ingest: subtype
+          hideOnSequenceDetailsPage: true
+          hideInSearchResultsTable: true
+          notSearchable: true
       website:
         <<: *website
         tableColumns:
@@ -2245,7 +2253,6 @@ organisms:
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/P.fasta]]"
         - name: "SH"
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/SH.fasta]]"
-
   rsv-b:
     <<: *defaultOrganismConfig
     schema:
@@ -2254,17 +2261,25 @@ organisms:
       image: "/images/organisms/rsv.jpg"
       metadataAdd:
         - name: lineage
-          header: "Clade & Lineage"
+          displayName: Lineage
           noInput: true
+          header: "Lineage"
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
+          includeInDownloadsByDefault: true
           preprocessing:
             inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
         - name: subtype
+          displayName: Subtype
           noInput: true
-          ingest: subtype
           header: "INSDC"
+          ingest: subtype
+          hideOnSequenceDetailsPage: true
+          hideInSearchResultsTable: true
+          notSearchable: true
       website:
         <<: *website
         tableColumns:
@@ -2322,7 +2337,6 @@ organisms:
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/P.fasta]]"
         - name: "SH"
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/SH.fasta]]"
-
   hmpv:
     <<: *defaultOrganismConfig
     schema:
@@ -2331,13 +2345,17 @@ organisms:
       image: "/images/organisms/hmpv.png"
       metadataAdd:
         - name: lineage
-          header: "Clade & Lineage"
+          displayName: Lineage
           noInput: true
+          header: "Lineage"
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
+          includeInDownloadsByDefault: true
           preprocessing:
             inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
       website: 
         <<: *website
         tableColumns:
