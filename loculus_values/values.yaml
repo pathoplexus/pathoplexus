@@ -163,6 +163,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: NCBI release date
         type: date
         header: "INSDC"
+        includeInDownloadsByDefault: true
         preprocessing:
           function: parse_timestamp
           inputs:
@@ -183,6 +184,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         displayName: NCBI update date
         header: "INSDC"
+        includeInDownloadsByDefault: true
         preprocessing:
           function: parse_timestamp
           inputs:
@@ -568,6 +570,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Isolate name
         header: Sample details
         ingest: ncbiIsolateName
+        includeInDownloadsByDefault: true
         enableSubstringSearch: true
         definition: "Any other non-identifiable sample ID attached to the sequence."
         example: "Isolate 1"
@@ -641,6 +644,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: link
           url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
         header: "INSDC"
+        includeInDownloadsByDefault: true
         ingest: bioprojects
         guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
@@ -650,6 +654,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: link
           url: "https://www.ncbi.nlm.nih.gov/biosample/__value__"
         header: "INSDC"
+        includeInDownloadsByDefault: true
         guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
         definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
         example: "SAMN12345678"
@@ -1106,6 +1111,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: isLabHost
         autocomplete: true
         header: "Host"
+        includeInDownloadsByDefault: true
         ingest: ncbiIsLabHost
         definition: "If a laboratory host (e.g. cultured cell line) was used to propagate the sample."
         example: "True"
@@ -1153,6 +1159,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: link
           url: "https://www.ncbi.nlm.nih.gov/sra/?term=__value__"
         header: "INSDC"
+        includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
         guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
         definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
@@ -1186,6 +1193,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
+        includeInDownloadsByDefault: true
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1195,6 +1203,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: totalUnknownNucs
         type: int
         header: "Alignment and QC metrics"
+        includeInDownloadsByDefault: true
         noInput: true
         rangeSearch: true
         perSegment: true
@@ -1220,6 +1229,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: completeness
         type: float
         header: "Alignment and QC metrics"
+        includeInDownloadsByDefault: true
         noInput: true
         perSegment: true
         displayName: Completeness
@@ -1378,6 +1388,7 @@ organisms:
       metadataAdd:
         - name: lineage
           header: "Lineage"
+          includeInDownloadsByDefault: true
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -1543,6 +1554,7 @@ organisms:
       metadataAdd:
         - name: clade
           header: "Clade & Lineage"
+          includeInDownloadsByDefault: true
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -1553,6 +1565,7 @@ organisms:
           order: 5
         - name: outbreak
           header: "Clade & Lineage"
+          includeInDownloadsByDefault: true
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -1562,6 +1575,7 @@ organisms:
           order: 6
         - name: lineage
           header: "Clade & Lineage"
+          includeInDownloadsByDefault: true
           noInput: true
           generateIndex: true
           autocomplete: true
