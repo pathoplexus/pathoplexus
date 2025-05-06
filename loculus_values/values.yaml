@@ -2165,7 +2165,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "RSV-A"
-      image: "/images/organisms/rsv.jpg"
+      image: "/images/organisms/rsv-adjusted.jpg"
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -2249,7 +2249,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "RSV-B"
-      image: "/images/organisms/rsv-adjusted.jpg"
+      image: "/images/organisms/rsv.jpg"
       metadataAdd:
         - name: lineage
           displayName: Lineage
