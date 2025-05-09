@@ -943,7 +943,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0100416
         definition: The name of the agency, organization or institution responsible for sequencing the isolate's genome.
         example: Public Health Agency of Canada (PHAC) [GENEPIO:0100551]
-        displayName: Sequenced by
+        displayName: Sequenced by - organization
         header: Sequencing
       - name: sequencedByContactName
         ontology_id: GENEPIO:0100471
@@ -1046,27 +1046,27 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Quality control details
         header: Sequencing
       - name: diagnosticMeasurementMethod
-        displayName: Diagnostic measurement method
+        displayName: Diagnostic measurement - method
         header: Diagnostics
         definition: "Type of diagnostic test performed"
         example: "RT-PCR test"
       - name: diagnosticTargetPresence
-        displayName: Diagnostic target presence
+        displayName: Diagnostic target - presence
         header: Diagnostics
         definition: "Boolean value, if the diagnostic target was present."
         example: "True"
       - name: diagnosticTargetGeneName
-        displayName: Gene name
+        displayName: Diagnostic taget - gene name
         header: Diagnostics
         definition: "Name of the gene targeted by the diagnostic RT-PCR test."
         example: "E gene (orf4)"
       - name: diagnosticMeasurementValue
-        displayName: Diagnostic measurement value
+        displayName: Diagnostic measurement - value
         header: Diagnostics
         definition: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test"
         example: "39"
       - name: diagnosticMeasurementUnit
-        displayName: Diagnostic measurement unit
+        displayName: Diagnostic measurement - unit
         header: Diagnostics
         definition: "Unit of the diagnostic measurement value"
         example: "Cycle threshold (CT)"
