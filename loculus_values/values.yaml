@@ -150,6 +150,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           bound: upper
         noInput: true
       - name: displayName
+        displayName: Display name
         preprocessing:
           function: concatenate
           inputs:
@@ -613,12 +614,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         header: "INSDC"
       - name: insdcAccessionBase
+        displayName: INSDC accession base
         header: "INSDC"
         hideOnSequenceDetailsPage: true
         noInput: true
         perSegment: true
         oneHeader: true
       - name: insdcVersion
+        displayName: INSDC version
         type: int
         header: "INSDC"
         hideOnSequenceDetailsPage: true
@@ -637,6 +640,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         oneHeader: true
       - name: bioprojectAccession
+        displayName: BioProject accession
         customDisplay:
           type: link
           url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
@@ -646,6 +650,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
         example: "PRJNA123456"
       - name: biosampleAccession
+        displayName: BioSample accession
         customDisplay:
           type: link
           url: "https://www.ncbi.nlm.nih.gov/biosample/__value__"
@@ -679,6 +684,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Method of sampling."
         example: "Nasopharyngeal Swabs"
       - name: purposeOfSampling
+        displayName: Purpose of sampling
         ontology_id: GENEPIO:0001198
         definition: The reason that the sample was collected.
         example: Diagnostic testing
@@ -1076,6 +1082,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         columnWidth: 84
         order: 80
       - name: hostNameScientific
+        displayName: Host name - scientific
         generateIndex: true
         autocomplete: true
         header: "Host"
@@ -1086,6 +1093,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Homo sapiens"
         desired: true
       - name: hostNameCommon
+        displayName: Host name - common
         generateIndex: true
         autocomplete: true
         header: "Host"
@@ -1093,6 +1101,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "The common name of the host from which the sample was collected."
         example: "Human"
       - name: hostTaxonId
+        displayName: Host taxon ID
         type: int
         autocomplete: true
         customDisplay:
@@ -1104,6 +1113,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
       - name: isLabHost
+        displayName: Is lab host
         autocomplete: true
         header: "Host"
         ingest: ncbiIsLabHost
@@ -1111,34 +1121,40 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "True"
         type: boolean
       - name: cellLine
+        displayName: Cell line
         generateIndex: true
         autocomplete: true
         header: "Host"
         definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions"
       - name: passageNumber
+        displayName: Passage number
         type: int
         header: "Host"
         definition: "The number of times a cell culture has been subcultured or transferred from one vessel to another."
         example: "12"
       - name: passageMethod
+        displayName: Passage method
         generateIndex: true
         autocomplete: true
         header: "Host"
         definition: "The techniques used to subculture cells"
         example: "Enzymatic Detachment"
       - name: ncbiSourceDb
+        displayName: NCBI Source DB
         generateIndex: true
         autocomplete: true
         header: "INSDC"
         hideOnSequenceDetailsPage: true
         noInput: true
       - name: ncbiVirusName
+        displayName: NCBI Virus name
         generateIndex: true
         autocomplete: true
         hideOnSequenceDetailsPage: true
         noInput: true
         header: "INSDC"
       - name: ncbiVirusTaxId
+        displayName: NCBI Virus tax ID
         type: int
         autocomplete: true
         customDisplay:
@@ -1320,12 +1336,14 @@ organisms:
       image: "/images/organisms/ebolasudan_small.jpg"
       metadataAdd:
         - name: totalStopCodons
+          displayName: Total Stop Codons
           type: int
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
+          displayName: Stop Codons
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
@@ -1377,6 +1395,7 @@ organisms:
       image: "/images/organisms/wnv_small.jpg"
       metadataAdd:
         - name: lineage
+          displayName: Lineage
           header: "Lineage"
           noInput: true
           generateIndex: true
@@ -1386,12 +1405,14 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
         - name: totalStopCodons
+          displayName: Total stop codons
           type: int
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
+          displayName: Stop codons
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
@@ -1461,20 +1482,15 @@ organisms:
       organismName: "Crimean-Congo Hemorrhagic Fever Virus"
       nucleotideSequences: [L, M, S]
       image: "/images/organisms/cchf_small.jpg"
-      metadataAdd:
-        - name: hostNameScientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          initiallyVisible: true
         - name: totalStopCodons
+          displayName: Total Stop Codons
           type: int
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
+          displayName: Stop Codons
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
@@ -1542,6 +1558,7 @@ organisms:
       image: "/images/organisms/mpox_small.jpg"
       metadataAdd:
         - name: clade
+          displayName: Clade
           header: "Clade & Lineage"
           noInput: true
           generateIndex: true
@@ -1552,6 +1569,7 @@ organisms:
           columnWidth: 60
           order: 5
         - name: outbreak
+          displayName: Outbreak
           header: "Clade & Lineage"
           noInput: true
           generateIndex: true
@@ -1561,6 +1579,7 @@ organisms:
           columnWidth: 74
           order: 6
         - name: lineage
+          displayName: Lineage
           header: "Clade & Lineage"
           noInput: true
           generateIndex: true
@@ -1571,12 +1590,14 @@ organisms:
           columnWidth: 64
           order: 7
         - name: totalStopCodons
+          displayName: Total stop codons
           type: int
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
         - name: stopCodons
+          displayName: Stop codons
           header: "Alignment and QC metrics"
           noInput: true
           preprocessing:
