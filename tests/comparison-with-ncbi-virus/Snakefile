@@ -1,0 +1,173 @@
+wildcard_constraints:
+    organism=r"[^_.]+",
+    segment=r"[^_.]+",
+    instance=r"[^_.]+",
+
+
+LOG_LEVEL = "DEBUG"
+ORGANISMS = ["cchf", "west-nile", "ebola-zaire", "ebola-sudan"]
+
+
+def segments(w):
+    return ["L", "M", "S"] if w.organism == "cchf" else ["main"]
+
+
+def taxon_id(w):
+    match w.organism:
+        case "cchf":
+            taxon_id = 3052518
+        case "west-nile":
+            taxon_id = 3048448
+        case "ebola-zaire":
+            taxon_id = 186538
+        case "ebola-sudan":
+            taxon_id = 3052460
+    return taxon_id
+
+
+def url(w):
+    filetype = "sequence" if hasattr(w, "segment") else "metadata"
+    if hasattr(w, "segment"):
+        url_segment = "" if w.segment == "main" else f"/{w.segment}"
+        length_query = "" if w.segment == "main" else f"&length_{w.segment}From=1"
+        filetype = "sequence"
+    else:
+        url_segment = length_query = ""
+        filetype = "metadata"
+    match w.instance:
+        case "prod":
+            subdomain = ""
+        case "staging":
+            subdomain = "-demo"
+        case _:
+            subdomain = "-preview-" + w.instance
+    base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+    rest = (
+        url_segment
+        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&isRevocation=false&dataUseTerms=OPEN&compression=zstd"
+        + length_query
+    )
+    match filetype:
+        case "metadata":
+            return base + "details" + rest + "&dataFormat=TSV"
+        case "sequence":
+            return base + "unalignedNucleotideSequences" + rest
+        case _:
+            raise RuntimeError(f"Unreachable code reached: {filetype=}")
+
+
+rule all:
+    input:
+        expand(
+            "results/seq_{organism}_{instance}.diff",
+            organism=ORGANISMS,
+            instance=config["instance"],
+        ),
+
+
+rule sequence_download:
+    output:
+        "results/{organism}_{instance}_{segment}.fasta",
+    params:
+        url=url,
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
+
+
+rule metadata_download:
+    output:
+        "results/{organism}_{instance}.tsv",
+    params:
+        url=url,
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
+
+
+rule fetch_ncbi_dataset_package:
+    output:
+        dataset_package="results/ncbi_dataset_{organism}.zip",
+    params:
+        taxon_id=lambda w: taxon_id(w),
+    shell:
+        """
+        datasets download virus genome taxon {params.taxon_id} \
+            --no-progressbar \
+            --filename {output.dataset_package} \
+        """
+
+
+rule extract_ncbi_dataset_sequences:
+    """
+    We only keep the sequence ID in the header.
+    """
+    input:
+        dataset_package="results/ncbi_dataset_{organism}.zip",
+    output:
+        ncbi_dataset_sequences="results/all_ncbi_sequences_{organism}.fasta",
+    shell:
+        """
+        unzip -jp {input.dataset_package} \
+        ncbi_dataset/data/genomic.fna \
+        | seqkit seq -w0 -i \
+        > {output.ncbi_dataset_sequences}
+        """
+
+
+rule create_config:
+    output:
+        "results/config_{organism}.yaml",
+    params:
+        nucleotide_sequences=expand("- {segment} \n", segment=segments),
+    shell:
+        """
+        echo 'nucleotide_sequences: \n {params.nucleotide_sequences}' > {output}
+        """
+
+
+rule join_sequences:
+    input:
+        script="scripts/join_sequences.py",
+        sequences_input=expand(
+            "results/{{organism}}_{{instance}}_{segment}.fasta", segment=segments
+        ),
+    output:
+        result="results/joined_sequences_{organism}_{instance}.fasta",
+    params:
+        sequences=lambda w: expand(
+            "--input-files results/{organism}_{instance}_{segment}.fasta",
+            segment=segments,
+            organism=w.organism,
+            instance=w.instance,
+        ),
+    shell:
+        """
+        python {input.script} {params.sequences} \
+            --output-file {output.result} \
+        """
+
+
+rule compare_sequences:
+    input:
+        script="scripts/compare_sequences.py",
+        config="results/config_{organism}.yaml",
+        sequences_input="results/joined_sequences_{organism}_{instance}.fasta",
+        metadata_input="results/{organism}_{instance}.tsv",
+        original_sequences="results/all_ncbi_sequences_{organism}.fasta",
+    output:
+        compared="results/seq_{organism}_{instance}.diff",
+    params:
+        log_level=LOG_LEVEL,
+    shell:
+        """
+        python {input.script} \
+            --config-file {input.config} \
+            --sequences-input {input.sequences_input} \
+            --metadata-input {input.metadata_input} \
+            --original-sequences {input.original_sequences} \
+            --log-level {params.log_level} \
+            --output {output.compared}
+        """
