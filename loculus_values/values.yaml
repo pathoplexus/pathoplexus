@@ -164,7 +164,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: NCBI release date
         type: date
         header: "INSDC"
-        includeInDownloadsByDefault: true
         preprocessing:
           function: parse_timestamp
           inputs:
@@ -185,7 +184,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: date
         displayName: NCBI update date
         header: "INSDC"
-        includeInDownloadsByDefault: true
         preprocessing:
           function: parse_timestamp
           inputs:
