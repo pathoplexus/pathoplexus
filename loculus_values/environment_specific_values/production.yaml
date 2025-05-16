@@ -141,22 +141,26 @@ resources:
       silo:
         requests:
           memory: "15Gi"
+          cpu: "1000m"
         limits:
           memory: "15Gi"
       lapis:
         requests:
           memory: "2Gi"
+          cpu: "1000m"
         limits:
           memory: "2Gi"
       silo-preprocessing:
         requests:
           memory: "3Gi"
+          cpu: "1000m"
         limits:
           memory: "3Gi"
     west-nile:
       silo:
         requests:
           memory: "5Gi"
+          cpu: "1000m"
         limits:
           memory: "5Gi"
 defaultResources:
