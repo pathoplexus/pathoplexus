@@ -646,7 +646,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: link
           url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
         header: "INSDC"
-        includeInDownloadsByDefault: true
         ingest: bioprojects
         guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
