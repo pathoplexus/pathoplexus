@@ -2225,6 +2225,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a"
+          nextclade_sort: true
           genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
@@ -2309,6 +2310,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b"
+          nextclade_sort: true
           genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
