@@ -2223,7 +2223,7 @@ organisms:
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/rsv/a"
+          nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
           require_nextclade_sort_match: true
           genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
@@ -2308,7 +2308,7 @@ organisms:
       - <<: *preprocessing
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/rsv/b"
+          nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
           require_nextclade_sort_match: true
           genes: [ "F", "G", "L", "M", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
