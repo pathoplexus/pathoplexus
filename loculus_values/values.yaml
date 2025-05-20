@@ -1624,7 +1624,7 @@ organisms:
         configFile: &mpoxPreprocessingConfigFile
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/mpox/all-clades
-          nextclade_dataset_version: 2024-11-19--14-18-53Z
+          nextclade_dataset_version: 2025-04-25--12-24-24Z
           batch_size: 5
           genes:
             - OPG001
