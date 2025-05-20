@@ -2225,6 +2225,10 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
           require_nextclade_sort_match: true
+          minimizer_path: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            main:
+              - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
@@ -2314,6 +2318,10 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
           require_nextclade_sort_match: true
+          minimizer_path: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            main:
+              - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
