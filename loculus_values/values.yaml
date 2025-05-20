@@ -1619,7 +1619,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 1
+        replicas: 3
         version: 9
         configFile:
           <<: *preprocessingConfigFile
