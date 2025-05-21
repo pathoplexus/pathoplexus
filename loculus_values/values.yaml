@@ -12,6 +12,7 @@ runDevelopmentS3: false
 s3:
   enabled: false
 developmentDatabasePersistence: false
+runDevelopmentS3: false
 s3:
   enabled: false
 dataUseTerms:
