@@ -156,27 +156,6 @@ resources:
           cpu: "1000m"
         limits:
           memory: "3Gi"
-    west-nile:
-      silo:
-        requests:
-          memory: "5Gi"
-          cpu: "1000m"
-        limits:
-          memory: "5Gi"
-    rsv-a:
-      silo:
-        requests:
-          memory: "5Gi"
-          cpu: "1000m"
-        limits:
-          memory: "5Gi"
-    rsv-b:
-      silo:
-        requests:
-          memory: "5Gi"
-          cpu: "1000m"
-        limits:
-          memory: "5Gi"
 defaultResources:
   requests:
     memory: "200Mi"
