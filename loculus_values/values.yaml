@@ -2221,6 +2221,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
@@ -2313,6 +2314,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
