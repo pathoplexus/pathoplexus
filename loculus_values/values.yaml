@@ -9,6 +9,9 @@ gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/we
 gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 developmentDatabasePersistence: false
+runDevelopmentS3: false
+s3:
+  enabled: false
 dataUseTerms:
   enabled: true
   urls:
