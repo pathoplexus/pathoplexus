@@ -1,4 +1,6 @@
 ## WARNING!!! Before using this script ensure INSDC accessions have been suppressed on Genbank.
+## This script revokes sequences that have been suppressed on Genbank.
+## It assumes the person running the script has curation rights
 import logging
 from time import sleep
 from typing import Any
