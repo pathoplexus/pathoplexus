@@ -2438,3 +2438,25 @@ organisms:
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
+defaultResources:
+  requests:
+    memory: "10Mi"
+    cpu: "10m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+resources:
+  ingest:
+    requests:
+      memory: "1Gi"
+      cpu: "50m"
+    limits:
+      cpu: "200m"
+      memory: "10Gi"
+  backend:
+    requests:
+      memory: "640Mi"
+      cpu: "100m"
+    limits:
+      memory: "3Gi" # Backend requires at least 635741K of memory
