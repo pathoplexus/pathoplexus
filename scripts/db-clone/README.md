@@ -16,6 +16,7 @@ Passwords for the following users need to be set in the environment variables:
 - `staging_loculus_user`
 - `prod_keycloak_user`
 - `staging_keycloak_user`
+- `postgres`
 
 Run the script as follows:
 
