@@ -2452,7 +2452,7 @@ resources:
       memory: "1Gi"
       cpu: "50m"
     limits:
-      cpu: "50m"
+      cpu: "200m"
       memory: "10Gi"
   backend:
     requests:
