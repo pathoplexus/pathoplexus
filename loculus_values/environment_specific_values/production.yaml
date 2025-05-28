@@ -70,10 +70,11 @@ seqSets:
     hostUrl: "https://pathoplexus.org"
 podPriorityClassName: production
 disableEnaSubmission: false
-submitToEnaProduction: true
-enaDbName: Pathoplexus
-enaUniqueSuffix: Pathoplexus
-enaIsBroker: True
+enaDeposition: 
+  submitToEnaProduction: true
+  enaDbName: Pathoplexus
+  enaUniqueSuffix: Pathoplexus
+  enaIsBroker: True
 resources:
   website:
     requests:
