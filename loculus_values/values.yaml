@@ -2438,3 +2438,10 @@ organisms:
           sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
+defaultResources:
+  requests:
+    memory: "10Mi"
+    cpu: "10m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"

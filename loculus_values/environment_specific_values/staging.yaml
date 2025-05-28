@@ -65,3 +65,10 @@ seqSets:
 sequenceFlagging:
   github:
     issueTemplate: sequence-metadata-issue.md
+defaultResources:
+  requests:
+    memory: "200Mi"
+    cpu: "20m"
+  limits:
+    memory: "1Gi"
+    cpu: "20m"
