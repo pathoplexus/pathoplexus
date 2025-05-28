@@ -2445,3 +2445,18 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
+
+resources:
+  ingest:
+    requests:
+      memory: "1Gi"
+      cpu: "50m"
+    limits:
+      cpu: "50m"
+      memory: "10Gi"
+  backend:
+    requests:
+      memory: "640Mi"
+      cpu: "100m"
+    limits:
+      memory: "3Gi" # Backend requires at least 635741K of memory
