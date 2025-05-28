@@ -8,6 +8,9 @@ bannerMessage: This is a preview instance. Do not rely on this data for real ana
 gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/website/
 gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
+runDevelopmentS3: false
+s3:
+  enabled: false
 developmentDatabasePersistence: false
 dataUseTerms:
   enabled: true
