@@ -21,7 +21,7 @@ Passwords for the following users need to be set in the environment variables:
 Run the script as follows:
 
 ```sh
-./scripts/db-clone/clone-prod-to-staging.sh
+./clone-prod-to-staging.sh
 ```
 
 It can happen that part of the clone fails. You can check the logs if things don't work as expected.
