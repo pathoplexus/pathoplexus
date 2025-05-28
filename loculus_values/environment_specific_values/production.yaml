@@ -109,19 +109,19 @@ resources:
   silo:
     requests:
       memory: "2Gi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "2Gi"
   lapis:
     requests:
       memory: "220Mi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "5Gi"
   silo-preprocessing:
     requests:
       memory: "20Mi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "10Gi"
   backend:
