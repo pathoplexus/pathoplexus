@@ -9,6 +9,7 @@ jobs:
   validate-helm-templates:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         environment: [main, staging, demo, production]
     steps:
