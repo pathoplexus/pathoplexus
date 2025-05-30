@@ -1,0 +1,48 @@
+name: Validate helm templates with environment-specific values
+on:
+  push:
+    branches: [main, staging, demo, production]
+  pull_request:
+    branches: [main, staging, demo, production]
+  workflow_dispatch:
+jobs:
+  validate-helm-templates:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [main, staging, demo, production]
+    steps:
+      - name: Checkout pathoplexus
+        uses: actions/checkout@v4
+        with:
+          path: pathoplexus
+      - name: Extract Loculus version
+        id: loculus-version
+        run: |
+          LOCULUS_VERSION=$(grep 'loculusVersion:' pathoplexus/pathoplexus_app/values.yaml | cut -d' ' -f2)
+          echo "version=$LOCULUS_VERSION" >> $GITHUB_OUTPUT
+          echo "Using Loculus version: $LOCULUS_VERSION"
+      - name: Checkout Loculus
+        uses: actions/checkout@v4
+        with:
+          repository: loculus-project/loculus
+          ref: ${{ steps.loculus-version.outputs.version }}
+          path: loculus
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+      - name: Validate Helm template for ${{ matrix.environment }}
+        run: |
+          helm template loculus/kubernetes/loculus \
+            --name-template loculus-pp-${{ matrix.environment }} \
+            --namespace ${{ matrix.environment }} \
+            --kube-version 1.29 \
+            --values loculus/kubernetes/loculus/values.yaml \
+            --values loculus_values/values.yaml \
+            --values loculus_values/environment_specific_values/${{ matrix.environment }}.yaml
+      - name: Upload template output as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: helm-template-${{ matrix.environment }}
+          path: /tmp/helm-output-${{ matrix.environment }}.yaml
+          retention-days: 7
