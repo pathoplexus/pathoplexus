@@ -1,9 +1,10 @@
-## WARNING!!! Before using this script ensure INSDC accessions have been suppressed on Genbank.
 ## This script revokes sequences that have been suppressed on Genbank.
 ## It assumes the person running the script has curation rights
 import logging
 from time import sleep
 from typing import Any
+import requests
+import xml.etree.ElementTree as ET
 
 import click
 import requests
@@ -119,6 +120,36 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     return response.json()
 
 
+def is_sequence_suppressed(nucleotide_id):
+    base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+    params = {
+        "db": "nucleotide",
+        "id": nucleotide_id,
+        "retmode": "xml"
+    }
+
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
+
+    try:
+        root = ET.fromstring(response.text)
+        for docsum in root.findall("DocSum"):
+            for item in docsum.findall("Item"):
+                if item.get("Name") == "Status":
+                    status = item.text.strip().lower()
+                    return status == "suppressed"
+        print("Status not found in the response.")
+        return None
+    except ET.ParseError as e:
+        print(f"Failed to parse XML: {e}")
+        return None
+
+
+
 def parse_comma_separated(ctx, param, value):
     if value:
         return [item.strip() for item in value.split(",")]
@@ -144,6 +175,17 @@ def parse_comma_separated(ctx, param, value):
 )
 def main(insdc_accession, organism, username, password):
     logger.info(f"Parsed list: {insdc_accession}")
+        # Example usage
+    for sequence_id in insdc_accession:
+        print(f"Checking sequence ID: {sequence_id}")
+        if is_sequence_suppressed(sequence_id):
+            logger.info(f"The sequence {sequence_id} is suppressed.")
+        else:
+            logger.warning(f"The sequence {sequence_id} is not suppressed or could not be determined.")
+            raise ValueError(
+                f"The sequence {sequence_id} is not suppressed or could not be determined."
+            )
+
     revoke(organism, username, password, accessions_list=insdc_accession)
     approve(organism, username, password)
 
