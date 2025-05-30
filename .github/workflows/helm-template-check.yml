@@ -1,0 +1,87 @@
+name: Helm Template Check
+
+on:
+  pull_request:
+    paths:
+      - 'loculus_values/**'
+      - 'pathoplexus_app/**'
+      - '.github/workflows/helm-template-check.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'loculus_values/**'
+      - 'pathoplexus_app/**'
+      - '.github/workflows/helm-template-check.yml'
+
+jobs:
+  get-environments:
+    runs-on: ubuntu-latest
+    outputs:
+      environments: ${{ steps.get-envs.outputs.environments }}
+    steps:
+      - name: Checkout Pathoplexus repository
+        uses: actions/checkout@v4
+
+      - name: Get environment list
+        id: get-envs
+        run: |
+          # Get all .yaml files in environment_specific_values and extract just the filename without extension
+          environments=$(ls loculus_values/environment_specific_values/*.yaml | xargs -n 1 basename | sed 's/\.yaml$//' | jq -R -s -c 'split("\n")[:-1]')
+          echo "environments=$environments" >> $GITHUB_OUTPUT
+          echo "Found environments: $environments"
+
+  helm-template:
+    needs: get-environments
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: ${{ fromJson(needs.get-environments.outputs.environments) }}
+    steps:
+      - name: Checkout Pathoplexus repository
+        uses: actions/checkout@v4
+        with:
+          path: pathoplexus
+
+      - name: Get Loculus version
+        id: loculus-version
+        run: |
+          LOCULUS_VERSION=$(grep 'loculusVersion:' pathoplexus/pathoplexus_app/values.yaml | awk '{print $2}' | tr -d '"')
+          echo "version=$LOCULUS_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Checkout Loculus repository
+        uses: actions/checkout@v4
+        with:
+          repository: loculus-project/loculus
+          ref: ${{ steps.loculus-version.outputs.version }}
+          path: loculus
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Template Helm chart for ${{ matrix.environment }}
+        run: |
+          helm template kubernetes/loculus \
+            --name-template loculus-pp-${{ matrix.environment }} \
+            --namespace ${{ matrix.environment }} \
+            --kube-version 1.29 \
+            --values kubernetes/loculus/values.yaml \
+            --values ../pathoplexus/loculus_values/values.yaml \
+            --values ../pathoplexus/loculus_values/environment_specific_values/${{ matrix.environment }}.yaml \
+            > /dev/null
+        working-directory: loculus
+
+      - name: Template Helm chart with debug output
+        if: failure()
+        run: |
+          helm template kubernetes/loculus \
+            --name-template loculus-pp-${{ matrix.environment }} \
+            --namespace ${{ matrix.environment }} \
+            --kube-version 1.29 \
+            --values kubernetes/loculus/values.yaml \
+            --values ../pathoplexus/loculus_values/values.yaml \
+            --values ../pathoplexus/loculus_values/environment_specific_values/${{ matrix.environment }}.yaml \
+            --debug
+        working-directory: loculus
