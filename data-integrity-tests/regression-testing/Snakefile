@@ -10,7 +10,16 @@ rule all:
     input:
         expand(
             "results/{organism}.{difftype}.prod.staging.diff",
-            organism=["cchf", "west-nile", "ebola-zaire", "ebola-sudan", "mpox"],
+            organism=[
+                "cchf",
+                "west-nile",
+                "ebola-zaire",
+                "ebola-sudan",
+                "mpox",
+                "rsv-a",
+                "rsv-b",
+                "hmpv",
+            ],
             difftype=["seq", "meta"],
         ),
 
@@ -172,6 +181,7 @@ rule diff_meta:
         """
         csv-diff {input} --key=submissionId --format=tsv > {output} || echo "Differences found"
         """
+
 
 rule diff_seqs:
     input:
