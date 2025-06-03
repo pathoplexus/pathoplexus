@@ -13,6 +13,9 @@ on:
       - 'loculus_values/**'
       - 'pathoplexus_app/**'
       - '.github/workflows/helm-template-check.yml'
+env:
+  HELM_VERSION: 'v3.17.1' # Should track version used by argocd
+  KUBERNETES_VERSION: '1.29' # Should match the version used in cluster
 
 jobs:
   get-environments:
@@ -35,6 +38,7 @@ jobs:
     needs: get-environments
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         environment: ${{ fromJson(needs.get-environments.outputs.environments) }}
     steps:
@@ -59,14 +63,14 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
         with:
-          version: 'v3.14.0'
+          version: ${{ env.HELM_VERSION }}
 
       - name: Template Helm chart for ${{ matrix.environment }}
         run: |
           helm template kubernetes/loculus \
             --name-template loculus-pp-${{ matrix.environment }} \
             --namespace ${{ matrix.environment }} \
-            --kube-version 1.29 \
+            --kube-version ${{ env.KUBERNETES_VERSION }} \
             --values kubernetes/loculus/values.yaml \
             --values ../pathoplexus/loculus_values/values.yaml \
             --values ../pathoplexus/loculus_values/environment_specific_values/${{ matrix.environment }}.yaml \
@@ -79,7 +83,7 @@ jobs:
           helm template kubernetes/loculus \
             --name-template loculus-pp-${{ matrix.environment }} \
             --namespace ${{ matrix.environment }} \
-            --kube-version 1.29 \
+            --kube-version ${{ env.KUBERNETES_VERSION }} \
             --values kubernetes/loculus/values.yaml \
             --values ../pathoplexus/loculus_values/values.yaml \
             --values ../pathoplexus/loculus_values/environment_specific_values/${{ matrix.environment }}.yaml \
