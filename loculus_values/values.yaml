@@ -787,11 +787,11 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Specimen processing
       - name: hostAge
         ontology_id: GENEPIO:0001392
-        definition: Age of host (in years) at the time of sampling.
+        definition: Age of host (in years) at the time of sampling. Decimal numbers are supported.
         guidance: In case of privacy concerns use hostAgeBin.
         example: "79"
         displayName: Host age
-        type: int
+        type: float
         header: Host
         rangeSearch: true
       - name: hostAgeBin
