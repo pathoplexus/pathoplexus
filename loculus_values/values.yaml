@@ -1592,7 +1592,7 @@ organisms:
       image: "/images/organisms/mpox_small.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 300 # mpox is ~197kB
+          maxNumberOfRecommendedEntries: 200 # Nextclade handles ~80MB of sequences, mpox is ~197kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/mpox/all-clades"
       metadataAdd:
         - name: clade
@@ -2313,7 +2313,7 @@ organisms:
       image: "/images/organisms/rsv.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 2000 # RSV is ~15kB
+          maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/b/EPI_ISL_1653999"
       metadataAdd:
         - name: lineage
@@ -2410,7 +2410,7 @@ organisms:
       image: "/images/organisms/hmpv.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 5000 # HMPV is ~13kB
+          maxNumberOfRecommendedEntries: 1500 # HMPV is ~13kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/hmpv/all-clades/NC_039199"
       metadataAdd:
         - name: lineage
