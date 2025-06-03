@@ -68,7 +68,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     image: "/images/organisms/ebolazaire_small.jpg"
     linkOuts:
       - name: "Nextclade"
-        maxNumberOfRecommendedEntries: 4000 # Nextclade handles ~80MB of sequences, our sequences are ~20KB each
+        maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
         url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/zaire&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
     earliestReleaseDate:
       enabled: true
@@ -1350,7 +1350,7 @@ organisms:
       image: "/images/organisms/ebolasudan_small.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 4000 # Nextclade handles ~80MB of sequences, ebola is ~20kb
+          maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
       metadataAdd:
         - name: totalStopCodons
@@ -1413,7 +1413,7 @@ organisms:
       image: "/images/organisms/wnv_small.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 7000 # Nextclade handles ~80MB of sequences, west nile is ~11kb
+          maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/wnv/all-lineages&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output"
       metadataAdd:
         - name: lineage
@@ -1507,13 +1507,13 @@ organisms:
       image: "/images/organisms/cchf_small.jpg"
       linkOuts:
         - name: "Nextclade (L)"
-          maxNumberOfRecommendedEntries: 6000 # Nextclade handles ~80MB of sequences, cchf L is ~12.5kB
+          maxNumberOfRecommendedEntries: 2000 # cchf L is ~12.5kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/L&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
         - name: "Nextclade (M)"
-          maxNumberOfRecommendedEntries: 10000 # Nextclade handles ~80MB of sequences, cchf M is ~5kB
+          maxNumberOfRecommendedEntries: 5000 # cchf M is ~5kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/M&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
         - name: "Nextclade (S)"
-          maxNumberOfRecommendedEntries: 40000 # Nextclade handles ~80MB of sequences, cchf S is ~1.7kB
+          maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
       metadataAdd:
         - name: totalStopCodons
@@ -1592,7 +1592,7 @@ organisms:
       image: "/images/organisms/mpox_small.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 400 # Nextclade handles ~80MB of sequences, mpox is ~197kB
+          maxNumberOfRecommendedEntries: 300 # mpox is ~197kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/mpox/all-clades"
       metadataAdd:
         - name: clade
@@ -2216,7 +2216,7 @@ organisms:
       image: "/images/organisms/rsv-adjusted.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 5000 # Nextclade handles ~80MB of sequences, RSV is ~15kB
+          maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/a/EPI_ISL_412866"
       metadataAdd:
         - name: lineage
@@ -2313,7 +2313,7 @@ organisms:
       image: "/images/organisms/rsv.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 5000 # Nextclade handles ~80MB of sequences, RSV is ~15kB
+          maxNumberOfRecommendedEntries: 2000 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/b/EPI_ISL_1653999"
       metadataAdd:
         - name: lineage
@@ -2410,7 +2410,7 @@ organisms:
       image: "/images/organisms/hmpv.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 5000 # Nextclade handles ~80MB of sequences, HMPV is ~13kB
+          maxNumberOfRecommendedEntries: 5000 # HMPV is ~13kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/hmpv/all-clades/NC_039199"
       metadataAdd:
         - name: lineage
