@@ -204,7 +204,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: country
         required: true
         columnWidth: 134
-        truncateColumnDisplayTo: 15
         order: 20
         definition: "The country from which the sample was collected."
         guidance: "Please choose a country or ocean/sea from the list of options defined by INSDC standards."
@@ -526,7 +525,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         ingest: division
         columnWidth: 134
-        truncateColumnDisplayTo: 15
         order: 30
         definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)"
         example: "Ontario"
@@ -582,7 +580,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: authors
         header: Authors
         enableSubstringSearch: true
-        truncateColumnDisplayTo: 15
         ingest: ncbiSubmitterNames
         includeInDownloadsByDefault: true
         preprocessing:
@@ -599,7 +596,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Author affiliations
         generateIndex: true
         autocomplete: true
-        truncateColumnDisplayTo: 15
         includeInDownloadsByDefault: true
         header: Authors
         ingest: ncbiSubmitterAffiliation
