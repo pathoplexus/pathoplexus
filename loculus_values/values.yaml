@@ -1350,7 +1350,7 @@ organisms:
       image: "/images/organisms/ebolasudan_small.jpg"
       linkOuts:
         - name: "Nextclade"
-          maxNumberOfRecommendedEntries: 4000 # Nextclade handles ~80MB of sequences, mpox is ~20kb
+          maxNumberOfRecommendedEntries: 4000 # Nextclade handles ~80MB of sequences, ebola is ~20kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
       metadataAdd:
         - name: totalStopCodons
