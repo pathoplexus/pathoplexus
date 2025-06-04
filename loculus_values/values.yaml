@@ -70,6 +70,8 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: "Nextclade"
         maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
         url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/zaire&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+      - name: "Country map"
+        url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     earliestReleaseDate:
       enabled: true
       externalFields:
@@ -1348,6 +1350,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
           displayName: Total Stop Codons
@@ -1411,6 +1415,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/wnv/all-lineages&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -1590,6 +1596,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 200 # Nextclade handles ~80MB of sequences, mpox is ~197kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/mpox/all-clades"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: clade
           displayName: Clade
@@ -2214,6 +2222,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/a/EPI_ISL_412866"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -2311,6 +2321,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/b/EPI_ISL_1653999"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -2408,6 +2420,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1500 # HMPV is ~13kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/hmpv/all-clades/NC_039199"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
