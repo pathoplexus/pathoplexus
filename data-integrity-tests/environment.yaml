@@ -4,6 +4,7 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
+  - click
   - python=3.12
   - snakemake
   - tsv-utils
@@ -13,3 +14,4 @@ dependencies:
   - seqkit
   - zstd
   - csv-diff
+  - requests
