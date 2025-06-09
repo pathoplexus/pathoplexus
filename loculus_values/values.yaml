@@ -1517,6 +1517,8 @@ organisms:
         - name: "Nextclade (S)"
           maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
           displayName: Total stop codons
