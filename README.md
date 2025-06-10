@@ -17,15 +17,15 @@ For most contributions to new Pathoplexus features, please add new features to t
 ## The Technical Bit
 
 ### How this repository works
-This repo builds the Pathoplexus website, which consists of the Loculus website code with a number of files overlaid on top of it. It also configures the version of Loculus that Pathoplexus is built against, and that is used for the other components,  and it contains the _values_ that are used to configure the Loculus deployment.
+This repo builds the Pathoplexus website, which consists of the Loculus website code with a number of files overlaid on top of it. It also configures the version of Loculus that Pathoplexus is built against, and that is used for the other components, and it contains the _values_ that are used to configure the Loculus deployment.
 
-This repository is an **overlay** over the [loculus monorepo](https://github.com/loculus-project/loculus). One can imagine this as the monorepo folder within this repository being copied on-top of the loculus monorepo. Then the website image is built. This means this repository only contains Pathoplexus-specific files for the website - others are inherited from Loculus.
+This repository is an **overlay** over the [loculus monorepo](https://github.com/loculus-project/loculus). One can imagine this as the monorepo folder within this repository being copied on top of the loculus monorepo. Then the website image is built. This means this repository only contains Pathoplexus-specific files for the website - others are inherited from Loculus.
 
 ### How to develop & run locally
 
 #### Adding new pages
 
-Add new pages by entering the [monorepo/website/src/pages](./monorepo/website/src/pages) directory, and copying a directory for an existing page, then modifying it appropriately.
+Add new pages by entering the [monorepo/website/src/pages](./monorepo/website/src/pages) directory and copying the directory of an existing page, then modifying it appropriately.
 
 #### How to develop locally
 
@@ -54,4 +54,4 @@ Which commits end up on staging/production/demo is determined by the separate `p
 
 The commits of this repo (`pathoplexus/pathoplexus`) used by the respective deployments are mirrored in a read-only fashion to branches in this  (`pathoplexus/pathoplexus`) repository (branch names are `env/production`, `env/staging`, `env/demo`). Do not change the commits pointed at by these branches to avoid confusion.
 
-The update is done automatically by a Github workflow: https://github.com/pathoplexus/loculus_deployments/blob/main/.github/workflows/pathoplexus-repo-branch-updates.yml
+The update is done automatically by a GitHub workflow: https://github.com/pathoplexus/loculus_deployments/blob/main/.github/workflows/pathoplexus-repo-branch-updates.yml
