@@ -9,6 +9,10 @@ export const bottomNavigationItems = [
         path: '/about/governance',
     },
     {
+        text: 'Funding',
+        path: '/about/funding',
+    },
+    {
         text: 'Contact',
         path: '/contact',
     },
