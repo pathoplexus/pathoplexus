@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/MdLayout.astro
+title: "Funding"
+---
+
+To date, Pathoplexus has largely been built with donated resources and time. We are actively seeking funding to drive the platform forward. We are a registered non-profit in Switzerland; if you would like a donation receipt for your taxes, please reach out to donations@pathoplexus.org. Donations do not affect governance or operational decisions.
+
+## Institutional support
+Please contact us at hello@pathoplexus.org if you would like to discuss how you could support Pathoplexus and what we could achieve with your support.
+
+## Individual donations
+We welcome donations. Please <a href="mailto:donations@pathoplexus.org">contact us</a> if you would like to receive a link to our Stripe donation page to make a donation.
+
+You can also donate using Bitcoin or Ethereum:
+
+<div id="crypto-donate" class="crypto-widget">
+  <label for="crypto-select">Choose currency:</label>
+  <select id="crypto-select">
+    <option value="btc">BTC</option>
+    <option value="eth">ETH</option>
+  </select>
+  <div id="crypto-address" class="address">
+    <code id="address-text"></code>
+    <button id="copy-address" style="margin-left: 0.5em;">Copy</button>
+  </div>
+</div>
+
+<script>
+const addresses = {
+  btc: 'bc1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  eth: '0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+};
+const select = document.getElementById('crypto-select');
+const addrText = document.getElementById('address-text');
+const copyBtn = document.getElementById('copy-address');
+function updateAddress() {
+  addrText.textContent = addresses[select.value];
+}
+select.addEventListener('change', updateAddress);
+copyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(addrText.textContent);
+});
+updateAddress();
+</script>
