@@ -167,3 +167,4 @@ defaultResources:
 sequenceFlagging:
   github:
     issueTemplate: sequence-metadata-issue.md
+bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/banner.txt"
