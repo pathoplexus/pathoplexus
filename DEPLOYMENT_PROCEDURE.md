@@ -24,7 +24,7 @@ Once you have a new release candidate on `main`, you can point the staging serve
 
 The easiest way to do this is with the GitHub action "Create PR to bump staging to latest" in the `loculus_deployments` repository: https://github.com/pathoplexus/loculus_deployments/actions
 
-A little after the PR is merged, changes will be reflected at http://demo.pathoplexus.org. You should also check the health of the application in ArgoCD.
+A little after the PR is merged, changes will be reflected at https://demo.pathoplexus.org. You should also check the health of the application in ArgoCD.
 
 ### Promoting a new version from staging to production
 
