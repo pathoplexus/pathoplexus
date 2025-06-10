@@ -19,7 +19,7 @@ Please be specific to at least species level, and further if applicable.
 Please describe what added value and/or benefit would come from including this pathogen.
 
 **What kind of community works on this pathogen?**
-Please briefly describe the pathogen community. Where does this pathogen circulate globally? What regions/groups are key in sequencing/analyzing this pathogen? Is the community large or small; well-connected or disperse? 
+Please briefly describe the pathogen community. Where does this pathogen circulate globally? What regions/groups are key in sequencing/analyzing this pathogen? Is the community large or small; well-connected or dispersed?
 
 **Additional context**
 Please add any other information that will help us assess whether or not to prioritize adding this pathogen to Pathoplexus.
