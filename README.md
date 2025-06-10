@@ -50,7 +50,7 @@ To clean up so you can see your real files run `git clean -fX monorepo`. (Don't 
 
 ### Deployments
 
-Which commits end up on staging/production/demo is determined by the separate `pathoplexus/loculus_deployments` (private) repo.
+Which commits end up on staging/production/demo is determined by the separate `pathoplexus/loculus_deployments` repo.
 
 The commits of this repo (`pathoplexus/pathoplexus`) used by the respective deployments are mirrored in a read-only fashion to branches in this  (`pathoplexus/pathoplexus`) repository (branch names are `env/production`, `env/staging`, `env/demo`). Do not change the commits pointed at by these branches to avoid confusion.
 
