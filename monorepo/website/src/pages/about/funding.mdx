@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/MdLayout.astro
+title: "Funding"
+---
+
+import { CryptoDonationWidget } from '../../components/CryptoDonationWidget';
+
+# Funding
+
+To date, Pathoplexus has largely been built with donated resources and time. We are actively seeking funding to drive the platform forward. We are a registered non-profit in Switzerland; if you would like a donation receipt for your taxes, please reach out to donations@pathoplexus.org. Donations do not affect governance or operational decisions.
+
+## Institutional support
+Please contact us at hello@pathoplexus.org if you would like to discuss how you could support Pathoplexus and what we could achieve with your support.
+
+## Individual donations
+We welcome donations from individuals. Please <a href="mailto:donations@pathoplexus.org">contact us</a> if you would like to receive a link to our Stripe donation page to make a donation, or bank account details.
+
+You can also donate using Bitcoin or Ethereum:
+
+
+<CryptoDonationWidget 
+  addresses={{
+    btc: "bc1qlh9escc7600jw4z06mmrp6wmus3gy2h5q84ltu",
+    eth: "0x353F356bc3885b3D29750708c47dcF9277549cbD"
+  }}
+  client:load
+/>
+
