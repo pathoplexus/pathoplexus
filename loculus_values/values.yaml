@@ -60,6 +60,9 @@ sequenceFlagging:
     organization: pathoplexus
     repository: curation_reports
     issueTemplate: test-sequence-metadata-issue.md
+lineageSystemDefinitions:
+  mpox:
+    9: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -1636,6 +1639,7 @@ organisms:
             inputs: {input: nextclade.customNodeAttributes.lineage}
           columnWidth: 64
           order: 7
+          lineageSystem: mpox
         - name: totalStopCodons
           displayName: Total stop codons
           type: int
