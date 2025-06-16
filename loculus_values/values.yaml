@@ -63,6 +63,10 @@ sequenceFlagging:
 lineageSystemDefinitions:
   mpox:
     9: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
+  rsv-a:
+    8: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/lineages.yaml
+  rsv-b:
+    8: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -2243,6 +2247,7 @@ organisms:
             inputs: { input: nextclade.clade }
           columnWidth: 80
           order: 5
+          lineageSystem: rsv-a
         - name: subtype
           displayName: Subtype
           noInput: true
@@ -2342,6 +2347,7 @@ organisms:
             inputs: { input: nextclade.clade }
           columnWidth: 80
           order: 5
+          lineageSystem: rsv-b
         - name: subtype
           displayName: Subtype
           noInput: true
