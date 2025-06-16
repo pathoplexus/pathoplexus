@@ -2324,6 +2324,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+          nextclade_dataset_version: "2024-11-27--02-51-00Z"
           require_nextclade_sort_match: true
           minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
           accepted_dataset_matches: 
@@ -2435,6 +2436,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+          nextclade_dataset_version: "2025-03-04--17-31-25Z"
           require_nextclade_sort_match: true
           minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
           accepted_dataset_matches: 
