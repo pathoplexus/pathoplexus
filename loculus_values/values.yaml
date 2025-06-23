@@ -2540,12 +2540,14 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          nextclade_dataset_tag: "2025-04-25--12:24:24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
       - <<: *preprocessing
         version: 10
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          nextclade_dataset_tag: "2025-04-25--12:24:24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
