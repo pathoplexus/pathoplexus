@@ -70,6 +70,9 @@ lineageSystemDefinitions:
   rsv-b:
     8: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/lineages.yaml
     10: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/lineages.yaml
+  hmpv:
+    8: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
+    10: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -2518,6 +2521,7 @@ organisms:
             inputs: { input: nextclade.clade }
           columnWidth: 80
           order: 5
+          lineageSystem: hmpv
       website: 
         <<: *website
         tableColumns:
