@@ -11,9 +11,9 @@ We download sequences from the INSDC using the [NCBI Datasets Virus Data Package
 
 Additionally, for multi-segmented organisms the INSDC often does not offer data where segments have been grouped by isolate. To retain as much information as possible from the samples, we additionally group samples based on their isolate and other metadata fields. By default all metadata fields must be the same across segments for us to group them as one sample, with the exception of segment-specific metadata fields. These fields are either alignment-related (length, totalSnps, totalInsertedNucs, totalDeletedNucs, totalUnknownNucs, totalAmbiguousNucs, totalFrameShifts, frameShifts, completeness) or related to the INSDC-accession for that specific segment (ncbiUpdateDate, insdcAccessionBase, insdcAccessionFull, insdcVersion).
 
-## Mapping of NCBI VIirus Metadata Fields to Loculus Metadata Fields
+## Mapping of NCBI Virus Metadata Fields to Loculus Metadata Fields
 
-| **NCBI VIirus Field Name**       | **Loculus Field name**                                              |
+| **NCBI Virus Field Name**       | **Loculus Field name**                                              |
 | -------------------------------- | ------------------------------------------------------------------- |
 | **Accession**                    | insdcAccessionFull (also produces insdcAccessionBase, insdcVersion) |
 | **BioProjects**                  | bioprojectAccession                                                 |
