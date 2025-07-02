@@ -610,7 +610,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "List of authors who should be listed on the sample."
         guidance: "Authors should be separated by semi-colons. Each author's name should be in the format `last name, first name;`. Last name(s) is mandatory, only ASCII alphabetical characters A-Z are allowed."
         example: "Smith, Anna; Perez, Tom J.; Xu,;"
-        desired: true
+        required: true
       - name: authorAffiliations
         displayName: Author affiliations
         generateIndex: true
