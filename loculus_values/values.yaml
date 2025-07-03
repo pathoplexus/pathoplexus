@@ -872,7 +872,6 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: exposureSetting
         ontology_id: GENEPIO:0001428
         definition: The setting or event leading to exposure.
-        guidance: Select the host exposure setting(s) from the pick list provided in the template. If a desired term is missing, contact the curation team.
         example: Healthcare Setting [GENEPIO:0100201]
         displayName: Exposure setting
         header: Host
