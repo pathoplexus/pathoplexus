@@ -2308,6 +2308,12 @@ organisms:
           hideOnSequenceDetailsPage: true
           hideInSearchResultsTable: true
           notSearchable: true
+        - name: gisaidIsolateId
+          displayName: GISAID Isolate ID
+          header: Sample details
+          definition: "GISAID isolate ID (also known as EPI_ISL ID)"
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
+          example: "EPI_ISL_123456"
       website:
         <<: *website
         tableColumns:
@@ -2421,6 +2427,12 @@ organisms:
           hideOnSequenceDetailsPage: true
           hideInSearchResultsTable: true
           notSearchable: true
+        - name: gisaidIsolateId
+          displayName: GISAID Isolate ID
+          header: Sample details
+          definition: "GISAID isolate ID (also known as EPI_ISL ID)"
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
+          example: "EPI_ISL_123456"
       website:
         <<: *website
         tableColumns:
