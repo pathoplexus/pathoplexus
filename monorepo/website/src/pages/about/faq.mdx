@@ -43,6 +43,8 @@ Data from Pathoplexus, as long as it is used and acknowledged according to the [
 In addition, Pathoplexus is purposefully complementary to INSDC-member databases, as all data in Pathoplexus eventually goes to INSDC.
 For Open Data submitted to Pathoplexus, this means Pathoplexus can be used as simply another way to send data to INSDC, as it is passed on immediately.
 For Restricted-Use Data submitted to Pathoplexus, Pathoplexus serves as a 'temporary protected home' before it eventually becomes Open.
+
+Pathoplexus sequences are annotated with cross-references to the corresponding INSDC and GISAID accessions if available.
 </details>
 
 <details>
@@ -129,6 +131,14 @@ If you submit to INSDC, we will pull your data into Pathoplexus, so there's no n
 If you submit to Pathoplexus, the data will go to INSDC when you specify (and immediately, if you select the data is open), so there's no need to upload it to INSDC yourself - we'll take care of that!
 
 Since we keep a record of all the data we pass onto INSDC, we ensure we don't duplicate it - but we can't do this if users upload to both place separately!
+</details>
+
+<details>
+<summary> <span class="faq">I originally submitted my data to GISAID. Can I now submit it to Pathoplexus as well?</span> </summary>
+Yes, you can, as long as you have not shared your sequences to INSDC databases (Genbank, ENA, DDBJ).
+In contrast to Pathoplexus, GISAID does not submit data to the INSDC on your behalf.
+So unless you yourself submitted your sequences to the INSDC, you can submit them to Pathoplexus.
+To ensure data integrity, we encourage you to add your sequences' GISAID Isolate ID (EPI_ISL) to the `gisaidIsolateId` metadata field when you submit your sequences to Pathoplexus.
 </details>
 
 <details>
