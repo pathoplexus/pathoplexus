@@ -1306,7 +1306,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
-      configFile: &preprocessingConfigFile
+      configFile:
         log_level: DEBUG
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
@@ -1700,6 +1700,13 @@ organisms:
           noInput: true
           preprocessing:
             inputs: {input: nextclade.qc.stopCodons.stopCodons}
+        - &gisaidIsolateIdMetadataField
+          name: gisaidIsolateId
+          displayName: GISAID Isolate ID
+          header: "Sample details"
+          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)"
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
+          example: "EPI_ISL_123456"
       website:
         <<: *website
         tableColumns:
@@ -2308,6 +2315,7 @@ organisms:
           hideOnSequenceDetailsPage: true
           hideInSearchResultsTable: true
           notSearchable: true
+        - <<: *gisaidIsolateIdMetadataField
       website:
         <<: *website
         tableColumns:
@@ -2421,6 +2429,7 @@ organisms:
           hideOnSequenceDetailsPage: true
           hideInSearchResultsTable: true
           notSearchable: true
+        - <<: *gisaidIsolateIdMetadataField
       website:
         <<: *website
         tableColumns:
