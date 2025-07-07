@@ -1,0 +1,80 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: 'Use external tools and suggest new ones'
+order: 105
+---
+
+
+## Using the Tools menu
+
+The sequence search page contains a **Tools** dropdown that lists external
+applications that can be launched with the sequences in your search query or any that you select. Select some sequences (or execute a search), open the
+dropdown and choose a tool. You will be taken to the tool in question which will be supplied with URLs so that it can seamlessly retrieve the sequences you are looking for from Pathoplexus.
+
+Initial tools allow you to:
+- perform QC on sequences with Nextclade and see their placement on a phylogenetic tree (only available for some organisms)
+- visualise the geographic distribution of your sequences
+
+## Configuring a new tool to be added to Pathoplexus
+
+We are interested in adding new useful external tools to this menu. If you are a tool developer interested in having your tool featured here, please read on.
+
+### Requirements
+
+For a tool to be integrated into the Pathoplexus tools menu, it must be able to:
+
+- Accept file URLs as parameters in its web address
+- Automatically fetch and process the files from these URLs and do something useful with them
+
+When users select your tool from the Tools menu, Pathoplexus will generate download URLs, configured in a way that you specify, then redirect users to your tool with these URLs embedded in the web address. Your tool needs to parse these URLs from the incoming request and retrieve the files directly from Pathoplexus.
+Tools are available on a per-pathogen basis; if a tool will only work with some of the pathogens on Pathoplexus, you can add it to just those. If it will work on all pathogens, you can add it to all of them.
+
+### Adding your tool to Pathoplexus
+
+The list of tools is defined in the `linkOuts` section of the `values.yaml`
+configuration of Pathoplexus.
+
+A link-out entry has the following structure:
+
+```json
+{
+  "name": "My Tool",
+  "url": "http://example.com/analysis?data={{[unalignedNucleotideSequences]}}",
+  "maxNumberOfRecommendedEntries": 100
+}
+```
+
+`name` is displayed in the menu, `url` is a template that may contain
+placeholders and `maxNumberOfRecommendedEntries` is optional. When this value is
+set, users will be warned if they attempt to send more sequences than the limit
+suggests.
+
+### URL template placeholders
+
+The URL template may contain placeholders wrapped in square brackets. They are
+replaced with download links generated for the current search results. Available
+placeholders are:
+
+- `[unalignedNucleotideSequences]` – link to the unaligned FASTA file.
+- `[alignedNucleotideSequences]` – link to the aligned FASTA file.
+- `[metadata]` – link to a metadata table in TSV format.
+
+Each placeholder can be extended with options:
+
+- `:[segment]` – restricts the sequence download to a specific segment, e.g.
+  `[unalignedNucleotideSequences:S]`.
+- `+rich` – include rich FASTA headers when supported, e.g.
+  `[unalignedNucleotideSequences+rich]`.
+- `|format` – request a specific data format such as `json`, e.g.
+  `[metadata|json]`.
+- For metadata, a comma-separated format like `+col1,col2` can be used to include only
+  certain fields, e.g. `[metadata+country,host]`.
+
+To ensure parts of the URL are properly URL encoded, wrap them in double curly
+braces. For example `{{my query}}` becomes `my%20query` after processing. This
+encoding happens after placeholders are substituted, so `{{[unalignedNucleotideSequences]}}` will become a properly URL-encoded URL to access the unaligned nucleotide sequences. You can even doubly-nest `{{}}` syntax where necessary.
+
+Multiple placeholders can appear in a single URL, allowing you to pass both
+sequence and metadata downloads to an external tool.
+
+You can create a PR or issue in the [Pathoplexus repository](https://github.com/pathoplexus/pathoplexus) to suggest adding your link-out entries to the configuration under a specific organism, and we'll consider all suggested new tools.
