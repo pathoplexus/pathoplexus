@@ -13,6 +13,19 @@ dropdown and choose a tool. You will be taken to the tool in question which will
 
 ## Configuring a new tool to be added to Pathoplexus
 
+We are interested in adding new useful tools to Pathoplexus.
+
+### Requirements
+
+For a tool to be integrated into the Pathoplexus tools menu, it must be able to:
+
+- Accept file URLs as parameters in its web address
+- Automatically fetch and process the files from these URLs and do something useful with them
+
+When users select your tool from the Tools menu, Pathoplexus will generate download URLs, configured in a way that you specify, then redirect users to your tool with these URLs embedded in the web address. Your tool needs to parse these URLs from its incoming request and retrieve the files directly from Pathoplexus.
+
+### Adding your tool to Pathoplexus
+
 The list of tools is defined in the `linkOuts` section of the `values.yaml`
 configuration of Pathoplexus.
 
