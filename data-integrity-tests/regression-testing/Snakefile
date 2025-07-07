@@ -120,29 +120,34 @@ rule join_tsv:
         """
 
 
+def exclude_fields_option():
+    exclude_fields = [
+        # "pipelineVersion",
+        # "releasedDate",
+        # "submittedDate",
+        # "releasedAtTimestamp",
+        # "submittedAtTimestamp",
+        # "displayName",
+        # "versionStatus",
+    ]
+    if exclude_fields:
+        return "--exclude=" + ",".join(exclude_fields)
+    else:
+        return ""
+
+
 rule invariant_subset:
     input:
         "results/{organism}_{instance}.joined.tsv",
     output:
         "results/{organism}_{instance}.invariant.tsv",
     params:
-        exclude_fields=",".join(
-            {
-                "accession",
-                "accessionVersion",
-                "releasedDate",
-                "submittedDate",
-                "releasedAtTimestamp",
-                "submittedAtTimestamp",
-                "displayName",
-                "versionStatus",
-            }
-        ),
+        exclude_fields=exclude_fields_option(),
     shell:
         """
         tsv-select -H \
-            --exclude {params.exclude_fields} \
-            -f "submissionId" \
+            {params.exclude_fields} \
+            -f "accessionVersion" \
             --rest last \
             {input} \
         | keep-header - -- ./bin/tsv-sort -k1,1 \
@@ -161,7 +166,7 @@ rule invariant_subsets:
     shell:
         """
         tsv-select -H \
-            -f "submissionId,{params.segment_names}" \
+            -f "accessionVersion,{params.segment_names}" \
             {input} \
         > {output.sequences}
         tsv-select -H \
@@ -179,7 +184,7 @@ rule diff_meta:
         "results/{organism}.meta.{a}.{b}.diff",
     shell:
         """
-        csv-diff {input} --key=submissionId --format=tsv > {output} || echo "Differences found"
+        csv-diff {input} --key=accessionVersion --format=tsv > {output} || echo "Differences found"
         """
 
 
