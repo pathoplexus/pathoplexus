@@ -1277,6 +1277,10 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: percentage
         preprocessing:
           inputs: {input: nextclade.coverage}
+      - name: comments
+        displayName: Comments
+        header: "Additional information"
+        definition: "Any additional comments about the sample or sequence."
     website: &website
       tableColumns:
         - sampleCollectionDate
@@ -1306,7 +1310,8 @@ defaultOrganismConfig: &defaultOrganismConfig
       - sequencingInstrument  
       - sequencingProtocol  
       - specimenCollectorSampleId  
-      - versionComment  
+      - versionComment
+      - comments  
   preprocessing:
     - &preprocessing
       replicas: 1
