@@ -1279,7 +1279,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.coverage}
       - name: comment
         displayName: Comment
-        header: "Additional information"
+        header: "Submission details"
         definition: "Any additional comments about the sample or sequence."
     website: &website
       tableColumns:
