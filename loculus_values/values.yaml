@@ -1720,6 +1720,12 @@ organisms:
           definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)"
           guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
           example: "EPI_ISL_123456"
+          preprocessing:
+            function: check_regex
+            inputs:
+              regex_field: gisaidIsolateId
+            args:
+              pattern: "^EPI_ISL_[0-9]+$"
       website:
         <<: *website
         tableColumns:
