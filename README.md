@@ -48,6 +48,34 @@ To bring a file into scope, remove it from `monorepo/.gitignore`.
 
 To clean up so you can see your real files run `git clean -fX monorepo`. (Don't do this before you have updated `.gitignore` or the files will be deleted.)
 
+#### Snippet 
+
+Full commands to get website running locally (against main.loculus.org):
+
+```
+# 1. Clone the Pathoplexus repo if you haven't already
+git clone https://github.com/pathoplexus/pathoplexus.git
+cd pathoplexus
+
+# 2. Sync the monorepo
+./sync.sh
+
+# 3. Navigate to the website directory
+cd monorepo/website
+
+# 4. Copy the environment file
+cp .env.example .env
+
+# 5. Generate the local test configuration
+../generate_local_test_config.sh --from-live
+
+# 6. Install dependencies
+npm ci
+
+# 7. Start the server
+npm run dev
+```
+
 ### Deployments
 
 Which commits end up on staging/production/demo is determined by the separate `pathoplexus/loculus_deployments` repo.
