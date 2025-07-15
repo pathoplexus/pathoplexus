@@ -1720,6 +1720,12 @@ organisms:
           definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)"
           guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
           example: "EPI_ISL_123456"
+          preprocessing:
+            function: check_regex
+            inputs:
+              regex_field: gisaidIsolateId
+            args:
+              pattern: "^EPI_ISL_[0-9]+$"
       website:
         <<: *website
         tableColumns:
@@ -1919,15 +1925,15 @@ organisms:
             - OPG208
             - OPG209
             - OPG210
-      # - <<: *preprocessing
-      #   replicas: 3
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: nextstrain/mpox/all-clades
-      #     nextclade_dataset_tag: 2025-04-25--12-24-24Z
-      #     batch_size: 5
-      #     genes: *mpoxGenes
+      - <<: *preprocessing
+        replicas: 3
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: nextstrain/mpox/all-clades
+          nextclade_dataset_tag: 2025-04-25--12-24-24Z
+          batch_size: 5
+          genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
@@ -2354,18 +2360,18 @@ organisms:
           accepted_dataset_matches: 
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 11
-      #   replicas: 3
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-      #     nextclade_dataset_tag: "2024-11-27--02-51-00Z"
-      #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
-      #       - rsv-a
-      #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 11
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+          nextclade_dataset_tag: "2024-11-27--02-51-00Z"
+          require_nextclade_sort_match: true
+          minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            - rsv-a
+          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2468,18 +2474,18 @@ organisms:
           accepted_dataset_matches: 
             - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 11
-      #   replicas: 3
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-      #     nextclade_dataset_tag: "2025-03-04--17-31-25Z"
-      #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
-      #       - rsv-b
-      #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 11
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+          nextclade_dataset_tag: "2025-03-04--17-31-25Z"
+          require_nextclade_sort_match: true
+          minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            - rsv-b
+          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
