@@ -113,7 +113,7 @@ load_database() {
     psql -U postgres -d postgres -c "REVOKE $new_owner FROM postgres"
     psql -U postgres -d postgres -c "GRANT $new_owner TO postgres"
 
-    psql -U $new_owner -d postgres -c "DROP DATABASE IF EXISTS \"$db_name\";"
+    psql -U $new_owner -d postgres -c "DROP DATABASE IF EXISTS \"$db_name\" WITH (FORCE);"
 
     psql -U postgres -d postgres -c "CREATE DATABASE \"$db_name\" WITH OWNER = \"$new_owner\";"
     psql -U postgres -d postgres -c "REVOKE CONNECT ON DATABASE $db_name FROM \"$new_owner\";"
