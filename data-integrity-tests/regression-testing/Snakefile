@@ -121,17 +121,13 @@ rule join_tsv:
 
 
 def exclude_fields_option():
-    exclude_fields = [
-        # "pipelineVersion",
-        # "releasedDate",
-        # "submittedDate",
-        # "releasedAtTimestamp",
-        # "submittedAtTimestamp",
-        # "displayName",
-        # "versionStatus",
-    ]
+    # Get exclude_fields from config, or use default empty string
+    exclude_fields = config.get("exclude_fields", "")
+
+    # Example usage: snakemake --config exclude_fields="pipelineVersion,releasedDate,submittedDate"
+
     if exclude_fields:
-        return "--exclude=" + ",".join(exclude_fields)
+        return "--exclude=" + exclude_fields
     else:
         return ""
 
