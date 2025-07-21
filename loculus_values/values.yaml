@@ -1219,7 +1219,8 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             regex_field: insdcRawReadsAccession
           args:
-            pattern: "^(E|D|S)RR[0-9]{6,}$"
+            # NCBI can output comma-separated lists of SRR accessions
+            pattern: "^(E|D|S)RR[0-9]{6,}(,(E|D|S)RR[0-9]{6,})*$"
       - name: totalSnps
         type: int
         header: "Alignment and QC metrics"
