@@ -671,7 +671,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         preprocessing:
           function: check_regex
           inputs:
-            regex_field: insdcAccessionFull
+            regex_field: bioprojectAccession
           args:
             pattern: "^PRJ(E|D|N)[A-Z][0-9]+$"
       - name: biosampleAccession
@@ -688,7 +688,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         preprocessing:
           function: check_regex
           inputs:
-            regex_field: insdcAccessionFull
+            regex_field: biosampleAccession
           args:
             pattern: "^SAM(E|D|N)[A-Z]?[0-9]+$"
       - name: gcaAccession
@@ -699,12 +699,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "INSDC"
         noInput: true
         oneHeader: true
-        preprocessing:
-          function: check_regex
-          inputs:
-            regex_field: insdcAccessionFull
-          args:
-            pattern: '^GCA_[0-9]{9}\.[0-9]+$'
       - name: cultureId
         displayName: Culture ID
         header: Sample details
