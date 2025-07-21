@@ -668,6 +668,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
         example: "PRJNA123456"
+        preprocessing:
+          function: check_regex
+          inputs:
+            regex_field: bioprojectAccession
+          args:
+            pattern: "^PRJ(E|D|N)[A-Z][0-9]+$"
       - name: biosampleAccession
         displayName: BioSample accession
         customDisplay:
@@ -679,6 +685,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
         example: "SAMN12345678"
         oneHeader: true
+        preprocessing:
+          function: check_regex
+          inputs:
+            regex_field: biosampleAccession
+          args:
+            pattern: "^SAM(E|D|N)[A-Z]?[0-9]+$"
       - name: gcaAccession
         displayName: GCA accession
         customDisplay:
@@ -1202,6 +1214,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiSraAccessions
         guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
         definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
+        preprocessing:
+          function: check_regex
+          inputs:
+            regex_field: insdcRawReadsAccession
+          args:
+            # NCBI can output comma-separated lists of SRR accessions
+            # Also accept ERS/SRS for now, as NCBI virus occasionally sends those
+            # See https://github.com/ncbi/datasets/issues/516
+            pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
       - name: totalSnps
         type: int
         header: "Alignment and QC metrics"
@@ -1324,16 +1345,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
-    # - <<: *preprocessing
-    #   version: 11
-    #   image: ghcr.io/loculus-project/preprocessing-nextclade
-    #   args:
-    #     - "prepro"
-    #   configFile: &preprocessingConfigFile
-    #     log_level: DEBUG
-    #     nextclade_dataset_name: nextstrain/ebola/zaire
-    #     genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
-    #     batch_size: 100
+    - <<: *preprocessing
+      version: 11
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
@@ -1376,12 +1389,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      # - <<: *preprocessing
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/zaire
+      - <<: *preprocessing
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1414,12 +1427,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
-      # - <<: *preprocessing
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/sudan
+      - <<: *preprocessing
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/sudan
     ingest:
       <<: *ingest
       configFile:
@@ -1510,13 +1523,13 @@ organisms:
           nextclade_dataset_name: nextstrain/wnv/all-lineages
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *preprocessing
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: nextstrain/wnv/all-lineages
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-      #     genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: nextstrain/wnv/all-lineages
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
+          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -1611,14 +1624,14 @@ organisms:
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
           genes: [RdRp, GPC, NP]
-      # - <<: *preprocessing
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     log_level: DEBUG
-      #     nextclade_dataset_name: nextstrain/cchfv/linked
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-      #     genes: [RdRp, GPC, NP]
+      - <<: *preprocessing
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          log_level: DEBUG
+          nextclade_dataset_name: nextstrain/cchfv/linked
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+          genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
@@ -2574,13 +2587,13 @@ organisms:
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
           nextclade_dataset_tag: "2025-04-25--12-24-24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 11
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-      #     nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-      #     genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 11
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
