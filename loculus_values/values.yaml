@@ -639,12 +639,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         perSegment: true
         oneHeader: true
-        preprocessing:
-          function: check_regex
-          inputs:
-            regex_field: insdcAccessionBase
-          args:
-            pattern: "^[A-Z]+[0-9]+$"
       - name: insdcVersion
         displayName: INSDC version
         type: int
@@ -653,12 +647,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         perSegment: true
         oneHeader: true
-        preprocessing:
-          function: check_regex
-          inputs:
-            regex_field: insdcVersion
-          args:
-            pattern: "^[0-9]+$"
       - name: insdcAccessionFull
         displayName: INSDC accession
         includeInDownloadsByDefault: true
@@ -670,12 +658,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         perSegment: true
         oneHeader: true
-        preprocessing:
-          function: check_regex
-          inputs:
-            regex_field: insdcAccessionFull
-          args:
-            pattern: '^[A-Z]+[0-9]+\.[0-9]+$'
       - name: bioprojectAccession
         displayName: BioProject accession
         customDisplay:
