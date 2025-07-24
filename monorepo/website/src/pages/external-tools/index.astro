@@ -1,0 +1,31 @@
+---
+import NoToolsAvailable from '../../components/ExternalTools/NoToolsAvailable.astro';
+import ToolCard from '../../components/ExternalTools/ToolCard.astro';
+import ToolsIntegrationNotice from '../../components/ExternalTools/ToolsIntegrationNotice.astro';
+import { tools } from '../../components/ExternalTools/tools';
+import { cleanOrganism } from '../../components/Navigation/cleanOrganism';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DashiconsExternal from '~icons/dashicons/external';
+
+const relevantTools = tools.sort((a, b) => a.name > b.name ? 1 : -1);
+---
+
+<BaseLayout title='External tools'>
+    <div class='max-w-3xl mx-auto text-gray-700'>
+        <h1 class='text-2xl font-semibold text-main my-3  mt-8'>
+            External Tools
+        </h1>
+
+        {relevantTools.length > 0 ? (
+            <div class="space-y-6">
+                {relevantTools.map(tool => (
+                    <ToolCard tool={tool} />
+                ))}
+            </div>
+        ) : (
+            <NoToolsAvailable />
+        )}
+
+        <ToolsIntegrationNotice />
+    </div>
+</BaseLayout>
