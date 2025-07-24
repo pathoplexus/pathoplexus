@@ -1,0 +1,47 @@
+---
+import { getToolUrl, type Tool } from './tools';
+import DashiconsExternal from '~icons/dashicons/external';
+
+export interface Props {
+    tool: Tool;
+    selectedOrganism: string;
+}
+
+const { tool, selectedOrganism } = Astro.props;
+
+const toolUrl = getToolUrl(tool, selectedOrganism);
+---
+
+<div class="border border-gray-200 rounded-lg p-6">
+    <div class='flex gap-8'>
+        <div class="w-28">
+            {tool.image && (
+                <div class="flex-shrink-0">
+                    <img
+                        src={tool.image}
+                        alt={`${tool.name} logo`}
+                        class="w-28 h-28 object-contain"
+                        loading="lazy"
+                    />
+                </div>
+            )}
+        </div>
+
+        <div class="flex-1">
+            <h2 class="text-lg font-semibold text-main mb-2">
+                {tool.name}
+            </h2>
+            <p class="mb-4 leading-relaxed">
+                {tool.description}
+            </p>
+            {toolUrl && (
+                <div class="mt-4">
+                    <a href={toolUrl} class="outlineButton w-32 flex justify-center">
+                        Open tool
+                        <DashiconsExternal className="ml-1" />
+                    </a>
+                </div>
+            )}
+        </div>
+    </div>
+</div>
