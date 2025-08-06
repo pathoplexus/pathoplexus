@@ -1390,12 +1390,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
+      # - <<: *preprocessing
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+      #     nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1428,12 +1428,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/sudan
+      # - <<: *preprocessing
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+      #     nextclade_dataset_name: nextstrain/ebola/sudan
     ingest:
       <<: *ingest
       configFile:
@@ -1525,13 +1525,13 @@ organisms:
           nextclade_dataset_name: nextstrain/wnv/all-lineages
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: nextstrain/wnv/all-lineages
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      # - <<: *preprocessing
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     nextclade_dataset_name: nextstrain/wnv/all-lineages
+      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
+      #     genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -1627,14 +1627,14 @@ organisms:
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
           genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          genes: [RdRp, GPC, NP]
+      # - <<: *preprocessing
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     log_level: DEBUG
+      #     nextclade_dataset_name: nextstrain/cchfv/linked
+      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+      #     genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
@@ -2594,13 +2594,13 @@ organisms:
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
           nextclade_dataset_tag: "2025-04-25--12-24-24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-          nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      # - <<: *preprocessing
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+      #     nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+      #     genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
