@@ -2639,8 +2639,8 @@ organisms:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Measles virus"
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Measles_virus.JPG/1920px-Measles_virus.JPG"
+      organismName: "Measles Virus"
+      image: "/images/organisms/measles_small.jpg"
       linkOuts:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
