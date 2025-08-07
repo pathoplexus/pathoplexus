@@ -2639,7 +2639,7 @@ organisms:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Measles"
+      organismName: "Measles virus"
       image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Measles_virus.JPG/1920px-Measles_virus.JPG"
       linkOuts:
         - name: "Country map"
