@@ -2635,6 +2635,67 @@ organisms:
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
           - name: "SH"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
+  measles:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Measles"
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Measles_virus.JPG/1920px-Measles_virus.JPG"
+      linkOuts:
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website: 
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+          nextclade_dataset_server: "https://raw.githubusercontent.com/nextstrain/nextclade_data/refs/heads/measles/genome/data_output/" # DO NOT MERGE
+          # nextclade_dataset_tag: "2025-04-25--12-24-24Z" # DO NOT MERGE
+          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 11234
+    enaDeposition:
+      configFile:
+        taxon_id: 11234
+        scientific_name: "Measles morbillivirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/reference.fasta]]"
+            insdcAccessionFull: NC_001498.1
+        genes:
+          - name: "C"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/C.fasta]]"
+          - name: "F"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/F.fasta]]"
+          - name: "H"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/H.fasta]]"
+          - name: "L"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/L.fasta]]"
+          - name: "M"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/M.fasta]]"
+          - name: "N"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/N.fasta]]"
+          - name: "P"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/P.fasta]]"
+          - name: "V"
+            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/refs/heads/measles-artifacts/artefacts/measles/V.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
