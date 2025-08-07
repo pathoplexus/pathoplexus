@@ -2647,6 +2647,18 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/refs/heads/measles/genome/data_output/"
+      metadataAdd:
+        - name: genotype
+          displayName: Genotype
+          header: "Genotype"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
       website: 
         <<: *website
         tableColumns:
