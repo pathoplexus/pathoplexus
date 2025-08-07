@@ -2644,6 +2644,9 @@ organisms:
       linkOuts:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/refs/heads/measles/genome/data_output/"
       website: 
         <<: *website
         tableColumns:
