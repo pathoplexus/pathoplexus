@@ -2666,6 +2666,7 @@ organisms:
           - earliestReleaseDate
           - authors
           - authorAffiliations
+          - genotype
           - geoLocCountry
           - geoLocAdmin1
           - length
