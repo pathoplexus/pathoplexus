@@ -2677,8 +2677,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
-         
-          # nextclade_dataset_tag: "2025-08-12--18-07-15Z"
+          nextclade_dataset_tag: "2025-08-12--18-07-15Z"
           genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
     ingest:
       <<: *ingest
