@@ -10,7 +10,7 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: true
 s3:
-  enabled: false
+  enabled: true
 developmentDatabasePersistence: false
 dataUseTerms:
   enabled: true
