@@ -8,7 +8,7 @@ bannerMessage: This is a preview instance. Do not rely on this data for real ana
 gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/website/
 gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 s3:
   enabled: false
 developmentDatabasePersistence: false
@@ -77,6 +77,8 @@ defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
+    files:
+      - name: annotations
     organismName: "Ebola Zaire"
     image: "/images/organisms/ebolazaire_small.jpg"
     linkOuts:
@@ -1345,6 +1347,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
+        create_embl_file: true
     # - <<: *preprocessing
     #   version: 12
   ingest: &ingest
