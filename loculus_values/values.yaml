@@ -2644,9 +2644,12 @@ organisms:
       linkOuts:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-        - name: "Nextclade"
+        - name: "Nextclade (whole genome)"
           maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012"
+        - name: "Nextclade (N450)"
+          maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/N450/WHO-2012"
       metadataAdd:
         - name: genotype
           displayName: Genotype
