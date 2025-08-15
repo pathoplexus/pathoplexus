@@ -1338,7 +1338,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total SNPs
+        displayName: Differences from reference
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
@@ -1348,7 +1348,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total inserted nucs
+        displayName: Inserted bases
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
@@ -1360,7 +1360,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         preprocessing:
           inputs: {input: nextclade.totalDeletions}
-        displayName: Total deleted nucs
+        displayName: Deleted bases
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1369,7 +1369,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total ambiguous nucs
+        displayName: Ambiguous bases
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
@@ -1380,7 +1380,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total unknown nucs
+        displayName: Unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
@@ -1390,7 +1390,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2820
         noInput: true
         perSegment: true
-        displayName: Total frame shifts
+        displayName: "# of frame shifts"
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
@@ -1527,7 +1527,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: Total Stop Codons
+          displayName: "# of stop codons"
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1613,7 +1613,7 @@ organisms:
           order: 5
           orderOnDetailsPage: 740
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: "# of stop codons"
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1714,7 +1714,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: "# of stop codons"
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1845,7 +1845,7 @@ organisms:
           orderOnDetailsPage: 740
           lineageSystem: mpox
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: "# of stop codons"
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
