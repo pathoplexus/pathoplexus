@@ -1270,6 +1270,19 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
+      - name: totalStopCodons
+        displayName: "# of stop codons"
+        type: int
+        header: "Alignment and QC metrics"
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
+      - name: stopCodons
+        displayName: Stop Codons
+        header: "Alignment and QC metrics"
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.stopCodons}
       - name: totalFrameShifts
         type: int
         rangeSearch: true
@@ -1408,20 +1421,6 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      metadataAdd:
-        - name: totalStopCodons
-          displayName: "# of stop codons"
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop Codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
       - <<: *preprocessing
         configFile:
@@ -1492,19 +1491,6 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           order: 5
-        - name: totalStopCodons
-          displayName: "# of stop codons"
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
@@ -1590,20 +1576,6 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      metadataAdd:
-        - name: totalStopCodons
-          displayName: "# of stop codons"
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
@@ -1717,19 +1689,6 @@ organisms:
           columnWidth: 64
           order: 7
           lineageSystem: mpox
-        - name: totalStopCodons
-          displayName: "# of stop codons"
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
           displayName: GISAID Isolate ID
