@@ -116,7 +116,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     ## TODO: Allow extra metadata field by particular organisms (e.g. clade/lineage)
     metadata:
       - name: sampleCollectionDate
-        displayName: Collection date
+        displayName: Date
         initiallyVisible: false
         header: Sample details
         ingest: ncbiCollectionDate
@@ -136,7 +136,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
-        displayName: Collection date (lower bound)
+        displayName: Date (lower bound)
         type: date
         initiallyVisible: true
         header: Sample details
@@ -150,11 +150,11 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeLower
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
+          rangeDisplayName: Date
           bound: lower
         noInput: true
       - name: sampleCollectionDateRangeUpper
-        displayName: Collection date (upper bound)
+        displayName: Date (upper bound)
         type: date
         initiallyVisible: true
         header: Sample details
@@ -168,7 +168,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeUpper
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
+          rangeDisplayName: Date
           bound: upper
         noInput: true
       - name: displayName
@@ -218,7 +218,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         oneHeader: true
       - name: geoLocCountry
-        displayName: Collection country
+        displayName: Country
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -540,7 +540,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             input: geoLocCountry
       - name: geoLocAdmin1
-        displayName: Collection subdivision level 1
+        displayName: Subdivision level 1
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -554,7 +554,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
-        displayName: Collection subdivision level 2
+        displayName: Subdivision level 2
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -564,7 +564,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
         example: "City of Toronto"
       - name: geoLocCity
-        displayName: Collection city
+        displayName: City
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -576,7 +576,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0100436
         definition: The name of a specific geographical location e.g. Credit River (rather than river).
         example: Credit River
-        displayName: Collection site
+        displayName: Site
         header: Sample details
         orderOnDetailsPage: 520
       - name: geoLocLatitude
@@ -1432,22 +1432,22 @@ defaultOrganismConfig: &defaultOrganismConfig
       defaultOrder: descending
     extraInputFields: []
     metadataTemplate:
-      - geoLocCountry  
-      - sampleCollectionDate  
-      - authors  
-      - authorAffiliations  
-      - hostNameScientific  
-      - collectionDevice  
-      - collectionMethod  
-      - cultureId  
-      - depthOfCoverage  
-      - geoLocAdmin1  
-      - geoLocAdmin2  
-      - sampleReceivedDate  
-      - sequencingDate  
-      - sequencingInstrument  
-      - sequencingProtocol  
-      - specimenCollectorSampleId  
+      - geoLocCountry
+      - sampleCollectionDate
+      - authors
+      - authorAffiliations
+      - hostNameScientific
+      - collectionDevice
+      - collectionMethod
+      - cultureId
+      - depthOfCoverage
+      - geoLocAdmin1
+      - geoLocAdmin2
+      - sampleReceivedDate
+      - sequencingDate
+      - sequencingInstrument
+      - sequencingProtocol
+      - specimenCollectorSampleId
       - versionComment
       - comment
   preprocessing:
@@ -1559,7 +1559,7 @@ organisms:
         taxon_id: 3052460
     enaDeposition:
       configFile:
-        taxon_id: 186540 
+        taxon_id: 186540
         scientific_name: "Sudan ebolavirus"
         molecule_type: "genomic RNA"
     referenceGenomes:
@@ -2529,7 +2529,7 @@ organisms:
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-a
     enaDeposition:
       configFile:
@@ -2646,7 +2646,7 @@ organisms:
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-b
     enaDeposition:
       configFile:
@@ -2709,7 +2709,7 @@ organisms:
           order: 5
           orderOnDetailsPage: 740
           lineageSystem: hmpv
-      website: 
+      website:
         <<: *website
         tableColumns:
           - sampleCollectionDate
