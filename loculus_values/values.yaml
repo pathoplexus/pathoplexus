@@ -1120,7 +1120,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         displayName: Length
         columnWidth: 84
-        order: 10
+        order: 80
       - name: hostNameScientific
         displayName: Host name - scientific
         generateIndex: true
@@ -1232,7 +1232,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Differences from reference
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
-        order: 13
       - name: totalInsertedNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1242,7 +1241,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Inserted bases
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
-        order: 78
       - name: totalDeletedNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1252,7 +1250,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         preprocessing:
           inputs: {input: nextclade.totalDeletions}
         displayName: Deleted bases
-        order: 79
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1263,7 +1260,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Ambiguous bases
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
-        order: 89
       - name: totalUnknownNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1274,12 +1270,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
-        order: 88
       - name: totalStopCodons
         displayName: "# of stop codons"
         type: int
         header: "Alignment and QC metrics"
-        hideOnSequenceDetailsPage: true
         noInput: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
@@ -1289,12 +1283,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.stopCodons}
-        order: 98
       - name: totalFrameShifts
         type: int
         rangeSearch: true
         header: "Alignment and QC metrics"
-        hideOnSequenceDetailsPage: true
         noInput: true
         perSegment: true
         displayName: "# of frame shifts"
@@ -1307,7 +1299,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Frame shifts
         preprocessing:
           inputs: {input: nextclade.frameShifts}
-        order: 99
       - name: completeness
         type: float
         header: "Alignment and QC metrics"
@@ -1320,7 +1311,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: percentage
         preprocessing:
           inputs: {input: nextclade.coverage}
-        order: 12
       - name: comment
         displayName: Comment
         header: "Submission details"
