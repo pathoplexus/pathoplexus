@@ -24,7 +24,7 @@ jobs:
       environments: ${{ steps.get-envs.outputs.environments }}
     steps:
       - name: Checkout Pathoplexus repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Get environment list
         id: get-envs
@@ -43,7 +43,7 @@ jobs:
         environment: ${{ fromJson(needs.get-environments.outputs.environments) }}
     steps:
       - name: Checkout Pathoplexus repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: pathoplexus
 
@@ -54,7 +54,7 @@ jobs:
           echo "version=$LOCULUS_VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout Loculus repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: loculus-project/loculus
           ref: ${{ steps.loculus-version.outputs.version }}
