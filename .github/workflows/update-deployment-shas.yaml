@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Get current branch name
         id: branch
@@ -26,7 +26,7 @@ jobs:
           ssh-private-key: ${{ secrets.UPDATE_PATHOPLEXUS_DEPLOY_KEY }}
 
       - name: Checkout loculus_deployments repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: pathoplexus/loculus_deployments
           path: loculus_deployments
