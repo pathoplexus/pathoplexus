@@ -119,7 +119,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     ## TODO: Allow extra metadata field by particular organisms (e.g. clade/lineage)
     metadata:
       - name: sampleCollectionDate
-        displayName: Collection date
+        displayName: Date
         initiallyVisible: false
         header: Sample details
         ingest: ncbiCollectionDate
@@ -138,7 +138,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
-        displayName: Collection date (lower bound)
+        displayName: Date (lower bound)
         type: date
         initiallyVisible: true
         header: Sample details
@@ -151,11 +151,11 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeLower
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
+          rangeDisplayName: Date
           bound: lower
         noInput: true
       - name: sampleCollectionDateRangeUpper
-        displayName: Collection date (upper bound)
+        displayName: Date (upper bound)
         type: date
         initiallyVisible: true
         header: Sample details
@@ -168,7 +168,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeUpper
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Collection date
+          rangeDisplayName: Date
           bound: upper
         noInput: true
       - name: displayName
@@ -214,7 +214,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         oneHeader: true
       - name: geoLocCountry
-        displayName: Collection country
+        displayName: Country
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -536,7 +536,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             input: geoLocCountry
       - name: geoLocAdmin1
-        displayName: Collection subdivision level 1
+        displayName: Subdivision level 1
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -549,7 +549,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
-        displayName: Collection subdivision level 2
+        displayName: Subdivision level 2
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -558,7 +558,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
         example: "City of Toronto"
       - name: geoLocCity
-        displayName: Collection city
+        displayName: City
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -569,7 +569,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0100436
         definition: The name of a specific geographical location e.g. Credit River (rather than river).
         example: Credit River
-        displayName: Collection site
+        displayName: Site
         header: Sample details
       - name: geoLocLatitude
         displayName: Latitude
@@ -1229,7 +1229,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total SNPs
+        displayName: Differences from reference
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
@@ -1238,7 +1238,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total inserted nucs
+        displayName: Inserted bases
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
@@ -1249,7 +1249,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         preprocessing:
           inputs: {input: nextclade.totalDeletions}
-        displayName: Total deleted nucs
+        displayName: Deleted bases
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1257,7 +1257,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total ambiguous nucs
+        displayName: Ambiguous bases
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
@@ -1267,16 +1267,31 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total unknown nucs
+        displayName: Unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
+      - name: totalStopCodons
+        displayName: "# of stop codons"
+        type: int
+        header: "Alignment and QC metrics"
+        hideOnSequenceDetailsPage: true
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
+      - name: stopCodons
+        displayName: Stop Codons
+        header: "Alignment and QC metrics"
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.stopCodons}
       - name: totalFrameShifts
         type: int
         rangeSearch: true
         header: "Alignment and QC metrics"
+        hideOnSequenceDetailsPage: true
         noInput: true
         perSegment: true
-        displayName: Total frame shifts
+        displayName: "# of frame shifts"
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
@@ -1315,22 +1330,22 @@ defaultOrganismConfig: &defaultOrganismConfig
       defaultOrder: descending
     extraInputFields: []
     metadataTemplate:
-      - geoLocCountry  
-      - sampleCollectionDate  
-      - authors  
-      - authorAffiliations  
-      - hostNameScientific  
-      - collectionDevice  
-      - collectionMethod  
-      - cultureId  
-      - depthOfCoverage  
-      - geoLocAdmin1  
-      - geoLocAdmin2  
-      - sampleReceivedDate  
-      - sequencingDate  
-      - sequencingInstrument  
-      - sequencingProtocol  
-      - specimenCollectorSampleId  
+      - geoLocCountry
+      - sampleCollectionDate
+      - authors
+      - authorAffiliations
+      - hostNameScientific
+      - collectionDevice
+      - collectionMethod
+      - cultureId
+      - depthOfCoverage
+      - geoLocAdmin1
+      - geoLocAdmin2
+      - sampleReceivedDate
+      - sequencingDate
+      - sequencingInstrument
+      - sequencingProtocol
+      - specimenCollectorSampleId
       - versionComment
       - comment
   preprocessing:
@@ -1408,20 +1423,6 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      metadataAdd:
-        - name: totalStopCodons
-          displayName: Total Stop Codons
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop Codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
       - <<: *preprocessing
         configFile:
@@ -1440,7 +1441,7 @@ organisms:
         taxon_id: 3052460
     enaDeposition:
       configFile:
-        taxon_id: 186540 
+        taxon_id: 186540
         scientific_name: "Sudan ebolavirus"
         molecule_type: "genomic RNA"
     referenceGenomes:
@@ -1492,19 +1493,6 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           order: 5
-        - name: totalStopCodons
-          displayName: Total stop codons
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
@@ -1590,20 +1578,6 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      metadataAdd:
-        - name: totalStopCodons
-          displayName: Total stop codons
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
@@ -1717,19 +1691,6 @@ organisms:
           columnWidth: 64
           order: 7
           lineageSystem: mpox
-        - name: totalStopCodons
-          displayName: Total stop codons
-          type: int
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
           displayName: GISAID Isolate ID
@@ -2375,7 +2336,7 @@ organisms:
           nextclade_dataset_tag: "2024-11-27--02-51-00Z"
           require_nextclade_sort_match: true
           minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-          accepted_dataset_matches: 
+          accepted_dataset_matches:
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       # - <<: *preprocessing
@@ -2387,7 +2348,7 @@ organisms:
       #     nextclade_dataset_tag: "2024-11-27--02-51-00Z"
       #     require_nextclade_sort_match: true
       #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
+      #     accepted_dataset_matches:
       #       - rsv-a
       #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
@@ -2397,7 +2358,7 @@ organisms:
         minimizer_index: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-a
     enaDeposition:
       configFile:
@@ -2490,7 +2451,7 @@ organisms:
           nextclade_dataset_tag: "2025-03-04--17-31-25Z"
           require_nextclade_sort_match: true
           minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-          accepted_dataset_matches: 
+          accepted_dataset_matches:
             - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       # - <<: *preprocessing
@@ -2502,7 +2463,7 @@ organisms:
       #     nextclade_dataset_tag: "2025-03-04--17-31-25Z"
       #     require_nextclade_sort_match: true
       #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
+      #     accepted_dataset_matches:
       #       - rsv-b
       #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
@@ -2512,7 +2473,7 @@ organisms:
         minimizer_index: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-b
     enaDeposition:
       configFile:
@@ -2574,7 +2535,7 @@ organisms:
           columnWidth: 80
           order: 5
           lineageSystem: hmpv
-      website: 
+      website:
         <<: *website
         tableColumns:
           - sampleCollectionDate
