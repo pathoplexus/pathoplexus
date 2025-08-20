@@ -2635,6 +2635,82 @@ organisms:
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
           - name: "SH"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
+  measles:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Measles Virus"
+      image: "/images/organisms/measles_small.jpg"
+      linkOuts:
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012"
+      metadataAdd:
+        - name: genotype
+          displayName: Genotype
+          header: "Genotype"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+      website: 
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - genotype
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+          nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 11234
+    enaDeposition:
+      configFile:
+        taxon_id: 11234
+        scientific_name: "Measles morbillivirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/reference.fasta]]"
+            insdcAccessionFull: NC_001498.1
+        genes:
+          - name: "C"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/C.fasta]]"
+          - name: "F"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/F.fasta]]"
+          - name: "H"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/H.fasta]]"
+          - name: "L"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/L.fasta]]"
+          - name: "M"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/M.fasta]]"
+          - name: "N"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/N.fasta]]"
+          - name: "P"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/P.fasta]]"
+          - name: "V"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/V.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
