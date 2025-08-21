@@ -16,6 +16,10 @@ export const extraStaticTopNavigationItems = [
     },
 ];
 
-export const extraSequenceRelatedTopNavigationItems = (_: string | undefined): TopNavigationItems => {
-    return [];
-};
+export const extraSequenceRelatedTopNavigationItems = (organism: string | undefined): TopNavigationItems => {
+    const tools = {
+        text: 'Tools',
+        path: organism === undefined ? '/external-tools/' : `/${organism}/external-tools/`,
+    }
+    return [tools];
+}
