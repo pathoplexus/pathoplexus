@@ -2693,6 +2693,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 5
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
