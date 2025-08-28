@@ -651,8 +651,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: INSDC accession
         includeInDownloadsByDefault: true
         customDisplay:
-          type: link
-          url: "https://www.ncbi.nlm.nih.gov/nuccore/__value__"
+          type: linkWithMenu
+          linkMenuItems:
+            - name: View in NCBI
+              url: "https://www.ncbi.nlm.nih.gov/nuccore/__value__"
+            - name: View in ENA
+              url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
+            - name: View in DDBJ
+              url: "https://getentry.ddbj.nig.ac.jp/getentry/na/__value__"
         header: "INSDC"
         ingest: genbankAccession
         noInput: true
@@ -661,8 +667,15 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: bioprojectAccession
         displayName: BioProject accession
         customDisplay:
-          type: link
-          url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
+          type: linkWithMenu
+          linkMenuItems:
+            - name: View in NCBI
+              url: "https://www.ncbi.nlm.nih.gov/bioproject/__value__"
+            - name: View in ENA
+              url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
+            - name: View in DDBJ
+              url: "https://ddbj.nig.ac.jp/search/entry/bioproject/__value__"
+        header: "INSDC"
         header: "INSDC"
         ingest: bioprojects
         guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
@@ -677,8 +690,14 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: biosampleAccession
         displayName: BioSample accession
         customDisplay:
-          type: link
-          url: "https://www.ncbi.nlm.nih.gov/biosample/__value__"
+          type: linkWithMenu
+          linkMenuItems:
+            - name: View in NCBI
+              url: "https://www.ncbi.nlm.nih.gov/biosample/__value__"
+            - name: View in ENA
+              url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
+            - name: View in DDBJ
+              url: "https://ddbj.nig.ac.jp/search/entry/biosample/__value__"
         header: "INSDC"
         includeInDownloadsByDefault: true
         guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
@@ -2635,6 +2654,83 @@ organisms:
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
           - name: "SH"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
+  measles:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Measles Virus"
+      image: "/images/organisms/measles_small.jpg"
+      linkOuts:
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012"
+      metadataAdd:
+        - name: genotype
+          displayName: Genotype
+          header: "Genotype"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+      website: 
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - genotype
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        replicas: 5
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+          nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 11234
+    enaDeposition:
+      configFile:
+        taxon_id: 11234
+        scientific_name: "Measles morbillivirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/reference.fasta]]"
+            insdcAccessionFull: NC_001498.1
+        genes:
+          - name: "C"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/C.fasta]]"
+          - name: "F"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/F.fasta]]"
+          - name: "H"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/H.fasta]]"
+          - name: "L"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/L.fasta]]"
+          - name: "M"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/M.fasta]]"
+          - name: "N"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/N.fasta]]"
+          - name: "P"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/P.fasta]]"
+          - name: "V"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/V.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
