@@ -108,7 +108,7 @@ rule join_tsv:
         cp {input.details} {output}
         for f in {input.seq}; do
             export segment=$(basename $f | cut -d_ -f2)
-            tsv-join -H \
+            ./bin/bin/tsv-join -H \
                 --write-all "''" \
                 --append-fields "sequence" \
                 --filter-file $f \
@@ -122,7 +122,8 @@ rule join_tsv:
 
 def exclude_fields_option():
     exclude_fields = [
-        # "pipelineVersion",
+        #"gcaAccession",
+        #"pipelineVersion",
         # "releasedDate",
         # "submittedDate",
         # "releasedAtTimestamp",
@@ -145,12 +146,12 @@ rule invariant_subset:
         exclude_fields=exclude_fields_option(),
     shell:
         """
-        tsv-select -H \
+        ./bin/bin/tsv-select -H \
             {params.exclude_fields} \
             -f "accessionVersion" \
             --rest last \
             {input} \
-        | keep-header - -- ./bin/tsv-sort -k1,1 \
+        | ./bin/bin/keep-header - -- ./bin/tsv-sort -k1,1 \
         > {output}
         """
 
@@ -165,11 +166,11 @@ rule invariant_subsets:
         segment_names=lambda w: ",".join(map(lambda x: x + "_sequence", segments(w))),
     shell:
         """
-        tsv-select -H \
+        ./bin/bin/tsv-select -H \
             -f "accessionVersion,{params.segment_names}" \
             {input} \
         > {output.sequences}
-        tsv-select -H \
+        ./bin/bin/tsv-select -H \
             --exclude "{params.segment_names}" \
             {input} \
         > {output.metadata}

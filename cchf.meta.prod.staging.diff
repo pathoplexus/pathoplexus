@@ -1,0 +1,4056 @@
+45 rows changed, 19 rows added
+
+45 rows changed
+
+  submissionId: OR047127.1.S
+    version: "4" => "5"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9HR."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_S: "OR047127" => ""
+    insdcAccessionFull_S: "OR047127.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1673" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2004" => ""
+    sampleCollectionDateRangeLower: "2004-01-01" => ""
+    sampleCollectionDateRangeUpper: "2004-12-31" => ""
+    specimenCollectorSampleId: "YL04041" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "1" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "2" => ""
+    totalSnps_S: "204" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047136.1.S
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9JP."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "0.9186602870813397" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_S: "OR047136" => ""
+    insdcAccessionFull_S: "OR047136.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1630" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "94" => ""
+    totalSnps_S: "185" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047138.1.S
+    version: "4" => "5"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9KM."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_S: "OR047138" => ""
+    insdcAccessionFull_S: "OR047138.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1673" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2004" => ""
+    sampleCollectionDateRangeLower: "2004-01-01" => ""
+    sampleCollectionDateRangeUpper: "2004-12-31" => ""
+    specimenCollectorSampleId: "BA04032" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "1" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "2" => ""
+    totalSnps_S: "204" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047142.1.S
+    version: "4" => "5"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9LK."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_S: "OR047142" => ""
+    insdcAccessionFull_S: "OR047142.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1810" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    specimenCollectorSampleId: "88168" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "2" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "140" => ""
+    totalSnps_S: "216" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047143.1.S
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9MH."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_S: "OR047143" => ""
+    insdcAccessionFull_S: "OR047143.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1716" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "2" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "46" => ""
+    totalSnps_S: "211" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047146.1.S
+    version: "4" => "5"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9NF."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "0.9976076555023924" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_S: "OR047146" => ""
+    insdcAccessionFull_S: "OR047146.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1790" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    specimenCollectorSampleId: "7903" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "2" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "124" => ""
+    totalSnps_S: "213" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR047156.1.M
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9JP."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.9998136414461424" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_M: "OR047156" => ""
+    insdcAccessionFull_M: "OR047156.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5626" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "11" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "272" => ""
+    totalSnps_M: "594" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR047158.1.M
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9KM."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.9998136414461424" => ""
+    frameShifts_M: "GPC:5-15(nt:104-137),GPC:20-24(nt:150-164),GPC:28-34(nt:174-192),GPC:46-57(nt:228-261),GPC:94-97(nt:372-382),GPC:107-113(nt:409-431),GPC:126-137(nt:466-503),GPC:196-198(nt:676-685),GPC:207-211(nt:709-724),GPC:224-227(nt:760-773)" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_M: "OR047158" => ""
+    insdcAccessionFull_M: "OR047158.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5401" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2004" => ""
+    sampleCollectionDateRangeLower: "2004-01-01" => ""
+    sampleCollectionDateRangeUpper: "2004-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "167" => ""
+    totalFrameShifts_M: "10" => ""
+    totalInsertedNucs_M: "203" => ""
+    totalSnps_M: "1335" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR047162.1.M
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9LK."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_M: "OR047162" => ""
+    insdcAccessionFull_M: "OR047162.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5701" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "335" => ""
+    totalSnps_M: "1055" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR047163.1.M
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9MH."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.995527394707417" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_M: "OR047163" => ""
+    insdcAccessionFull_M: "OR047163.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5327" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "16" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "1" => ""
+    totalSnps_M: "589" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR047166.1.M
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9NF."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.9998136414461424" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_M: "OR047166" => ""
+    insdcAccessionFull_M: "OR047166.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5723" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "11" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "369" => ""
+    totalSnps_M: "591" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR047167.1.L
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9HR."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "0.9866204162537165" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_L: "OR047167" => ""
+    insdcAccessionFull_L: "OR047167.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12004" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2004" => ""
+    sampleCollectionDateRangeLower: "2004-01-01" => ""
+    sampleCollectionDateRangeUpper: "2004-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "2" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "60" => ""
+    totalSnps_L: "1473" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR047176.1.L
+    version: "4" => "5"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9JP."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_L: "OR047176" => ""
+    insdcAccessionFull_L: "OR047176.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12296" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    specimenCollectorSampleId: "BA7902" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "11" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "199" => ""
+    totalSnps_L: "1574" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR047178.1.L
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9KM."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_L: "OR047178" => ""
+    insdcAccessionFull_L: "OR047178.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12232" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2004" => ""
+    sampleCollectionDateRangeLower: "2004-01-01" => ""
+    sampleCollectionDateRangeUpper: "2004-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "6" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "130" => ""
+    totalSnps_L: "1511" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR047182.1.L
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9LK."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_L: "OR047182" => ""
+    insdcAccessionFull_L: "OR047182.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12339" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "10" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "241" => ""
+    totalSnps_L: "1634" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR047183.1.L
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9MH."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_L: "OR047183" => ""
+    insdcAccessionFull_L: "OR047183.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12283" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1988" => ""
+    sampleCollectionDateRangeLower: "1988-01-01" => ""
+    sampleCollectionDateRangeUpper: "1988-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "9" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "184" => ""
+    totalSnps_L: "1594" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR047186.1.L
+    version: "3" => "4"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9NF."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "0.9989263296993723" => ""
+    geoLocCountry: "China" => ""
+    insdcAccessionBase_L: "OR047186" => ""
+    insdcAccessionFull_L: "OR047186.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12155" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2023-08-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1979" => ""
+    sampleCollectionDateRangeLower: "1979-01-01" => ""
+    sampleCollectionDateRangeUpper: "1979-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "11" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "71" => ""
+    totalSnps_L: "1573" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR823870.1.L
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9PD."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_L: "OR823870" => ""
+    insdcAccessionFull_L: "OR823870.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12358" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "10" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "260" => ""
+    totalSnps_L: "1629" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR823871.1.L
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9QB."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_L: "OR823871" => ""
+    insdcAccessionFull_L: "OR823871.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12498" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    specimenCollectorSampleId: "BA84021" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "5" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "395" => ""
+    totalSnps_L: "1588" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR823872.1.L
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9R9."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_L: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_L: "OR823872" => ""
+    insdcAccessionFull_L: "OR823872.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12693" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "10" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "595" => ""
+    totalSnps_L: "1633" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: OR823873.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9PD."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.9780096906448006" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_M: "OR823873" => ""
+    insdcAccessionFull_M: "OR823873.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5249" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "1" => ""
+    totalSnps_M: "1028" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR823875.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9R9."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_M: "0.9780096906448006" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_M: "OR823875" => ""
+    insdcAccessionFull_M: "OR823875.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5233" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "69" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "54" => ""
+    totalSnps_M: "993" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: OR823876.1.S
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9PD."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "0.9856459330143541" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_S: "OR823876" => ""
+    insdcAccessionFull_S: "OR823876.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1648" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    specimenCollectorSampleId: "84007" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "2" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "2" => ""
+    totalSnps_S: "211" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR823877.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9QB."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_S: "OR823877" => ""
+    insdcAccessionFull_S: "OR823877.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1728" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "13" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "69" => ""
+    totalSnps_S: "212" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: OR823878.1.S
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9R9."
+    authorAffiliations: "Wuhan Institute of Virology, Chinese Academy of Sciences" => ""
+    authors: "Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "China" => ""
+    hostNameScientific: "Ixodoidea" => ""
+    hostTaxonId: "297308" => ""
+    insdcAccessionBase_S: "OR823878" => ""
+    insdcAccessionFull_S: "OR823878.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1780" => ""
+    ncbiReleaseDate: "2024-12-21" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "1984" => ""
+    sampleCollectionDateRangeLower: "1984-01-01" => ""
+    sampleCollectionDateRangeUpper: "1984-12-31" => ""
+    specimenCollectorSampleId: "BA84027" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "2" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "110" => ""
+    totalSnps_S: "212" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894718.1.L
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9S7."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_L: "0.9986785596299967" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_L: "PP894718" => ""
+    insdcAccessionFull_L: "PP894718.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12122" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "0" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "30" => ""
+    totalSnps_L: "302" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: PP894719.1.L
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9T5."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_L: "0.9925668979187314" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus evertsi" => ""
+    hostTaxonId: "60190" => ""
+    insdcAccessionBase_L: "PP894719" => ""
+    insdcAccessionFull_L: "PP894719.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12019" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_L: "1" => ""
+    totalDeletedNucs_L: "0" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "0" => ""
+    totalSnps_L: "294" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: PP894720.1.L
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9U3."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_L: "0.9967789890981169" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_L: "PP894720" => ""
+    insdcAccessionFull_L: "PP894720.1" => ""
+    insdcVersion_L: "1" => ""
+    length_L: "12121" => ""
+    length_M: "0" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_L: "0" => ""
+    totalDeletedNucs_L: "0" => ""
+    totalFrameShifts_L: "0" => ""
+    totalInsertedNucs_L: "52" => ""
+    totalSnps_L: "298" => ""
+    totalUnknownNucs_L: "0" => ""
+
+  submissionId: PP894723.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9V1."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9966455460305628" => ""
+    frameShifts_M: "GPC:10-36(nt:118-200),GPC:39-43(nt:205-220),GPC:48-85(nt:234-346),GPC:99-127(nt:387-471),GPC:132-190(nt:484-662),GPC:200-222(nt:689-758),GPC:228-237(nt:772-803),GPC:240-332(nt:810-1088),GPC:338-1685(nt:1102-5147)" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_M: "PP894723" => ""
+    insdcAccessionFull_M: "PP894723.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5368" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "155" => ""
+    totalFrameShifts_M: "9" => ""
+    totalInsertedNucs_M: "175" => ""
+    totalSnps_M: "1333" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894724.1.M
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9WZ."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9988818486768543" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_M: "PP894724" => ""
+    insdcAccessionFull_M: "PP894724.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5360" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    specimenCollectorSampleId: "ARD407209" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "173" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894725.1.M
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9XX."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9880730525531122" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Homo sapiens" => ""
+    hostTaxonId: "9606" => ""
+    insdcAccessionBase_M: "PP894725" => ""
+    insdcAccessionFull_M: "PP894725.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5252" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    specimenCollectorSampleId: "SH401971" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "50" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "149" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894726.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9YV."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9826686544912412" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus evertsi" => ""
+    hostTaxonId: "60190" => ""
+    insdcAccessionBase_M: "PP894726" => ""
+    insdcAccessionFull_M: "PP894726.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5273" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "152" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894727.1.M
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9ZT."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9998136414461424" => ""
+    frameShifts_M: "GPC:8(nt:113-116),GPC:22-24(nt:154-163),GPC:35-36(nt:193-198),GPC:41-49(nt:211-239),GPC:58-60(nt:262-272),GPC:102-104(nt:394-404),GPC:123-131(nt:458-485),GPC:159-160(nt:566-572),GPC:203-205(nt:698-705),GPC:208-214(nt:713-732),GPC:222-226(nt:756-770),GPC:229-230(nt:777-782),GPC:239(nt:805-809),GPC:325-329(nt:1063-1079),GPC:385-386(nt:1244-1250)" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_M: "PP894727" => ""
+    insdcAccessionFull_M: "PP894727.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5431" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    specimenCollectorSampleId: "ARD407242" => ""
+    totalAmbiguousNucs_M: "1" => ""
+    totalDeletedNucs_M: "150" => ""
+    totalFrameShifts_M: "15" => ""
+    totalInsertedNucs_M: "215" => ""
+    totalSnps_M: "1270" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894728.1.M/PP894730.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002YA0R, PP_002YA1P."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9975773387998509" => ""
+    completeness_S: "0.9994019138755981" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Homo sapiens" => ""
+    hostTaxonId: "9606" => ""
+    insdcAccessionBase_M: "PP894728" => ""
+    insdcAccessionBase_S: "PP894730" => ""
+    insdcAccessionFull_M: "PP894728.1" => ""
+    insdcAccessionFull_S: "PP894730.1" => ""
+    insdcVersion_M: "1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "5356" => ""
+    length_S: "1686" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    totalAmbiguousNucs_M: "3" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalDeletedNucs_S: "16" => ""
+    totalFrameShifts_M: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalInsertedNucs_S: "30" => ""
+    totalSnps_M: "141" => ""
+    totalSnps_S: "285" => ""
+    totalUnknownNucs_M: "0" => ""
+    totalUnknownNucs_S: "1" => ""
+
+  submissionId: PP894729.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9WZ."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "1.0" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_S: "PP894729" => ""
+    insdcAccessionFull_S: "PP894729.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1686" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "16" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "30" => ""
+    totalSnps_S: "285" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894731.1.S
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9V1."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.9988038277511961" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_S: "PP894731" => ""
+    insdcAccessionFull_S: "PP894731.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1687" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    specimenCollectorSampleId: "ARD407551" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "16" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "33" => ""
+    totalSnps_S: "284" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894732.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9YV."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.9677033492822966" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus evertsi" => ""
+    hostTaxonId: "60190" => ""
+    insdcAccessionBase_S: "PP894732" => ""
+    insdcAccessionFull_S: "PP894732.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1619" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "132" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894733.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9XX."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.9898325358851675" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Homo sapiens" => ""
+    hostTaxonId: "9606" => ""
+    insdcAccessionBase_S: "PP894733" => ""
+    insdcAccessionFull_S: "PP894733.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1656" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "132" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894734.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9ZT."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.9994019138755981" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Hyalomma impeltatum" => ""
+    hostTaxonId: "563069" => ""
+    insdcAccessionBase_S: "PP894734" => ""
+    insdcAccessionFull_S: "PP894734.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1672" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-09" => ""
+    sampleCollectionDateRangeLower: "2022-09-01" => ""
+    sampleCollectionDateRangeUpper: "2022-09-30" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "46" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894736.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9U3."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.9563397129186603" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_S: "PP894736" => ""
+    insdcAccessionFull_S: "PP894736.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1600" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "128" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894737.1.S
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9T5."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.937799043062201" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus evertsi" => ""
+    hostTaxonId: "60190" => ""
+    insdcAccessionBase_S: "PP894737" => ""
+    insdcAccessionFull_S: "PP894737.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1569" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "127" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894738.1.S
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9S7."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_S: "0.94377990430622" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_S: "PP894738" => ""
+    insdcAccessionFull_S: "PP894738.1" => ""
+    insdcVersion_S: "1" => ""
+    length_L: "0" => ""
+    length_M: "0" => ""
+    length_S: "1579" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    specimenCollectorSampleId: "ARD401186" => ""
+    totalAmbiguousNucs_S: "0" => ""
+    totalDeletedNucs_S: "0" => ""
+    totalFrameShifts_S: "0" => ""
+    totalInsertedNucs_S: "1" => ""
+    totalSnps_S: "127" => ""
+    totalUnknownNucs_S: "0" => ""
+
+  submissionId: PP894741.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9S7."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9850913156913902" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_M: "PP894741" => ""
+    insdcAccessionFull_M: "PP894741.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5286" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "152" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894743.1.M
+    version: "2" => "3"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9T5."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9670145359672009" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus evertsi" => ""
+    hostTaxonId: "60190" => ""
+    insdcAccessionBase_M: "PP894743" => ""
+    insdcAccessionFull_M: "PP894743.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5189" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    specimenCollectorSampleId: "ARD401183" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "148" => ""
+    totalUnknownNucs_M: "0" => ""
+
+  submissionId: PP894744.1.M
+    version: "1" => "2"
+    isRevocation: "false" => "true"
+    versionComment: "" => "INSDC re-ingest found metadata changes which lead the segments in this sequence to be grouped differently. The newly grouped sequences can be found here: PP_002Y9U3."
+    authorAffiliations: "Institut Pasteur, Dakar, Virology" => ""
+    authors: "Sene, O." => ""
+    completeness_M: "0.9683190458442043" => ""
+    geoLocCountry: "Senegal" => ""
+    hostNameScientific: "Rhipicephalus sulcatus" => ""
+    hostTaxonId: "669938" => ""
+    insdcAccessionBase_M: "PP894744" => ""
+    insdcAccessionFull_M: "PP894744.1" => ""
+    insdcVersion_M: "1" => ""
+    length_L: "0" => ""
+    length_M: "5196" => ""
+    length_S: "0" => ""
+    ncbiReleaseDate: "2025-01-18" => ""
+    ncbiSourceDb: "GenBank" => ""
+    ncbiVirusName: "Orthonairovirus haemorrhagiae" => ""
+    ncbiVirusTaxId: "3052518" => ""
+    sampleCollectionDate: "2022-08" => ""
+    sampleCollectionDateRangeLower: "2022-08-01" => ""
+    sampleCollectionDateRangeUpper: "2022-08-31" => ""
+    totalAmbiguousNucs_M: "0" => ""
+    totalDeletedNucs_M: "0" => ""
+    totalFrameShifts_M: "0" => ""
+    totalInsertedNucs_M: "0" => ""
+    totalSnps_M: "150" => ""
+    totalUnknownNucs_M: "0" => ""
+
+19 rows added
+
+  submissionId: OR047167.1.L/OR047127.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 0.9866204162537165
+  completeness_M: 
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Ixodoidea
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 297308
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047167
+  insdcAccessionBase_M: 
+  insdcAccessionBase_S: OR047127
+  insdcAccessionFull_L: OR047167.1
+  insdcAccessionFull_M: 
+  insdcAccessionFull_S: OR047127.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12004
+  length_M: 0
+  length_S: 1673
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2004
+  sampleCollectionDateRangeLower: 2004-01-01
+  sampleCollectionDateRangeUpper: 2004-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: YL04041
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 2
+  totalDeletedNucs_M: 
+  totalDeletedNucs_S: 1
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 60
+  totalInsertedNucs_M: 
+  totalInsertedNucs_S: 2
+  totalSnps_L: 1473
+  totalSnps_M: 
+  totalSnps_S: 204
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR047176.1.L/OR047156.1.M/OR047136.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 0.9998136414461424
+  completeness_S: 0.9186602870813397
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: 
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047176
+  insdcAccessionBase_M: OR047156
+  insdcAccessionBase_S: OR047136
+  insdcAccessionFull_L: OR047176.1
+  insdcAccessionFull_M: OR047156.1
+  insdcAccessionFull_S: OR047136.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12296
+  length_M: 5626
+  length_S: 1630
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1979
+  sampleCollectionDateRangeLower: 1979-01-01
+  sampleCollectionDateRangeUpper: 1979-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: BA7902
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 11
+  totalDeletedNucs_M: 11
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 199
+  totalInsertedNucs_M: 272
+  totalInsertedNucs_S: 94
+  totalSnps_L: 1574
+  totalSnps_M: 594
+  totalSnps_S: 185
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR047178.1.L/OR047158.1.M/OR047138.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 0.9998136414461424
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: GPC:5-15(nt:104-137),GPC:20-24(nt:150-164),GPC:28-34(nt:174-192),GPC:46-57(nt:228-261),GPC:94-97(nt:372-382),GPC:107-113(nt:409-431),GPC:126-137(nt:466-503),GPC:196-198(nt:676-685),GPC:207-211(nt:709-724),GPC:224-227(nt:760-773)
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Ixodoidea
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 297308
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047178
+  insdcAccessionBase_M: OR047158
+  insdcAccessionBase_S: OR047138
+  insdcAccessionFull_L: OR047178.1
+  insdcAccessionFull_M: OR047158.1
+  insdcAccessionFull_S: OR047138.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12232
+  length_M: 5401
+  length_S: 1673
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2004
+  sampleCollectionDateRangeLower: 2004-01-01
+  sampleCollectionDateRangeUpper: 2004-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: BA04032
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 6
+  totalDeletedNucs_M: 167
+  totalDeletedNucs_S: 1
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 10
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 130
+  totalInsertedNucs_M: 203
+  totalInsertedNucs_S: 2
+  totalSnps_L: 1511
+  totalSnps_M: 1335
+  totalSnps_S: 204
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR047182.1.L/OR047162.1.M/OR047142.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 1.0
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: 
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047182
+  insdcAccessionBase_M: OR047162
+  insdcAccessionBase_S: OR047142
+  insdcAccessionFull_L: OR047182.1
+  insdcAccessionFull_M: OR047162.1
+  insdcAccessionFull_S: OR047142.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12339
+  length_M: 5701
+  length_S: 1810
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1988
+  sampleCollectionDateRangeLower: 1988-01-01
+  sampleCollectionDateRangeUpper: 1988-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: 88168
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 10
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 2
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 241
+  totalInsertedNucs_M: 335
+  totalInsertedNucs_S: 140
+  totalSnps_L: 1634
+  totalSnps_M: 1055
+  totalSnps_S: 216
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR047183.1.L/OR047163.1.M/OR047143.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 0.995527394707417
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: 
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047183
+  insdcAccessionBase_M: OR047163
+  insdcAccessionBase_S: OR047143
+  insdcAccessionFull_L: OR047183.1
+  insdcAccessionFull_M: OR047163.1
+  insdcAccessionFull_S: OR047143.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12283
+  length_M: 5327
+  length_S: 1716
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1988
+  sampleCollectionDateRangeLower: 1988-01-01
+  sampleCollectionDateRangeUpper: 1988-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: 88017
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 9
+  totalDeletedNucs_M: 16
+  totalDeletedNucs_S: 2
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 184
+  totalInsertedNucs_M: 1
+  totalInsertedNucs_S: 46
+  totalSnps_L: 1594
+  totalSnps_M: 589
+  totalSnps_S: 211
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR047186.1.L/OR047166.1.M/OR047146.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 0.9989263296993723
+  completeness_M: 0.9998136414461424
+  completeness_S: 0.9976076555023924
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2023-08-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: 
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR047186
+  insdcAccessionBase_M: OR047166
+  insdcAccessionBase_S: OR047146
+  insdcAccessionFull_L: OR047186.1
+  insdcAccessionFull_M: OR047166.1
+  insdcAccessionFull_S: OR047146.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12155
+  length_M: 5723
+  length_S: 1790
+  ncbiReleaseDate: 2023-08-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1979
+  sampleCollectionDateRangeLower: 1979-01-01
+  sampleCollectionDateRangeUpper: 1979-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: 7903
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 11
+  totalDeletedNucs_M: 11
+  totalDeletedNucs_S: 2
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 71
+  totalInsertedNucs_M: 369
+  totalInsertedNucs_S: 124
+  totalSnps_L: 1573
+  totalSnps_M: 591
+  totalSnps_S: 213
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR823870.1.L/OR823873.1.M/OR823876.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 0.9780096906448006
+  completeness_S: 0.9856459330143541
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2024-12-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Ixodoidea
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 297308
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR823870
+  insdcAccessionBase_M: OR823873
+  insdcAccessionBase_S: OR823876
+  insdcAccessionFull_L: OR823870.1
+  insdcAccessionFull_M: OR823873.1
+  insdcAccessionFull_S: OR823876.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12358
+  length_M: 5249
+  length_S: 1648
+  ncbiReleaseDate: 2024-12-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1984
+  sampleCollectionDateRangeLower: 1984-01-01
+  sampleCollectionDateRangeUpper: 1984-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: 84007
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 10
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 2
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 260
+  totalInsertedNucs_M: 1
+  totalInsertedNucs_S: 2
+  totalSnps_L: 1629
+  totalSnps_M: 1028
+  totalSnps_S: 211
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR823871.1.L/OR823877.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2024-12-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Ixodoidea
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 297308
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR823871
+  insdcAccessionBase_M: 
+  insdcAccessionBase_S: OR823877
+  insdcAccessionFull_L: OR823871.1
+  insdcAccessionFull_M: 
+  insdcAccessionFull_S: OR823877.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12498
+  length_M: 0
+  length_S: 1728
+  ncbiReleaseDate: 2024-12-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1984
+  sampleCollectionDateRangeLower: 1984-01-01
+  sampleCollectionDateRangeUpper: 1984-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: BA84021
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 5
+  totalDeletedNucs_M: 
+  totalDeletedNucs_S: 13
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 395
+  totalInsertedNucs_M: 
+  totalInsertedNucs_S: 69
+  totalSnps_L: 1588
+  totalSnps_M: 
+  totalSnps_S: 212
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: OR823872.1.L/OR823875.1.M/OR823878.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Wuhan Institute of Virology, Chinese Academy of Sciences
+  authors: Moming, A.; Zhu, Q.; Bai, Y.; Jin, J.; Wu, Q.; Su, Z.; Tang, S.; Zhang, Y.; Shen, S.; Deng, F.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 1.0
+  completeness_M: 0.9780096906448006
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2024-12-21
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: China
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Ixodoidea
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 297308
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: OR823872
+  insdcAccessionBase_M: OR823875
+  insdcAccessionBase_S: OR823878
+  insdcAccessionFull_L: OR823872.1
+  insdcAccessionFull_M: OR823875.1
+  insdcAccessionFull_S: OR823878.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12693
+  length_M: 5233
+  length_S: 1780
+  ncbiReleaseDate: 2024-12-21
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 1984
+  sampleCollectionDateRangeLower: 1984-01-01
+  sampleCollectionDateRangeUpper: 1984-12-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: BA84027
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 10
+  totalDeletedNucs_M: 69
+  totalDeletedNucs_S: 2
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 595
+  totalInsertedNucs_M: 54
+  totalInsertedNucs_S: 110
+  totalSnps_L: 1633
+  totalSnps_M: 993
+  totalSnps_S: 212
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894718.1.L/PP894741.1.M/PP894738.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 0.9986785596299967
+  completeness_M: 0.9850913156913902
+  completeness_S: 0.94377990430622
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Rhipicephalus sulcatus
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 669938
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: PP894718
+  insdcAccessionBase_M: PP894741
+  insdcAccessionBase_S: PP894738
+  insdcAccessionFull_L: PP894718.1
+  insdcAccessionFull_M: PP894741.1
+  insdcAccessionFull_S: PP894738.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12122
+  length_M: 5286
+  length_S: 1579
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-08
+  sampleCollectionDateRangeLower: 2022-08-01
+  sampleCollectionDateRangeUpper: 2022-08-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD401186
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 0
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 30
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 1
+  totalSnps_L: 302
+  totalSnps_M: 152
+  totalSnps_S: 127
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894719.1.L/PP894743.1.M/PP894737.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 0.9925668979187314
+  completeness_M: 0.9670145359672009
+  completeness_S: 0.937799043062201
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Rhipicephalus evertsi
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 60190
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: PP894719
+  insdcAccessionBase_M: PP894743
+  insdcAccessionBase_S: PP894737
+  insdcAccessionFull_L: PP894719.1
+  insdcAccessionFull_M: PP894743.1
+  insdcAccessionFull_S: PP894737.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12019
+  length_M: 5189
+  length_S: 1569
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-08
+  sampleCollectionDateRangeLower: 2022-08-01
+  sampleCollectionDateRangeUpper: 2022-08-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD401183
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 1
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 0
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 0
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 1
+  totalSnps_L: 294
+  totalSnps_M: 148
+  totalSnps_S: 127
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894720.1.L/PP894744.1.M/PP894736.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 0.9967789890981169
+  completeness_M: 0.9683190458442043
+  completeness_S: 0.9563397129186603
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Rhipicephalus sulcatus
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 669938
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: PP894720
+  insdcAccessionBase_M: PP894744
+  insdcAccessionBase_S: PP894736
+  insdcAccessionFull_L: PP894720.1
+  insdcAccessionFull_M: PP894744.1
+  insdcAccessionFull_S: PP894736.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 1
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 12121
+  length_M: 5196
+  length_S: 1600
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-08
+  sampleCollectionDateRangeLower: 2022-08-01
+  sampleCollectionDateRangeUpper: 2022-08-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD401182
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 0
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 0
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 0
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 52
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 1
+  totalSnps_L: 298
+  totalSnps_M: 150
+  totalSnps_S: 128
+  totalStopCodons: 
+  totalUnknownNucs_L: 0
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894723.1.M/PP894731.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9966455460305628
+  completeness_S: 0.9988038277511961
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: GPC:10-36(nt:118-200),GPC:39-43(nt:205-220),GPC:48-85(nt:234-346),GPC:99-127(nt:387-471),GPC:132-190(nt:484-662),GPC:200-222(nt:689-758),GPC:228-237(nt:772-803),GPC:240-332(nt:810-1088),GPC:338-1685(nt:1102-5147)
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Hyalomma impeltatum
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 563069
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894723
+  insdcAccessionBase_S: PP894731
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894723.1
+  insdcAccessionFull_S: PP894731.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 5368
+  length_S: 1687
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-09
+  sampleCollectionDateRangeLower: 2022-09-01
+  sampleCollectionDateRangeUpper: 2022-09-30
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD407551
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 155
+  totalDeletedNucs_S: 16
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 9
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 175
+  totalInsertedNucs_S: 33
+  totalSnps_L: 
+  totalSnps_M: 1333
+  totalSnps_S: 284
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894724.1.M/PP894729.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9988818486768543
+  completeness_S: 1.0
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Hyalomma impeltatum
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 563069
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894724
+  insdcAccessionBase_S: PP894729
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894724.1
+  insdcAccessionFull_S: PP894729.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 5360
+  length_S: 1686
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-09
+  sampleCollectionDateRangeLower: 2022-09-01
+  sampleCollectionDateRangeUpper: 2022-09-30
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD407209
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 16
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 30
+  totalSnps_L: 
+  totalSnps_M: 173
+  totalSnps_S: 285
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894725.1.M/PP894733.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9880730525531122
+  completeness_S: 0.9898325358851675
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Homo sapiens
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 9606
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894725
+  insdcAccessionBase_S: PP894733
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894725.1
+  insdcAccessionFull_S: PP894733.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 5252
+  length_S: 1656
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-08
+  sampleCollectionDateRangeLower: 2022-08-01
+  sampleCollectionDateRangeUpper: 2022-08-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: SH401971
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 50
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 1
+  totalSnps_L: 
+  totalSnps_M: 149
+  totalSnps_S: 132
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894726.1.M/PP894732.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9826686544912412
+  completeness_S: 0.9677033492822966
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Rhipicephalus evertsi
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 60190
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894726
+  insdcAccessionBase_S: PP894732
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894726.1
+  insdcAccessionFull_S: PP894732.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 5273
+  length_S: 1619
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-08
+  sampleCollectionDateRangeLower: 2022-08-01
+  sampleCollectionDateRangeUpper: 2022-08-31
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD401184
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 0
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 1
+  totalSnps_L: 
+  totalSnps_M: 152
+  totalSnps_S: 132
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894727.1.M/PP894734.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9998136414461424
+  completeness_S: 0.9994019138755981
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: GPC:8(nt:113-116),GPC:22-24(nt:154-163),GPC:35-36(nt:193-198),GPC:41-49(nt:211-239),GPC:58-60(nt:262-272),GPC:102-104(nt:394-404),GPC:123-131(nt:458-485),GPC:159-160(nt:566-572),GPC:203-205(nt:698-705),GPC:208-214(nt:713-732),GPC:222-226(nt:756-770),GPC:229-230(nt:777-782),GPC:239(nt:805-809),GPC:325-329(nt:1063-1079),GPC:385-386(nt:1244-1250)
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Hyalomma impeltatum
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 563069
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894727
+  insdcAccessionBase_S: PP894734
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894727.1
+  insdcAccessionFull_S: PP894734.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 5431
+  length_S: 1672
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-09
+  sampleCollectionDateRangeLower: 2022-09-01
+  sampleCollectionDateRangeUpper: 2022-09-30
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: ARD407242
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 1
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 150
+  totalDeletedNucs_S: 0
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 15
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 215
+  totalInsertedNucs_S: 1
+  totalSnps_L: 
+  totalSnps_M: 1270
+  totalSnps_S: 46
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 0
+  travelHistory: 
+
+  submissionId: PP894728.1.M
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 0.9975773387998509
+  completeness_S: 
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Homo sapiens
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 9606
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: PP894728
+  insdcAccessionBase_S: 
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: PP894728.1
+  insdcAccessionFull_S: 
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 1
+  insdcVersion_S: 
+  isLabHost: 
+  length_L: 0
+  length_M: 5356
+  length_S: 0
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-09
+  sampleCollectionDateRangeLower: 2022-09-01
+  sampleCollectionDateRangeUpper: 2022-09-30
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: SH402092
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 3
+  totalAmbiguousNucs_S: 
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 0
+  totalDeletedNucs_S: 
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 0
+  totalFrameShifts_S: 
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 0
+  totalInsertedNucs_S: 
+  totalSnps_L: 
+  totalSnps_M: 141
+  totalSnps_S: 
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 0
+  totalUnknownNucs_S: 
+  travelHistory: 
+
+  submissionId: PP894730.1.S
+  version: 1
+  isRevocation: false
+  submitter: insdc_ingest_user
+  groupName: Automated Ingest from INSDC/NCBI Virus by Loculus
+  groupId: 1
+  dataUseTerms: OPEN
+  dataUseTermsRestrictedUntil: 
+  dataUseTermsUrl: https://pathoplexus.org/about/terms-of-use/open-data
+  versionComment: 
+  pipelineVersion: 8
+  ampliconPcrPrimerScheme: 
+  ampliconSize: 
+  anatomicalMaterial: 
+  anatomicalPart: 
+  assemblyReferenceGenomeAccession: 
+  authorAffiliations: Institut Pasteur, Dakar, Virology
+  authors: Sene, O.
+  bioprojectAccession: 
+  biosampleAccession: 
+  bodyProduct: 
+  breadthOfCoverage: 
+  cellLine: 
+  collectionDevice: 
+  collectionMethod: 
+  completeness_L: 
+  completeness_M: 
+  completeness_S: 0.9994019138755981
+  consensusSequenceSoftwareName: 
+  consensusSequenceSoftwareVersion: 
+  cultureId: 
+  dehostingMethod: 
+  depthOfCoverage: 
+  diagnosticMeasurementMethod: 
+  diagnosticMeasurementUnit: 
+  diagnosticMeasurementValue: 
+  diagnosticTargetGeneName: 
+  diagnosticTargetPresence: 
+  earliestReleaseDate: 2025-01-18
+  environmentalMaterial: 
+  environmentalSite: 
+  experimentalSpecimenRoleType: 
+  exposureDetails: 
+  exposureEvent: 
+  exposureSetting: 
+  foodProduct: 
+  foodProductProperties: 
+  frameShifts_L: 
+  frameShifts_M: 
+  frameShifts_S: 
+  geoLocAdmin1: 
+  geoLocAdmin2: 
+  geoLocCity: 
+  geoLocCountry: Senegal
+  geoLocLatitude: 
+  geoLocLongitude: 
+  geoLocSite: 
+  hostAge: 
+  hostAgeBin: 
+  hostDisease: 
+  hostGender: 
+  hostHealthOutcome: 
+  hostHealthState: 
+  hostNameCommon: 
+  hostNameScientific: Homo sapiens
+  hostOriginCountry: 
+  hostRole: 
+  hostTaxonId: 9606
+  hostVaccinationStatus: 
+  insdcAccessionBase_L: 
+  insdcAccessionBase_M: 
+  insdcAccessionBase_S: PP894730
+  insdcAccessionFull_L: 
+  insdcAccessionFull_M: 
+  insdcAccessionFull_S: PP894730.1
+  insdcRawReadsAccession: 
+  insdcVersion_L: 
+  insdcVersion_M: 
+  insdcVersion_S: 1
+  isLabHost: 
+  length_L: 0
+  length_M: 0
+  length_S: 1686
+  ncbiReleaseDate: 2025-01-18
+  ncbiSourceDb: GenBank
+  ncbiSubmitterCountry: 
+  ncbiUpdateDate_L: 
+  ncbiUpdateDate_M: 
+  ncbiUpdateDate_S: 
+  ncbiVirusName: Orthonairovirus haemorrhagiae
+  ncbiVirusTaxId: 3052518
+  passageMethod: 
+  passageNumber: 
+  presamplingActivity: 
+  previousInfectionDisease: 
+  previousInfectionOrganism: 
+  purposeOfSampling: 
+  purposeOfSequencing: 
+  qualityControlDetails: 
+  qualityControlDetermination: 
+  qualityControlIssues: 
+  qualityControlMethodName: 
+  qualityControlMethodVersion: 
+  rawSequenceDataProcessingMethod: 
+  sampleCollectionDate: 2022-09
+  sampleCollectionDateRangeLower: 2022-09-01
+  sampleCollectionDateRangeUpper: 2022-09-30
+  sampleReceivedDate: 
+  sampleType: 
+  sequencedByContactEmail: 
+  sequencedByContactName: 
+  sequencedByOrganization: 
+  sequencingAssayType: 
+  sequencingDate: 
+  sequencingInstrument: 
+  sequencingProtocol: 
+  signsAndSymptoms: 
+  specimenCollectorSampleId: SH402429
+  specimenProcessing: 
+  specimenProcessingDetails: 
+  stopCodons: 
+  totalAmbiguousNucs_L: 
+  totalAmbiguousNucs_M: 
+  totalAmbiguousNucs_S: 0
+  totalDeletedNucs_L: 
+  totalDeletedNucs_M: 
+  totalDeletedNucs_S: 16
+  totalFrameShifts_L: 
+  totalFrameShifts_M: 
+  totalFrameShifts_S: 0
+  totalInsertedNucs_L: 
+  totalInsertedNucs_M: 
+  totalInsertedNucs_S: 30
+  totalSnps_L: 
+  totalSnps_M: 
+  totalSnps_S: 285
+  totalStopCodons: 
+  totalUnknownNucs_L: 
+  totalUnknownNucs_M: 
+  totalUnknownNucs_S: 1
+  travelHistory:

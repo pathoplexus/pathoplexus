@@ -1,0 +1,144 @@
+h5n1:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Influenza A/H5N1"
+      nucleotideSequences: ["seg1", "seg2", "seg3", "seg4", "seg5", "seg6", "seg7", "seg8"]
+      linkOuts:
+        - name: "Nextclade (seg1)"
+          maxNumberOfRecommendedEntries: 16000 # Influenza segments are between 0.9kB and 2.3kB
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg1+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg1&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg2)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg2+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg2&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg3)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg3+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg3&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg4)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg4+rich|fasta]{{ '}}' }}&dataset-name=community/moncla-lab/iav-h5/ha/all-clades&dataset-server=https://data.clades.nextstrain.org/v3"
+        - name: "Nextclade (seg5)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg5+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg5&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg6)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg6+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg6&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg7)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg7+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg7&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+        - name: "Nextclade (seg8)"
+          maxNumberOfRecommendedEntries: 16000
+          url: "https://clades.nextstrain.org/?input-fasta={{ '{{' }}[unalignedNucleotideSequences:seg8+rich|fasta]{{ '}}' }}&dataset-name=flu/h5n1/seg8&dataset-server=https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+      metadataAdd:
+        - name: subtype
+          noInput: true
+          perSegment: true
+          ingest: subtype
+          header: "INSDC"
+        - name: clade
+          header: "Clade"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            args: 
+              segment: seg4
+            inputs: {input: nextclade.clade}
+      website:
+        tableColumns:
+          - sampleCollectionDate
+          - country
+          - authors
+          - authorAffiliations
+          - ncbiReleaseDate
+          - hostNameScientific
+          - clade
+          - length_seg1
+          - length_seg2
+          - length_seg3
+          - length_seg4
+          - length_seg5
+          - length_seg6
+          - length_seg7
+          - length_seg8
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          log_level: DEBUG
+          nextclade_dataset_server: "https://raw.githubusercontent.com/genspectrum/nextclade-datasets/main/data"
+          nextclade_dataset_name: "flu/h5n1"
+          nextclade_dataset_server_map:
+            seg4: "https://data.clades.nextstrain.org/v3"
+          nextclade_dataset_name_map:
+            seg4: "community/moncla-lab/iav-h5/ha/all-clades"
+          genes: ["PB2", "PB1", "PA", "PAX", "HA", "NA", "NP", "M1", "M2", "NS1", "NS2"]
+          alignment_requirement: ANY
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 197911
+        approve_timeout_min: 120
+        segment_identification:
+          method: "minimizer"
+          minimizer_index: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/influenza_segments.minimizer.json"
+          minimizer_parser: # Name of each '_' - separated entry in the minimizer index
+            - segment
+            - subtype
+            - annotation
+        grouping_override: "https://anna-parker.github.io/influenza-a-groupings/results/groups.json"
+        metadata_filter: 
+          subtype_seg4: H5
+          subtype_seg6: N1
+    referenceGenomes:
+      nucleotideSequences:
+        - name: "seg1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg1.fasta]]"
+          insdcAccessionFull: "NC_007357.1"
+        - name: "seg2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg2.fasta]]"
+          insdcAccessionFull: "NC_007358.1"
+        - name: "seg3"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg3.fasta]]"
+          insdcAccessionFull: "NC_007359.1"
+        - name: "seg4"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg4.fasta]]"
+          insdcAccessionFull: "NC_007362.1"
+        - name: "seg5"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg5.fasta]]"
+          insdcAccessionFull: "NC_007360.1"
+        - name: "seg6"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg6.fasta]]"
+          insdcAccessionFull: "NC_007361.1"
+        - name: "seg7"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg7.fasta]]"
+          insdcAccessionFull: "NC_007363.1"
+        - name: "seg8"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/segments/seg8.fasta]]"
+          insdcAccessionFull: "NC_007364.1"
+      genes:
+        - name: "PB2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/PB2.fasta]]"
+        - name: "PB1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/PB1.fasta]]"
+        - name: "PA"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/PA.fasta]]"
+        - name: "PAX"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/PAX.fasta]]"
+        - name: "HA"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/HA.fasta]]"
+        - name: "NA"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/NA.fasta]]"
+        - name: "NP"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/NP.fasta]]"
+        - name: "M1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/M1.fasta]]"
+        - name: "M2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/M2.fasta]]"
+        - name: "NS1"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/NS1.fasta]]"
+        - name: "NS2"
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/influenza/h5n1/genes/NS2.fasta]]"
