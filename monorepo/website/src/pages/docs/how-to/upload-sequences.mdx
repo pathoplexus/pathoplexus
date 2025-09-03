@@ -76,7 +76,7 @@ To upload sequences through the HTTP API you will need to:
 
     - To upload sequences with the **restricted use terms**: `https://backend.pathoplexus.org/<organism>/submit?groupId=<group id>&dataUseTermsType=RESTRICTED&restrictedUntil=<restricted-until-date>`
 
-    - The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`.
+    - API upload is available for all pathogens on Pathoplexus. You can find the correct term to use in place of `<organism>` by using the value in the URL when you navigate to browse sequences from that Pathogen. For example, for West Nile Virus, the URL is `https://pathoplexus.org/west-nile/search?` and thus `<organism>` is `west-nile`.
     - The restricted-until date must be provided in the ISO format (e.g., 2024-08-27).
     - The header should contain
         - `Authorization: Bearer <authentication-token>`
