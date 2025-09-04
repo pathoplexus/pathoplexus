@@ -200,14 +200,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1000
       - name: earliestReleaseDate
         displayName: Earliest release date
-        header: Sample details
+        header: Submission details
         type: date
         rangeSearch: true
         noInput: true
         includeInDownloadsByDefault: true
         columnWidth: 95
         order: 90
-        orderOnDetailsPage: 300
+        orderOnDetailsPage: 2950
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
