@@ -10,7 +10,7 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
 s3:
-  enabled: false
+  enabled: true
 developmentDatabasePersistence: false
 dataUseTerms:
   enabled: true
@@ -89,6 +89,8 @@ defaultOrganismConfig: &defaultOrganismConfig
       enabled: true
       externalFields:
         - ncbiReleaseDate
+    files:
+      - name: annotations
     ### Field list
     ## General fields
     # name: Key used across app to refer to this field (required)
@@ -1364,8 +1366,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
-    # - <<: *preprocessing
-    #   version: 12
+    - <<: *preprocessing
+      version: 12
+      configFile: &preprocessingConfigFileWithEmbl
+        log_level: DEBUG
+        nextclade_dataset_name: nextstrain/ebola/zaire
+        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+        batch_size: 100
+        create_embl_file: true
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
@@ -1409,12 +1417,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/zaire
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1447,12 +1455,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/sudan
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/sudan
     ingest:
       <<: *ingest
       configFile:
@@ -1544,13 +1552,13 @@ organisms:
           nextclade_dataset_name: nextstrain/wnv/all-lineages
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: nextstrain/wnv/all-lineages
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-      #     genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_name: nextstrain/wnv/all-lineages
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
+          genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -1646,14 +1654,14 @@ organisms:
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
           genes: [RdRp, GPC, NP]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     log_level: DEBUG
-      #     nextclade_dataset_name: nextstrain/cchfv/linked
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-      #     genes: [RdRp, GPC, NP]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          log_level: DEBUG
+          nextclade_dataset_name: nextstrain/cchfv/linked
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+          genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
@@ -1961,15 +1969,15 @@ organisms:
             - OPG208
             - OPG209
             - OPG210
-      # - <<: *preprocessing
-      #   replicas: 3
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: nextstrain/mpox/all-clades
-      #     nextclade_dataset_tag: 2025-04-25--12-24-24Z
-      #     batch_size: 5
-      #     genes: *mpoxGenes
+      - <<: *preprocessing
+        replicas: 3
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_name: nextstrain/mpox/all-clades
+          nextclade_dataset_tag: 2025-04-25--12-24-24Z
+          batch_size: 5
+          genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
@@ -2397,18 +2405,18 @@ organisms:
           accepted_dataset_matches: 
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 12
-      #   replicas: 3
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-      #     nextclade_dataset_tag: "2024-11-27--02-51-00Z"
-      #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
-      #       - rsv-a
-      #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 12
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+          nextclade_dataset_tag: "2024-11-27--02-51-00Z"
+          require_nextclade_sort_match: true
+          minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            - rsv-a
+          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2512,18 +2520,18 @@ organisms:
           accepted_dataset_matches: 
             - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 12
-      #   replicas: 3
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-      #     nextclade_dataset_tag: "2025-03-04--17-31-25Z"
-      #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
-      #     accepted_dataset_matches: 
-      #       - rsv-b
-      #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 12
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+          nextclade_dataset_tag: "2025-03-04--17-31-25Z"
+          require_nextclade_sort_match: true
+          minimizer_url: "https://anna-parker.github.io/InfluenzaAReferenceDB/results/rsv_segments.minimizer.json"
+          accepted_dataset_matches: 
+            - rsv-b
+          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2613,13 +2621,13 @@ organisms:
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
           nextclade_dataset_tag: "2025-04-25--12-24-24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-      #     nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-      #     genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
+          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2696,6 +2704,13 @@ organisms:
         replicas: 5
         configFile:
           <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+          nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFileWithEmbl
           nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
           nextclade_dataset_tag: "2025-08-11--19-06-01Z"
           genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
