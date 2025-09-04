@@ -733,7 +733,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: GCA accession
         customDisplay:
           type: link
-          url: "https://www.ncbi.nlm.nih.gov/datasets/genome/__value__"
+          url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
         header: "INSDC"
         orderOnDetailsPage: 1100
         noInput: true
