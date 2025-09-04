@@ -207,7 +207,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         columnWidth: 95
         order: 90
-        orderOnDetailsPage: 2950
+        orderOnDetailsPage: 5400
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
