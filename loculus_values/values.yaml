@@ -2509,7 +2509,7 @@ organisms:
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
           nextclade_dataset_tag: "2024-11-27--02-51-00Z"
           require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
           accepted_dataset_matches: 
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
@@ -2521,7 +2521,7 @@ organisms:
       #     nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
       #     nextclade_dataset_tag: "2024-11-27--02-51-00Z"
       #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+      #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
       #     accepted_dataset_matches: 
       #       - rsv-a
       #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
@@ -2529,7 +2529,7 @@ organisms:
       <<: *ingest
       configFile:
         taxon_id: 1868215
-        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
         metadata_filter: 
@@ -2626,7 +2626,7 @@ organisms:
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
           nextclade_dataset_tag: "2025-03-04--17-31-25Z"
           require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
           accepted_dataset_matches: 
             - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
@@ -2638,7 +2638,7 @@ organisms:
       #     nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
       #     nextclade_dataset_tag: "2025-03-04--17-31-25Z"
       #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+      #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
       #     accepted_dataset_matches: 
       #       - rsv-b
       #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
@@ -2646,7 +2646,7 @@ organisms:
       <<: *ingest
       configFile:
         taxon_id: 1868215
-        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizer-creator/rsv/minimizer.json"
+        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
         metadata_filter: 
