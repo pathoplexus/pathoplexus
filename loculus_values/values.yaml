@@ -1384,19 +1384,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
-      - name: totalStopCodons
-        displayName: "# of stop codons"
-        type: int
-        header: "Alignment and QC metrics"
-        noInput: true
-        preprocessing:
-          inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-      - name: stopCodons
-        displayName: Stop Codons
-        header: "Alignment and QC metrics"
-        noInput: true
-        preprocessing:
-          inputs: {input: nextclade.qc.stopCodons.stopCodons}
       - name: totalFrameShifts
         type: int
         rangeSearch: true
