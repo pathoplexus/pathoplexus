@@ -64,11 +64,11 @@ lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
   rsv-a:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/lineages.yaml
-    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/lineages.yaml
+    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/lineages.yaml
-    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/lineages.yaml
+    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-03-04--17-31-25Z/lineages.yaml
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
