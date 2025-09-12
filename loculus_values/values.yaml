@@ -229,6 +229,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         required: true
         columnWidth: 134
         order: 20
+        orderOnDetailsPage: 450
         definition: "The country from which the sample was collected."
         guidance: "Please choose a country or ocean/sea from the list of options defined by INSDC standards."
         example: "Canada"
@@ -681,6 +682,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         perSegment: true
         oneHeader: true
+        orderOnDetailsPage: 920
       - name: bioprojectAccession
         displayName: BioProject accession
         customDisplay:
@@ -693,7 +695,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             - name: View in DDBJ
               url: "https://ddbj.nig.ac.jp/search/entry/bioproject/__value__"
         header: "INSDC"
-        header: "INSDC"
+        orderOnDetailsPage: 930
         ingest: bioprojects
         guidance: "Only add this field if you want your sequences to be deposited into an existing public BioProject in the INSDC. If you do not have a bioproject, leave this field blank - we will create a BioProject for you on submission of your consensus sequence."
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
@@ -716,6 +718,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             - name: View in DDBJ
               url: "https://ddbj.nig.ac.jp/search/entry/biosample/__value__"
         header: "INSDC"
+        orderOnDetailsPage: 935
         includeInDownloadsByDefault: true
         guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
         definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
