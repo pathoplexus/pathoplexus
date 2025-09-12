@@ -137,7 +137,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
-        displayName: Date (lower bound)
+        displayName: Collection date (lower bound)
+        hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
         header: Sample details
@@ -151,11 +152,12 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeLower
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Date
+          rangeDisplayName: Collection date
           bound: lower
         noInput: true
       - name: sampleCollectionDateRangeUpper
-        displayName: Date (upper bound)
+        displayName: Collection date (upper bound)
+        hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
         header: Sample details
@@ -169,7 +171,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             fieldType: dateRangeUpper
         rangeOverlapSearch:
           rangeName: sampleCollectionDateRange
-          rangeDisplayName: Date
+          rangeDisplayName: Collection date
           bound: upper
         noInput: true
       - name: displayName
@@ -541,7 +543,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             input: geoLocCountry
       - name: geoLocAdmin1
-        displayName: Subdivision level 1
+        displayName: Admin level 1
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -555,7 +557,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
-        displayName: Subdivision level 2
+        displayName: Admin level 2
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -1339,7 +1341,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Differences from reference
+        displayName: # of SNPs
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
@@ -1349,7 +1351,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Inserted bases
+        displayName: # of inserted bases
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
@@ -1370,7 +1372,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Ambiguous bases
+        displayName: # of ambiguous bases
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
@@ -1381,7 +1383,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Unknown bases
+        displayName: # of unknown bases
         preprocessing:
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
