@@ -1393,7 +1393,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2820
         noInput: true
         perSegment: true
-        displayName: "# of frame shifts"
+        displayName: '# of frame shifts'
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
@@ -1530,7 +1530,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: "# of stop codons"
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1616,7 +1616,7 @@ organisms:
           order: 5
           orderOnDetailsPage: 740
         - name: totalStopCodons
-          displayName: "# of stop codons"
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1717,7 +1717,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: "# of stop codons"
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1848,7 +1848,7 @@ organisms:
           orderOnDetailsPage: 740
           lineageSystem: mpox
         - name: totalStopCodons
-          displayName: "# of stop codons"
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
