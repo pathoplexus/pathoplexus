@@ -1341,7 +1341,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: # of SNPs
+        displayName: '# of SNPs'
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
@@ -1351,7 +1351,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: # of inserted bases
+        displayName: '# of inserted bases'
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
@@ -1372,7 +1372,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: # of ambiguous bases
+        displayName: '# of ambiguous bases'
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
@@ -1383,7 +1383,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: # of unknown bases
+        displayName: '# of unknown bases'
         preprocessing:
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
