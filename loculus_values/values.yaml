@@ -1363,7 +1363,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         preprocessing:
           inputs: {input: nextclade.totalDeletions}
-        displayName: Deleted bases
+        displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
