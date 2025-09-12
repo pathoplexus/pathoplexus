@@ -2518,6 +2518,8 @@ organisms:
       #   configFile:
       #     <<: *preprocessingConfigFile
       #     nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+      #     # Can't bump yet due to change in gene M2-2 coordinates and zstd compression
+      #     # See https://github.com/pathoplexus/pathoplexus/pull/648#issuecomment-3284324612
       #     nextclade_dataset_tag: 2024-11-27--02-51-00Z
       #     require_nextclade_sort_match: true
       #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
