@@ -138,6 +138,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
+        hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
         header: Sample details
@@ -156,6 +157,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: sampleCollectionDateRangeUpper
         displayName: Collection date (upper bound)
+        hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
         header: Sample details
@@ -219,7 +221,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         oneHeader: true
       - name: geoLocCountry
-        displayName: Collection country
+        displayName: Country
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -542,7 +544,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             input: geoLocCountry
       - name: geoLocAdmin1
-        displayName: Collection subdivision level 1
+        displayName: Admin level 1
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -556,7 +558,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
-        displayName: Collection subdivision level 2
+        displayName: Admin level 2
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -566,7 +568,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
         example: "City of Toronto"
       - name: geoLocCity
-        displayName: Collection city
+        displayName: City
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -578,7 +580,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0100436
         definition: The name of a specific geographical location e.g. Credit River (rather than river).
         example: Credit River
-        displayName: Collection site
+        displayName: Site
         header: Sample details
         orderOnDetailsPage: 520
       - name: geoLocLatitude
@@ -1342,7 +1344,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total SNPs
+        displayName: '# of SNPs'
         preprocessing:
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
@@ -1352,7 +1354,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total inserted nucs
+        displayName: '# of inserted bases'
         preprocessing:
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
@@ -1364,7 +1366,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         perSegment: true
         preprocessing:
           inputs: {input: nextclade.totalDeletions}
-        displayName: Total deleted nucs
+        displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
         header: "Alignment and QC metrics"
@@ -1373,7 +1375,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total ambiguous nucs
+        displayName: '# of ambiguous bases'
         preprocessing:
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
@@ -1384,7 +1386,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
         rangeSearch: true
         perSegment: true
-        displayName: Total unknown nucs
+        displayName: '# of unknown bases'
         preprocessing:
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
@@ -1394,7 +1396,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2820
         noInput: true
         perSegment: true
-        displayName: Total frame shifts
+        displayName: '# of frame shifts'
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
@@ -1436,22 +1438,22 @@ defaultOrganismConfig: &defaultOrganismConfig
       defaultOrder: descending
     extraInputFields: []
     metadataTemplate:
-      - geoLocCountry  
-      - sampleCollectionDate  
-      - authors  
-      - authorAffiliations  
-      - hostNameScientific  
-      - collectionDevice  
-      - collectionMethod  
-      - cultureId  
-      - depthOfCoverage  
-      - geoLocAdmin1  
-      - geoLocAdmin2  
-      - sampleReceivedDate  
-      - sequencingDate  
-      - sequencingInstrument  
-      - sequencingProtocol  
-      - specimenCollectorSampleId  
+      - geoLocCountry
+      - sampleCollectionDate
+      - authors
+      - authorAffiliations
+      - hostNameScientific
+      - collectionDevice
+      - collectionMethod
+      - cultureId
+      - depthOfCoverage
+      - geoLocAdmin1
+      - geoLocAdmin2
+      - sampleReceivedDate
+      - sequencingDate
+      - sequencingInstrument
+      - sequencingProtocol
+      - specimenCollectorSampleId
       - versionComment
       - comment
   preprocessing:
@@ -1531,7 +1533,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: Total Stop Codons
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1563,7 +1565,7 @@ organisms:
         taxon_id: 3052460
     enaDeposition:
       configFile:
-        taxon_id: 186540 
+        taxon_id: 186540
         scientific_name: "Sudan ebolavirus"
         molecule_type: "genomic RNA"
     referenceGenomes:
@@ -1617,7 +1619,7 @@ organisms:
           order: 5
           orderOnDetailsPage: 740
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1718,7 +1720,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -1849,7 +1851,7 @@ organisms:
           orderOnDetailsPage: 740
           lineageSystem: mpox
         - name: totalStopCodons
-          displayName: Total stop codons
+          displayName: '# of stop codons'
           type: int
           header: "Alignment and QC metrics"
           orderOnDetailsPage: 2480
@@ -2536,7 +2538,7 @@ organisms:
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-a
     enaDeposition:
       configFile:
@@ -2653,7 +2655,7 @@ organisms:
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
-        metadata_filter: 
+        metadata_filter:
           subtype: rsv-b
     enaDeposition:
       configFile:
@@ -2716,7 +2718,7 @@ organisms:
           order: 5
           orderOnDetailsPage: 740
           lineageSystem: hmpv
-      website: 
+      website:
         <<: *website
         tableColumns:
           - sampleCollectionDate
