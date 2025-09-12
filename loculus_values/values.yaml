@@ -2502,6 +2502,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         replicas: 1
+        version: 11
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
