@@ -72,6 +72,8 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
+  cchfS:
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -1694,13 +1696,13 @@ organisms:
       linkOuts:
         - name: "Nextclade (L)"
           maxNumberOfRecommendedEntries: 2000 # cchf L is ~12.5kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/L&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/L"
         - name: "Nextclade (M)"
           maxNumberOfRecommendedEntries: 5000 # cchf M is ~5kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/M&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/M"
         - name: "Nextclade (S)"
           maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/S"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -1740,14 +1742,13 @@ organisms:
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
           genes: [RdRp, GPC, NP]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     log_level: DEBUG
-      #     nextclade_dataset_name: nextstrain/cchfv/linked
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-      #     genes: [RdRp, GPC, NP]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          log_level: DEBUG
+          nextclade_dataset_name: community/pathoplexus/cchfv
+          genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
@@ -1755,8 +1756,7 @@ organisms:
         taxon_id: 3052518
         segment_identification:
           method: "align"
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+          nextclade_dataset_name: community/pathoplexus/cchfv
     enaDeposition:
       configFile:
         taxon_id: 3052518
