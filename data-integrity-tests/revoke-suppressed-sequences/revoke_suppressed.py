@@ -174,19 +174,21 @@ def parse_comma_separated(ctx, param, value):
     type=str,
 )
 def main(insdc_accession, organism, username, password):
+    to_revoke = []
     logger.info(f"Parsed list: {insdc_accession}")
         # Example usage
     for sequence_id in insdc_accession:
         print(f"Checking sequence ID: {sequence_id}")
         if is_sequence_suppressed(sequence_id):
             logger.info(f"The sequence {sequence_id} is suppressed.")
+            to_revoke.append(sequence_id)
         else:
             logger.warning(f"The sequence {sequence_id} is not suppressed or could not be determined.")
-            raise ValueError(
-                f"The sequence {sequence_id} is not suppressed or could not be determined."
-            )
+            # raise ValueError(
+            #     f"The sequence {sequence_id} is not suppressed or could not be determined."
+            # )
 
-    revoke(organism, username, password, accessions_list=insdc_accession)
+    revoke(organism, username, password, accessions_list=to_revoke)
     approve(organism, username, password)
 
 
