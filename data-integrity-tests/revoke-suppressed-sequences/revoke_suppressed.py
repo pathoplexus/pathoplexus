@@ -184,9 +184,6 @@ def main(insdc_accession, organism, username, password):
             to_revoke.append(sequence_id)
         else:
             logger.warning(f"The sequence {sequence_id} is not suppressed or could not be determined.")
-            # raise ValueError(
-            #     f"The sequence {sequence_id} is not suppressed or could not be determined."
-            # )
 
     revoke(organism, username, password, accessions_list=to_revoke)
     approve(organism, username, password)
