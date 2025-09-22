@@ -1,0 +1,50 @@
+---
+import { newsItems } from '../../data/newsItems';
+
+const latestNews = newsItems.slice(0, 3);
+---
+
+<section class='mt-10'>
+    <div class='flex flex-col gap-3 md:flex-row md:items-end md:justify-between'>
+        <div>
+            <p class='text-sm font-semibold uppercase tracking-[0.2em] text-main/70'>Stay in the loop</p>
+            <h3 class='text-2xl font-semibold text-slate-900 md:text-3xl'>Latest news from the Pathoplexus team</h3>
+        </div>
+        <a
+            class='inline-flex items-center justify-center rounded-full border border-main/40 bg-main/5 px-5 py-2 text-sm font-medium text-main transition hover:-translate-y-0.5 hover:border-main hover:bg-main hover:text-white hover:shadow-lg'
+            href='/news'
+        >
+            View all news
+            <span aria-hidden='true' class='ml-2 text-lg'>→</span>
+        </a>
+    </div>
+
+    <div class='mt-6 grid gap-6 md:grid-cols-3'>
+        {
+            latestNews.map((item, index) => (
+                <a
+                    class='group relative overflow-hidden rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-main/60 hover:shadow-xl'
+                    href={`/news/${item.slug}`}
+                >
+                    <div class='pointer-events-none absolute -inset-px -z-10 bg-gradient-to-br from-main/0 via-main/20 to-main/40 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100'></div>
+                    <div class='flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em] text-main/70'>
+                        <span class='rounded-full bg-main/10 px-3 py-1 text-[0.6rem] font-semibold text-main/80 transition group-hover:bg-main group-hover:text-white'>
+                            {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span>{item.date}</span>
+                    </div>
+                    <h4 class='mt-4 text-lg font-semibold text-slate-900 transition-colors duration-300 group-hover:text-main'>
+                        {item.title}
+                    </h4>
+                    <div class='mt-3 text-sm leading-relaxed text-slate-600'>
+                        <Fragment set:html={item.excerpt} />
+                    </div>
+                    <div class='mt-6 inline-flex items-center gap-2 text-sm font-semibold text-main transition-transform duration-300 group-hover:translate-x-1'>
+                        Read the update
+                        <span aria-hidden='true'>→</span>
+                    </div>
+                </a>
+            ))
+        }
+    </div>
+</section>
