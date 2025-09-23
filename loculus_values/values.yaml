@@ -1552,7 +1552,7 @@ organisms:
         version: 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3/index.json # remove once release done
+          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3 # remove once release done
           nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
   ebola-sudan:
     <<: *defaultOrganismConfig
