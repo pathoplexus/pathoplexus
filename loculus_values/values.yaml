@@ -66,10 +66,12 @@ lineageSystemDefinitions:
   rsv-a:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     # 13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-03-04--17-31-25Z/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
@@ -1434,7 +1436,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2830
         noInput: true
-        perSegment: true
+        # perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
@@ -1442,7 +1444,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
         noInput: true
-        perSegment: true
+        # perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.stopCodons}
     website: &website
@@ -1719,6 +1721,23 @@ organisms:
             args: 
               segment: S
             inputs: {input: nextclade.clade}
+        - name: totalStopCodons
+          displayName: '# of stop codons'
+          type: int
+          header: "Alignment and QC metrics"
+          orderOnDetailsPage: 2830
+          noInput: true
+          perSegment: true
+          preprocessing:
+            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
+        - name: stopCodons
+          displayName: Stop Codons
+          header: "Alignment and QC metrics"
+          orderOnDetailsPage: 2840
+          noInput: true
+          perSegment: true
+          preprocessing:
+            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
