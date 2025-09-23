@@ -1,10 +1,19 @@
 ---
+interface Props {
+    websiteName: string;
+}
 
+const { websiteName }: Props = Astro.props;
+
+const message = `<p>${websiteName} is an open-source platform that makes it easier for public health and research teams to share, review, and act on viral pathogen genomic data.</p>`;
 ---
 
-<h2 class='text-lg font-semibold text-main my-3 mt-6'>Welcome to Pathoplexus!</h2>
-
-<p class='my-4'>
-    Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data,
-    fostering global collaboration and public health response.
-</p>
+<section aria-labelledby='welcome-heading' class='mt-6'>
+    <h1 id='welcome-heading' class='text-3xl sm:text-4xl font-semibold text-slate-900'>
+        Welcome to {websiteName}
+    </h1>
+    <div class='mt-4 text-base text-slate-700 leading-relaxed'>
+        <p>Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data,
+    fostering global collaboration and public health response.</p>
+    </div>
+</section>

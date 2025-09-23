@@ -1,0 +1,106 @@
+---
+import { getOrganismStatisticsMap } from '../../../components/IndexPage/getOrganismStatistics';
+import { NeedAGroup } from '../../../components/common/NeedAGroup.tsx';
+import NeedToLogin from '../../../components/common/NeedToLogin.astro';
+import { getConfiguredOrganisms } from '../../../config';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { routes } from '../../../routes/routes';
+import { formatNumberWithDefaultLocale } from '../../../utils/formatNumber';
+import { getGroups } from '../../../utils/submissionPages';
+
+const numberDaysAgoStatistics = 30;
+const configuredOrganisms = getConfiguredOrganisms();
+const organismStatisticsMap = await getOrganismStatisticsMap(
+    configuredOrganisms.map((organism) => organism.key),
+    numberDaysAgoStatistics,
+);
+
+const groupsResult = await getGroups(Astro.locals.session);
+
+// Prevent caching to allow back button after user creates group
+Astro.response.headers.append('Cache-Control', 'no-cache, no-store, must-revalidate');
+Astro.response.headers.append('Pragma', 'no-cache');
+Astro.response.headers.append('Expires', '0');
+---
+
+<BaseLayout title='Submit data'>
+    <div class='mx-auto flex max-w-7xl flex-col gap-6 px-2 py-6 sm:px-6'>
+        <div>
+            <h1 class='text-3xl font-semibold text-slate-900 sm:text-4xl'>Submit viral pathogen data</h1>
+            <p class='mt-3 max-w-3xl text-base text-slate-700'>
+                Choose the organism you want to submit sequences for. You need to be logged in and part of a submitting
+                group to continue to the submission portal.
+            </p>
+        </div>
+        {
+            groupsResult.match(
+                (groups) =>
+                    groups.length === 0 ? (
+                        <NeedAGroup />
+                    ) : (
+                        <section class='pt-2'>
+                            <div class='mb-5 px-1'>
+                                <h2 class='text-base font-medium text-slate-800 sm:text-lg'>
+                                    Select an organism to open the submission portal:
+                                </h2>
+                            </div>
+                            <div class='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+                                {configuredOrganisms.map(({ key, displayName, image }) => {
+                                    const stats = organismStatisticsMap.get(key);
+                                    return (
+                                        <a
+                                            href={routes.submissionPageWithoutGroup(key)}
+                                            class='group block rounded-2xl border border-base-200/70 bg-base-100 p-6 transition-colors duration-150 hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 no-underline hover:no-underline'
+                                        >
+                                            <div class='flex items-start justify-between gap-4'>
+                                                <div class='flex min-w-0 items-start gap-4'>
+                                                    {image && (
+                                                        <img
+                                                            src={image}
+                                                            alt={displayName}
+                                                            class='h-14 w-14 rounded-full object-cover ring-2 ring-primary/20 transition-colors group-hover:ring-primary/30'
+                                                        />
+                                                    )}
+                                                    <div>
+                                                        <h3 class='pr-2 text-lg font-medium leading-6 text-slate-900'>
+                                                            {displayName}
+                                                        </h3>
+                                                        <p class='mt-2 text-sm text-slate-600'>
+                                                            {stats
+                                                                ? `${formatNumberWithDefaultLocale(
+                                                                      stats.totalSequences,
+                                                                  )} total sequences`
+                                                                : 'Sequence counts coming soon'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class='flex-shrink-0 text-xl text-primary/70 transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-primary/80'>
+                                                    →
+                                                </div>
+                                            </div>
+                                            {stats && (
+                                                <div class='mt-4 text-xs text-slate-500'>
+                                                    +
+                                                    {formatNumberWithDefaultLocale(stats.recentSequences)} in last{' '}
+                                                    {numberDaysAgoStatistics} days
+                                                </div>
+                                            )}
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    ),
+                (error) =>
+                    error.type === 'not_logged_in' ? (
+                        <NeedToLogin message='You need to be logged in to access the submission portal.' />
+                    ) : (
+                        <div class='mt-6 message max-w-4xl rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900'>
+                            <p class='font-medium'>We could not load your submitting groups right now.</p>
+                            <p class='mt-2 text-sm'>Please refresh the page or try again later.</p>
+                        </div>
+                    ),
+            )
+        }
+    </div>
+</BaseLayout>

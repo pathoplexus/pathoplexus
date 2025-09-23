@@ -1,0 +1,158 @@
+---
+import Faq from '../components/IndexPage/FAQ.mdx';
+import OrganismCard from '../components/IndexPage/OrganismCard.astro';
+import WelcomeMessage from '../components/IndexPage/WelcomeMessage.astro';
+import { getOrganismStatisticsMap } from '../components/IndexPage/getOrganismStatistics';
+import { getConfiguredOrganisms, getWebsiteConfig } from '../config';
+import { newsItems } from '../data/newsItems';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { routes } from '../routes/routes';
+import { formatNumberWithDefaultLocale } from '../utils/formatNumber';
+const websiteConfig = getWebsiteConfig();
+const { name: websiteName } = websiteConfig;
+const configuredOrganisms = getConfiguredOrganisms();
+const defaultBrowseOrganism = configuredOrganisms[0]?.key;
+import '../styles/mdcontainer.scss';
+
+const numberDaysAgoStatistics = 30;
+const organismStatisticsMap = await getOrganismStatisticsMap(
+    configuredOrganisms.map((organism) => organism.key),
+    numberDaysAgoStatistics,
+);
+const latestNewsItem = newsItems[0];
+
+const aggregateSubmissionStats = configuredOrganisms.reduce(
+    (acc, { key }) => {
+        const stats = organismStatisticsMap.get(key);
+        if (stats === undefined) {
+            return acc;
+        }
+        return {
+            total: acc.total + stats.totalSequences,
+            recent: acc.recent + stats.recentSequences,
+        };
+    },
+    { total: 0, recent: 0 },
+);
+const hasAggregateStats = aggregateSubmissionStats.total > 0;
+---
+
+<BaseLayout title='Home'>
+    <div class='max-w-6xl mx-auto space-y-14'>
+        <section class='grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.15fr)]'>
+            <div>
+                <WelcomeMessage websiteName={websiteName} />
+                <div class='mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4'>
+                    <a
+                        class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-6 py-3 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                        href={routes.submissionOrganismSelection()}
+                    >
+                        Submit data
+                    </a>
+                    {
+                        defaultBrowseOrganism && (
+                            <a
+                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-6 py-3 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                                href={routes.searchPage(defaultBrowseOrganism)}
+                            >
+                                Browse data
+                            </a>
+                        )
+                    }
+                </div>
+                <div class='mt-8 rounded-2xl border border-base-200/70 bg-base-100 p-6'>
+                    <div class='grid gap-6 sm:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]'>
+                        <div class='space-y-3'>
+                            <h2 class='text-xs font-semibold uppercase tracking-wide text-primary/80'>What you can do</h2>
+                            <ul class='space-y-2 text-sm leading-6 text-slate-700'>
+                                <li class='flex items-start gap-3'>
+                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Share high-quality consensus sequences directly with public health peers.
+                                </li>
+                                <li class='flex items-start gap-3'>
+                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Track submissions across your group to keep projects moving quickly.
+                                </li>
+                                <li class='flex items-start gap-3'>
+                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Explore harmonised metadata to accelerate downstream analyses.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class='rounded-xl border border-primary/20 bg-primary-50/70 p-5 text-sm leading-6 text-primary-900'>
+                            <h3 class='text-base font-semibold'>Community momentum</h3>
+                            {
+                                hasAggregateStats ? (
+                                    <p class='mt-2'>
+                                        More than{' '}
+                                        <span class='font-semibold'>
+                                            {formatNumberWithDefaultLocale(aggregateSubmissionStats.total)}
+                                        </span>
+                                        {' '}sequences are already available, with
+                                        {' '}
+                                        <span class='font-semibold'>
+                                            +{formatNumberWithDefaultLocale(aggregateSubmissionStats.recent)}
+                                        </span>
+                                        {' '}added in the past {numberDaysAgoStatistics} days.
+                                    </p>
+                                ) : (
+                                    <p class='mt-2'>
+                                        Be among the first to contribute sequences and help grow the collective dataset.
+                                    </p>
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {
+                latestNewsItem && (
+                    <aside class='flex h-full flex-col justify-between rounded-2xl border border-base-200/70 bg-base-100 p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)]'>
+                        <div>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Latest news</span>
+                            <h2 class='mt-3 text-xl font-semibold leading-7 text-slate-900'>
+                                <a class='hover:underline' href={`/news/${latestNewsItem.slug}`}>
+                                    {latestNewsItem.title}
+                                </a>
+                            </h2>
+                            <div class='mt-1 text-sm text-slate-500'>By the Pathoplexus Team – {latestNewsItem.date}</div>
+                            <div class='mt-4 text-sm leading-6 text-slate-700'>
+                                <Fragment set:html={latestNewsItem.excerpt} />
+                            </div>
+                        </div>
+                        <a
+                            class='mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80'
+                            href={`/news/${latestNewsItem.slug}`}
+                        >
+                            Read the full update
+                            <span aria-hidden='true'>→</span>
+                        </a>
+                    </aside>
+                )
+            }
+        </section>
+
+        <section>
+            <h2 class='text-center text-2xl font-semibold text-slate-900'>Explore the data</h2>
+            <div class='mt-8 flex justify-center'>
+                <div class=`flex flex-wrap justify-center gap-x-5 gap-y-4 ${configuredOrganisms.length === 5 ? 'max-w-4xl' : ''}`>
+                    {
+                        configuredOrganisms.map(({ key, displayName, image }) => (
+                            <OrganismCard
+                                key={key}
+                                image={image}
+                                displayName={displayName}
+                                organismStatistics={organismStatisticsMap.get(key)!}
+                                numberDaysAgoStatistics={numberDaysAgoStatistics}
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div class='mdContainer'>
+            <Faq />
+        </div>
+    </div>
+</BaseLayout>
