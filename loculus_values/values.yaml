@@ -1434,6 +1434,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2830
         noInput: true
+        perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
@@ -1441,6 +1442,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
         noInput: true
+        perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.stopCodons}
     website: &website
