@@ -80,14 +80,6 @@ defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
-    organismName: "Ebola Zaire"
-    image: "/images/organisms/ebolazaire_small.jpg"
-    linkOuts:
-      - name: "Nextclade"
-        maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
-        url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov&dataset-server=https://data.master.clades.nextstrain.org/v3"
-      - name: "Country map"
-        url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     earliestReleaseDate:
       enabled: true
       externalFields:
@@ -1527,6 +1519,30 @@ defaultOrganismConfig: &defaultOrganismConfig
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Ebola Zaire"
+      image: "/images/organisms/ebolazaire_small.jpg"
+      # Outbreak to be added once stable/agreed upon
+      # metadataAdd:
+      #   - name: outbreak
+      #     displayName: Outbreak
+      #     header: "Outbreak"
+      #     includeInDownloadsByDefault: true
+      #     noInput: true
+      #     generateIndex: true
+      #     autocomplete: true
+      #     initiallyVisible: true
+      #     preprocessing:
+      #       inputs: {input: nextclade.clade}
+      #     order: 5
+      #     orderOnDetailsPage: 740
+      linkOuts:
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov&dataset-server=https://data.master.clades.nextstrain.org/v3"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
       - <<: *preprocessing
         configFile:
