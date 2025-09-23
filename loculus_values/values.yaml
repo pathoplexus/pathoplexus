@@ -1413,7 +1413,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: completeness
         type: float
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2860
+        orderOnDetailsPage: 2720
         includeInDownloadsByDefault: true
         noInput: true
         perSegment: true
@@ -1432,14 +1432,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of stop codons'
         type: int
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2480
+        orderOnDetailsPage: 2830
         noInput: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2490
+        orderOnDetailsPage: 2840
         noInput: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.stopCodons}
