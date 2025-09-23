@@ -3,7 +3,7 @@ import { newsItems } from '../../data/newsItems';
 import MdLayout from '../../layouts/MdLayout.astro';
 ---
 
-<MdLayout frontmatter={{ title: 'News' }}>
+<MdLayout frontmatter={{ title: 'News', activeTopNavigationItem: '/news' }}>
     <h1>News</h1>
     {
         newsItems.map((item) => (
