@@ -42,9 +42,9 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
         <section class='grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.15fr)]'>
             <div>
                 <WelcomeMessage websiteName={websiteName} />
-                <div class='mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4'>
+                <div class='mt-6 flex flex-wrap gap-3'>
                     <a
-                        class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-6 py-3 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                        class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
                         href={routes.submissionOrganismSelection()}
                     >
                         Submit data
@@ -52,7 +52,7 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                     {
                         defaultBrowseOrganism && (
                             <a
-                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-6 py-3 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
                                 href={routes.searchPage(defaultBrowseOrganism)}
                             >
                                 Browse data
@@ -60,44 +60,42 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                         )
                     }
                 </div>
-                <div class='mt-8 rounded-2xl border border-base-200/70 bg-base-100 p-6'>
-                    <div class='grid gap-6 sm:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]'>
-                        <div class='space-y-3'>
-                            <h2 class='text-xs font-semibold uppercase tracking-wide text-primary/80'>What you can do</h2>
-                            <ul class='space-y-2 text-sm leading-6 text-slate-700'>
-                                <li class='flex items-start gap-3'>
-                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
-                                    Share high-quality consensus sequences directly with public health peers.
+                <div class='mt-6 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
+                    <div class='grid gap-5 sm:grid-cols-2 sm:items-start'>
+                        <div>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Built for teams</span>
+                            <ul class='mt-3 space-y-2 text-sm text-slate-700'>
+                                <li class='flex items-start gap-2'>
+                                    <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Submit consensus sequences with harmonised metadata in minutes.
                                 </li>
-                                <li class='flex items-start gap-3'>
-                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
-                                    Track submissions across your group to keep projects moving quickly.
-                                </li>
-                                <li class='flex items-start gap-3'>
-                                    <span class='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
-                                    Explore harmonised metadata to accelerate downstream analyses.
+                                <li class='flex items-start gap-2'>
+                                    <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Keep your group aligned with clear tracking of shared datasets.
                                 </li>
                             </ul>
                         </div>
-                        <div class='rounded-xl border border-primary/20 bg-primary-50/70 p-5 text-sm leading-6 text-primary-900'>
-                            <h3 class='text-base font-semibold'>Community momentum</h3>
+                        <div class='flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary-50/70 p-4 text-primary-900'>
+                            <span class='text-xs font-semibold uppercase tracking-wide'>Community momentum</span>
                             {
                                 hasAggregateStats ? (
-                                    <p class='mt-2'>
-                                        More than{' '}
-                                        <span class='font-semibold'>
-                                            {formatNumberWithDefaultLocale(aggregateSubmissionStats.total)}
-                                        </span>
-                                        {' '}sequences are already available, with
-                                        {' '}
-                                        <span class='font-semibold'>
-                                            +{formatNumberWithDefaultLocale(aggregateSubmissionStats.recent)}
-                                        </span>
-                                        {' '}added in the past {numberDaysAgoStatistics} days.
-                                    </p>
+                                    <div class='grid grid-cols-2 gap-3 text-sm'>
+                                        <div>
+                                            <div class='text-xs uppercase tracking-wide text-primary-700'>Sequences shared</div>
+                                            <div class='text-2xl font-semibold text-primary-800'>
+                                                {formatNumberWithDefaultLocale(aggregateSubmissionStats.total)}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class='text-xs uppercase tracking-wide text-primary-700'>Last {numberDaysAgoStatistics} days</div>
+                                            <div class='text-2xl font-semibold text-primary-800'>
+                                                +{formatNumberWithDefaultLocale(aggregateSubmissionStats.recent)}
+                                            </div>
+                                        </div>
+                                    </div>
                                 ) : (
-                                    <p class='mt-2'>
-                                        Be among the first to contribute sequences and help grow the collective dataset.
+                                    <p class='text-sm'>
+                                        Be among the first to contribute sequences and help grow the shared dataset.
                                     </p>
                                 )
                             }
