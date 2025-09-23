@@ -44,7 +44,7 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                 <WelcomeMessage websiteName={websiteName} />
                 <div class='mt-6 flex flex-wrap gap-3'>
                     <a
-                        class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                        class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
                         href={routes.submissionOrganismSelection()}
                     >
                         Submit data
@@ -52,7 +52,7 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                     {
                         defaultBrowseOrganism && (
                             <a
-                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
                                 href={routes.searchPage(defaultBrowseOrganism)}
                             >
                                 Browse data
@@ -61,25 +61,27 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                     }
                 </div>
                 <div class='mt-6 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
-                    <div class='grid gap-5 sm:grid-cols-2 sm:items-start'>
-                        <div>
-                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Built for teams</span>
+                    <div class='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>
+                        <div class='max-w-lg'>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Simple sequence sharing</span>
                             <ul class='mt-3 space-y-2 text-sm text-slate-700'>
                                 <li class='flex items-start gap-2'>
                                     <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
-                                    Submit consensus sequences with harmonised metadata in minutes.
+                                    Submit data through a simple web interface or programmatically via our API.
                                 </li>
                                 <li class='flex items-start gap-2'>
                                     <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
-                                    Keep your group aligned with clear tracking of shared datasets.
+                                    Browse sequences with powerful search and filtering options.
                                 </li>
+                                
                             </ul>
                         </div>
-                        <div class='flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary-50/70 p-4 text-primary-900'>
-                            <span class='text-xs font-semibold uppercase tracking-wide'>Community momentum</span>
+                        <div class='hidden h-full w-px bg-primary/20 sm:block' aria-hidden='true'></div>
+                        <div class='sm:max-w-xs'>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Dataset</span>
                             {
                                 hasAggregateStats ? (
-                                    <div class='grid grid-cols-2 gap-3 text-sm'>
+                                    <div class='mt-4 grid grid-cols-2 gap-4 text-sm text-primary-900'>
                                         <div>
                                             <div class='text-xs uppercase tracking-wide text-primary-700'>Sequences shared</div>
                                             <div class='text-2xl font-semibold text-primary-800'>
@@ -94,7 +96,7 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                                         </div>
                                     </div>
                                 ) : (
-                                    <p class='text-sm'>
+                                    <p class='mt-4 text-sm text-primary-900'>
                                         Be among the first to contribute sequences and help grow the shared dataset.
                                     </p>
                                 )
