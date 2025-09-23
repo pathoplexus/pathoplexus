@@ -1542,6 +1542,19 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov&dataset-server=https://data.master.clades.nextstrain.org/v3"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - outbreak
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
         configFile:
