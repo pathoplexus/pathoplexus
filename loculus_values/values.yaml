@@ -2716,7 +2716,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        taxon_id: 162145
+        taxon_id: 3048148
     enaDeposition:
       configFile:
         taxon_id: 162145
