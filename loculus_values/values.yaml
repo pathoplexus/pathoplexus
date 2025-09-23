@@ -85,7 +85,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     linkOuts:
       - name: "Nextclade"
         maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
-        url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/zaire&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+        url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov&dataset-server=https://data.master.clades.nextstrain.org/v3"
       - name: "Country map"
         url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     earliestReleaseDate:
@@ -1537,8 +1537,8 @@ organisms:
         version: 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
+          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3/index.json # remove once release done
+          nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1548,7 +1548,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv&dataset-server=https://data.master.clades.nextstrain.org/v3"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
@@ -1557,12 +1557,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/sudan
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3
+          nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
     ingest:
       <<: *ingest
       configFile:
