@@ -1523,20 +1523,19 @@ organisms:
       <<: *schema
       organismName: "Ebola Zaire"
       image: "/images/organisms/ebolazaire_small.jpg"
-      # Outbreak to be added once stable/agreed upon
-      # metadataAdd:
-      #   - name: outbreak
-      #     displayName: Outbreak
-      #     header: "Outbreak"
-      #     includeInDownloadsByDefault: true
-      #     noInput: true
-      #     generateIndex: true
-      #     autocomplete: true
-      #     initiallyVisible: true
-      #     preprocessing:
-      #       inputs: {input: nextclade.clade}
-      #     order: 5
-      #     orderOnDetailsPage: 740
+      metadataAdd:
+        - name: outbreak
+          displayName: Outbreak
+          header: "Outbreak"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
