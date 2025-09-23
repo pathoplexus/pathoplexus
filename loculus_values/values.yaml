@@ -72,6 +72,8 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
+  cchfS:
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -1426,6 +1428,21 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Submission details"
         orderOnDetailsPage: 2900
         definition: "Any additional comments about the sample or sequence."
+      - name: totalStopCodons
+        displayName: '# of stop codons'
+        type: int
+        header: "Alignment and QC metrics"
+        orderOnDetailsPage: 2480
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
+      - name: stopCodons
+        displayName: Stop Codons
+        header: "Alignment and QC metrics"
+        orderOnDetailsPage: 2490
+        noInput: true
+        preprocessing:
+          inputs: {input: nextclade.qc.stopCodons.stopCodons}
     website: &website
       tableColumns:
         - sampleCollectionDate
@@ -1532,22 +1549,6 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      metadataAdd:
-        - name: totalStopCodons
-          displayName: '# of stop codons'
-          type: int
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2480
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop Codons
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2490
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
     preprocessing:
       - <<: *preprocessing
         configFile:
@@ -1619,21 +1620,6 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
-        - name: totalStopCodons
-          displayName: '# of stop codons'
-          type: int
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2480
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2490
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
       website:
         <<: *website
         tableColumns:
@@ -1710,31 +1696,29 @@ organisms:
       linkOuts:
         - name: "Nextclade (L)"
           maxNumberOfRecommendedEntries: 2000 # cchf L is ~12.5kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/L&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/L"
         - name: "Nextclade (M)"
           maxNumberOfRecommendedEntries: 5000 # cchf M is ~5kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/M&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/M"
         - name: "Nextclade (S)"
           maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/cchfv/linked/S&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/S"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
-        - name: totalStopCodons
-          displayName: '# of stop codons'
-          type: int
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2480
+        - name: lineage
+          displayName: "Segment S Lineage"
+          header: "Lineage"
           noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          lineageSystem: cchfS
           preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2490
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
+            args: 
+              segment: S
+            inputs: {input: nextclade.clade}
       website:
         <<: *website
         tableColumns:
@@ -1758,14 +1742,13 @@ organisms:
           nextclade_dataset_name: nextstrain/cchfv/linked
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
           genes: [RdRp, GPC, NP]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     log_level: DEBUG
-      #     nextclade_dataset_name: nextstrain/cchfv/linked
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-      #     genes: [RdRp, GPC, NP]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          log_level: DEBUG
+          nextclade_dataset_name: community/pathoplexus/cchfv
+          genes: [RdRp, GPC, NP]
     ingest:
       <<: *ingest
       configFile:
@@ -1773,8 +1756,7 @@ organisms:
         taxon_id: 3052518
         segment_identification:
           method: "align"
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
+          nextclade_dataset_name: community/pathoplexus/cchfv
     enaDeposition:
       configFile:
         taxon_id: 3052518
@@ -1851,21 +1833,6 @@ organisms:
           order: 7
           orderOnDetailsPage: 740
           lineageSystem: mpox
-        - name: totalStopCodons
-          displayName: '# of stop codons'
-          type: int
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2480
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
-        - name: stopCodons
-          displayName: Stop codons
-          header: "Alignment and QC metrics"
-          orderOnDetailsPage: 2490
-          noInput: true
-          preprocessing:
-            inputs: {input: nextclade.qc.stopCodons.stopCodons}
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
           displayName: GISAID Isolate ID
