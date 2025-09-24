@@ -1539,7 +1539,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov&dataset-server=https://data.master.clades.nextstrain.org/v3"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       website:
@@ -1565,8 +1565,8 @@ organisms:
         version: 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3 # remove once release done
           nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1576,7 +1576,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv&dataset-server=https://data.master.clades.nextstrain.org/v3"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
@@ -1589,8 +1589,8 @@ organisms:
         version: 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://data.master.clades.nextstrain.org/v3
           nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
     ingest:
       <<: *ingest
       configFile:
