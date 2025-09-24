@@ -19,6 +19,7 @@ rule all:
                 "rsv-a",
                 "rsv-b",
                 "hmpv",
+                "measles",
             ],
             difftype=["seq", "meta"],
         ),
