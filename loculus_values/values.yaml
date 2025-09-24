@@ -80,14 +80,6 @@ defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
-    organismName: "Ebola Zaire"
-    image: "/images/organisms/ebolazaire_small.jpg"
-    linkOuts:
-      - name: "Nextclade"
-        maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
-        url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/zaire&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
-      - name: "Country map"
-        url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     earliestReleaseDate:
       enabled: true
       externalFields:
@@ -1527,6 +1519,42 @@ defaultOrganismConfig: &defaultOrganismConfig
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Ebola Zaire"
+      image: "/images/organisms/ebolazaire_small.jpg"
+      metadataAdd:
+        - name: outbreak
+          displayName: Outbreak
+          header: "Outbreak"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+      linkOuts:
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - outbreak
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
         configFile:
@@ -1537,8 +1565,8 @@ organisms:
         version: 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
+          nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1548,7 +1576,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
@@ -1557,12 +1585,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/sudan
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/sudan
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
     ingest:
       <<: *ingest
       configFile:
