@@ -1737,7 +1737,7 @@ organisms:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
-        - name: lineage
+        - name: lineage_S
           displayName: "Segment S Lineage"
           header: "Lineage"
           noInput: true
@@ -1760,6 +1760,7 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - hostNameScientific
+          - lineage_S
           - length_M
           - length_S
           - length_L
