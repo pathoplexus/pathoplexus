@@ -1469,6 +1469,7 @@ defaultOrganismConfig: &defaultOrganismConfig
   preprocessing:
     - &preprocessing
       replicas: 1
+      version: 11
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
@@ -1479,7 +1480,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
-    configFile: &ingestConfigFile
+    configFile:
       taxon_id: 3052462
   enaDeposition:
     configFile:
@@ -1761,7 +1762,6 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        <<: *ingestConfigFile
         taxon_id: 3052518
         segment_identification:
           method: "align"
@@ -2068,7 +2068,6 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        <<: *ingestConfigFile
         taxon_id: 10244
     enaDeposition:
       configFile:
