@@ -1,1 +1,0 @@
-import{j as r}from"./jsx-runtime.C9E4cUVc.js";import{r as e}from"./index.BOC3FD3Q.js";const s=(o,t)=>r.jsx("svg",{viewBox:"0 0 40 40",width:"1.2em",height:"1.2em",ref:t,...o,children:r.jsx("path",{fill:"currentColor",d:"M4.659 11.833h30.682L20 32.167z"})}),w=e.forwardRef(s);export{w as F};

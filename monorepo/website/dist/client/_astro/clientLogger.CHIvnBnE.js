@@ -1,1 +1,0 @@
-import{a as l}from"./createAuthorizationHeader.D0lXW5f5.js";const n=(e="client")=>{const r={log:async o=>l.post("/admin/logs.txt",o),error:async o=>r.log({level:"error",instance:e,message:o}),warn:async o=>r.log({level:"warn",instance:e,message:o}),info:async o=>r.log({level:"info",instance:e,message:o})};return r};export{n as g};
