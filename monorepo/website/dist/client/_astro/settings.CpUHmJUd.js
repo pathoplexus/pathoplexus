@@ -1,0 +1,1 @@
+const s=100,a="accessionVersion",t="accession",o="versionStatus",I="isRevocation",n="groupId",e="dataUseTerms",D="dataUseTermsRestrictedUntil",E="id",S="tsv",_="fasta",c="en-US";export{t as A,c as D,n as G,I,E as S,o as V,a,e as b,D as c,S as m,s as p,_ as s};

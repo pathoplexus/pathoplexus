@@ -1,0 +1,1 @@
+import{r as t}from"./index.BOC3FD3Q.js";import{u as o}from"./isClient.CwQyaCl4.js";const n=({children:i,alsoDisabledIf:l=!1})=>{const r=o(),e=t.Children.only(i);if(e.props.disabled!==void 0)throw new Error("DisabledUntilHydrated: child element should not set its own `disabled` prop—it will be overridden.");return t.cloneElement(e,{disabled:!r||l})};export{n as D};

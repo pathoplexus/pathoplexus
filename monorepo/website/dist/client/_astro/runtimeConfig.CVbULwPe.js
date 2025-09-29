@@ -1,0 +1,1 @@
+import{s as e,o as r,r as o,b as c}from"./lapis.BMBLPoxt.js";e().min(1);const s=r({backendUrl:e(),lapisUrls:o(e(),e())}),i=s.merge(r({keycloakUrl:e()}));r({public:s,serverSide:i,backendKeycloakClientSecret:e().min(5),insecureCookies:c()});export{s};
