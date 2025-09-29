@@ -84,13 +84,13 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                                     <div class='mt-4 grid grid-cols-2 gap-4 text-sm text-primary-900'>
                                         <div>
                                             <div class='text-xs uppercase tracking-wide text-primary-700'>Sequences</div>
-                                            <div class='text-2xl font-semibold text-primary-800'>
+                                            <div class='text-xl font-semibold text-primary-800'>
                                                 {formatNumberWithDefaultLocale(aggregateSubmissionStats.total)}
                                             </div>
                                         </div>
                                         <div>
                                             <div class='text-xs uppercase tracking-wide text-primary-700'>Last {numberDaysAgoStatistics} days</div>
-                                            <div class='text-2xl font-semibold text-primary-800'>
+                                            <div class='text-xl font-semibold text-primary-800'>
                                                 +{formatNumberWithDefaultLocale(aggregateSubmissionStats.recent)}
                                             </div>
                                         </div>
