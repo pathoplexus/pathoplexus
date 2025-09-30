@@ -72,10 +72,11 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                             </ul>
                         </div>
                         <div class='hidden h-full w-px bg-primary/20 sm:block' aria-hidden='true'></div>
-                        <div class='md:max-w-sm min-w-[12rem]'>
-                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Dataset</span>
+                       
                             {
                                 hasAggregateStats ? (
+ <div class='md:max-w-sm min-w-[12rem]'>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Dataset</span>
                                     <div class='mt-4 grid grid-cols-2 gap-4 text-sm text-primary-900'>
                                         <div>
                                             <div class='text-xs uppercase tracking-wide text-primary-700'>Sequences</div>
@@ -90,13 +91,12 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                                             </div>
                                         </div>
                                     </div>
+  </div>
                                 ) : (
-                                    <p class='mt-4 text-sm text-primary-900'>
-                                        Be among the first to contribute sequences and help grow the shared dataset.
-                                    </p>
+                                  
                                 )
                             }
-                        </div>
+                      
                     </div>
                 </div>
             </div>
