@@ -11,7 +11,6 @@ import { formatNumberWithDefaultLocale } from '../utils/formatNumber';
 const websiteConfig = getWebsiteConfig();
 const { name: websiteName } = websiteConfig;
 const configuredOrganisms = getConfiguredOrganisms();
-const defaultBrowseOrganism = configuredOrganisms[0]?.key;
 import '../styles/mdcontainer.scss';
 
 const numberDaysAgoStatistics = 30;
@@ -49,16 +48,12 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                     >
                         Submit data
                     </a>
-                    {
-                        defaultBrowseOrganism && (
-                            <a
-                                class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
-                                href={routes.searchPage(defaultBrowseOrganism)}
-                            >
-                                Browse data
-                            </a>
-                        )
-                    }
+                    <a
+                        class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+                        href={routes.browseOrganismSelection()}
+                    >
+                        Browse data
+                    </a>
                 </div>
                 <div class='mt-6 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
                     <div class='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>

@@ -41,6 +41,7 @@ export const routes = {
         withSearchParams('/user/createGroup', {
             continueSubmissionOrganism: intent?.organism,
         }),
+    browseOrganismSelection: () => '/browse/select-organism',
     submissionOrganismSelection: () => '/submission/select-organism',
     submissionPageWithoutGroup: (organism: string) => withOrganism(organism, '/submission'),
     submissionPage: (organism: string, groupId: number) =>
