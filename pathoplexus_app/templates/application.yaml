@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: loculus-pp-{{ .Values.pathoplexusBranch | replace "_" "-" }}
+  name: loculus-pp-{{ .Values.pathoplexusBranch | replace "_" "-"  | replace "/" "-" }}
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -9,7 +9,7 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: {{ .Values.pathoplexusBranch | replace "_" "-" }}
+    namespace: {{ .Values.pathoplexusBranch | replace "_" "-" | replace "/" "-" }}
   sources:
   - repoURL: https://github.com/loculus-project/loculus.git
     path: kubernetes/loculus

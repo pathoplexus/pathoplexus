@@ -64,30 +64,18 @@ lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
   rsv-a:
-    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     # Once we update nextclade dataset https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
-    organismName: "Ebola Zaire"
-    image: "/images/organisms/ebolazaire_small.jpg"
-    linkOuts:
-      - name: "Nextclade"
-        maxNumberOfRecommendedEntries: 3000 # our sequences are ~18.5KB each
-        url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/zaire&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
-      - name: "Country map"
-        url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     earliestReleaseDate:
       enabled: true
       externalFields:
@@ -1492,7 +1480,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
-    configFile: &ingestConfigFile
+    configFile:
       taxon_id: 3052462
   enaDeposition:
     configFile:
@@ -1527,18 +1515,51 @@ defaultOrganismConfig: &defaultOrganismConfig
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Ebola Zaire"
+      image: "/images/organisms/ebolazaire_small.jpg"
+      metadataAdd:
+        - name: outbreak
+          displayName: Outbreak
+          header: "Outbreak"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+      linkOuts:
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - outbreak
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        replicas: 2
+        version:
+          - 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
-      - <<: *preprocessing
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/zaire
+          nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1548,21 +1569,17 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/ebola/sudan&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
       - <<: *preprocessing
+        version:
+          - 12
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-          nextclade_dataset_name: nextstrain/ebola/sudan
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/sudan
+          nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
+          nextclade_dataset_tag: 2025-09-24--07-29-03Z
     ingest:
       <<: *ingest
       configFile:
@@ -1637,18 +1654,14 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        version:
+          - 11
+          - 12
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
           genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: nextstrain/wnv/all-lineages
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-      #     genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -1708,7 +1721,7 @@ organisms:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
-        - name: lineage
+        - name: lineage_S
           displayName: "Segment S Lineage"
           header: "Lineage"
           noInput: true
@@ -1731,6 +1744,7 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - hostNameScientific
+          - lineage_S
           - length_M
           - length_S
           - length_L
@@ -1738,14 +1752,8 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          nextclade_dataset_name: nextstrain/cchfv/linked
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/cornelius-cchfv/data_output
-          genes: [RdRp, GPC, NP]
-      - <<: *preprocessing
-        version: 12
+        version:
+          - 12
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -1754,7 +1762,6 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        <<: *ingestConfigFile
         taxon_id: 3052518
         segment_identification:
           method: "align"
@@ -1866,7 +1873,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         replicas: 3
-        version: 12
+        version:
+          - 12
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/mpox/all-clades
@@ -2060,7 +2068,6 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        <<: *ingestConfigFile
         taxon_id: 10244
     enaDeposition:
       configFile:
@@ -2476,19 +2483,8 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        version: 12
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-          nextclade_dataset_tag: "2024-11-27--02-51-00Z"
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-          accepted_dataset_matches: 
-            - rsv-a
-          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      - <<: *preprocessing
-        version: 13
+        version:
+          - 13
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
@@ -2596,19 +2592,8 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 1
-        version: 12
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-          nextclade_dataset_tag: "2025-03-04--17-31-25Z"
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-          accepted_dataset_matches: 
-            - rsv-b
-          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      - <<: *preprocessing
-        version: 13
+        version:
+          - 13
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
@@ -2704,13 +2689,9 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-          nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      - <<: *preprocessing
-        version: 12
+        replicas: 2
+        version:
+          - 12
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
@@ -2790,14 +2771,8 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
-          nextclade_dataset_tag: "2025-08-11--19-06-01Z"
-          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      - <<: *preprocessing
-        version: 12
+        version:
+          - 12
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
