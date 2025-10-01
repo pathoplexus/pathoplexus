@@ -46,3 +46,4 @@ podPriorityClassName: staging
 seqSets:
   enabled: True
   crossRef: null
+podPriorityClassName: demo
