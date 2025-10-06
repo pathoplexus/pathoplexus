@@ -18,28 +18,28 @@ export const newsItems: NewsItem[] = [
         title: 'Pathoplexus July Update',
         date: '14 July 2025',
         excerpt:
-            "For many at Pathoplexus, summer is now in full swing (and winter well underway for many others) - and we’re happy to bring another news update! The past few months have been particularly exciting as we’ve seen an incredible increase in direct submissions from around the world…",
+            'For many at Pathoplexus, summer is now in full swing (and winter well underway for many others) - and we’re happy to bring another news update! The past few months have been particularly exciting as we’ve seen an incredible increase in direct submissions from around the world…',
     },
     {
         slug: '2025-05-22-pathoplexus-rsv-and-hmpv',
         title: 'Expanding Pathoplexus: RSV and HMPV added',
         date: '22 May 2025',
         excerpt:
-            "Today, Pathoplexus launches two additional viral pathogens: RSV and HMPV. RSV, which includes the RSV-A and RSV-B subtypes, and HMPV are two related respiratory viruses which are known to cause severe illness in infants and other vulnerable patient groups, making them…",
+            'Today, Pathoplexus launches two additional viral pathogens: RSV and HMPV. RSV, which includes the RSV-A and RSV-B subtypes, and HMPV are two related respiratory viruses which are known to cause severe illness in infants and other vulnerable patient groups, making them…',
     },
     {
         slug: '2025-04-16-spring-update',
         title: 'Pathoplexus Spring Update',
         date: '16 April 2025',
         excerpt:
-            "As we move into another change of the seasons, Pathoplexus continues to grow, with exciting developments across sequence submissions, platform improvements, and community engagement. February and March saw new Ebola and mpox sequence submissions, including our first-ever…",
+            'As we move into another change of the seasons, Pathoplexus continues to grow, with exciting developments across sequence submissions, platform improvements, and community engagement. February and March saw new Ebola and mpox sequence submissions, including our first-ever…',
     },
     {
         slug: '2024-12-09-expanding-pathoplexus-mpox',
         title: 'Expanding Pathoplexus: mpox added',
         date: '9 December 2024',
         excerpt:
-            "Today Pathoplexus launches its first additional viral pathogen: mpox, or MPXV (previously known as monkeypox). In the context of the current mpox outbreaks and ongoing health concerns, Pathoplexus aims to support sequence sharing to improve both understanding and response…",
+            'Today Pathoplexus launches its first additional viral pathogen: mpox, or MPXV (previously known as monkeypox). In the context of the current mpox outbreaks and ongoing health concerns, Pathoplexus aims to support sequence sharing to improve both understanding and response…',
     },
     {
         slug: '2024-11-01-autumn-update',
