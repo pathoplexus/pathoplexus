@@ -64,15 +64,17 @@ lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
   rsv-a:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
-    # 13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
+    # Once we update nextclade dataset https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-03-04--17-31-25Z/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
+    11: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
@@ -1413,7 +1415,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: completeness
         type: float
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2860
+        orderOnDetailsPage: 2720
         includeInDownloadsByDefault: true
         noInput: true
         perSegment: true
@@ -1432,15 +1434,17 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of stop codons'
         type: int
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2480
+        orderOnDetailsPage: 2830
         noInput: true
+        perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
         header: "Alignment and QC metrics"
-        orderOnDetailsPage: 2490
+        orderOnDetailsPage: 2840
         noInput: true
+        perSegment: true
         preprocessing:
           inputs: {input: nextclade.qc.stopCodons.stopCodons}
     website: &website
@@ -1486,8 +1490,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         nextclade_dataset_name: nextstrain/ebola/zaire
         genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
-    # - <<: *preprocessing
-    #   version: 12
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &ingestConfigFile
@@ -1531,12 +1533,12 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
           nextclade_dataset_name: nextstrain/ebola/zaire
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
-      #     nextclade_dataset_name: nextstrain/ebola/zaire
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/ebola/data_output
+          nextclade_dataset_name: nextstrain/ebola/zaire
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -2474,8 +2476,8 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        version: 11
-        replicas: 3
+        version: 12
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
@@ -2486,8 +2488,8 @@ organisms:
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       - <<: *preprocessing
-        version: 12
-        replicas: 6
+        version: 13
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
@@ -2595,6 +2597,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         replicas: 1
+        version: 12
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
@@ -2605,8 +2608,8 @@ organisms:
             - rsv-b
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       - <<: *preprocessing
-        version: 12
-        replicas: 6
+        version: 13
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
@@ -2706,13 +2709,13 @@ organisms:
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
           nextclade_dataset_tag: "2025-04-25--12-24-24Z"
           genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version: 12
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-      #     nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-      #     genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      - <<: *preprocessing
+        version: 12
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+          nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+          genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2787,7 +2790,15 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 5
+        replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+          nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+          genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *preprocessing
+        version: 12
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
