@@ -3,6 +3,7 @@ layout: ../../../layouts/DocLayout.astro
 title: "Creating an account"
 order: 10
 ---
+import InfoBox from '../../../components/asides/InfoBox.astro';
 
 When creating a new Pathoplexus account, you can choose to either login with an existing ORCiD or create a separate account. If you use ORCiD, your account will be linked with Pathoplexus and we will pull some information from ORCiD, such as your ORCiD and name - but will never receive or access your password. In the future, you can always login using ORCiD and don't need a separate password.
 
@@ -10,9 +11,9 @@ If you choose to create your own account, you will need to create a password, mu
 
 To begin creating a new account, click 'Login' in the top-right on the website.
 
-> **Important:** Each username and email address can only be used once.
->
-> Usernames or email addresses from disabled accounts cannot be reused.
+<InfoBox>
+    Each username and email address can only be used once. Usernames or email addresses from disabled accounts cannot be reused.
+</InfoBox>
 
 To login with ORCiD:
 1. Create 'ORCiD' to the right-hand side of the page, login to ORCiD, and authorize access to your account
