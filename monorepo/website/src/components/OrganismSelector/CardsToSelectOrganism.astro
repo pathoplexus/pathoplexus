@@ -20,7 +20,7 @@ const configuredOrganisms = getConfiguredOrganisms();
             {instructionText}
         </h2>
     </div>
-    <div class='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+    <div class='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
         {
             configuredOrganisms.map(({ key, displayName, image }) => {
                 const stats = organismStatisticsMap?.get(key);
