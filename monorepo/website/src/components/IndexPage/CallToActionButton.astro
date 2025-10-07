@@ -7,7 +7,7 @@ interface Props {
 const { href, primary = false } = Astro.props;
 
 const baseClasses =
-    'inline-flex items-center justify-center rounded-md px-5 py-2 text-base font-semibold text-primary shadow-sm transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 no-underline hover:no-underline';
+    'inline-flex items-center justify-center rounded-md px-3 md:px-5 py-2 text-base font-semibold text-primary shadow-sm transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 no-underline hover:no-underline';
 
 const variantClasses = primary
     ? 'border border-primary/60 bg-primary-50 hover:bg-primary-200'
