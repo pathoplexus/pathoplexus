@@ -1,6 +1,5 @@
 ---
 import CardsToSelectOrganism from '../../../components/OrganismSelector/CardsToSelectOrganism.astro';
-import { NeedAGroup } from '../../../components/common/NeedAGroup.tsx';
 import NeedToLogin from '../../../components/common/NeedToLogin.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { routes } from '../../../routes/routes';
@@ -31,15 +30,12 @@ Astro.response.headers.append('Expires', '0');
         </div>
         {
             groupsResult.match(
-                (groups) =>
-                    groups.length === 0 ? (
-                        <NeedAGroup />
-                    ) : (
-                        <CardsToSelectOrganism
-                            getLinkForOrganism={(organismKey) => routes.submissionPageWithoutGroup(organismKey)}
-                            instructionText='Select an organism to open the submission portal:'
-                        />
-                    ),
+                () => (
+                    <CardsToSelectOrganism
+                        getLinkForOrganism={(organismKey) => routes.submissionPageWithoutGroup(organismKey)}
+                        instructionText='Select an organism to open the submission portal:'
+                    />
+                ),
                 (error) =>
                     error.type === 'not_logged_in' ? (
                         <NeedToLogin message='You need to be logged in to access the submission portal.' />
