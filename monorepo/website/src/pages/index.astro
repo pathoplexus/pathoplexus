@@ -6,7 +6,6 @@ import { getOrganismStatisticsMap } from '../components/IndexPage/getOrganismSta
 import { getConfiguredOrganisms, getWebsiteConfig } from '../config';
 import { newsItems } from '../data/newsItems';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { routes } from '../routes/routes';
 import { formatNumberWithDefaultLocale } from '../utils/formatNumber';
 const websiteConfig = getWebsiteConfig();
 const { name: websiteName } = websiteConfig;
@@ -44,13 +43,13 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                 <div class='mt-6 flex flex-wrap gap-3'>
                     <a
                         class='inline-flex items-center justify-center rounded-md border border-primary/60 bg-primary-100 px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
-                        href={routes.submissionOrganismSelection()}
+                        href='/submission/select-organism'
                     >
                         Submit data
                     </a>
                     <a
                         class='inline-flex items-center justify-center rounded-md border border-primary/40 bg-white px-5 py-2.5 text-base font-semibold text-primary shadow-sm transition-colors duration-150 hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
-                        href={routes.browseOrganismSelection()}
+                        href='/browse/select-organism'
                     >
                         Browse data
                     </a>
