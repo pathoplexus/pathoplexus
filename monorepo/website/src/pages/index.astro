@@ -1,0 +1,142 @@
+---
+import CallToActionButton from '../components/IndexPage/CallToActionButton.astro';
+import Faq from '../components/IndexPage/FAQ.mdx';
+import OrganismCard from '../components/IndexPage/OrganismCard.astro';
+import WelcomeMessage from '../components/IndexPage/WelcomeMessage.astro';
+import { getOrganismStatisticsMap } from '../components/IndexPage/getOrganismStatistics';
+import { getConfiguredOrganisms, getWebsiteConfig } from '../config';
+import { newsItems } from '../data/newsItems';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatNumberWithDefaultLocale } from '../utils/formatNumber';
+const websiteConfig = getWebsiteConfig();
+const { name: websiteName } = websiteConfig;
+const configuredOrganisms = getConfiguredOrganisms();
+import '../styles/mdcontainer.scss';
+
+const numberDaysAgoStatistics = 30;
+const organismStatisticsMap = await getOrganismStatisticsMap(
+    configuredOrganisms.map((organism) => organism.key),
+    numberDaysAgoStatistics,
+);
+const latestNewsItem = newsItems[0];
+
+const aggregateSubmissionStats = configuredOrganisms.reduce(
+    (acc, { key }) => {
+        const stats = organismStatisticsMap.get(key);
+        if (stats === undefined) {
+            return acc;
+        }
+        return {
+            total: acc.total + stats.totalSequences,
+            recent: acc.recent + stats.recentSequences,
+        };
+    },
+    { total: 0, recent: 0 },
+);
+const hasAggregateStats = aggregateSubmissionStats.total > 0;
+---
+
+<BaseLayout title='Home'>
+    <div class='max-w-6xl mx-auto space-y-14'>
+        <section class='grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.15fr)]'>
+            <div>
+                <WelcomeMessage websiteName={websiteName} />
+                <div class='mt-6 flex flex-wrap gap-3'>
+                    <CallToActionButton primary href='/browse/select-organism' >Browse database</CallToActionButton>
+                    <CallToActionButton href='/submission/select-organism' >Submit sequences</CallToActionButton>
+                    
+                </div>
+                <div class='mt-6 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
+                    <div class='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>
+                        <div class='max-w-lg'>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Simple sequence sharing</span>
+                            <ul class='mt-3 space-y-2 text-sm text-slate-700'>
+                                <li class='flex items-start gap-2'>
+                                    <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Submit data through a simple web interface or programmatically via our API.
+                                </li>
+                                <li class='flex items-start gap-2'>
+                                    <span class='mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/70' aria-hidden='true'></span>
+                                    Browse sequences with powerful search and filtering options.
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <div class='hidden h-full w-px bg-primary/20 sm:block' aria-hidden='true'></div>
+                       
+                            {
+                                hasAggregateStats ? (
+ <div class='md:max-w-sm min-w-[14rem]'>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Dataset</span>
+                                    <div class='mt-4 grid grid-cols-2 gap-4 text-sm text-primary-900'>
+                                        <div>
+                                            <div class='text-xs uppercase tracking-wide text-primary-700'>Sequences</div>
+                                            <div class='text-xl font-semibold text-primary-800'>
+                                                {formatNumberWithDefaultLocale(aggregateSubmissionStats.total)}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class='text-xs uppercase tracking-wide text-primary-700'>Last {numberDaysAgoStatistics} days</div>
+                                            <div class='text-xl font-semibold text-primary-800'>
+                                                +{formatNumberWithDefaultLocale(aggregateSubmissionStats.recent)}
+                                            </div>
+                                        </div>
+                                    </div>
+  </div>
+                                ) : null
+                            }
+                      
+                    </div>
+                </div>
+            </div>
+            {
+                latestNewsItem && (
+                    <aside class='flex h-full flex-col justify-between rounded-2xl border border-base-200/70 bg-base-100 p-6 shadow-[0_4px_12px_rgba(0,0,0,0.05)]'>
+                        <div>
+                            <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Latest news</span>
+                            <h2 class='mt-3 text-xl font-semibold leading-7 text-slate-900'>
+                                <a class='hover:underline' href={`/news/${latestNewsItem.slug}`}>
+                                    {latestNewsItem.title}
+                                </a>
+                            </h2>
+                            <div class='mt-1 text-sm text-slate-500'>By the Pathoplexus Team – {latestNewsItem.date}</div>
+                            <div class='mt-4 text-sm leading-6 text-slate-700'>
+                                <Fragment set:html={latestNewsItem.excerpt} />
+                            </div>
+                        </div>
+                        <a
+                            class='mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80'
+                            href={`/news/${latestNewsItem.slug}`}
+                        >
+                            Read the full update
+                            <span aria-hidden='true'>→</span>
+                        </a>
+                    </aside>
+                )
+            }
+        </section>
+
+        <section>
+            <h2 class='text-center text-2xl font-semibold text-slate-900'>Explore the data</h2>
+            <div class='mt-8 flex justify-center'>
+                <div class=`flex flex-wrap justify-center gap-x-5 gap-y-4 ${configuredOrganisms.length === 5 ? 'max-w-4xl' : ''}`>
+                    {
+                        configuredOrganisms.map(({ key, displayName, image }) => (
+                            <OrganismCard
+                                key={key}
+                                image={image}
+                                displayName={displayName}
+                                organismStatistics={organismStatisticsMap.get(key)!}
+                                numberDaysAgoStatistics={numberDaysAgoStatistics}
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div class='mdContainer'>
+            <Faq />
+        </div>
+    </div>
+</BaseLayout>

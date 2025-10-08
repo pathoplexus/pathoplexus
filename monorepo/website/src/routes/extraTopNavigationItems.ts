@@ -4,7 +4,7 @@ import type { TopNavigationItems } from './navigationItems.ts';
 export const extraStaticTopNavigationItems = [
     {
         text: 'News',
-        path: '/news',
+        path: '/news/',
     },
     {
         text: 'About',

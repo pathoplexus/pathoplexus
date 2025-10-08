@@ -1,0 +1,51 @@
+---
+import CardsToSelectOrganism from '../../../components/OrganismSelector/CardsToSelectOrganism.astro';
+import NeedToLogin from '../../../components/common/NeedToLogin.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { routes } from '../../../routes/routes';
+import { getGroups } from '../../../utils/submissionPages';
+
+const groupsResult = await getGroups(Astro.locals.session);
+
+// Prevent caching to allow back button after user creates group
+Astro.response.headers.append('Cache-Control', 'no-cache, no-store, must-revalidate');
+Astro.response.headers.append('Pragma', 'no-cache');
+Astro.response.headers.append('Expires', '0');
+---
+
+<BaseLayout title='Submit data'>
+    <div class='mx-auto flex max-w-7xl flex-col gap-6 px-2 py-6 sm:px-6'>
+        <div>
+            <h1 class='text-2xl font-semibold text-slate-900 sm:text-4xl'>Submit viral genomic data</h1>
+            {
+                groupsResult.match(
+                    () => (
+                        <p class='mt-3 text-base text-slate-700'>
+                            Choose the organism you want to submit sequences for. You will then be taken to the submission portal for that organism.
+                        </p>
+                    ),
+                    () => null,
+                )
+            }
+        </div>
+        {
+            groupsResult.match(
+                () => (
+                    <CardsToSelectOrganism
+                        getLinkForOrganism={(organismKey) => routes.submissionPageWithoutGroup(organismKey)}
+                        instructionText='Select an organism to open the submission portal:'
+                    />
+                ),
+                (error) =>
+                    error.type === 'not_logged_in' ? (
+                        <NeedToLogin message='You need to be logged in to access the submission portal.' />
+                    ) : (
+                        <div class='mt-6 message max-w-4xl rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900'>
+                            <p class='font-medium'>We could not load your submitting groups right now.</p>
+                            <p class='mt-2 text-sm'>Please refresh the page or try again later.</p>
+                        </div>
+                    ),
+            )
+        }
+    </div>
+</BaseLayout>
