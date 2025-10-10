@@ -127,7 +127,7 @@ const DocsMenu: FC<DocsMenuProps> = ({ docsPages, currentPageUrl, title }) => {
     );
 
     return (
-        <Disclosure as='nav' className='docs-menu bg-white border rounded-lg overflow-hidden sticky sm:min-w-64 top-4'>
+        <Disclosure as='nav' className='docs-menu bg-white border rounded-lg overflow-hidden sm:min-w-64'>
             {({ open }) => (
                 <>
                     <div className='flex items-center justify-between px-4 py-3 bg-gray-100'>
