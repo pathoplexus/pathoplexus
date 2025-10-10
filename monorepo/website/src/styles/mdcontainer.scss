@@ -3,15 +3,15 @@
 }
 
 .mdContainer h1 {
-    @apply text-4xl font-bold text-gray-900 mb-6 mt-0 leading-tight tracking-tight;
+    @apply text-4xl font-bold text-primary-900 mb-6 mt-0 leading-tight tracking-tight;
 }
 
 .mdContainer h2 {
-    @apply text-2xl font-bold text-gray-900 mt-12 mb-4 pb-2 border-b border-gray-200 leading-tight;
+    @apply text-2xl font-bold text-primary-700 mt-12 mb-4 pb-2 border-b-2 border-primary-200 leading-tight;
 }
 
 .mdContainer h3 {
-    @apply text-xl font-semibold text-gray-900 mt-8 mb-3 leading-snug;
+    @apply text-xl font-semibold text-primary-700 mt-8 mb-3 leading-snug;
 }
 
 .mdContainer h4 {
@@ -19,7 +19,7 @@
 }
 
 .mdContainer img {
-    @apply my-6 border border-gray-300 rounded-lg shadow-sm;
+    @apply my-6 border-2 border-primary-200 rounded-lg shadow-sm;
 }
 
 .mdContainer p {
@@ -27,7 +27,7 @@
 }
 
 .mdContainer a {
-    @apply text-primary-600 hover:text-primary-700 underline decoration-2 underline-offset-2 transition-colors duration-150 font-medium;
+    @apply text-primary-600 hover:text-primary-700 underline decoration-primary-400 decoration-2 underline-offset-2 transition-all duration-150 font-medium hover:decoration-primary-600;
 }
 
 .mdContainer ol {
@@ -116,19 +116,27 @@
 }
 
 .mdContainer table {
-    @apply w-full table-auto border-collapse mt-8 mb-8 text-sm;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    @apply w-full table-auto mt-8 mb-8 text-sm border border-gray-300 rounded-lg overflow-hidden;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 .mdContainer th,
 .mdContainer td {
-    @apply border border-gray-200 px-4 py-3 text-left border-solid;
+    @apply border-r border-b border-gray-300 px-4 py-3 text-left border-solid;
+}
+
+.mdContainer th:last-child,
+.mdContainer td:last-child {
+    @apply border-r-0;
+}
+
+.mdContainer tbody tr:last-child td {
+    @apply border-b-0;
 }
 
 .mdContainer th {
-    @apply bg-gray-100 font-semibold text-gray-900 uppercase text-xs tracking-wider;
+    @apply bg-primary-50 font-semibold text-primary-900 text-sm border-b-2;
 }
 
 .mdContainer td {
@@ -148,16 +156,16 @@
 }
 
 .mdContainer .faqWrapper h3 {
-    @apply text-lg font-semibold text-gray-900 my-3 border-t border-gray-300 mt-7 pt-5 mb-0;
+    @apply text-lg font-semibold text-primary-700 my-3 border-t-2 border-primary-200 mt-7 pt-5 mb-0;
 }
 
 .astro-code {
-    @apply p-4 rounded-lg my-6 text-sm leading-6;
+    @apply p-4 rounded-lg my-6 text-sm leading-6 border-l-4 border-primary-500;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
 }
 
 .mdContainer code:not(.astro-code code) {
-    @apply bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono;
+    @apply bg-primary-50 text-primary-800 px-1.5 py-0.5 rounded text-sm font-mono;
 }
 
 .mdContainer pre {
@@ -165,11 +173,11 @@
 }
 
 .mdContainer blockquote {
-    @apply border-l-4 border-primary-500 pl-4 my-6 italic text-gray-700 bg-gray-50 py-2 rounded-r;
+    @apply border-l-4 border-primary-500 pl-4 my-6 italic text-gray-700 bg-primary-50/30 py-2 rounded-r;
 }
 
 .mdContainer strong {
-    @apply font-semibold text-gray-900;
+    @apply font-semibold text-primary-900;
 }
 
 .mdContainer em {
