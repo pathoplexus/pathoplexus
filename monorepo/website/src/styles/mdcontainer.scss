@@ -27,7 +27,14 @@
 }
 
 .mdContainer a {
-    @apply text-primary-600 hover:text-primary-700 underline decoration-primary-400 decoration-2 underline-offset-2 transition-all duration-150 font-medium hover:decoration-primary-600;
+    @apply text-primary-600 hover:text-primary-700 underline underline-offset-2 transition-colors duration-150 font-medium;
+}
+
+.mdContainer h1 > a,
+.mdContainer h2 > a,
+.mdContainer h3 > a,
+.mdContainer h4 > a {
+    @apply no-underline;
 }
 
 .mdContainer ol {
