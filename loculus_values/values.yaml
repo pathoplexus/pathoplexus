@@ -1550,6 +1550,11 @@ organisms:
           - outbreak
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3052462
     preprocessing:
       - <<: *preprocessing
         replicas: 2
