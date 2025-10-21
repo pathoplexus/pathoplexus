@@ -3,3 +3,5 @@ monorepo/.gitignore
 monorepo/backend
 monorepo/temp
 monorepo/website/node_modules
+monorepo/CLAUDE.md
+monorepo/*/CLAUDE.md
