@@ -1479,8 +1479,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
-    configFile:
-      taxon_id: 3052462
+    configFile: &defaultIngestConfigFile
+      time_between_approve_requests_seconds: 600
   enaDeposition:
     configFile:
       taxon_id: 186538
@@ -1582,6 +1582,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052460
     enaDeposition:
       configFile:
@@ -1664,6 +1665,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3048448
         log_level: DEBUG
     enaDeposition:
@@ -1761,6 +1763,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052518
         segment_identification:
           method: "align"
@@ -2067,6 +2070,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 10244
     enaDeposition:
       configFile:
@@ -2499,6 +2503,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 1868215
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
@@ -2606,6 +2611,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 1868215
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
@@ -2699,6 +2705,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3048148
     enaDeposition:
       configFile:
@@ -2781,6 +2788,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 11234
     enaDeposition:
       configFile:
