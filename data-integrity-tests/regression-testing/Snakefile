@@ -55,7 +55,7 @@ def url(w):
     )
     match filetype:
         case "metadata":
-            return base + "details" + rest + "&dataFormat=TSV"
+            return base + "details" + rest + "&dataFormat=TSV-ESCAPED"
         case "sequence":
             return base + "unalignedNucleotideSequences" + rest
         case _:
