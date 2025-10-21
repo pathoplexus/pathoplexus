@@ -1468,49 +1468,16 @@ defaultOrganismConfig: &defaultOrganismConfig
   preprocessing:
     - &preprocessing
       replicas: 1
-      version: 11
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
       configFile: &preprocessingConfigFile
         log_level: DEBUG
-        nextclade_dataset_name: nextstrain/ebola/zaire
-        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
-  enaDeposition:
-    configFile:
-      taxon_id: 186538
-      scientific_name: "Zaire ebolavirus"
-      molecule_type: "genomic RNA"
-  referenceGenomes:
-    singleReference:
-      nucleotideSequences:
-        - name: "main"
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
-          insdcAccessionFull: NC_002549.1
-      genes:
-        - name: NP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
-        - name: VP35
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
-        - name: VP40
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
-        - name: GP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
-        - name: ssGP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
-        - name: sGP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
-        - name: VP30
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
-        - name: VP24
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
-        - name: L
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
@@ -1564,6 +1531,37 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
           nextclade_dataset_tag: 2025-09-24--07-29-03Z
+          genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+    enaDeposition:
+      configFile:
+        taxon_id: 186538
+        scientific_name: "Zaire ebolavirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
+            insdcAccessionFull: NC_002549.1
+        genes:
+          - name: NP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
+          - name: VP35
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
+          - name: VP40
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
+          - name: GP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
+          - name: ssGP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
+          - name: sGP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
+          - name: VP30
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
+          - name: VP24
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
+          - name: L
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1584,6 +1582,7 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
           nextclade_dataset_tag: 2025-09-24--07-29-03Z
+          genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     ingest:
       <<: *ingest
       configFile:
