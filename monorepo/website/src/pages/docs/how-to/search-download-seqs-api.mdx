@@ -120,14 +120,20 @@ The website provides a simple URL for downloading sequences by accession number:
 
 These search terms can also be used with the `details` endpoint to get metadata information.
 
-To download the latest version of a particular accession, use the accession number without the version ending (here `[PP_ACCESS]`).
+To download **all versions** of a particular accession, use the accession number without the version ending (here `[PP_ACCESS]`).
 Use the URL format:
 
 ```
 https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]
 ```
 
-To download a specific version of a particular accession, use the accession number with the version ending, and use `accessionVersion` in the URL:
+To download **only the latest version** of a particular accession, add `versionStatus=LATEST_VERSION` to the URL:
+
+```
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]&versionStatus=LATEST_VERSION
+```
+
+To download a **specific version** of a particular accession, use the accession number with the version ending, and use `accessionVersion` in the URL:
 
 ```
 https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accessionVersion=[PP_ACCESS.1]
