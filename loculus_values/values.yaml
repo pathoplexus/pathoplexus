@@ -2766,6 +2766,12 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 760
+        - name: means2Id
+          displayName: "MeaNS2 ID"
+          header: "Sample details"
+          orderOnDetailsPage: 630
+          definition: "MeaNS2 ID"
+          guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
       website: 
         <<: *website
         tableColumns:
