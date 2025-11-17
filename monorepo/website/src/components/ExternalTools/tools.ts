@@ -21,11 +21,12 @@ export const tools: Tool[] = [
         url: organism => ('https://nextstrain.org/' + {
             /* eslint-disable @typescript-eslint/naming-convention */
             'hmpv': 'hmpv/all/genome',
+            'mpox': 'mpox/all-clades',
             'rsv-a': 'rsv/a/genome/6y',
             'rsv-b': 'rsv/b/genome/6y',
             /* eslint-enable @typescript-eslint/naming-convention */
         }[organism]!),
-        organisms: ['hmpv', 'rsv-a', 'rsv-b'],
+        organisms: ['hmpv', 'mpox', 'rsv-a', 'rsv-b'],
     },
     {
         name: 'Pathogen Sequence Counts and Maps',
