@@ -1,6 +1,6 @@
 Field name,Description,Example,Required
 id,Your sequence identifier; should match the FASTA file header - this is used to link the metadata to the FASTA sequence,GJP123,yes
-sampleCollectionDate,"The date on which the sample was collected. Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `20XX-XX-XX`, and provide _at least_ year",3/15/20,yes
+sampleCollectionDate,"The date on which the sample was collected. Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide _at least_ a year",3/15/20,yes
 geoLocCountry,The country from which the sample was collected.,Canada,yes
 geoLocAdmin1,"A local administrative region from which the sample was collected (ex: Province, State, Canton)",Ontario,
 geoLocAdmin2,A local administrative region from which the sample was collected (ex: county or municipality),City of Toronto,
