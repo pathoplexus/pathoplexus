@@ -59,7 +59,7 @@ A series of backend and frontend enhancements have rolled out this quarter to ma
 
 ### Submission:
 
-- Accented characters are [now supported](https://github.com/loculus-project/loculus/commit/ea932f3c2065eb59bbabb0141577cd99f1d42d5c) in author names. These will be displayed across Pathoplexus, though non-accented characters are submitted to INSDC which currently requires author names to be in ASCII.
+- Accented characters are [now supported](https://github.com/loculus-project/loculus/commit/ea932f3c2065eb59bbabb0141577cd99f1d42d5c) in author names. Note that the INSDC accepts only ASCII characters. When submitting sequences to ENA, we hence replace non-ASCII characters with their nearest ASCII equivalent.
 
 - For users uploading measles sequences, we have a new field `means2id` that can be used to link sequences to the [MeaNS2 database](https://who-gmrln.org/means2), if the sequences are also uploaded there, aiding with de-duplication.
 
@@ -81,7 +81,7 @@ A series of backend and frontend enhancements have rolled out this quarter to ma
 - Many search fields now support multiple-field search - allowing you to look at multiple countries, groups, and more at once!
 ![Image showing the search bar in Pathoplexus, with both 'Pathogen Genomic Lab' and 'KGHSL_VHF_LAB' searched as submitting group, and 'Democratic Republic of the Congo' and 'Sierra Leone' searched as the country](/gifs/news/2025-11-27-november-update/searchFields-multi-select.png)
 
-- You can now view all external tools that make use of Pathoplexus data! For any pathogen on Pathoplexus, look for the new 'Tools' to see a list of website & apps that can help you explore, visualize, and analyze data from that virus! Interested in listing your own tool? We welcome integrating additional tools! Please [open an issue](https://github.com/pathoplexus/pathoplexus/issues) to let us know! *(Tools can also be for just one or a selection of pathogens)*
+- You can now view a list of external tools that make use of Pathoplexus data on each organism's 'Tools' page. Interested in listing your own tool? We welcome integrating additional tools! Please [open an issue](https://github.com/pathoplexus/pathoplexus/issues) to let us know! *(Tools can also be for just one or a selection of pathogens)*
 ![Image showing the Tools page for RSV-A, which lists GenSpectrum, Nextstrain, and Pathogen Sequence Counts and Maps as resources making use of Pathoplexus data for RSV-A via the API](/gifs/news/2025-11-27-november-update/externalTools.jpg)
 
 
@@ -97,12 +97,12 @@ Pathoplexus and Loculus have been on the road - or rather, on the conference cir
 
 - Theo Sanderson presented Pathoplexus at [IMMEM](https://www.escmid.org/congress-events/immem-xiv/), highlighting how open-source infrastructure and transparent governance can power equitable data sharing.
 
-- Chaoran Chen presented Pathoplexus and Loculus at the CERI Summer Scientific Seminar at Stellenbosch University.
+- Chaoran Chen presented Pathoplexus at the CERI Summer Scientific Seminar at Stellenbosch University.
 
 - Pathoplexus featured heavily at the [PHA4GE-Conference](https://pha4ge.org/conferences/pha4ge-conference-2025/) pre-conference workshop and at the conferences itself! The well-attended workshop featured a diverse group getting to grips with how to create accounts, search Pathoplexus, and upload data - and was led by Arthur Shem Kasambula, Stephen Kanyerezi, Patricia Nabisubi (Uganda) and Emma Hodcroft and Chaoran Chen (Switzerland). The talk focused on exploring how open data ecosystems can serve public health. Here’s a few photos of the coordinators and workshop in action!
 ![A collage image, showing first a photo of the workshop coordinators Arthur, Stephen, Patricia, Emma, and Chaoran next to a PHA4GE-Workshop poster. Then showing Stephen helping a participant, and then Chaoran helping a participant](/gifs/news/2025-11-27-november-update/workshop-photo.jpg)
 
-
+- Cornelius Roemer presented Pathoplexus at the 2025 ENA facilities on November 7.
 
 #### Upcoming talks
 
@@ -110,9 +110,9 @@ Pathoplexus and Loculus have been on the road - or rather, on the conference cir
 
 ## Awards and Collaborations
 
-We are incredibly pleased to announce that Loculus was chosen as an [SIB Remarkable Output 2024](https://www.sib.swiss/news/discover-the-sib-remarkable-outputs-2024)! In particular, judges [commented](https://bsky.app/profile/sib.swiss/post/3lw4drsnknc2s), “Loculus is remarkable for enabling efficient and secure sharing of pathogen genomic data, which is crucial for public health responses to infectious diseases."
+We are incredibly pleased to announce that Loculus, the software powering Pathoplexus, was chosen as an [SIB Remarkable Output 2024](https://www.sib.swiss/news/discover-the-sib-remarkable-outputs-2024)! In particular, judges [commented](https://bsky.app/profile/sib.swiss/post/3lw4drsnknc2s), “Loculus is remarkable for enabling efficient and secure sharing of pathogen genomic data, which is crucial for public health responses to infectious diseases."
 
-In addition, the Loculus team is excited to be joining the [Pathogen Data Network](https://pathogendatanetwork.org/) to aid more efficient and effective sharing of pathogen data. This initiative will help us expand and improve Loculus, and since Loculus is the software that underpins Pathoplexus - meaning more features and benefits for Pathoplexus, as well!
+In addition, the Loculus team is excited to be joining the [Pathogen Data Network](https://pathogendatanetwork.org/) to aid more efficient and effective sharing of pathogen data. This initiative will help us expand and improve Loculus. Since Loculus is the software that underpins Pathoplexus - this means more features and benefits for Pathoplexus, as well!
 
 ## New members
 
