@@ -17,6 +17,8 @@ Submitting these changes ("revisions") will cause the version of the sequence to
 The process of submitting revisions is very similar to original submission.
 The main difference is that you must provide an `accession` column in the metadata file, which contains the Pathoplexus accession number(s) assigned when the sequences were submitted originally.
 
+**Important:** The `accession` column should contain the accession **without** the version number. For example, use `PPD_0049AAG` rather than `PPD_0049AAG.1`. (See [Accessions](/docs/concepts/accession) for more information on accession format.)
+
 **You must use the _original metadata_ when doing a revision!** (In other words, the original files you submitted to Pathoplexus.) Currently you will need to have this file locally - we aim to introduce a way to download this from Pathoplexus soon. If you do not have this file, please _contact us_ at [revisions@pathoplexus.org](mailto:revisions@pathoplexus.org) to help you do the revision.
 
 
@@ -43,7 +45,7 @@ There is no reason to edit the sequence names in the FASTA file, as long as they
 ### Creating the metadata file
 
 The metadata file should only have rows of data for the sequences in the FASTA file.
-It needs to include an `accession` column, which includes the Pathoplexus accessions assigned at initial submission.
+It needs to include an `accession` column, which includes the Pathoplexus accessions assigned at initial submission (without the version number, e.g., `PPD_0049AAG` not `PPD_0049AAG.1`).
 
 You should also include the `id` column, which will match the sequence ids in your FASTA file.
 If you want to edit any metadata fields as well, you can include these as described in [Editing the metadata](#editing-the-metadata).
