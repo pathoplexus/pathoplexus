@@ -32,14 +32,14 @@ As well as directly uploaded sequences, we also ingest data from INSDC databases
 
 #### A note on RSV
 
-To help ensure we could capture all available RSV sequences, we recently updated our RSV ‘minimizer’ (used to classify sequences). Previously we were ingesting from taxon ID 11250, which is annotated as "human respiratory syncytial virus", but we noticed that some human sequences have instead been annotated with taxon ID 12814 ("respiratory syncytial virus"), which is currently listed in NCBI Taxonomy as a child of "Bovine orthopneumovirus" (taxon ID 11246). By updating the classifier we were able to ingest from the full set of sequences under Orthopneumovirus ([taxon ID 1868215](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?command=show&mode=node&id=1868215&lvl=3)), whilst filtering out bovine sequences based on sequence similarity . Using the updated classifier to ingest from the higher level identified an additional 2,325 RSV-A, 1,335 RSV-B, and 879 bovine RSV sequences - allowing us to add the RSV-A and RSV-B sequences to the dataset within Pathoplexus. 
+To help ensure we could capture all available RSV sequences, we recently updated our RSV ‘minimizer’ (used to classify sequences). Previously we were ingesting from taxon ID 11250, which is annotated as "human respiratory syncytial virus", but we noticed that some human sequences have instead been annotated with taxon ID 12814 ("respiratory syncytial virus"), which is currently listed in NCBI Taxonomy as a child of "Bovine orthopneumovirus" (taxon ID 11246). By updating the classifier we were able to ingest from the full set of sequences under Orthopneumovirus ([taxon ID 1868215](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?command=show&mode=node&id=1868215&lvl=3)), whilst filtering out bovine sequences based on sequence similarity. Using the updated classifier to ingest from the higher level identified an additional 2,325 RSV-A, 1,335 RSV-B, and 879 bovine RSV sequences - allowing us to add the RSV-A and RSV-B sequences to the dataset within Pathoplexus. 
 
 
 ## Community Highlights
 
 Pathoplexus is dedicated to serving the pathogen community, and as such we aim to be active participants in initiatives that help us connect with and better understand the needs of our users (and potential users!). Thus, we’re exceptionally pleased to announce that we are now an [**institutional member of the International Pathogen Surveillance Network (IPSN)**](https://www.who.int/initiatives/international-pathogen-surveillance-network/membership), convened by the WHO. We are excited to have the opportunity to connect with pathogen and public health researchers and workers worldwide and strengthen our ties with global partners in pathogen data infrastructure. 
 
-In addition, we’re grateful to the active pathogen communities for their work in improving standards and datasets. In particular, recently the mpox and RSV communities have been particularly active:
+In addition, we’re grateful to the active pathogen communities for their work in improving standards and datasets. Recently, the mpox and RSV communities have been particularly active:
 
 - [Newly designated mpox lineages](https://github.com/nextstrain/nextclade_data/tree/2025-09-09--12-13-13Z/data/nextstrain/mpox) are now annotated on Pathoplexus following community review 
 
@@ -47,7 +47,7 @@ In addition, we’re grateful to the active pathogen communities for their work 
 
 #### Citations
 
-Additionally, we’d like to remind all those who use data from Pathoplexus, that we do require [use of Pathoplexus SeqSets and DOIs](https://pathoplexus.org/docs/how-to/generate-seqset) for citations in publications and preprints (this is especially critical when making use of [Restricted-Use Data](https://pathoplexus.org/about/terms-of-use/data-use-terms#42-restricted-data-use) in any form). These DOIs should be cited as references to enable tracking; a citation-style reference can be generated using the ‘Export’ button at the top of the page. 
+Additionally, we’d like to remind all those who use data from Pathoplexus that we do require [use of Pathoplexus SeqSets and DOIs](https://pathoplexus.org/docs/how-to/generate-seqset) for citations in publications and preprints (this is especially critical when making use of [Restricted-Use Data](https://pathoplexus.org/about/terms-of-use/data-use-terms#42-restricted-data-use) in any form). These DOIs should be cited as references to enable tracking; a citation-style reference can be generated using the ‘Export’ button at the top of the page. 
 
 Not only does proper citation ensure submitters receive full credit, but it also helps trace data provenance and use through time. Soon, this will allow submitters to see the total contribution their sequences have made towards work outside their own publications!
 
@@ -99,7 +99,7 @@ Pathoplexus and Loculus have been on the road - or rather, on the conference cir
 
 - Chaoran Chen presented Pathoplexus at the CERI Summer Scientific Seminar at Stellenbosch University.
 
-- Pathoplexus featured heavily at the [PHA4GE-Conference](https://pha4ge.org/conferences/pha4ge-conference-2025/) pre-conference workshop and at the conferences itself! The well-attended workshop featured a diverse group getting to grips with how to create accounts, search Pathoplexus, and upload data - and was led by Arthur Shem Kasambula, Stephen Kanyerezi, Patricia Nabisubi (Uganda) and Emma Hodcroft and Chaoran Chen (Switzerland). The talk focused on exploring how open data ecosystems can serve public health. Here’s a few photos of the coordinators and workshop in action!
+- Pathoplexus featured heavily at the [PHA4GE-Conference](https://pha4ge.org/conferences/pha4ge-conference-2025/) pre-conference workshop and at the conferences itself! The well-attended workshop featured a diverse group getting to grips with how to create accounts, search Pathoplexus, and upload data - and was led by Arthur Shem Kasambula, Stephen Kanyerezi, Patricia Nabisubi (Uganda) and Emma Hodcroft and Chaoran Chen (Switzerland). The talk focused on exploring how open data ecosystems can serve public health. Here are a few photos of the coordinators and workshop in action!
 ![A collage image, showing first a photo of the workshop coordinators Arthur, Stephen, Patricia, Emma, and Chaoran next to a PHA4GE-Workshop poster. Then showing Stephen helping a participant, and then Chaoran helping a participant](/gifs/news/2025-11-27-november-update/workshop-photo.jpg)
 
 - Cornelius Roemer presented Pathoplexus at the 2025 ENA facilities on November 7.
