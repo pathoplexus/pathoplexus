@@ -32,7 +32,19 @@ As well as directly uploaded sequences, we also ingest data from INSDC databases
 
 #### A note on RSV
 
-To help ensure we could capture all available RSV sequences, we recently updated our RSV ‘minimizer’ (used to classify sequences). Previously we were ingesting from taxon ID 11250, which is annotated as "human respiratory syncytial virus", but we noticed that some human sequences have instead been annotated with taxon ID 12814 ("respiratory syncytial virus"), which is currently listed in NCBI Taxonomy as a child of "Bovine orthopneumovirus" (taxon ID 11246). By updating the classifier we were able to ingest from the full set of sequences under Orthopneumovirus ([taxon ID 1868215](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?command=show&mode=node&id=1868215&lvl=3)), whilst filtering out bovine sequences based on sequence similarity. Using the updated classifier to ingest from the higher level identified an additional 2,325 RSV-A, 1,335 RSV-B, and 879 bovine RSV sequences - allowing us to add the RSV-A and RSV-B sequences to the dataset within Pathoplexus. 
+We have added 2,325 RSV-A and 1,335 RSV-B additional sequences from INSDC that are misclassified in NCBI taxonomy (under bovine orthopneumovirus) and were, hence, previously missed by our pipeline.
+
+<details>
+
+<summary>Click for more details on the RSV ingest update</summary>
+
+To help ensure we could capture all available RSV sequences, we recently updated our RSV ‘minimizer’ (used to classify sequences).
+Previously we were ingesting from taxon ID 11250, which is annotated as "human respiratory syncytial virus".
+We noticed that some human sequences have been annotated with taxon ID 12814 ("respiratory syncytial virus"), which is currently listed in NCBI Taxonomy as a child of "Bovine orthopneumovirus" (taxon ID 11246) and not under 11250.
+By updating the classifier we were able to ingest from the full set of sequences under Orthopneumovirus ([taxon ID 1868215](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?command=show&mode=node&id=1868215&lvl=3)), whilst filtering out bovine sequences based on sequence similarity.
+We have let NCBI know about this misclassification.
+
+</details>
 
 
 ## Community Highlights
