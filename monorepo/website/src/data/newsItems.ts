@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2025-11-17-november-update',
+        title: 'Pathoplexus November Update',
+        date: '17 November 2025',
+        excerpt:
+            "Since our last update in August, Pathoplexus has continued to grow - both in data and in community. Over the past two months, thousands of new sequences have been shared, several new features have gone live, and new members have joined our global community! In addition…",
+    },
+    {
         slug: '2025-08-27-happy-birthday-world',
         title: 'Pathoplexus Turns One – and Adds Measles Virus!',
         date: '27 August 2025',
