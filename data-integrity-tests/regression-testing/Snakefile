@@ -55,7 +55,7 @@ def url(w):
     )
     match filetype:
         case "metadata":
-            return base + "details" + rest + "&dataFormat=TSV"
+            return base + "details" + rest + "&dataFormat=TSV-ESCAPED"
         case "sequence":
             return base + "unalignedNucleotideSequences" + rest
         case _:
@@ -104,20 +104,26 @@ rule join_tsv:
         details="results/{organism}_{instance}.tsv",
     output:
         "results/{organism}_{instance}.joined.tsv",
+    params:
+        tmp_pre="results/{organism}_{instance}.joined.tmp.zst",
+        tmp_post="results/{organism}_{instance}.joined.tmp2.zst",
     shell:
         """
-        cp {input.details} {output}
+        zstd {input.details} -o {params.tmp_pre}
         for f in {input.seq}; do
             export segment=$(basename $f | cut -d_ -f2)
-            tsv-join -H \
+            zstdcat {params.tmp_pre} \
+            | tsv-join -H \
                 --write-all "''" \
                 --append-fields "sequence" \
                 --filter-file $f \
                 --key-fields accessionVersion \
                 --prefix $(echo $segment)_ \
-                {output} \
-            | sponge {output}
+            | zstd -o {params.tmp_post}
+            mv {params.tmp_post} {params.tmp_pre}
         done
+        zstdcat {params.tmp_pre} > {output}
+        rm {params.tmp_pre}
         """
 
 

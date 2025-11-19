@@ -127,7 +127,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 10
         orderOnDetailsPage: 200
         definition: "The date on which the sample was collected."
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
+        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -743,7 +743,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sampleReceivedDate
         ontology_id: GENEPIO:0001177
         definition: The date on which the sample was received by the laboratory.
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year. Before sharing this data, ensure this date is not considered identifiable information."
+        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year. Before sharing this data, ensure this date is not considered identifiable information."
         example: '2020-03-20'
         displayName: Sample received date
         type: date
@@ -1003,7 +1003,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingDate
         ontology_id: GENEPIO:0001447
         definition: The date the sample was sequenced.
-        guidance: "Please format YYYY-MM-DD - use XX if unknown, ex: `2020-03-XX` or `2020-XX-XX`, and provide at least year"
+        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
         example: "2021-04-26"
         displayName: Sequencing date
         type: date
@@ -1468,49 +1468,16 @@ defaultOrganismConfig: &defaultOrganismConfig
   preprocessing:
     - &preprocessing
       replicas: 1
-      version: 11
       image: ghcr.io/loculus-project/preprocessing-nextclade
       args:
         - "prepro"
       configFile: &preprocessingConfigFile
         log_level: DEBUG
-        nextclade_dataset_name: nextstrain/ebola/zaire
-        genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
         batch_size: 100
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
-    configFile:
-      taxon_id: 3052462
-  enaDeposition:
-    configFile:
-      taxon_id: 186538
-      scientific_name: "Zaire ebolavirus"
-      molecule_type: "genomic RNA"
-  referenceGenomes:
-    singleReference:
-      nucleotideSequences:
-        - name: "main"
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
-          insdcAccessionFull: NC_002549.1
-      genes:
-        - name: NP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
-        - name: VP35
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
-        - name: VP40
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
-        - name: GP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
-        - name: ssGP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
-        - name: sGP
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
-        - name: VP30
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
-        - name: VP24
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
-        - name: L
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
+    configFile: &defaultIngestConfigFile
+      time_between_approve_requests_seconds: 600
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
@@ -1550,6 +1517,11 @@ organisms:
           - outbreak
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3052462
     preprocessing:
       - <<: *preprocessing
         replicas: 2
@@ -1559,6 +1531,37 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
           nextclade_dataset_tag: 2025-09-24--07-29-03Z
+          genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+    enaDeposition:
+      configFile:
+        taxon_id: 186538
+        scientific_name: "Zaire ebolavirus"
+        molecule_type: "genomic RNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
+            insdcAccessionFull: NC_002549.1
+        genes:
+          - name: NP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
+          - name: VP35
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
+          - name: VP40
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
+          - name: GP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
+          - name: ssGP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
+          - name: sGP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
+          - name: VP30
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
+          - name: VP24
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
+          - name: L
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1579,9 +1582,11 @@ organisms:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
           nextclade_dataset_tag: 2025-09-24--07-29-03Z
+          genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052460
     enaDeposition:
       configFile:
@@ -1664,6 +1669,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3048448
         log_level: DEBUG
     enaDeposition:
@@ -1761,6 +1767,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052518
         segment_identification:
           method: "align"
@@ -2067,6 +2074,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 10244
     enaDeposition:
       configFile:
@@ -2499,6 +2507,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 1868215
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
@@ -2606,6 +2615,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 1868215
         minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
@@ -2699,6 +2709,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3048148
     enaDeposition:
       configFile:
@@ -2756,6 +2767,12 @@ organisms:
           order: 5
           orderOnDetailsPage: 760
           columnWidth: 80
+        - name: means2Id
+          displayName: "MeaNS2 ID"
+          header: "Sample details"
+          orderOnDetailsPage: 630
+          definition: "MeaNS2 ID"
+          guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
       website: 
         <<: *website
         tableColumns:
@@ -2782,6 +2799,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 11234
     enaDeposition:
       configFile:

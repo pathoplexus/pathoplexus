@@ -60,6 +60,7 @@ enaDeposition:
   enaDbName: Pathoplexus
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
+  enaSuppressedListTestUrl: "https://pathoplexus.github.io/ena-submission/suppressed/ppx-accessions-suppression-list.txt"
 seqSets:
   enabled: True
   crossRef: null
