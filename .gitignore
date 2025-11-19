@@ -4,11 +4,13 @@ monorepo/backend
 monorepo/temp
 monorepo/website/node_modules
 
-# AI agent instruction files - these are for AI agents and should not be committed
-# Always check .gitignore patterns when adding new agent instruction files
 monorepo/CLAUDE.md
 monorepo/*/CLAUDE.md
 monorepo/**/CLAUDE.md
 monorepo/GEMINI.md
 monorepo/*/GEMINI.md
 monorepo/**/GEMINI.md
+
+# Exception: Allow AGENTS.md symlinks in docs
+!monorepo/website/src/pages/docs/CLAUDE.md
+!monorepo/website/src/pages/docs/GEMINI.md
