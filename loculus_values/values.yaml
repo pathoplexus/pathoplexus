@@ -2890,7 +2890,7 @@ organisms:
       configFile:
         taxon_id: 3052505
         scientific_name: "Orthomarburgvirus marburgense"
-        molecule_type: "cRNA"
+        molecule_type: "viral cRNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
