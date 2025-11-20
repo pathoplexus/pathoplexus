@@ -2879,7 +2879,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
-          nextclade_dataset_tag: "2025-11-19--20-40-14Z"
+          nextclade_dataset_tag: "2025-09-09--12-13-13Z"
           genes: [GP, L, NP, VP24, VP30, VP35, VP40]
     ingest:
       image: ghcr.io/loculus-project/ingest
