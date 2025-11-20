@@ -2843,6 +2843,7 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/genspectrum/marburg/HK1980/all-lineages"
       metadataAdd:
         - name: clade
+          displayName: Clade
           header: "Clade & Lineage"
           noInput: true
           generateIndex: true
@@ -2851,13 +2852,14 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
         - name: lineage
+          displayName: Lineage
           header: "Clade & Lineage"
           noInput: true
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
           preprocessing:
-            inputs: {input: nextclade.nextclade.customNodeAttributes.lineage}
+            inputs: {input: nextclade.customNodeAttributes.lineage}
       website: 
         <<: *website
         tableColumns:
