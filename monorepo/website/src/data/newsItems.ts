@@ -11,7 +11,7 @@ export const newsItems: NewsItem[] = [
         title: 'Expanding Pathoplexus: Marburg virus added',
         date: '24 November 2025',
         excerpt:
-            "Today, Pathoplexus launches an additional viral pathogen: Marburg. Marburg is a hemorrhagic fever virus of the Filoviridae…",
+            "Today, Pathoplexus launches an additional viral pathogen: Marburg. Marburg is a hemorrhagic fever virus of the Filoviridae (the same family which includes ebola viruses). Viral strains fall into two main lineages Ravn and Marburg, Marburg in turn can be divided into two main…",
     },
     {
         slug: '2025-11-18-november-update',
