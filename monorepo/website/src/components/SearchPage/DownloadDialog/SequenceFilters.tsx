@@ -108,7 +108,7 @@ export class FieldFilterSet implements SequenceFilter {
             if (fieldType === 'int' || fieldType === 'float') {
                 const value = sequenceFilters[filterName];
                 if (Array.isArray(value)) {
-                    // Convert array values, keeping null but filtering out NaN
+                    // Convert array values, keeping null and preserving invalid values for LAPIS error handling
                     sequenceFilters[filterName] = value.map((v) => {
                         if (v === null) {
                             return null;
