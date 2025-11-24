@@ -1479,6 +1479,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        backend_requests_timeout_seconds: 300
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &defaultIngestConfigFile
@@ -1664,7 +1665,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 11
           - 13
         configFile:
           <<: *preprocessingConfigFile
