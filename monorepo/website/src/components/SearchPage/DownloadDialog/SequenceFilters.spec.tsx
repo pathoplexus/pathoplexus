@@ -136,5 +136,37 @@ describe('FieldFilterSet', () => {
             expect(apiParams.groupId).toEqual([498, 562]);
             expect(apiParams.country).toBe('USA');
         });
+
+        it('handles invalid numeric strings by keeping original value', () => {
+            const schema = new MetadataFilterSchema([{ name: 'groupId', type: 'int' }]);
+            const fieldValues = { groupId: 'not-a-number' };
+            const filter = new FieldFilterSet(
+                schema,
+                fieldValues,
+                {},
+                { nucleotideSegmentInfos: [], geneInfos: [], isMultiSegmented: false },
+            );
+
+            const apiParams = filter.toApiParams();
+
+            // Invalid values are kept as-is; LAPIS will return an error
+            expect(apiParams.groupId).toBe('not-a-number');
+        });
+
+        it('handles array with invalid numeric strings by keeping original values', () => {
+            const schema = new MetadataFilterSchema([{ name: 'groupId', type: 'int' }]);
+            const fieldValues = { groupId: ['498', 'invalid', '562'] };
+            const filter = new FieldFilterSet(
+                schema,
+                fieldValues,
+                {},
+                { nucleotideSegmentInfos: [], geneInfos: [], isMultiSegmented: false },
+            );
+
+            const apiParams = filter.toApiParams();
+
+            // Valid numbers are converted, invalid kept as-is
+            expect(apiParams.groupId).toEqual([498, 'invalid', 562]);
+        });
     });
 });
