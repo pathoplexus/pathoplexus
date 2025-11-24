@@ -2900,23 +2900,23 @@ organisms:
       singleReference:
         nucleotideSequences:
           - name: "main"
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/reference.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/reference.fasta]]"
             insdcAccessionFull: NC_001608.3
         genes:
           - name: GP
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/GP.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/GP.fasta]]"
           - name: L
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/L.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/L.fasta]]"
           - name: NP
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/NP.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/NP.fasta]]"
           - name: VP24
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/VP24.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/VP24.fasta]]"
           - name: VP30
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/VP30.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/VP30.fasta]]"
           - name: VP35
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/VP35.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/VP35.fasta]]"
           - name: VP40
-            sequence: "[[URL:https://raw.githubusercontent.com/corneliusroemer/seqs/main/artefacts/marburg/VP40.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/main/artefacts/marburg/VP40.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
