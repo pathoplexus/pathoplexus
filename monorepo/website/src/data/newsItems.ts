@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2025-11-24-expanding-pathoplexus-marburg',
+        title: 'Expanding Pathoplexus: Marburg virus added',
+        date: '24 November 2025',
+        excerpt:
+            "Today, Pathoplexus launches an additional viral pathogen: Marburg. Marburg is a hemorrhagic fever virus of the Filoviridae…",
+    },
+    {
         slug: '2025-11-18-november-update',
         title: 'Pathoplexus November Update',
         date: '18 November 2025',
