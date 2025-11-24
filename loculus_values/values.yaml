@@ -72,6 +72,8 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
+  marburg:
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-11-24/lineages.yml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -2849,6 +2851,7 @@ organisms:
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
+          lineageSystem: marburg
           preprocessing:
             inputs: {input: nextclade.clade}
         - name: lineage
