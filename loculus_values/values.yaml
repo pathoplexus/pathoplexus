@@ -63,15 +63,20 @@ sequenceFlagging:
 lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/lineages.yaml
   rsv-a:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
+    14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
     # Once we update nextclade dataset https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -1526,7 +1531,7 @@ organisms:
       - <<: *preprocessing
         replicas: 2
         version:
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
@@ -1577,7 +1582,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
@@ -1660,7 +1665,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 11
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/wnv/all-lineages
@@ -1758,7 +1763,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -1880,7 +1885,7 @@ organisms:
       - <<: *preprocessing
         replicas: 3
         version:
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: nextstrain/mpox/all-clades
@@ -2491,7 +2496,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 13
+          - 14
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
@@ -2601,7 +2606,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 13
+          - 14
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
@@ -2700,7 +2705,7 @@ organisms:
       - <<: *preprocessing
         replicas: 2
         version:
-          - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
@@ -2789,7 +2794,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 12
+          - 13
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
