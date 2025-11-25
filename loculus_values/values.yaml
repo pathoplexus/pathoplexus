@@ -2836,7 +2836,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Marburg Virus"
-      image: "/images/organisms/marburg.png"
+      image: "/images/organisms/marburg.jpg"
       linkOuts:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
