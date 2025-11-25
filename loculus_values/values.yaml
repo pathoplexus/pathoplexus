@@ -2846,7 +2846,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
-          header: "Clade & Lineage"
+          header: "Clade"
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -2854,15 +2854,9 @@ organisms:
           lineageSystem: marburg
           preprocessing:
             inputs: {input: nextclade.clade}
-        - name: lineage
-          displayName: Lineage
-          header: "Clade & Lineage"
-          noInput: true
-          generateIndex: true
-          autocomplete: true
-          initiallyVisible: true
-          preprocessing:
-            inputs: {input: nextclade.customNodeAttributes.lineage}
+          order: 5
+          orderOnDetailsPage: 760
+          columnWidth: 80
       website: 
         <<: *website
         tableColumns:
