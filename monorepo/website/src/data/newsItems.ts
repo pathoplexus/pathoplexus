@@ -7,11 +7,11 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
-        slug: '2025-11-24-expanding-pathoplexus-marburg',
+        slug: '2025-11-28-expanding-pathoplexus-marburg',
         title: 'Expanding Pathoplexus: Marburg virus added',
-        date: '24 November 2025',
+        date: '28 November 2025',
         excerpt:
-            "Today, Pathoplexus launches an additional viral pathogen: Marburg. Marburg is a hemorrhagic fever virus of the Filoviridae family (the same family which includes Ebola viruses). Marburg virus (MARV) is a member of the Marburgvirus genus, which also includes the close relative Ravn virus (RAVN)…",
+            "Today, Pathoplexus launches an additional viral pathogen: Marburgvirus, a member of the Filoviridae family, which includes Ebola viruses. Marbugvirus contains both Marburg virus (MARV), and its close relative Ravn virus (RAVN). MARV in turn can be divided into two main clades…",
     },
     {
         slug: '2025-11-18-november-update',
