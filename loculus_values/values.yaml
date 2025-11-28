@@ -72,6 +72,8 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/lineages.yaml
   cchfS:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-12/lineages.yaml
+  marburg:
+    12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-11-24/lineages.yml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     loadSequencesAutomatically: true
@@ -2829,6 +2831,86 @@ organisms:
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/P.fasta]]"
           - name: "V"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/V.fasta]]"
+  marburg:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Marburg Virus"
+      image: "/images/organisms/marburg.jpg"
+      linkOuts:
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # marburg is ~19kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/genspectrum/marburg/HK1980/all-lineages"
+      metadataAdd:
+        - name: clade
+          displayName: Clade
+          header: "Clade"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          lineageSystem: marburg
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 760
+          columnWidth: 80
+      website: 
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - clade
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 12
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
+          nextclade_dataset_tag: "2025-09-09--12-13-13Z"
+          genes: [GP, L, NP, VP24, VP30, VP35, VP40]
+    ingest:
+      image: ghcr.io/loculus-project/ingest
+      configFile:
+        taxon_id: 3052505
+        subsample_fraction: 1
+    enaDeposition:
+      configFile:
+        taxon_id: 3052505
+        scientific_name: "Orthomarburgvirus marburgense"
+        molecule_type: "viral cRNA"
+    referenceGenomes:
+      singleReference:
+        nucleotideSequences:
+          - name: "main"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/reference.fasta]]"
+            insdcAccessionFull: NC_001608.3
+        genes:
+          - name: GP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/GP.fasta]]"
+          - name: L
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/L.fasta]]"
+          - name: NP
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/NP.fasta]]"
+          - name: VP24
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP24.fasta]]"
+          - name: VP30
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP30.fasta]]"
+          - name: VP35
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP35.fasta]]"
+          - name: VP40
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP40.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:

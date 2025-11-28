@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2025-11-28-expanding-pathoplexus-marburg',
+        title: 'Expanding Pathoplexus: Marburg virus added',
+        date: '28 November 2025',
+        excerpt:
+            "Today, Pathoplexus launches an additional viral pathogen: Marburgvirus, a member of the Filoviridae family, which includes Ebola viruses. Marbugvirus contains both Marburg virus (MARV), and its close relative Ravn virus (RAVN). MARV in turn can be divided into two main clades…",
+    },
+    {
         slug: '2025-11-18-november-update',
         title: 'Pathoplexus November Update',
         date: '18 November 2025',
