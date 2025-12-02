@@ -1537,7 +1537,7 @@ organisms:
           nextclade_sequence_and_datasets: 
             - name: main
               nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
-              nextclade_dataset_tag: 2025-09-24--07-29-03Z
+              nextclade_dataset_tag: "2025-09-24--07-29-03Z"
               genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     enaDeposition:
       configFile:
@@ -1590,7 +1590,7 @@ organisms:
           nextclade_sequence_and_datasets: 
             - name: main
               nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
-              nextclade_dataset_tag: 2025-09-24--07-29-03Z
+              nextclade_dataset_tag: "2025-09-24--07-29-03Z"
               genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     ingest:
       <<: *ingest
@@ -1906,7 +1906,7 @@ organisms:
           nextclade_sequence_and_datasets: 
             - name: main
               nextclade_dataset_name: nextstrain/mpox/all-clades
-              nextclade_dataset_tag: 2025-09-09--12-13-13Z
+              nextclade_dataset_tag: "2025-09-09--12-13-13Z"
               genes: &mpoxGenes
                 - OPG001
                 - OPG002
@@ -2522,14 +2522,11 @@ organisms:
             - name: main
               genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
               nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-              nextclade_dataset_tag: 2024-11-27--02-51-00Z
+              nextclade_dataset_tag: "2024-11-27--02-51-00Z"
               accepted_sort_matches: 
                 - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-          accepted_sort_matches: 
-            - rsv-a
-          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       - <<: *preprocessing
         version:
           - 14
@@ -2540,7 +2537,7 @@ organisms:
             - name: main
               genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
               nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-              nextclade_dataset_tag: 2025-08-25--09-00-35Z
+              nextclade_dataset_tag: "2025-08-25--09-00-35Z"
               accepted_sort_matches: 
                 - rsv-a
           require_nextclade_sort_match: true
@@ -2649,7 +2646,7 @@ organisms:
           nextclade_sequence_and_datasets: 
             - name: main
               nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-              nextclade_dataset_tag: 2025-08-25--09-00-35Z
+              nextclade_dataset_tag: "2025-08-25--09-00-35Z"
               accepted_sort_matches:
                 - rsv-b
               genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
