@@ -65,7 +65,7 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2024-11-27--02-51-00Z/lineages.yaml
-    #14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
@@ -2494,7 +2494,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 13
-        replicas: 3
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
@@ -2504,19 +2504,19 @@ organisms:
           accepted_dataset_matches: 
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-      # - <<: *preprocessing
-      #   version:
-      #     - 14
-      #   replicas: 3
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-      #     nextclade_dataset_tag: 2025-08-25--09-00-35Z
-      #     require_nextclade_sort_match: true
-      #     minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      #     accepted_dataset_matches: 
-      #       - rsv-a
-      #     genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+      - <<: *preprocessing
+        version:
+          - 14
+        replicas: 3
+        configFile:
+          <<: *preprocessingConfigFile
+          nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+          nextclade_dataset_tag: 2025-08-25--09-00-35Z
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+          accepted_dataset_matches: 
+            - rsv-a
+          genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2550,8 +2550,7 @@ organisms:
           - name: "M2-1"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-1.fasta]]"
           - name: "M2-2"
-            #sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-2.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
           - name: "N"
             sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/N.fasta]]"
           - name: "NS1"
