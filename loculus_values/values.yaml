@@ -2527,7 +2527,7 @@ organisms:
                 - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-          accepted_dataset_matches: 
+          accepted_sort_matches: 
             - rsv-a
           genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
       - <<: *preprocessing
@@ -2541,7 +2541,7 @@ organisms:
               genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
               nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
               nextclade_dataset_tag: 2025-08-25--09-00-35Z
-              accepted_dataset_matches: 
+              accepted_sort_matches: 
                 - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
@@ -2650,7 +2650,8 @@ organisms:
             - name: main
               nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
               nextclade_dataset_tag: 2025-08-25--09-00-35Z
-              accepted_sort_matches: rsv-b
+              accepted_sort_matches:
+                - rsv-b
               genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
