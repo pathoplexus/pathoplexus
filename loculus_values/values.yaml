@@ -72,6 +72,7 @@ lineageSystemDefinitions:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
@@ -1775,6 +1776,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 12
+          - 13
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
