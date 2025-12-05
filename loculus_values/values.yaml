@@ -2493,7 +2493,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 14
-        replicas: 3
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
@@ -2601,7 +2601,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 13
-        replicas: 3
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
@@ -2697,7 +2697,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
-        replicas: 2
+        replicas: 1
         version:
           - 12
         configFile:
