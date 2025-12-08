@@ -62,7 +62,7 @@ jobs:
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
       - name: Check broken external links using muffet
-        uses: ruzickap/action-my-broken-link-checker@v2
+        uses: ruzickap/action-my-broken-link-checker@v3
         with:
           url: ${{ steps.set-url.outputs.url }}
           # see https://github.com/raviqqe/muffet for parameter details
@@ -84,7 +84,7 @@ jobs:
             echo "url=https://${{ matrix.subdomain }}.pathoplexus.org" >> $GITHUB_OUTPUT
           fi
       - name: Check broken internal links using muffet
-        uses: ruzickap/action-my-broken-link-checker@v2
+        uses: ruzickap/action-my-broken-link-checker@v3
         with:
           url: ${{ steps.set-url.outputs.url }}
           # see https://github.com/raviqqe/muffet for parameter details
