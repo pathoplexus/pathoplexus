@@ -2539,7 +2539,7 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 1868215
-        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+        minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
         metadata_filter:
@@ -2649,7 +2649,7 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 1868215
-        minimizer_index: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+        minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
         minimizer_parser: # Name of each '_' - separated entry in the minimizer index
           - subtype
         metadata_filter:
