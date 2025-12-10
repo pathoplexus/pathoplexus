@@ -32,7 +32,8 @@ The metadata file should include all the metadata fields that were originally in
 ### Creating a matching FASTA file
 
 Even if you are not revising the sequence, you must provide the a FASTA file that matches the metadata file you are uploading.
-It should only contain the sequences that are in the metadata file (if this is fewer than your original submission), and does not otherwise need to be edited. If you are submitting sequences to a multi-segmented organism remember to add a column called `fastaIds` to your metadata, with a space-separated list of all fasta IDs that should be linked to a specific metadata entry.
+It should only contain the sequences that are in the metadata file (if this is fewer than your original submission), and does not otherwise need to be edited. If you are submitting sequences to a multi-segmented organism and you submit more than one segment per entry, add a column `fastaIds` to your metadata, with a space-separated list of all fasta IDs that should be linked to a specific metadata entry.
+
 
 You can also edit the sequence at the same time as revising the metadata - simply prepare the FASTA file as explained in [Editing the sequence](#editing-the-sequence).
 

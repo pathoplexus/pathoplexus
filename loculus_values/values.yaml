@@ -1480,8 +1480,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         log_level: DEBUG
         batch_size: 100
         backend_request_timeout_seconds: 600
-        nextclade_sequence_and_datasets: 
-          - name: main
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
     configFile: &defaultIngestConfigFile
