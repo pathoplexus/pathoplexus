@@ -9,6 +9,7 @@ gitHubEditLink: https://github.com/pathoplexus/pathoplexus/edit/main/monorepo/we
 gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
+zstdCompressionLevel: 20
 s3:
   enabled: false
 developmentDatabasePersistence: false
