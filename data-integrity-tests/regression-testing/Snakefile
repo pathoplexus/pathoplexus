@@ -6,6 +6,11 @@ wildcard_constraints:
     difftype=r"seq|meta",
 
 
+# The primary key field used to join entries that should be compared.
+# In production and staging this is the accessionVersion, however to compare across previews it should be changed to submissionId.
+keyField = "accessionVersion"
+
+
 rule all:
     input:
         expand(
@@ -91,7 +96,7 @@ rule sequence_tsv:
         "results/{organism}_{segment}_{instance}.seq.tsv",
     shell:
         """
-        echo "accessionVersion\tsequence" > {output}
+        echo "{keyField}\tsequence" > {output}
         seqkit fx2tab {input} >> {output}
         """
 
@@ -117,7 +122,7 @@ rule join_tsv:
                 --write-all "''" \
                 --append-fields "sequence" \
                 --filter-file $f \
-                --key-fields accessionVersion \
+                --key-fields {keyField} \
                 --prefix $(echo $segment)_ \
             | zstd -o {params.tmp_post}
             mv {params.tmp_post} {params.tmp_pre}
@@ -154,7 +159,7 @@ rule invariant_subset:
         """
         tsv-select -H \
             {params.exclude_fields} \
-            -f "accessionVersion" \
+            -f "{keyField}" \
             --rest last \
             {input} \
         | keep-header - -- ./bin/tsv-sort -k1,1 \
@@ -173,7 +178,7 @@ rule invariant_subsets:
     shell:
         """
         tsv-select -H \
-            -f "accessionVersion,{params.segment_names}" \
+            -f "{keyField},{params.segment_names}" \
             {input} \
         > {output.sequences}
         tsv-select -H \
@@ -191,7 +196,7 @@ rule diff_meta:
         "results/{organism}.meta.{a}.{b}.diff",
     shell:
         """
-        csv-diff {input} --key=accessionVersion --format=tsv > {output} || echo "Differences found"
+        csv-diff {input} --key={keyField} --format=tsv > {output} || echo "Differences found"
         """
 
 
