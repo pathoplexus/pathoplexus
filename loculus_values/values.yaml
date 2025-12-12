@@ -63,7 +63,6 @@ sequenceFlagging:
 lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
-    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
@@ -1902,17 +1901,15 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &mpoxPreprocessing
-        <<: *preprocessing
-        replicas: 1
+      - <<: *preprocessing
+        replicas: 3
         version:
           - 12
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
           nextclade_sequence_and_datasets: 
-            - &mpoxDataset
-              name: main
+            - name: main
               nextclade_dataset_name: nextstrain/mpox/all-clades
               nextclade_dataset_tag: "2025-09-09--12-13-13Z"
               genes: &mpoxGenes
@@ -2091,16 +2088,17 @@ organisms:
                 - OPG208
                 - OPG209
                 - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 13
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          nextclade_sequence_and_datasets:
-            - <<: *mpoxDataset
-              nextclade_dataset_tag: "2025-12-10--14-52-38Z"
+      # - <<: *preprocessing
+      #   replicas: 3
+      #   version: 12
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+            # batch_size: 5
+            # nextclade_sequence_and_datasets: 
+            #   - name: main
+            #     nextclade_dataset_name: nextstrain/mpox/all-clades
+            #     nextclade_dataset_tag: 2025-09-09--12-13-13Z
+            #     genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
