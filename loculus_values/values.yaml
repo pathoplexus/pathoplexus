@@ -2100,7 +2100,7 @@ organisms:
           batch_size: 10
           nextclade_sequence_and_datasets:
             - <<: *mpoxDataset
-              nextclade_dataset_tag: "2025-12-10--14-52-38Z"
+              nextclade_dataset_tag: "2025-12-12--16-44-41Z"
     ingest:
       <<: *ingest
       configFile:
