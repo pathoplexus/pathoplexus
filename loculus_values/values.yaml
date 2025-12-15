@@ -60,12 +60,6 @@ sequenceFlagging:
     organization: pathoplexus
     repository: curation_reports
     issueTemplate: test-sequence-metadata-issue.md
-siloImport:
-  siloTimeoutSeconds: 3600
-  hardRefreshIntervalSeconds: 100_000 # ~27 hours
-  pollIntervalSeconds: 30
-pipelineVersionUpgradeCheckIntervalSeconds: 300
-zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
