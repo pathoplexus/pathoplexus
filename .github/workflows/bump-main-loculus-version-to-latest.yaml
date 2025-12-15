@@ -66,7 +66,7 @@ jobs:
       - name: Remove temporary loculus_repo
         run: rm -rf loculus_repo
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PATHOPLEXUS_PUSH_PAT }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
