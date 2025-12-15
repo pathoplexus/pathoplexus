@@ -1,4 +1,5 @@
 bannerMessage: "This is the main branch"
+submissionBannerMessageURL: "https://pathoplexus.github.io/announcement_banners/main/submissionbanner.txt"
 seqSets:
   enabled: True
   crossRef: null

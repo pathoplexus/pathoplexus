@@ -2,6 +2,7 @@ runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 accessionPrefix: "PP_"
 bannerMessage: "This is a staging instance. You should not use it for analysis as it may contain inaccurate test data."
+submissionBannerMessageURL: "https://pathoplexus.github.io/announcement_banners/submissionbanner.txt"
 secrets:
   basicauth:
     type: sealedsecret
