@@ -2,6 +2,9 @@ accessionPrefix: "PP_"
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 bannerMessage: ""
+bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/banner.txt"
+submissionBannerMessage: ""
+submissionBannerMessageURL: "https://pathoplexus.github.io/announcement_banners/submissionbanner.txt"
 robotsNoindexHeader: false
 subdomainSeparator: "."
 secrets:
@@ -167,4 +170,3 @@ defaultResources:
 sequenceFlagging:
   github:
     issueTemplate: sequence-metadata-issue.md
-bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/banner.txt"
