@@ -2,6 +2,8 @@ runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
 accessionPrefix: "PPD_"
 bannerMessage: "This is a demo instance. You can upload any data you like, including test data to try things out. You can find test data to upload in the <a href='https://pathoplexus.github.io/example_data/' class='font-semibold underline'>example data</a> repository. This instance should not be used for analysis."
+bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/demo/banner.txt"
+submissionBannerMessage: ""
 submissionBannerMessageURL: "https://pathoplexus.github.io/announcement_banners/demo/submissionbanner.txt"
 secrets:
   keycloak-admin:
