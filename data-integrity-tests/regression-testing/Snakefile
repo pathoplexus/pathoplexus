@@ -8,7 +8,8 @@ wildcard_constraints:
 
 # The primary key field used to join entries that should be compared.
 # In production and staging this is the accessionVersion, however to compare across previews it should be changed to submissionId.
-key_field = "accessionVersion"
+# This can be read from the config using `snakemake --config key_field=submissionId`.
+key_field = config.get("key_field", "accessionVersion")
 
 
 rule all:
