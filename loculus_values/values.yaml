@@ -68,7 +68,6 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
-    13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
     15: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
@@ -1910,7 +1909,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 13
+          - 15
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -1918,7 +1917,7 @@ organisms:
             - &mpoxDataset
               name: main
               nextclade_dataset_name: nextstrain/mpox/all-clades
-              nextclade_dataset_tag: 2025-12-12--16-44-41Z
+              nextclade_dataset_tag: 2025-12-16--20-07-31Z
               genes: &mpoxGenes
                 - OPG001
                 - OPG002
@@ -2095,16 +2094,16 @@ organisms:
                 - OPG208
                 - OPG209
                 - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 15
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          nextclade_sequence_and_datasets:
-            - <<: *mpoxDataset
-              nextclade_dataset_tag: 2025-12-16--20-07-31Z
+      # - <<: *mpoxPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 15
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     batch_size: 10
+      #     nextclade_sequence_and_datasets:
+      #       - <<: *mpoxDataset
+      #         nextclade_dataset_tag: 2025-12-16--20-07-31Z
     ingest:
       <<: *ingest
       configFile:
