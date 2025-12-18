@@ -69,16 +69,22 @@ zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
     15: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    16: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     14: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     13: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     12: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1538,6 +1544,7 @@ organisms:
         replicas: 1
         version:
           - 12
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           nextclade_sequence_and_datasets: 
@@ -1591,6 +1598,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 12
+          - 22
         configFile:
           <<: *preprocessingConfigFile
           nextclade_sequence_and_datasets: 
@@ -1675,6 +1683,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 12
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           nextclade_sequence_and_datasets: 
@@ -1778,6 +1787,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 13
+          - 20
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -1910,6 +1920,7 @@ organisms:
         replicas: 1
         version:
           - 15
+          - 16
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2525,6 +2536,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 14
+          - 17
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2635,6 +2647,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 13
+          - 18
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2736,6 +2749,7 @@ organisms:
         replicas: 1
         version:
           - 12
+          - 19
         configFile:
           <<: *preprocessingConfigFile
           nextclade_sequence_and_datasets: 
@@ -2827,6 +2841,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 12
+          - 24
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
@@ -2911,6 +2926,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 12
+          - 21
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
