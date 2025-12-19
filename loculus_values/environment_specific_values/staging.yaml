@@ -80,9 +80,10 @@ defaultResources:
 resources:
   ena-submission-list-cronjob:
     requests:
-      memory: "80Mi"
-      cpu: "200m"
+      memory: "8Gi"
+      cpu: "500m"
     limits:
-      memory: "10Gi"
+      memory: "12Gi"
+      cpu: "1000m"
 siloImport:
   pollIntervalSeconds: 60
