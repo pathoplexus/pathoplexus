@@ -77,13 +77,5 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
-resources:
-  ena-submission-list-cronjob:
-    requests:
-      memory: "8Gi"
-      cpu: "500m"
-    limits:
-      memory: "12Gi"
-      cpu: "1000m"
 siloImport:
   pollIntervalSeconds: 60
