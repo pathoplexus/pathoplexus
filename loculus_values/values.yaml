@@ -1546,10 +1546,11 @@ organisms:
               nextclade_dataset_tag: "2025-09-24--07-29-03Z"
               genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     enaDeposition:
-      configFile:
-        taxon_id: 186538
-        scientific_name: "Zaire ebolavirus"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 186538
+          scientific_name: "Zaire ebolavirus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -1604,10 +1605,11 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 3052460
     enaDeposition:
-      configFile:
-        taxon_id: 186540
-        scientific_name: "Sudan ebolavirus"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 186540
+          scientific_name: "Sudan ebolavirus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -1689,10 +1691,11 @@ organisms:
         taxon_id: 3048448
         log_level: DEBUG
     enaDeposition:
-      configFile:
-        taxon_id: 11082
-        scientific_name: "West Nile virus"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 11082
+          scientific_name: "West Nile virus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -1801,10 +1804,11 @@ organisms:
           method: "align"
           nextclade_dataset_name: community/pathoplexus/cchfv
     enaDeposition:
-      configFile:
-        taxon_id: 3052518
-        scientific_name: "Orthonairovirus haemorrhagiae"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 3052518
+          scientific_name: "Orthonairovirus haemorrhagiae"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2110,10 +2114,11 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 10244
     enaDeposition:
-      configFile:
-        taxon_id: 10244
-        scientific_name: "Monkeypox virus"
-        molecule_type: "genomic DNA"
+      singleReference:
+        configFile:
+          taxon_id: 10244
+          scientific_name: "Monkeypox virus"
+          molecule_type: "genomic DNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2548,10 +2553,11 @@ organisms:
         metadata_filter:
           subtype: rsv-a
     enaDeposition:
-      configFile:
-        taxon_id: 208893
-        scientific_name: "Human respiratory syncytial virus A"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 208893
+          scientific_name: "Human respiratory syncytial virus A"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2658,10 +2664,11 @@ organisms:
         metadata_filter:
           subtype: rsv-b
     enaDeposition:
-      configFile:
-        taxon_id: 208895
-        scientific_name: "Human respiratory syncytial virus B"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 208895
+          scientific_name: "Human respiratory syncytial virus B"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2749,10 +2756,11 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 3048148
     enaDeposition:
-      configFile:
-        taxon_id: 162145
-        scientific_name: "Human Metapneumovirus"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 162145
+          scientific_name: "Human Metapneumovirus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2841,10 +2849,11 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 11234
     enaDeposition:
-      configFile:
-        taxon_id: 11234
-        scientific_name: "Measles morbillivirus"
-        molecule_type: "genomic RNA"
+      singleReference:
+        configFile:
+          taxon_id: 11234
+          scientific_name: "Measles morbillivirus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
@@ -2925,10 +2934,11 @@ organisms:
         taxon_id: 3052505
         subsample_fraction: 1
     enaDeposition:
-      configFile:
-        taxon_id: 3052505
-        scientific_name: "Orthomarburgvirus marburgense"
-        molecule_type: "viral cRNA"
+      singleReference:
+        configFile:
+          taxon_id: 3052505
+          scientific_name: "Orthomarburgvirus marburgense"
+          molecule_type: "viral cRNA"
     referenceGenomes:
       singleReference:
         nucleotideSequences:
