@@ -186,7 +186,6 @@ defaultOrganismConfig: &defaultOrganismConfig
             sampleCollectionDate: sampleCollectionDate
           args:
             order: [geoLocCountry, accession_version, sampleCollectionDate]
-            orderOnDetailsPage: 180
             type: [string, string, string]
         noInput: true
       - name: ncbiReleaseDate
