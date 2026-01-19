@@ -15,7 +15,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v6
         with:
-          token: ${{ secrets.PATHOPLEXUS_PUSH_PAT }}
+          token: ${{ secrets.PATHOPLEXUS_PUSH_PAT_NEW }}
       - name: Clone Loculus repository and get latest SHA
         id: get_loculus_commit
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.PATHOPLEXUS_PUSH_PAT }}
+          token: ${{ secrets.PATHOPLEXUS_PUSH_PAT_NEW }}
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
           title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format(' (non-main: {0})', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}"
           # Warning: The PR self approval workflow depends on the exact format
