@@ -1539,11 +1539,13 @@ organisms:
           - 25
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
-              nextclade_dataset_tag: "2025-09-24--07-29-03Z"
-              genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+              references:
+                - reference_name: "singleReference"
+                  nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
+                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
+                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     enaDeposition:
       singleReference:
         configFile:
@@ -1593,11 +1595,13 @@ organisms:
           - 22
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
-              nextclade_dataset_tag: "2025-09-24--07-29-03Z"
-              genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+              references:
+                - reference_name: "singleReference"
+                  nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
+                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
+                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     ingest:
       <<: *ingest
       configFile:
@@ -1678,11 +1682,13 @@ organisms:
           - 23
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: nextstrain/wnv/all-lineages
-              nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
-              genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: nextstrain/wnv/all-lineages
+                genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
     ingest:
       <<: *ingest
       configFile:
@@ -1783,16 +1789,22 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: L
-              nextclade_dataset_name: community/pathoplexus/cchfv/L
-              genes: [RdRp]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/L
+                genes: [RdRp]
             - name: M
-              nextclade_dataset_name: community/pathoplexus/cchfv/M
-              genes: [GPC]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/M
+                genes: [GPC]
             - name: S
-              nextclade_dataset_name: community/pathoplexus/cchfv/S
-              genes: [NP]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/S
+                genes: [NP]
           segment_classification_method: "align"
     ingest:
       <<: *ingest
@@ -1916,187 +1928,189 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
-          nextclade_sequence_and_datasets: 
+          segments:
             - &mpoxDataset
               name: main
-              nextclade_dataset_name: nextstrain/mpox/all-clades
-              nextclade_dataset_tag: 2025-12-16--20-07-31Z
-              genes: &mpoxGenes
-                - OPG001
-                - OPG002
-                - OPG003
-                - OPG005
-                - OPG015
-                - OPG016
-                - OPG019
-                - OPG021
-                - OPG022
-                - OPG023
-                - OPG024
-                - OPG025
-                - OPG027
-                - OPG029
-                - OPG030
-                - OPG031
-                - OPG034
-                - OPG035
-                - OPG036
-                - OPG037
-                - OPG038
-                - OPG039
-                - OPG040
-                - OPG042
-                - OPG043
-                - OPG044
-                - OPG045
-                - OPG046
-                - OPG047
-                - OPG048
-                - OPG049
-                - OPG050
-                - OPG051
-                - OPG052
-                - OPG053
-                - OPG054
-                - OPG055
-                - OPG056
-                - OPG057
-                - OPG058
-                - OPG059
-                - OPG060
-                - OPG061
-                - OPG062
-                - OPG063
-                - OPG064
-                - OPG065
-                - OPG066
-                - OPG068
-                - OPG069
-                - OPG070
-                - OPG071
-                - OPG072
-                - OPG073
-                - OPG074
-                - OPG075
-                - OPG076
-                - OPG077
-                - OPG078
-                - OPG079
-                - OPG080
-                - OPG081
-                - OPG082
-                - OPG083
-                - OPG084
-                - OPG085
-                - OPG086
-                - OPG087
-                - OPG088
-                - OPG089
-                - OPG090
-                - OPG091
-                - OPG092
-                - OPG093
-                - OPG094
-                - OPG095
-                - OPG096
-                - OPG097
-                - OPG098
-                - OPG099
-                - OPG100
-                - OPG101
-                - OPG102
-                - OPG103
-                - OPG104
-                - OPG105
-                - OPG106
-                - OPG107
-                - OPG108
-                - OPG109
-                - OPG110
-                - OPG111
-                - OPG112
-                - OPG113
-                - OPG114
-                - OPG115
-                - OPG116
-                - OPG117
-                - OPG118
-                - OPG119
-                - OPG120
-                - OPG121
-                - OPG122
-                - OPG123
-                - OPG124
-                - OPG125
-                - OPG126
-                - OPG127
-                - OPG128
-                - OPG129
-                - OPG130
-                - OPG131
-                - OPG132
-                - OPG133
-                - OPG134
-                - OPG135
-                - OPG136
-                - OPG137
-                - OPG138
-                - OPG139
-                - OPG140
-                - OPG141
-                - OPG142
-                - OPG143
-                - OPG144
-                - OPG145
-                - OPG146
-                - OPG147
-                - OPG148
-                - OPG149
-                - OPG150
-                - OPG151
-                - OPG153
-                - OPG154
-                - OPG155
-                - OPG156
-                - OPG157
-                - OPG158
-                - OPG159
-                - OPG160
-                - OPG161
-                - OPG162
-                - OPG163
-                - OPG164
-                - OPG165
-                - OPG166
-                - OPG167
-                - OPG170
-                - OPG171
-                - OPG172
-                - OPG173
-                - OPG174
-                - OPG175
-                - OPG176
-                - OPG178
-                - OPG180
-                - OPG181
-                - OPG185
-                - OPG187
-                - OPG188
-                - OPG189
-                - OPG190
-                - OPG191
-                - OPG192
-                - OPG193
-                - OPG195
-                - OPG197
-                - OPG198
-                - OPG199
-                - OPG200
-                - OPG204
-                - OPG205
-                - OPG208
-                - OPG209
-                - OPG210
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: nextstrain/mpox/all-clades
+                nextclade_dataset_tag: 2025-12-16--20-07-31Z
+                genes: &mpoxGenes
+                  - OPG001
+                  - OPG002
+                  - OPG003
+                  - OPG005
+                  - OPG015
+                  - OPG016
+                  - OPG019
+                  - OPG021
+                  - OPG022
+                  - OPG023
+                  - OPG024
+                  - OPG025
+                  - OPG027
+                  - OPG029
+                  - OPG030
+                  - OPG031
+                  - OPG034
+                  - OPG035
+                  - OPG036
+                  - OPG037
+                  - OPG038
+                  - OPG039
+                  - OPG040
+                  - OPG042
+                  - OPG043
+                  - OPG044
+                  - OPG045
+                  - OPG046
+                  - OPG047
+                  - OPG048
+                  - OPG049
+                  - OPG050
+                  - OPG051
+                  - OPG052
+                  - OPG053
+                  - OPG054
+                  - OPG055
+                  - OPG056
+                  - OPG057
+                  - OPG058
+                  - OPG059
+                  - OPG060
+                  - OPG061
+                  - OPG062
+                  - OPG063
+                  - OPG064
+                  - OPG065
+                  - OPG066
+                  - OPG068
+                  - OPG069
+                  - OPG070
+                  - OPG071
+                  - OPG072
+                  - OPG073
+                  - OPG074
+                  - OPG075
+                  - OPG076
+                  - OPG077
+                  - OPG078
+                  - OPG079
+                  - OPG080
+                  - OPG081
+                  - OPG082
+                  - OPG083
+                  - OPG084
+                  - OPG085
+                  - OPG086
+                  - OPG087
+                  - OPG088
+                  - OPG089
+                  - OPG090
+                  - OPG091
+                  - OPG092
+                  - OPG093
+                  - OPG094
+                  - OPG095
+                  - OPG096
+                  - OPG097
+                  - OPG098
+                  - OPG099
+                  - OPG100
+                  - OPG101
+                  - OPG102
+                  - OPG103
+                  - OPG104
+                  - OPG105
+                  - OPG106
+                  - OPG107
+                  - OPG108
+                  - OPG109
+                  - OPG110
+                  - OPG111
+                  - OPG112
+                  - OPG113
+                  - OPG114
+                  - OPG115
+                  - OPG116
+                  - OPG117
+                  - OPG118
+                  - OPG119
+                  - OPG120
+                  - OPG121
+                  - OPG122
+                  - OPG123
+                  - OPG124
+                  - OPG125
+                  - OPG126
+                  - OPG127
+                  - OPG128
+                  - OPG129
+                  - OPG130
+                  - OPG131
+                  - OPG132
+                  - OPG133
+                  - OPG134
+                  - OPG135
+                  - OPG136
+                  - OPG137
+                  - OPG138
+                  - OPG139
+                  - OPG140
+                  - OPG141
+                  - OPG142
+                  - OPG143
+                  - OPG144
+                  - OPG145
+                  - OPG146
+                  - OPG147
+                  - OPG148
+                  - OPG149
+                  - OPG150
+                  - OPG151
+                  - OPG153
+                  - OPG154
+                  - OPG155
+                  - OPG156
+                  - OPG157
+                  - OPG158
+                  - OPG159
+                  - OPG160
+                  - OPG161
+                  - OPG162
+                  - OPG163
+                  - OPG164
+                  - OPG165
+                  - OPG166
+                  - OPG167
+                  - OPG170
+                  - OPG171
+                  - OPG172
+                  - OPG173
+                  - OPG174
+                  - OPG175
+                  - OPG176
+                  - OPG178
+                  - OPG180
+                  - OPG181
+                  - OPG185
+                  - OPG187
+                  - OPG188
+                  - OPG189
+                  - OPG190
+                  - OPG191
+                  - OPG192
+                  - OPG193
+                  - OPG195
+                  - OPG197
+                  - OPG198
+                  - OPG199
+                  - OPG200
+                  - OPG204
+                  - OPG205
+                  - OPG208
+                  - OPG209
+                  - OPG210
       # - <<: *mpoxPreprocessing
       #   replicas: 3
       #   version:
@@ -2104,9 +2118,8 @@ organisms:
       #   configFile:
       #     <<: *preprocessingConfigFile
       #     batch_size: 10
-      #     nextclade_sequence_and_datasets:
+      #     segments:
       #       - <<: *mpoxDataset
-      #         nextclade_dataset_tag: 2025-12-16--20-07-31Z
     ingest:
       <<: *ingest
       configFile:
@@ -2532,13 +2545,15 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-              nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-              nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-              accepted_sort_matches: 
-                - rsv-a
+              references:
+              - reference_name: singleReference
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_sort_matches: 
+                  - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
@@ -2643,13 +2658,15 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-              nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-              accepted_sort_matches:
-                - rsv-b
-              genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_sort_matches:
+                  - rsv-b
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
@@ -2744,11 +2761,13 @@ organisms:
           - 19
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-              nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-              genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+                nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+                genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2837,11 +2856,13 @@ organisms:
         replicas: 3
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
-              nextclade_dataset_tag: "2025-08-11--19-06-01Z"
-              genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
     ingest:
       <<: *ingest
       configFile:
@@ -2922,11 +2943,13 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_sequence_and_datasets: 
+          segments:
             - name: main
-              nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
-              nextclade_dataset_tag: "2025-09-09--12-13-13Z"
-              genes: [GP, L, NP, VP24, VP30, VP35, VP40]
+              references:
+              - reference_name: singleReference
+                nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
+                nextclade_dataset_tag: "2025-09-09--12-13-13Z"
+                genes: [GP, L, NP, VP24, VP30, VP35, VP40]
     ingest:
       image: ghcr.io/loculus-project/ingest
       configFile:
