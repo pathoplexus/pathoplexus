@@ -2867,7 +2867,7 @@ organisms:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
-        taxon_id: 11234
+        taxon_id: 3052345
     enaDeposition:
       singleReference:
         configFile:
