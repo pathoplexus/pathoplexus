@@ -1823,19 +1823,28 @@ organisms:
     referenceGenomes:
       - name: L
         references:
-        - nextclade_dataset_name: community/pathoplexus/cchfv/L
-          name: singleReference
-          genes: [RdRp]
+          - name: singleReference
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_L.fasta]]"
+            insdcAccessionFull: NC_005301.3
+            genes:
+              - name: RdRp
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/RdRp.fasta]]"
       - name: M
         references:
-        - nextclade_dataset_name: community/pathoplexus/cchfv/M
-          name: singleReference
-          genes: [GPC]
+          - name: singleReference
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_M.fasta]]"
+            insdcAccessionFull: NC_005300.2
+            genes:
+              - name: GPC
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/GPC.fasta]]"
       - name: S
         references:
-        - nextclade_dataset_name: community/pathoplexus/cchfv/S
-          name: singleReference
-          genes: [NP]
+          - name: singleReference
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_S.fasta]]"
+            insdcAccessionFull: NC_005302.1
+            genes:
+              - name: NP
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/NP.fasta]]"
   mpox:
     <<: *defaultOrganismConfig
     schema:
