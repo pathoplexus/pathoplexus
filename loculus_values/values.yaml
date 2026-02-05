@@ -3024,31 +3024,31 @@ organisms:
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
-      preprocessing:
-        - <<: *preprocessing
-          version:
-            - 25
-          configFile:
-            <<: *preprocessingConfigFile
-            segments:
-              - name: main
-                references:
-                - name: SingleReference
-                  nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
-                  genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-            nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
-      ingest:
-        <<: *ingest
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 23
         configFile:
-          <<: *defaultIngestConfigFile
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference 
+                nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
+          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 11089
+        log_level: DEBUG
+    enaDeposition:
+      singleReference:
+        configFile:
           taxon_id: 11089
-          log_level: DEBUG
-      enaDeposition:
-        singleReference:
-          configFile:
-            taxon_id: 11089
-            scientific_name: "Yellow Fever Virus"
-            molecule_type: "genomic RNA"
+          scientific_name: "Yellow Fever Virus"
+          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
