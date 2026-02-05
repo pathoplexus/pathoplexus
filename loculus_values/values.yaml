@@ -3039,6 +3039,98 @@ organisms:
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP35.fasta]]"
             - name: VP40
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP40.fasta]]"
+  yellow-fever:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Yellow Fever Virus"
+      image: "/images/organisms/yellow_fever.jpg"
+      linkOuts:
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+      metadataAdd:
+        - name: clade
+          displayName: Clade
+          header: "Clade"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - lineage
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+      preprocessing:
+        - <<: *preprocessing
+          version:
+            - 25
+          configFile:
+            <<: *preprocessingConfigFile
+            segments:
+              - name: main
+                references:
+                - name: SingleReference
+                  nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                  genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
+            nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+      ingest:
+        <<: *ingest
+        configFile:
+          <<: defaultIngestCommitFile
+          taxon_id: 11089
+          log_level: DEBUG
+      enaDeposition:
+        singleReference:
+          configFile:
+            taxon_id: 11089
+            scientific_name: "Yellow Fever Virus"
+            molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/reference.fasta]]"
+          insdcAccessionFull: NC_002031.1
+          genes:
+            - name: C
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/C.fasta]]"
+            - name: prM
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/prM.fasta]]"
+            - name: M
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/M.fasta]]"
+            - name: E
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/E.fasta]]"
+            - name: NS1
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS1.fasta]]"
+            - name: NS2a
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2a.fasta]]"
+            - name: NS2b
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2b.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS3.fasta]]"
+            - name: NS4a
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4a.fasta]]"
+            - name: 2K
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/2K.fasta]]"
+            - name: NS4b
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4b.fasta]]"
+            - name: RdRPol
+              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/RdRPol.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
