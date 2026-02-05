@@ -3080,7 +3080,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           segments:
