@@ -3040,7 +3040,7 @@ organisms:
       ingest:
         <<: *ingest
         configFile:
-          <<: defaultIngestCommitFile
+          <<: *defaultIngestCommitFile
           taxon_id: 11089
           log_level: DEBUG
       enaDeposition:
