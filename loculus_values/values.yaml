@@ -3049,6 +3049,8 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: clade
           displayName: Clade
