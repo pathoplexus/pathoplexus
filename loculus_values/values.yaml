@@ -1638,6 +1638,261 @@ organisms:
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP24.fasta]]"
             - name: L
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/L.fasta]]"
+  dengue:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Dengue"
+      image: #TODO
+      linkOuts:
+        - name: "Nextclade (DENV-1)"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+        - name: "Nextclade (DENV-2)"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+        - name: "Nextclade (DENV-3)"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+        - name: "Nextclade (DENV-4)"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+      metadataAdd:
+        # TODO make the thing
+        - &dengueMetadataAdd
+          name: serotype_denv_1
+          displayName: Serotype DENV-1
+          onlyForReference: DENV-1
+          header: "Serotype"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          preprocessing:
+            args:
+              reference: DENV-1
+            inputs: {input: nextclade.clade}
+        - <<: *dengueMetadataAdd
+          name: serotype_denv_2
+          displayName: Serotype DENV-2
+          onlyForReference: DENV-2
+          preprocessing:
+            args:
+              reference: DENV-2
+            inputs: {input: nextclade.clade}
+        - <<: *dengueMetadataAdd
+          name: serotype_denv_3
+          displayName: Serotype DENV-3
+          onlyForReference: DENV-3
+          preprocessing:
+            args:
+              reference: DENV-3
+            inputs: {input: nextclade.clade}
+        - <<: *dengueMetadataAdd
+          name: serotype_denv_4
+          displayName: Serotype DENV-4
+          onlyForReference: DENV-4
+          preprocessing:
+            args:
+              reference: DENV-4
+            inputs: {input: nextclade.clade}
+        # redeclaring hostNameCommon field, setting it to required
+        - name: hostNameCommon
+          displayName: Host name - common
+          generateIndex: true
+          autocomplete: true
+          header: "Host"
+          orderOnDetailsPage: 1580
+          ingest: ncbiHostCommonName
+          definition: "The common name of the host from which the sample was collected."
+          example: "Human"
+          required: true
+        - name: serotype
+          displayName: Serotype
+          header: "Serotype"
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          preprocessing:
+            inputs: { input: ASSIGNED_REFERENCE }
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - geoLocCountry
+          - authors
+          - authorAffiliations
+          - ncbiReleaseDate
+          - hostNameScientific
+          - serotype
+          - segment
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+        referenceIdentifierField: serotype
+    preprocessing:
+      - <<: *preprocessing
+        configFile:
+          <<: *preprocessingConfigFile
+          segment_classification_method: "minimizer"
+          create_embl_file: false
+          minimizer_url: "https://raw.githubusercontent.com/loculus-project/nextclade-sort-minimizers/dengue/data/dengue/minimizer.json"
+          segments:
+            - name: main
+              references:
+                - name: DENV-1
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
+                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-2
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
+                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-3
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
+                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-4
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
+                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output
+    ingest:
+      <<: *ingest
+      configFile:
+        taxon_id: 12637
+    enaDeposition:
+      DENV-1:
+        configFile:
+          taxon_id: 11053
+          scientific_name: "Dengue virus type 1"
+          molecule_type: "genomic RNA"
+        referenceIdentifierField: serotype
+      DENV-2:
+        configFile:
+          taxon_id: 11060
+          scientific_name: "Dengue virus type 2"
+          molecule_type: "genomic RNA"
+        referenceIdentifierField: serotype
+      DENV-3:
+        configFile:
+          taxon_id: 11069
+          scientific_name: "Dengue virus type 3"
+          molecule_type: "genomic RNA"
+        referenceIdentifierField: serotype
+      DENV-4:
+        configFile:
+          taxon_id: 11070
+          scientific_name: "Dengue virus type 4"
+          molecule_type: "genomic RNA"
+        referenceIdentifierField: serotype
+    referenceGenomes:
+      - name: main
+        references:
+          - name: DENV-1
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/reference.fasta]]"
+            insdcAccessionFull: NC_001477.1
+            genes:
+              - name: C
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/C.fasta]]"
+              - name: pr
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/pr.fasta]]"
+              - name: M
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/M.fasta]]"
+              - name: E
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/E.fasta]]"
+              - name: NS1
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS1.fasta]]"
+              - name: NS2A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2A.fasta]]"
+              - name: NS2B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2B.fasta]]"
+              - name: NS3
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS3.fasta]]"
+              - name: NS4A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4A.fasta]]"
+              - name: 2K
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/2K.fasta]]"
+              - name: NS4B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4B.fasta]]"
+              - name: NS5
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS5.fasta]]"
+          - name: DENV-2
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/reference.fasta]]"
+            insdcAccessionFull: NC_001474.2
+            genes:
+              - name: C
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/C.fasta]]"
+              - name: pr
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/pr.fasta]]"
+              - name: M
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/M.fasta]]"
+              - name: E
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/E.fasta]]"
+              - name: NS1
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS1.fasta]]"
+              - name: NS2A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2A.fasta]]"
+              - name: NS2B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2B.fasta]]"
+              - name: NS3
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS3.fasta]]"
+              - name: NS4A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4A.fasta]]"
+              - name: 2K
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/2K.fasta]]"
+              - name: NS4B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4B.fasta]]"
+              - name: NS5
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS5.fasta]]"
+          - name: DENV-3
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/reference.fasta]]"
+            insdcAccessionFull: NC_001475.2
+            genes:
+              - name: C
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/C.fasta]]"
+              - name: pr
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/pr.fasta]]"
+              - name: M
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/M.fasta]]"
+              - name: E
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/E.fasta]]"
+              - name: NS1
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS1.fasta]]"
+              - name: NS2A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2A.fasta]]"
+              - name: NS2B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2B.fasta]]"
+              - name: NS3
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS3.fasta]]"
+              - name: NS4A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4A.fasta]]"
+              - name: 2K
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/2K.fasta]]"
+              - name: NS4B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4B.fasta]]"
+              - name: NS5
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS5.fasta]]"
+          - name: DENV-4
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/reference.fasta]]"
+            insdcAccessionFull: NC_002640.1
+            genes:
+              - name: C
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/C.fasta]]"
+              - name: pr
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/pr.fasta]]"
+              - name: M
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/M.fasta]]"
+              - name: E
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/E.fasta]]"
+              - name: NS1
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS1.fasta]]"
+              - name: NS2A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2A.fasta]]"
+              - name: NS2B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2B.fasta]]"
+              - name: NS3
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS3.fasta]]"
+              - name: NS4A
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4A.fasta]]"
+              - name: 2K
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/2K.fasta]]"
+              - name: NS4B
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4B.fasta]]"
+              - name: NS5
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS5.fasta]]"
   west-nile:
     <<: *defaultOrganismConfig
     schema:
