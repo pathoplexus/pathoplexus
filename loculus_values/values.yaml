@@ -1643,7 +1643,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Dengue"
-      image: #TODO
+      image: "/images/organisms/wnv_small.jpg"
       linkOuts:
         - name: "Nextclade (DENV-1)"
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
@@ -1654,7 +1654,6 @@ organisms:
         - name: "Nextclade (DENV-4)"
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
       metadataAdd:
-        # TODO make the thing
         - &dengueMetadataAdd
           name: serotype_denv_1
           displayName: Serotype DENV-1
@@ -1728,6 +1727,8 @@ organisms:
         referenceIdentifierField: serotype
     preprocessing:
       - <<: *preprocessing
+        version:
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
