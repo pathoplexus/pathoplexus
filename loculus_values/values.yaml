@@ -1739,16 +1739,16 @@ organisms:
               references:
                 - name: DENV-1
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv1
-                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
                 - name: DENV-2
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv2
-                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
                 - name: DENV-3
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv3
-                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
                 - name: DENV-4
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
-                  genes: [C, pr, M, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
           nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output
     ingest:
       <<: *ingest
@@ -1788,10 +1788,8 @@ organisms:
             genes:
               - name: C
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/C.fasta]]"
-              - name: pr
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/pr.fasta]]"
-              - name: M
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/M.fasta]]"
+              - name: prM
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/E.fasta]]"
               - name: NS1
@@ -1816,10 +1814,8 @@ organisms:
             genes:
               - name: C
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/C.fasta]]"
-              - name: pr
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/pr.fasta]]"
-              - name: M
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/M.fasta]]"
+              - name: prM
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/E.fasta]]"
               - name: NS1
@@ -1844,10 +1840,8 @@ organisms:
             genes:
               - name: C
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/C.fasta]]"
-              - name: pr
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/pr.fasta]]"
-              - name: M
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/M.fasta]]"
+              - name: prM
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/E.fasta]]"
               - name: NS1
@@ -1872,10 +1866,8 @@ organisms:
             genes:
               - name: C
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/C.fasta]]"
-              - name: pr
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/pr.fasta]]"
-              - name: M
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/M.fasta]]"
+              - name: prM
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/E.fasta]]"
               - name: NS1
