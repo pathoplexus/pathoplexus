@@ -1643,7 +1643,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Dengue"
-      image: "/images/organisms/wnv_small.jpg"
+      image: "/images/organisms/dengue_small.jpg"
       linkOuts:
         - name: "Nextclade (DENV-1)"
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
