@@ -1646,13 +1646,19 @@ organisms:
       image: "/images/organisms/dengue_small.jpg"
       linkOuts:
         - name: "Nextclade (DENV-1)"
+          maxNumberOfRecommendedEntries: 2500 # dengue is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-2)"
+          maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-3)"
+          maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-4)"
+          maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - &dengueMetadataAdd
           name: serotype_denv_1
