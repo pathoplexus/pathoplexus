@@ -1079,7 +1079,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2160
       - name: sequencedByContactEmail
         ontology_id: GENEPIO:0100422
-        definition: The email address of the contact responsible for follow-up regarding the sequence.
+        definition: The email address of the contact responsible for follow-up regarding the sequence. (This will be displayed publicly.)
         guidance: As personnel turnover may render an individual's email obsolete, it is more preferable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
         example: enterics@lab.ca
         displayName: Sequenced by - contact email
