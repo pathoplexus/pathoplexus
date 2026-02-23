@@ -79,6 +79,8 @@ lineageSystemDefinitions:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+  dengue:
+    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
