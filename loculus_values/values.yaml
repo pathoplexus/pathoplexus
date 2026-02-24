@@ -79,8 +79,14 @@ lineageSystemDefinitions:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
-  dengue:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/2025-09-09--12-13-13Z/lineages.yaml
+  dengue1:
+    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv1/2025-09-09--12-13-13Z/lineages.yaml
+  dengue2:
+    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv2/2025-09-09--12-13-13Z/lineages.yaml
+  dengue3:
+    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv3/2025-09-09--12-13-13Z/lineages.yaml
+  dengue4:
+    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv4/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1672,6 +1678,7 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           includeInDownloadsByDefault: true
+          lineageSystem: "dengue1"
           preprocessing:
             args:
               reference: DENV-1
@@ -1680,6 +1687,7 @@ organisms:
           name: serotype_denv_2
           displayName: Serotype DENV-2
           onlyForReference: DENV-2
+          lineageSystem: "dengue2"
           preprocessing:
             args:
               reference: DENV-2
@@ -1688,6 +1696,7 @@ organisms:
           name: serotype_denv_3
           displayName: Serotype DENV-3
           onlyForReference: DENV-3
+          lineageSystem: "dengue3"
           preprocessing:
             args:
               reference: DENV-3
@@ -1696,6 +1705,7 @@ organisms:
           name: serotype_denv_4
           displayName: Serotype DENV-4
           onlyForReference: DENV-4
+          lineageSystem: "dengue4"
           preprocessing:
             args:
               reference: DENV-4
