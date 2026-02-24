@@ -7,6 +7,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 import click
+from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -17,6 +18,8 @@ logging.basicConfig(
 )
 
 KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"  # https://authentication-staging.pathoplexus.org
+STAGING_BASICAUTH_USERNAME = "fake"  # add real username here if you want to test against staging, otherwise it will be ignored when running against prod
+STAGING_BASICAUTH_PASSWORD = "fake"  # add real password here if you want to test against staging, otherwise it will be ignored when running against prod
 BACKEND_URL = (
     "https://backend.pathoplexus.org"  # https://backend-staging.pathoplexus.org
 )
@@ -37,9 +40,24 @@ def get_jwt(username: str, password: str) -> str:
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-    response = requests.post(
-        KEYCLOAK_TOKEN_URL, data=data, headers=headers, timeout=600
-    )
+    if (
+        KEYCLOAK_TOKEN_URL
+        == "https://authentication-staging.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+    ):
+        response = requests.post(
+            KEYCLOAK_TOKEN_URL,
+            data=data,
+            headers=headers,
+            timeout=600,
+            auth=HTTPBasicAuth(STAGING_BASICAUTH_USERNAME, STAGING_BASICAUTH_PASSWORD),
+        )
+    else:
+        response = requests.post(
+            KEYCLOAK_TOKEN_URL,
+            data=data,
+            headers=headers,
+            timeout=600,
+        )
     response.raise_for_status()
 
     jwt_keycloak = response.json()
