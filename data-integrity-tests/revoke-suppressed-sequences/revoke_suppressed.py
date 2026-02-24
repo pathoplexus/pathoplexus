@@ -40,24 +40,18 @@ def get_jwt(username: str, password: str) -> str:
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-    if (
-        KEYCLOAK_TOKEN_URL
-        == "https://authentication-staging.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
-    ):
-        response = requests.post(
-            KEYCLOAK_TOKEN_URL,
-            data=data,
-            headers=headers,
-            timeout=600,
-            auth=HTTPBasicAuth(STAGING_BASICAUTH_USERNAME, STAGING_BASICAUTH_PASSWORD),
-        )
-    else:
-        response = requests.post(
-            KEYCLOAK_TOKEN_URL,
-            data=data,
-            headers=headers,
-            timeout=600,
-        )
+    response = requests.post(
+        KEYCLOAK_TOKEN_URL,
+        data=data,
+        headers=headers,
+        timeout=600,
+        auth=(
+            HTTPBasicAuth(STAGING_BASICAUTH_USERNAME, STAGING_BASICAUTH_PASSWORD)
+            if KEYCLOAK_TOKEN_URL
+            == "https://authentication-staging.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+            else None
+        ),
+    )
     response.raise_for_status()
 
     jwt_keycloak = response.json()
