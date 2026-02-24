@@ -7,7 +7,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 import click
-import requests
+from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -17,7 +17,13 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 
-KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"  # https://authentication-staging.pathoplexus.org
+STAGING_BASICAUTH_USERNAME = "fake"  # add real username here if you want to test against staging, otherwise it will be ignored when running against prod
+STAGING_BASICAUTH_PASSWORD = "fake"  # add real password here if you want to test against staging, otherwise it will be ignored when running against prod
+BACKEND_URL = (
+    "https://backend.pathoplexus.org"  # https://backend-staging.pathoplexus.org
+)
+LAPIS_URL = "https://lapis.pathoplexus.org"  # https://lapis-staging.pathoplexus.org
 KEYCLOAK_CLIENT_ID = "backend-client"
 
 
@@ -35,7 +41,16 @@ def get_jwt(username: str, password: str) -> str:
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
     response = requests.post(
-        KEYCLOAK_TOKEN_URL, data=data, headers=headers, timeout=600
+        KEYCLOAK_TOKEN_URL,
+        data=data,
+        headers=headers,
+        timeout=600,
+        auth=(
+            HTTPBasicAuth(STAGING_BASICAUTH_USERNAME, STAGING_BASICAUTH_PASSWORD)
+            if KEYCLOAK_TOKEN_URL
+            == "https://authentication-staging.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+            else None
+        ),
     )
     response.raise_for_status()
 
@@ -82,7 +97,7 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
     Get the loculus accession for the given INSDC accessions and revoke them.
     """
     response = make_request(
-        f"https://lapis.pathoplexus.org/{organism}/sample/details",
+        f"{LAPIS_URL}/{organism}/sample/details",
         username,
         password,
         json_body={
@@ -95,7 +110,7 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
     entries = response.json()["data"]
     logger.info(entries)
 
-    url = f"https://backend.pathoplexus.org/{organism}/revoke"
+    url = f"{BACKEND_URL}/{organism}/revoke"
     for entry in entries:
         accession = entry["accession"]
         logger.debug(f"revoking: {accession}")
@@ -113,7 +128,7 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     """
     payload = {"scope": "ALL", "submitterNamesFilter": [username]}
 
-    url = f"https://backend.pathoplexus.org/{organism}/approve-processed-data"
+    url = f"{BACKEND_URL}/{organism}/approve-processed-data"
 
     response = make_request(url, username, password, json_body=payload)
 
@@ -122,11 +137,7 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
 
 def is_sequence_suppressed(nucleotide_id):
     base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
-    params = {
-        "db": "nucleotide",
-        "id": nucleotide_id,
-        "retmode": "xml"
-    }
+    params = {"db": "nucleotide", "id": nucleotide_id, "retmode": "xml"}
 
     try:
         response = requests.get(base_url, params=params)
@@ -147,7 +158,6 @@ def is_sequence_suppressed(nucleotide_id):
     except ET.ParseError as e:
         print(f"Failed to parse XML: {e}")
         return None
-
 
 
 def parse_comma_separated(ctx, param, value):
@@ -176,14 +186,15 @@ def parse_comma_separated(ctx, param, value):
 def main(insdc_accession, organism, username, password):
     to_revoke = []
     logger.info(f"Parsed list: {insdc_accession}")
-        # Example usage
     for sequence_id in insdc_accession:
         print(f"Checking sequence ID: {sequence_id}")
         if is_sequence_suppressed(sequence_id):
             logger.info(f"The sequence {sequence_id} is suppressed.")
             to_revoke.append(sequence_id)
         else:
-            logger.warning(f"The sequence {sequence_id} is not suppressed or could not be determined.")
+            logger.warning(
+                f"The sequence {sequence_id} is not suppressed or could not be determined."
+            )
 
     revoke(organism, username, password, accessions_list=to_revoke)
     approve(organism, username, password)
