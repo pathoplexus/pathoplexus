@@ -16,9 +16,11 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 
-KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
-BACKEND_URL = "https://backend.pathoplexus.org"
-LAPIS_URL = "https://lapis.pathoplexus.org"
+KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"  # https://authentication-staging.pathoplexus.org
+BACKEND_URL = (
+    "https://backend.pathoplexus.org"  # https://backend-staging.pathoplexus.org
+)
+LAPIS_URL = "https://lapis.pathoplexus.org"  # https://lapis-staging.pathoplexus.org
 KEYCLOAK_CLIENT_ID = "backend-client"
 
 
@@ -123,11 +125,7 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
 
 def is_sequence_suppressed(nucleotide_id):
     base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
-    params = {
-        "db": "nucleotide",
-        "id": nucleotide_id,
-        "retmode": "xml"
-    }
+    params = {"db": "nucleotide", "id": nucleotide_id, "retmode": "xml"}
 
     try:
         response = requests.get(base_url, params=params)
@@ -148,7 +146,6 @@ def is_sequence_suppressed(nucleotide_id):
     except ET.ParseError as e:
         print(f"Failed to parse XML: {e}")
         return None
-
 
 
 def parse_comma_separated(ctx, param, value):
@@ -177,14 +174,16 @@ def parse_comma_separated(ctx, param, value):
 def main(insdc_accession, organism, username, password):
     to_revoke = []
     logger.info(f"Parsed list: {insdc_accession}")
-        # Example usage
+    # Example usage
     for sequence_id in insdc_accession:
         print(f"Checking sequence ID: {sequence_id}")
         if is_sequence_suppressed(sequence_id):
             logger.info(f"The sequence {sequence_id} is suppressed.")
             to_revoke.append(sequence_id)
         else:
-            logger.warning(f"The sequence {sequence_id} is not suppressed or could not be determined.")
+            logger.warning(
+                f"The sequence {sequence_id} is not suppressed or could not be determined."
+            )
 
     revoke(organism, username, password, accessions_list=to_revoke)
     approve(organism, username, password)
