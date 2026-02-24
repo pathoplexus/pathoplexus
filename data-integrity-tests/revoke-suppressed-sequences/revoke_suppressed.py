@@ -7,7 +7,6 @@ import requests
 import xml.etree.ElementTree as ET
 
 import click
-import requests
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -18,6 +17,8 @@ logging.basicConfig(
 )
 
 KEYCLOAK_TOKEN_URL = "https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
+BACKEND_URL = "https://backend.pathoplexus.org"
+LAPIS_URL = "https://lapis.pathoplexus.org"
 KEYCLOAK_CLIENT_ID = "backend-client"
 
 
@@ -82,7 +83,7 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
     Get the loculus accession for the given INSDC accessions and revoke them.
     """
     response = make_request(
-        f"https://lapis.pathoplexus.org/{organism}/sample/details",
+        f"{LAPIS_URL}/{organism}/sample/details",
         username,
         password,
         json_body={
@@ -95,7 +96,7 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
     entries = response.json()["data"]
     logger.info(entries)
 
-    url = f"https://backend.pathoplexus.org/{organism}/revoke"
+    url = f"{BACKEND_URL}/{organism}/revoke"
     for entry in entries:
         accession = entry["accession"]
         logger.debug(f"revoking: {accession}")
@@ -113,7 +114,7 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     """
     payload = {"scope": "ALL", "submitterNamesFilter": [username]}
 
-    url = f"https://backend.pathoplexus.org/{organism}/approve-processed-data"
+    url = f"{BACKEND_URL}/{organism}/approve-processed-data"
 
     response = make_request(url, username, password, json_body=payload)
 
