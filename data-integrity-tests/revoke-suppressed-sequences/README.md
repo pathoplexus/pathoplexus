@@ -19,3 +19,5 @@ micromamba activate pp-integrity
 ```bash
 python3 revoke_suppressed.py --insdc-accession <Comma-separated list of accessions from alert> --organism <organism from alert> --username CURATOR_USERNAME --password CURATOR_PASSWORD
 ```
+
+Note: If you would like to first test this on staging, replace the PPX production URLs with staging URLs in the script.
