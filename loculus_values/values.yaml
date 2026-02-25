@@ -1680,7 +1680,7 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           includeInDownloadsByDefault: true
-          # lineageSystem: dengue
+          lineageSystem: dengue
           preprocessing:
             args:
               reference: DENV-1
