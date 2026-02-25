@@ -81,14 +81,14 @@ lineageSystemDefinitions:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
-  dengue1:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv1/2025-09-09--12-13-13Z/lineages.yaml
-  dengue2:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv2/2025-09-09--12-13-13Z/lineages.yaml
-  dengue3:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv3/2025-09-09--12-13-13Z/lineages.yaml
-  dengue4:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv4/2025-09-09--12-13-13Z/lineages.yaml
+  # dengue1:
+  #   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv1/2025-09-09--12-13-13Z/lineages.yaml
+  # dengue2:
+  #   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv2/2025-09-09--12-13-13Z/lineages.yaml
+  # dengue3:
+  #   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv3/2025-09-09--12-13-13Z/lineages.yaml
+  # dengue4:
+  #   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv4/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1680,7 +1680,7 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           includeInDownloadsByDefault: true
-          lineageSystem: dengue
+          # lineageSystem: dengue
           preprocessing:
             args:
               reference: DENV-1
