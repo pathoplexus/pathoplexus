@@ -1902,7 +1902,7 @@ organisms:
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4A.fasta]]"
               - name: 2K
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/2K.fasta]]"
-              - name: NS8B
+              - name: NS4B
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4B.fasta]]"
               - name: NS5
                 sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS5.fasta]]"
