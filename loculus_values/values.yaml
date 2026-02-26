@@ -1672,13 +1672,14 @@ organisms:
           name: serotype_denv_1
           displayName: Serotype DENV-1
           onlyForReference: DENV-1
+          lineageSystem: dengue1
           header: "Serotype"
+          isSequenceFilter: true
           noInput: true
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
           includeInDownloadsByDefault: true
-          lineageSystem: dengue1
           preprocessing:
             args:
               reference: DENV-1
