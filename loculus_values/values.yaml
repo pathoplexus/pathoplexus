@@ -81,14 +81,6 @@ lineageSystemDefinitions:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
-  dengue1:
-   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv1/2025-09-09--12-13-13Z/lineages.yaml
-  dengue2:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv2/2025-09-09--12-13-13Z/lineages.yaml
-  dengue3:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv3/2025-09-09--12-13-13Z/lineages.yaml
-  dengue4:
-    27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/denv4/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1670,49 +1662,6 @@ organisms:
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
-        # - &dengueMetadataAdd
-        #   name: serotype_denv_1
-        #   displayName: Serotype DENV-1
-        #   onlyForReference: DENV-1
-        #   lineageSystem: dengue1
-        #   header: "Serotype"
-        #   isSequenceFilter: true
-        #   noInput: true
-        #   generateIndex: true
-        #   autocomplete: true
-        #   initiallyVisible: true
-        #   includeInDownloadsByDefault: true
-        #   preprocessing:
-        #     args:
-        #       reference: DENV-1
-        #     inputs: {input: nextclade.clade}
-        # - <<: *dengueMetadataAdd
-        #   name: serotype_denv_2
-        #   displayName: Serotype DENV-2
-        #   onlyForReference: DENV-2
-        #   lineageSystem: dengue2
-        #   preprocessing:
-        #     args:
-        #       reference: DENV-2
-        #     inputs: {input: nextclade.clade}
-        # - <<: *dengueMetadataAdd
-        #   name: serotype_denv_3
-        #   displayName: Serotype DENV-3
-        #   onlyForReference: DENV-3
-        #   lineageSystem: dengue3
-        #   preprocessing:
-        #     args:
-        #       reference: DENV-3
-        #     inputs: {input: nextclade.clade}
-        # - <<: *dengueMetadataAdd
-        #   name: serotype_denv_4
-        #   displayName: Serotype DENV-4
-        #   onlyForReference: DENV-4
-        #   lineageSystem: dengue4
-        #   preprocessing:
-        #     args:
-        #       reference: DENV-4
-        #     inputs: {input: nextclade.clade}
         - name: lineage
           displayName: Lineage
           header: "Lineage"
@@ -1725,15 +1674,17 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
         # redeclaring hostNameCommon field, setting it to required
-        - name: hostNameCommon
-          displayName: Host name - common
+        - name: hostNameScientific
+          displayName: Host name - scientific
           generateIndex: true
           autocomplete: true
           header: "Host"
-          orderOnDetailsPage: 1580
-          ingest: ncbiHostCommonName
-          definition: "The common name of the host from which the sample was collected."
-          example: "Human"
+          ingest: ncbiHostName
+          includeInDownloadsByDefault: true
+          order: 70
+          orderOnDetailsPage: 1560
+          definition: "The scientific name of the host from which the sample was collected."
+          example: "Homo sapiens"
           required: true
         - name: serotype
           displayName: Serotype
@@ -1747,13 +1698,13 @@ organisms:
         <<: *website
         tableColumns:
           - sampleCollectionDate
+          - earliestReleaseDate
+          - ncbiReleaseDate
           - geoLocCountry
           - authors
           - authorAffiliations
-          - ncbiReleaseDate
           - hostNameScientific
-          - serotype
-          - segment
+          - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
         referenceIdentifierField: serotype
