@@ -1716,6 +1716,7 @@ organisms:
         - name: lineage
           displayName: Lineage
           header: "Lineage"
+          lineageSystem: dengue
           isSequenceFilter: true
           generateIndex: true
           autocomplete: true
