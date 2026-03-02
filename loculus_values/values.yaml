@@ -2601,7 +2601,6 @@ organisms:
       - <<: *preprocessing
         version:
           - 17
-          - 18
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
