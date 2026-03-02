@@ -69,12 +69,16 @@ zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
     16: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
@@ -185,8 +189,8 @@ defaultOrganismConfig: &defaultOrganismConfig
             geoLocCountry: geoLocCountry
             sampleCollectionDate: sampleCollectionDate
           args:
-            order: [geoLocCountry, accession_version, sampleCollectionDate]
-            type: [string, string, string]
+            order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
+            type: [string, ACCESSION_VERSION, string]
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
@@ -224,6 +228,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: geoLocCountry
         displayName: Country
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -547,6 +555,10 @@ defaultOrganismConfig: &defaultOrganismConfig
             input: geoLocCountry
       - name: geoLocAdmin1
         displayName: Admin level 1
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -561,6 +573,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: geoLocAdmin2
         displayName: Admin level 2
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -1216,6 +1232,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: length
         type: int
         header: "Alignment and QC metrics"
+        isSequenceFilter: true
         noInput: true
         rangeSearch: true
         initiallyVisible: true
@@ -1225,8 +1242,16 @@ defaultOrganismConfig: &defaultOrganismConfig
         columnWidth: 84
         order: 80
         orderOnDetailsPage: 2700
+        customDisplay:
+          type: lengthCompleteness
+          displayGroup: lengthCompleteness
+          label: Length
       - name: hostNameScientific
         displayName: Host name - scientific
+        customDisplay:
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
         generateIndex: true
         autocomplete: true
         header: "Host"
@@ -1246,13 +1271,18 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiHostCommonName
         definition: "The common name of the host from which the sample was collected."
         example: "Human"
+        customDisplay:
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
       - name: hostTaxonId
         displayName: Host taxon ID
         type: int
         autocomplete: true
         customDisplay:
-          type: link
-          url: "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=info&id=__value__"
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
         header: "Host"
         orderOnDetailsPage: 1540
         ingest: ncbiHostTaxId
@@ -1340,6 +1370,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
       - name: totalSnps
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
         noInput: true
@@ -1350,6 +1381,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2740
         noInput: true
@@ -1360,6 +1392,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2760
         noInput: true
@@ -1370,6 +1403,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2780
         includeInDownloadsByDefault: true
@@ -1381,6 +1415,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2800
         includeInDownloadsByDefault: true
@@ -1392,6 +1427,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
         type: int
+        isSequenceFilter: true
         rangeSearch: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2820
@@ -1402,6 +1438,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
         header: "Alignment and QC metrics"
+        isSequenceFilter: true
         orderOnDetailsPage: 2840
         noInput: true
         perSegment: true
@@ -1410,6 +1447,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.frameShifts}
       - name: completeness
         type: float
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
         includeInDownloadsByDefault: true
@@ -1418,7 +1456,9 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Completeness
         rangeSearch: true
         customDisplay:
-          type: percentage
+          type: lengthCompleteness
+          displayGroup: lengthCompleteness
+          label: Length
         preprocessing:
           inputs: {input: nextclade.coverage}
       - name: comment
@@ -1429,6 +1469,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: totalStopCodons
         displayName: '# of stop codons'
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2830
         noInput: true
@@ -1437,6 +1478,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
         noInput: true
@@ -1498,6 +1540,7 @@ organisms:
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
+          isSequenceFilter: true
           header: "Outbreak"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1537,6 +1580,7 @@ organisms:
         replicas: 1
         version:
           - 25
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1593,6 +1637,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 22
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1653,6 +1698,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           header: "Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1680,6 +1726,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1756,6 +1803,8 @@ organisms:
         - name: lineage_S
           displayName: "Segment S Lineage"
           header: "Lineage"
+          isSequenceFilter: true
+          relatesToSegment: S
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -1763,8 +1812,6 @@ organisms:
           includeInDownloadsByDefault: true
           lineageSystem: cchfS
           preprocessing:
-            args: 
-              segment: S
             inputs: {input: nextclade.clade}
       website:
         <<: *website
@@ -1861,6 +1908,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1874,6 +1922,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1886,6 +1935,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -2118,15 +2168,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 15
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 17
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -2510,6 +2560,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2524,6 +2575,7 @@ organisms:
           lineageSystem: rsv-a
         - name: subtype
           displayName: Subtype
+          isSequenceFilter: true
           noInput: true
           header: "INSDC"
           orderOnDetailsPage: 780
@@ -2550,6 +2602,23 @@ organisms:
         version:
           - 17
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches: 
+                  - rsv-a
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 18
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2623,6 +2692,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2637,6 +2707,7 @@ organisms:
           lineageSystem: rsv-b
         - name: subtype
           displayName: Subtype
+          isSequenceFilter: true
           noInput: true
           header: "INSDC"
           orderOnDetailsPage: 780
@@ -2663,6 +2734,23 @@ organisms:
         version:
           - 18
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches:
+                  - rsv-b
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 19
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2736,6 +2824,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2766,6 +2855,7 @@ organisms:
         replicas: 1
         version:
           - 19
+          - 20
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2826,6 +2916,7 @@ organisms:
       metadataAdd:
         - name: genotype
           displayName: Genotype
+          isSequenceFilter: true
           header: "Genotype"
           includeInDownloadsByDefault: true
           noInput: true
@@ -2919,6 +3010,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          isSequenceFilter: true
           header: "Clade"
           noInput: true
           generateIndex: true
