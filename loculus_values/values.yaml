@@ -224,6 +224,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: geoLocCountry
         displayName: Country
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -547,6 +551,10 @@ defaultOrganismConfig: &defaultOrganismConfig
             input: geoLocCountry
       - name: geoLocAdmin1
         displayName: Admin level 1
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         initiallyVisible: true
@@ -561,6 +569,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: geoLocAdmin2
         displayName: Admin level 2
+        customDisplay:
+          type: geoLocation
+          displayGroup: geoLocation
+          label: Sampling location
         generateIndex: true
         autocomplete: true
         includeInDownloadsByDefault: true
@@ -1225,8 +1237,16 @@ defaultOrganismConfig: &defaultOrganismConfig
         columnWidth: 84
         order: 80
         orderOnDetailsPage: 2700
+        customDisplay:
+          type: lengthCompleteness
+          displayGroup: lengthCompleteness
+          label: Length
       - name: hostNameScientific
         displayName: Host name - scientific
+        customDisplay:
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
         generateIndex: true
         autocomplete: true
         header: "Host"
@@ -1246,13 +1266,18 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiHostCommonName
         definition: "The common name of the host from which the sample was collected."
         example: "Human"
+        customDisplay:
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
       - name: hostTaxonId
         displayName: Host taxon ID
         type: int
         autocomplete: true
         customDisplay:
-          type: link
-          url: "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=info&id=__value__"
+          type: hostSpecies
+          displayGroup: hostSpecies
+          label: Host
         header: "Host"
         orderOnDetailsPage: 1540
         ingest: ncbiHostTaxId
@@ -1418,7 +1443,9 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Completeness
         rangeSearch: true
         customDisplay:
-          type: percentage
+          type: lengthCompleteness
+          displayGroup: lengthCompleteness
+          label: Length
         preprocessing:
           inputs: {input: nextclade.coverage}
       - name: comment
