@@ -1228,6 +1228,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: length
         type: int
         header: "Alignment and QC metrics"
+        isSequenceFilter: true
         noInput: true
         rangeSearch: true
         initiallyVisible: true
@@ -1365,6 +1366,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
       - name: totalSnps
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
         noInput: true
@@ -1375,6 +1377,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2740
         noInput: true
@@ -1385,6 +1388,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2760
         noInput: true
@@ -1395,6 +1399,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2780
         includeInDownloadsByDefault: true
@@ -1406,6 +1411,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2800
         includeInDownloadsByDefault: true
@@ -1417,6 +1423,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
         type: int
+        isSequenceFilter: true
         rangeSearch: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2820
@@ -1427,6 +1434,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
         header: "Alignment and QC metrics"
+        isSequenceFilter: true
         orderOnDetailsPage: 2840
         noInput: true
         perSegment: true
@@ -1435,6 +1443,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.frameShifts}
       - name: completeness
         type: float
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
         includeInDownloadsByDefault: true
@@ -1456,6 +1465,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: totalStopCodons
         displayName: '# of stop codons'
         type: int
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2830
         noInput: true
@@ -1464,6 +1474,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
+        isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
         noInput: true
@@ -1525,6 +1536,7 @@ organisms:
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
+          isSequenceFilter: true
           header: "Outbreak"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1680,6 +1692,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           header: "Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1783,6 +1796,8 @@ organisms:
         - name: lineage_S
           displayName: "Segment S Lineage"
           header: "Lineage"
+          isSequenceFilter: true
+          relatesToSegment: S
           noInput: true
           generateIndex: true
           autocomplete: true
@@ -1790,8 +1805,6 @@ organisms:
           includeInDownloadsByDefault: true
           lineageSystem: cchfS
           preprocessing:
-            args: 
-              segment: S
             inputs: {input: nextclade.clade}
       website:
         <<: *website
@@ -1888,6 +1901,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1901,6 +1915,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -1913,6 +1928,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
           noInput: true
@@ -2537,6 +2553,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2551,6 +2568,7 @@ organisms:
           lineageSystem: rsv-a
         - name: subtype
           displayName: Subtype
+          isSequenceFilter: true
           noInput: true
           header: "INSDC"
           orderOnDetailsPage: 780
@@ -2650,6 +2668,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2664,6 +2683,7 @@ organisms:
           lineageSystem: rsv-b
         - name: subtype
           displayName: Subtype
+          isSequenceFilter: true
           noInput: true
           header: "INSDC"
           orderOnDetailsPage: 780
@@ -2763,6 +2783,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          isSequenceFilter: true
           noInput: true
           header: "Lineage"
           generateIndex: true
@@ -2853,6 +2874,7 @@ organisms:
       metadataAdd:
         - name: genotype
           displayName: Genotype
+          isSequenceFilter: true
           header: "Genotype"
           includeInDownloadsByDefault: true
           noInput: true
@@ -2946,6 +2968,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          isSequenceFilter: true
           header: "Clade"
           noInput: true
           generateIndex: true
