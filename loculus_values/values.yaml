@@ -884,9 +884,9 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0001392
         definition: Age of host (in years) at the time of sampling.
         guidance: In case of privacy concerns use hostAgeBin.
-        example: "79"
+        example: "79 or 0.6 (for an approximately 7 month old infant)"
         displayName: Host age
-        type: int
+        type: float
         header: Host
         orderOnDetailsPage: 1620
         rangeSearch: true
