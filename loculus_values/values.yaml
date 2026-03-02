@@ -1814,7 +1814,7 @@ organisms:
         segment_identification:
           method: "align"
           nextclade_dataset_name: community/pathoplexus/cchfv
-        grouping_override: "https://pathoplexus.github.io/curation_data/grouping_override/cchf/curated_group_13-02-2026.json"
+        grouping_override: "https://pathoplexus.github.io/curation_data/grouping_override/cchf/curated_group_02-03-2026.json"
     enaDeposition:
       singleReference:
         configFile:
