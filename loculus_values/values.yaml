@@ -68,16 +68,12 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
-    16: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
     17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
     18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
     19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
@@ -1579,7 +1575,6 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 25
           - 26
         configFile:
           <<: *preprocessingConfigFile
@@ -1636,7 +1631,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 22
           - 23
         configFile:
           <<: *preprocessingConfigFile
@@ -1725,7 +1719,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
           - 24
         configFile:
           <<: *preprocessingConfigFile
@@ -1981,7 +1974,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 16
+          - 17
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2168,15 +2161,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 17
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          segments:
-            - <<: *mpoxDataset
+      # - <<: *mpoxPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 17
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     batch_size: 10
+      #     segments:
+      #       - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -2600,25 +2593,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 17
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches: 
-                  - rsv-a
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
-        version:
           - 18
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2732,25 +2708,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 18
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches:
-                  - rsv-b
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
-        version:
           - 19
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2854,7 +2813,6 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 19
           - 20
         configFile:
           <<: *preprocessingConfigFile
