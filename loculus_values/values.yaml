@@ -610,7 +610,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiIsolateName
         includeInDownloadsByDefault: true
         enableSubstringSearch: true
-        definition: "Any other non-identifiable sample ID attached to the sequence."
+        definition: "A non-identifiable ID for the sample the sequence was obtained from. Depending on it's format, this ID may be parsed and used in the display name of this sequence on the website (only if configured for this organism)."
         example: "Isolate 1"
         desired: true
       - name: authors
