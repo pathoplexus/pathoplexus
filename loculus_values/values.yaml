@@ -1686,7 +1686,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/wnv/all-lineages&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/wnv/all-lineages"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -1727,8 +1727,8 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
+                nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-          nextclade_dataset_server: https://raw.githubusercontent.com/nextstrain/nextclade_data/wnv/data_output
     ingest:
       <<: *ingest
       configFile:
