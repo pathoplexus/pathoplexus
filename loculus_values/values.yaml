@@ -1731,13 +1731,13 @@ organisms:
           preprocessing:
             function: build_display_name
             inputs:
-              nextclade.clade: nextclade.clade
+              serotype: ASSIGNED_REFERENCE
               geoLocCountry: geoLocCountry
               sampleCollectionDate: sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
-              order: [nextclade.clade, geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              order: [serotype, geoLocCountry, IDENTIFIER, sampleCollectionDate]
               type: [string, string, IDENTIFIER, string]
               # regex pattern constraints:
               # - Cannot start with a slash
