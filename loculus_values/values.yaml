@@ -1686,6 +1686,27 @@ organisms:
           definition: "The scientific name of the host from which the sample was collected."
           example: "Homo sapiens"
           required: true
+        # custom displayName construction for Dengue
+        - name: displayName
+          preprocessing:
+            function: build_display_name
+            inputs:
+              hostNameScientific: hostNameScientific
+              geoLocCountry: geoLocCountry
+              sampleCollectionDate: sampleCollectionDate
+              specimenCollectorSampleId: specimenCollectorSampleId
+              submissionId: submissionId
+            args:
+              order: [hostNameScientific, geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              type: [string, string, IDENTIFIER, string]
+              # regex pattern constraints:
+              # - Cannot start with a slash
+              # - Four fields, separated by exactly three slashes
+              # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
+              # - Identifier is the second to last field (extracted through named capture group)
+              regex_pattern: |
+                ^[^\/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$
+          noInput: true
         - name: serotype
           displayName: Serotype
           header: "Serotype"
