@@ -1688,16 +1688,17 @@ organisms:
           required: true
         # custom displayName construction for Dengue
         - name: displayName
+          noInput: true
           preprocessing:
             function: build_display_name
             inputs:
-              hostNameScientific: hostNameScientific
+              nextclade.clade: nextclade.clade
               geoLocCountry: geoLocCountry
               sampleCollectionDate: sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
-              order: [hostNameScientific, geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              order: [nextclade.clade, geoLocCountry, IDENTIFIER, sampleCollectionDate]
               type: [string, string, IDENTIFIER, string]
               # regex pattern constraints:
               # - Cannot start with a slash
@@ -1706,7 +1707,6 @@ organisms:
               # - Identifier is the second to last field (extracted through named capture group)
               regex_pattern: |
                 ^[^\/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$
-          noInput: true
         - name: serotype
           displayName: Serotype
           header: "Serotype"
