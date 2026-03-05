@@ -1712,7 +1712,7 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
-        # redeclaring hostNameCommon field, setting it to required
+        # redeclaring hostNameCommon field, setting it to be required and show up by default in search UI
         - name: hostNameScientific
           displayName: Host name - scientific
           generateIndex: true
@@ -1725,6 +1725,7 @@ organisms:
           definition: "The scientific name of the host from which the sample was collected."
           example: "Homo sapiens"
           required: true
+          initiallyVisible: true
         # custom displayName construction for Dengue
         - name: displayName
           noInput: true
@@ -3319,6 +3320,20 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
+        # redeclaring hostNameCommon field, setting it to be required and show up by default in search UI
+        - name: hostNameScientific
+          displayName: Host name - scientific
+          generateIndex: true
+          autocomplete: true
+          header: "Host"
+          ingest: ncbiHostName
+          includeInDownloadsByDefault: true
+          order: 70
+          orderOnDetailsPage: 1560
+          definition: "The scientific name of the host from which the sample was collected."
+          example: "Homo sapiens"
+          required: true
+          initiallyVisible: true
       website:
         <<: *website
         tableColumns:
@@ -3329,6 +3344,7 @@ organisms:
           - geoLocCountry
           - geoLocAdmin1
           - length
+          - hostNameScientific
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
