@@ -1712,7 +1712,7 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
-        # redeclaring hostNameCommon field, setting it to be required and show up by default in search UI
+        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
         - name: hostNameScientific
           displayName: Host name - scientific
           generateIndex: true
@@ -3320,7 +3320,7 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
-        # redeclaring hostNameCommon field, setting it to be required and show up by default in search UI
+        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
         - name: hostNameScientific
           displayName: Host name - scientific
           generateIndex: true
