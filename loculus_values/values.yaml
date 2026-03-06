@@ -622,7 +622,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ingest: ncbiIsolateName
         includeInDownloadsByDefault: true
         enableSubstringSearch: true
-        definition: "A non-identifiable ID for the sample the sequence was obtained from. Depending on it's format, this ID may be parsed and used in the display name of this sequence on the website (only if configured for this organism)."
+        definition: "A non-identifiable ID for the sample the sequence was obtained from."
         example: "Isolate 1"
         desired: true
       - name: authors
@@ -1700,6 +1700,15 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      # adding custom description of submissinoId to show on website
+      extraInputFields:
+        - name: id
+          displayName: Sample ID
+          definition: "Unique identifier for your sample. Depending on it's format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+          example: "SAMPLE-001"
+          required: true
+          noEdit: true
+          position: first
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -1726,6 +1735,16 @@ organisms:
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
+        - name: specimenCollectorSampleId
+          displayName: Isolate name
+          header: Sample details
+          orderOnDetailsPage: 600
+          ingest: ncbiIsolateName
+          includeInDownloadsByDefault: true
+          enableSubstringSearch: true
+          definition: "A non-identifiable ID for the sample the sequence was obtained from. Depending on it's format, this ID may be parsed and incorporated in the display name of this sequence on the website."
+          example: "Isolate 1"
+          desired: true
         # custom displayName construction for Dengue
         - name: displayName
           noInput: true
@@ -3307,6 +3326,15 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      # adding custom description of submissinoId to show on website
+      extraInputFields:
+        - name: id
+          displayName: Sample ID
+          definition: "Unique identifier for your sample. If it does not contain any slashes and `specimenCollectorSampleId` is not set, this ID will be incorporated in the display name of this sequence on the website."
+          example: "SAMPLE-001"
+          required: true
+          noEdit: true
+          position: first
       metadataAdd:
         - name: clade
           displayName: Clade
@@ -3334,6 +3362,29 @@ organisms:
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
+        - name: specimenCollectorSampleId
+          displayName: Isolate name
+          header: Sample details
+          orderOnDetailsPage: 600
+          ingest: ncbiIsolateName
+          includeInDownloadsByDefault: true
+          enableSubstringSearch: true
+          definition: "A non-identifiable ID for the sample the sequence was obtained from. If it does not contain any slashes, this ID will be incorporated in the display name of this sequence on the website."
+          example: "Isolate 1"
+          desired: true
+        # custom displayName construction for YFV
+        - name: displayName
+          noInput: true
+          preprocessing:
+            function: build_display_name
+            inputs:
+              geoLocCountry: geoLocCountry
+              sampleCollectionDate: sampleCollectionDate
+              specimenCollectorSampleId: specimenCollectorSampleId
+              submissionId: submissionId
+            args:
+              order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              type: [string, IDENTIFIER, string]
       website:
         <<: *website
         tableColumns:
