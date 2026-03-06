@@ -7,6 +7,14 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-03-09-expanding-pathoplexus-arbos',
+        title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
+        date: '9 March 2026',
+        excerpt:
+           "Pathoplexus announces support for Yellow Fever Virus (YFV) and Dengue virus sequence sharing. YFV and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus flavi, respectively) are both arboviruses transmitted by..."
+
+    },
+    {
         slug: '2025-11-28-expanding-pathoplexus-marburg',
         title: 'Expanding Pathoplexus: Marburg virus added',
         date: '28 November 2025',
