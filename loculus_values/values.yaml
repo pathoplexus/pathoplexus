@@ -1731,7 +1731,7 @@ organisms:
           includeInDownloadsByDefault: true
           order: 70
           orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected."
+          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016]')."
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
@@ -3358,7 +3358,7 @@ organisms:
           includeInDownloadsByDefault: true
           order: 70
           orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected."
+          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016]')."
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
