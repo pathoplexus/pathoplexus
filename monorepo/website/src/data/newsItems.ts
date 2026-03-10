@@ -11,7 +11,7 @@ export const newsItems: NewsItem[] = [
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '10 March 2026',
         excerpt:
-           "Today Pathoplexus is launching support for yellow fever virus and dDengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
+           "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
 
     },
     {
