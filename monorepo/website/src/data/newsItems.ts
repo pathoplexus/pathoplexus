@@ -7,9 +7,9 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
-        slug: '2026-03-10-expanding-pathoplexus-arbos',
+        slug: '2026-03-11-expanding-pathoplexus-arbos',
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
-        date: '10 March 2026',
+        date: '11 March 2026',
         excerpt:
            "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
 
