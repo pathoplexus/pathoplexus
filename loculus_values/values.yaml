@@ -1712,7 +1712,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
-          header: "Lineage"
+          header: "Lineage & Serotype"
           lineageSystem: dengue
           isSequenceFilter: true
           generateIndex: true
@@ -1767,7 +1767,7 @@ organisms:
               regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
         - name: serotype
           displayName: Serotype
-          header: "Serotype"
+          header: "Lineage & Serotype"
           noInput: true
           generateIndex: true
           autocomplete: true
