@@ -1790,6 +1790,7 @@ organisms:
         referenceIdentifierField: serotype
     preprocessing:
       - <<: *preprocessing
+        replicas: 3
         version:
           - 27
         configFile:
