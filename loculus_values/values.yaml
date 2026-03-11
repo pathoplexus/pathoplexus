@@ -80,7 +80,7 @@ lineageSystemDefinitions:
   marburg:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   27: https://raw.githubusercontent.com/maverbiest/silo-lineage-hierarchy-definitions/add-dengue-definition/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+   27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1700,7 +1700,7 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      # adding custom description of submissinoId to show on website
+      # adding custom description of submissionId to show on website
       extraInputFields:
         - name: id
           displayName: Sample ID
@@ -1731,7 +1731,7 @@ organisms:
           includeInDownloadsByDefault: true
           order: 70
           orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016]')."
+          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
@@ -1795,7 +1795,7 @@ organisms:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
           create_embl_file: false
-          minimizer_url: "https://raw.githubusercontent.com/loculus-project/nextclade-sort-minimizers/dengue/data/dengue/minimizer.json"
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
             - name: main
               references:
@@ -3325,11 +3325,11 @@ organisms:
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      # adding custom description of submissinoId to show on website
+      # adding custom description of submissionId to show on website
       extraInputFields:
         - name: id
           displayName: Sample ID
-          definition: "Unique identifier for your sample. If it does not contain any slashes and `specimenCollectorSampleId` is not set, this ID will be incorporated in the display name of this sequence on the website."
+          definition: "Unique identifier for your sample. Depending on it's format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
           example: "SAMPLE-001"
           required: true
           noEdit: true
@@ -3357,7 +3357,7 @@ organisms:
           includeInDownloadsByDefault: true
           order: 70
           orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016]')."
+          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016], see [OBI:0600016])."
           example: "Homo sapiens"
           required: true
           initiallyVisible: true
@@ -3368,7 +3368,7 @@ organisms:
           ingest: ncbiIsolateName
           includeInDownloadsByDefault: true
           enableSubstringSearch: true
-          definition: "A non-identifiable ID for the sample the sequence was obtained from. If it does not contain any slashes, this ID will be incorporated in the display name of this sequence on the website."
+          definition: "A non-identifiable ID for the sample the sequence was obtained from. Depending on it's format, this ID may be parsed and incorporated in the display name of this sequence on the website."
           example: "Isolate 1"
           desired: true
         # custom displayName construction for YFV
@@ -3382,8 +3382,15 @@ organisms:
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
-              order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [string, IDENTIFIER, string]
+              order: [ARG:prefix, geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              type: [ARG:prefix, string, IDENTIFIER, string]
+              prefix: 'YFV'
+              # regex pattern constraints:
+              # - Cannot start with a slash
+              # - Four fields, separated by exactly three slashes
+              # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
+              # - Identifier is the second to last field (extracted through named capture group)
+              regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
       website:
         <<: *website
         tableColumns:
