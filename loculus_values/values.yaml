@@ -1684,7 +1684,7 @@ organisms:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Dengue"
+      organismName: "Dengue Virus"
       image: "/images/organisms/dengue_small.jpg"
       linkOuts:
         - name: "Nextclade (DENV-1)"
