@@ -1716,6 +1716,7 @@ organisms:
           header: "Lineage & Serotype"
           lineageSystem: dengue
           isSequenceFilter: true
+          noInput: true
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
@@ -1791,6 +1792,7 @@ organisms:
         referenceIdentifierField: serotype
     preprocessing:
       - <<: *preprocessing
+        replicas: 4
         version:
           - 27
         configFile:
