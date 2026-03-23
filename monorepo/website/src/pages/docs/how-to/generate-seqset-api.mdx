@@ -3,13 +3,15 @@ layout: ../../../layouts/DocLayout.astro
 title: "Generating & using SeqSets"
 order: 51
 ---
+import InfoBox from '../../../components/asides/InfoBox.astro';
+
 ### Contents
 - [Creating seqsets](#Creating-seqsets)
 - [Updating seqsets](#Updating-seqsets)
 - [Create seqset doi](#Create-seqset-doi)
 
-In order to use the Pathoplexus API for creating seqsets, please ensure that you have read the Data use terms
-and agree to them. For details on how to use and interact with the APIs please checkout the swagger UI
+In order to use the Pathoplexus API for creating seqsets, please ensure that you have read the [Data Use Terms](/about/terms-of-use/data-use-terms)
+and agree to them. For detailed information on how to use and interact with the APIs please checkout the <em>swagger UI</em>
 documentation. Here we shall demonstrate how to use curl from the terminal to generate seqsets using the
 `POST`, `PUT`, and `GET` http methods. To effectively interact with the API, you will need to learn about
 these methods as well as the endpoints.
@@ -17,11 +19,12 @@ these methods as well as the endpoints.
 A full list of endpoints for seqsets can be found under the `seqset-citations-controller` section at 
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html) but here we shall focus on 
 the `/create-seqset`, `/update-seqset`, `create-seqset-doi`. 
-<br>
+
+<InfoBox>
 **Important**
 Please note that the seqset endpoints require authentication or a bearer token. The details for authenticating
 via API or retrieving a token from the browser are explained [here](https://pathoplexus.org/docs/how-to/authentication-api)
-<br>
+</InfoBox>
 
 ## Creating seqsets
 A seqset can contain both focal and background sequences [explanation of the differences here](https://pathoplexus.org/about/terms-of-use/data-use-terms).
@@ -62,7 +65,7 @@ for the created seqset. Otherwise, a range of error codes maybe returned and a f
 <br>
 **Note**
 Please remember to replace `x-request-id` and your `TOKEN` in the header.
-<br>
+</br>
 
 ## Updating seqsets
 Once you have created a seqset, you are able to update it with additional sequences that you could have added later
@@ -116,4 +119,4 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
 <br>
 **Important**
 Please note that after a doi has been created for a seqset, it cannot nolonger be deleted.
-<br>
+</br>
