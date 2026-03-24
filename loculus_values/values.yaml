@@ -145,6 +145,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
+        hideInSearchResultsTable: true
         hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
@@ -164,6 +165,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: sampleCollectionDateRangeUpper
         displayName: Collection date (upper bound)
+        hideInSearchResultsTable: true
         hideOnSequenceDetailsPage: true
         type: date
         initiallyVisible: true
