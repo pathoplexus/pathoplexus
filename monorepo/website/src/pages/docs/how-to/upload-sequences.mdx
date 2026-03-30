@@ -5,9 +5,13 @@ order: 40
 ---
 import InfoBox from '../../../components/asides/InfoBox.astro';
 
-You can only upload sequences if you have [created an account](create-account) and are part of a [group](create-group).
+The process of submitting sequences to Pathoplexus consists of three sequential steps; sequence upload, editing, and approval.
+The first step is sequence upload and requires you to have [created an account](create-account) and are part of a [group](create-group).
+If you already have an account and belong to more than one group, ensure that the approraite group your currently submitting sequences for is chosen from the 
+drop down menu on the top left before proceeding with the submission process. Otherwise, the sequences will be assigned to the previous group used on your last
+submission.
 
-Before starting the upload process, ensure your data is correctly formatted. Every sequence must have a unique ID that can be used to link it with its metadata entry. 
+Before starting the upload process, ensure that your data is correctly formatted. Every sequence must have a unique ID that can be used to link it with its metadata entry. 
 _Please, note that **terminal Ns will be automatically removed** during sequence preprocessing and will not be included in the submitted sequences._
 
 The expected data format is as follows:
@@ -39,10 +43,14 @@ Uploading sequences via the website is an easy way to submit sequences without h
 1. Log into your account, and then click 'Submit' in the top-right corner of the website
 2. Select the organism that you'd like to submit sequences for
 3. Drag-and-drop a `fasta` file with the sequences and a metadata file with the associated metadata into the box on the website, or click the 'Upload a file' link within the boxes to open a file-selection box
-4. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year
+4. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year. 
 5. Select 'Submit sequences' at the bottom of the page
 
 The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
+<InfoBox>
+If you have selected `Restricted` on the terms of use for your sequences, a time limit for the restriction will be automatically set to 1 year from the date on which your submitting the sequences. You can customise this to an ealier date of your preference by using the `change date` button under restricted use before proceeding to submission. 
+This action can also be performed even if the sequences were already submitted and you wish to make the sequences `open` before the restriction period ends. However, this would requires you to be logged in as someone with authorisation.
+</InfoBox>
 
 ## Uploading raw reads
 
