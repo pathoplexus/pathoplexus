@@ -1558,6 +1558,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/ebov"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       website:
@@ -1633,6 +1636,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/sudv"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
@@ -1703,6 +1709,18 @@ organisms:
         - name: "Nextclade (DENV-4)"
           maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+        - name: "Sealion (DENV-1)"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-1+rich|fasta]}}"
+        - name: "Sealion (DENV-2)"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-2+rich|fasta]}}"
+        - name: "Sealion (DENV-3)"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-3+rich|fasta]}}"
+        - name: "Sealion (DENV-4)"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-4+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       # adding custom description of submissionId to show on website
@@ -1968,6 +1986,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/wnv/all-lineages"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -2071,6 +2092,15 @@ organisms:
         - name: "Nextclade (S)"
           maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/S"
+        - name: "Sealion (L)"
+          maxNumberOfRecommendedEntries: 2000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:L+rich|fasta]}}"
+        - name: "Sealion (M)"
+          maxNumberOfRecommendedEntries: 2000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:M+rich|fasta]}}"
+        - name: "Sealion (S)"
+          maxNumberOfRecommendedEntries: 2000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:S+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -2177,6 +2207,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 200 # Nextclade handles ~80MB of sequences, mpox is ~197kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/mpox/all-clades"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 200
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -2829,6 +2862,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/a/EPI_ISL_412866"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 1300
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -2944,6 +2980,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1300 # RSV is ~15kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/rsv/b/EPI_ISL_1653999"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 1300
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -3059,6 +3098,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1500 # HMPV is ~13kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/hmpv/all-clades/NC_039199"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 1500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
@@ -3147,11 +3189,14 @@ organisms:
       organismName: "Measles Virus"
       image: "/images/organisms/measles_small.jpg"
       linkOuts:
-        - name: "Country map"
-          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 1000 # Measles is ~15.9kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/measles/genome/WHO-2012"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 1000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: genotype
           displayName: Genotype
@@ -3240,11 +3285,14 @@ organisms:
       organismName: "Marburg Virus"
       image: "/images/organisms/marburg.jpg"
       linkOuts:
-        - name: "Country map"
-          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # marburg is ~19kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/genspectrum/marburg/HK1980/all-lineages"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: clade
           displayName: Clade
@@ -3329,6 +3377,9 @@ organisms:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       # adding custom description of submissionId to show on website
