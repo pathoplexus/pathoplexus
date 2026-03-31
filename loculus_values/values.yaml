@@ -1264,6 +1264,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
         desired: true
+        preprocessing:
+          function: scientific_name_from_id
+          inputs:
+            hostNameScientific: hostNameScientific
+            hostTaxonId: processed.hostTaxonId
+          args:
+            taxonomy_service_host: "http://loculus-taxonomy-service"
+            taxonomy_service_port: 5000
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1277,6 +1285,13 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: hostSpecies
           displayGroup: hostSpecies
           label: Host
+        preprocessing:
+          function: common_name_from_id
+          inputs:
+            hostTaxonId: processed.hostTaxonId
+          args:
+            taxonomy_service_host: "http://loculus-taxonomy-service"
+            taxonomy_service_port: 5000
       - name: hostTaxonId
         displayName: Host taxon ID
         type: int
@@ -1291,6 +1306,14 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
+        preprocessing:
+          function: validate_host
+          inputs:
+            hostNameScientific: hostNameScientific
+            hostTaxonId: hostTaxonId
+          args:
+            taxonomy_service_host: "http://loculus-taxonomy-service"
+            taxonomy_service_port: 5000
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -3477,6 +3500,10 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
+
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_latest"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:
