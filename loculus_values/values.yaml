@@ -1698,30 +1698,39 @@ organisms:
       image: "/images/organisms/dengue_small.jpg"
       linkOuts:
         - name: "Nextclade (DENV-1)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # dengue is ~11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-2)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-3)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Nextclade (DENV-4)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
         - name: "Sealion (DENV-1)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-1+rich|fasta]}}"
         - name: "Sealion (DENV-2)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-2+rich|fasta]}}"
         - name: "Sealion (DENV-3)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-3+rich|fasta]}}"
         - name: "Sealion (DENV-4)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-4+rich|fasta]}}"
         - name: "Country map"
+          category: "Other"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       # adding custom description of submissionId to show on website
       extraInputFields:
@@ -2084,24 +2093,31 @@ organisms:
       image: "/images/organisms/cchf_small.jpg"
       linkOuts:
         - name: "Nextclade (L)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 2000 # cchf L is ~12.5kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/L"
         - name: "Nextclade (M)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 5000 # cchf M is ~5kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/M"
         - name: "Nextclade (S)"
+          category: "Nextclade"
           maxNumberOfRecommendedEntries: 10000 # cchf S is ~1.7kB
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=community/pathoplexus/cchfv/S"
         - name: "Sealion (L)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:L+rich|fasta]}}"
         - name: "Sealion (M)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:M+rich|fasta]}}"
         - name: "Sealion (S)"
+          category: "Sealion"
           maxNumberOfRecommendedEntries: 2000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:S+rich|fasta]}}"
         - name: "Country map"
+          category: "Other"
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage_S
