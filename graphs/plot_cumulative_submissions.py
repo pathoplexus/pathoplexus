@@ -29,8 +29,6 @@ for organism in organisms:
         headers={"accept": "application/json"},
     )   
     data = response.json()
-    print(data["data"][:2])  # Print first 2 samples to verify structure
-    print(f"Fetched {len(data['data'])} samples for {organism}")
     for sample in data["data"]:
         submitting_groups.add(sample["groupName"])
         submitted_at_timestamps.append(sample["submittedAtTimestamp"])
