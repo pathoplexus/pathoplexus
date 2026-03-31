@@ -1264,7 +1264,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
-        desired: true
+        required: true
         preprocessing:
           function: scientific_name_from_id
           inputs:
@@ -1277,6 +1277,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Host name - common
         generateIndex: true
         autocomplete: true
+        noInput: true
         header: "Host"
         orderOnDetailsPage: 1580
         ingest: ncbiHostCommonName
@@ -1307,6 +1308,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
+        noInput: true
         preprocessing:
           function: validate_host
           inputs:
