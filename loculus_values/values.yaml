@@ -1263,11 +1263,10 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
-        required: true
+        noInput: true
         preprocessing:
           function: scientific_name_from_id
           inputs:
-            hostNameScientific: hostNameScientific
             hostTaxonId: processed.hostTaxonId
           args:
             taxonomy_service_host: "http://loculus-taxonomy-service"
@@ -1275,8 +1274,6 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
-        autocomplete: true
-        noInput: true
         header: "Host"
         orderOnDetailsPage: 1580
         ingest: ncbiHostCommonName
@@ -1286,6 +1283,8 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: hostSpecies
           displayGroup: hostSpecies
           label: Host
+        autocomplete: true
+        noInput: true
         preprocessing:
           function: common_name_from_id
           inputs:
@@ -1307,10 +1306,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
+        required: true
         noInput: true
         preprocessing:
           function: validate_host
           inputs:
+            hostIdentifier: hostIdentifier
             hostNameScientific: hostNameScientific
             hostTaxonId: hostTaxonId
           args:
@@ -1356,6 +1357,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1140
         hideOnSequenceDetailsPage: true
         noInput: true
+        autocomplete: true
       - name: ncbiVirusName
         displayName: NCBI Virus name
         generateIndex: true
