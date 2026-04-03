@@ -14,3 +14,6 @@ monorepo/**/GEMINI.md
 # Exception: Allow AGENTS.md symlinks in docs
 !monorepo/website/src/pages/docs/CLAUDE.md
 !monorepo/website/src/pages/docs/GEMINI.md
+
+# Exception: Allow tracking of .gitignore changes
+!monorepo/.gitignore
