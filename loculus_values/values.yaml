@@ -1270,8 +1270,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             hostTaxonId: processed.hostTaxonId
           args:
-            taxonomy_service_host: "http://loculus-taxonomy-service"
-            taxonomy_service_port: 5000
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1291,8 +1290,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             hostTaxonId: processed.hostTaxonId
           args:
-            taxonomy_service_host: "http://loculus-taxonomy-service"
-            taxonomy_service_port: 5000
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: hostTaxonId
         displayName: Host taxon ID
         type: int
@@ -1316,8 +1314,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             hostNameScientific: hostNameScientific
             hostTaxonId: hostTaxonId
           args:
-            taxonomy_service_host: "http://loculus-taxonomy-service"
-            taxonomy_service_port: 5000
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
