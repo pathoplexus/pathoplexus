@@ -1305,7 +1305,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
-        required: true
         noInput: true
         preprocessing:
           function: validate_host
@@ -1355,7 +1354,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1140
         hideOnSequenceDetailsPage: true
         noInput: true
-        autocomplete: true
       - name: ncbiVirusName
         displayName: NCBI Virus name
         generateIndex: true
@@ -1540,7 +1538,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - sampleCollectionDate
       - authors
       - authorAffiliations
-      - hostNameScientific
+      - hostIdentifier
       - collectionDevice
       - collectionMethod
       - cultureId
