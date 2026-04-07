@@ -50,7 +50,7 @@ To clean up so you can see your real files run `git clean -fX monorepo`. (Don't 
 
 #### Snippet 
 
-Full commands to get website running locally (against main.loculus.org):
+Full commands to get PPX prev-main website running locally:
 
 ```
 # 1. Clone the Pathoplexus repo if you haven't already
@@ -67,7 +67,7 @@ cd monorepo/website
 cp .env.example .env
 
 # 5. Generate the local test configuration
-../generate_local_test_config.sh --from-live
+../generate_local_test_config.sh --values ../loculus_values/values.yaml --from-live --live-host preview-main.pathoplexus.org
 
 # 6. Install dependencies
 npm ci
@@ -83,3 +83,4 @@ Which commits end up on staging/production/demo is determined by the separate `p
 The commits of this repo (`pathoplexus/pathoplexus`) used by the respective deployments are mirrored in a read-only fashion to branches in this  (`pathoplexus/pathoplexus`) repository (branch names are `env/production`, `env/staging`, `env/demo`). Do not change the commits pointed at by these branches to avoid confusion.
 
 The update is done automatically by a GitHub workflow: https://github.com/pathoplexus/loculus_deployments/blob/main/.github/workflows/pathoplexus-repo-branch-updates.yml
+
