@@ -50,7 +50,7 @@ To clean up so you can see your real files run `git clean -fX monorepo`. (Don't 
 
 #### Snippet 
 
-Full commands to get PPX prev-main website running locally:
+Full commands to get PPX preview-main website running locally:
 
 ```
 # 1. Clone the Pathoplexus repo if you haven't already
