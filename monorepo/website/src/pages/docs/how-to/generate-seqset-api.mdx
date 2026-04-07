@@ -27,11 +27,11 @@ via API or retrieving a token from the browser are explained [here](https://path
 </InfoBox>
 
 ## Creating seqsets
-A seqset can contain both focal and background sequences [explanation of the differences here](https://pathoplexus.org/about/terms-of-use/data-use-terms).
+A SeqSet can contain both focal and background sequences [explanation of the differences here](https://pathoplexus.org/about/terms-of-use/data-use-terms).
 To define this in our request we shall need to set the <em>isFocal</em> parameter to true or false on our data object in 
 the request body. The other parametes that we need to provide include the accession numbers of the sequences
 and the type. Please checkout the schema on the Swagger UI to understand the accepted data formats. Below is
-example code for creating a seqset for 2 sequences.
+example code for creating a SeqSet for 2 sequences.
 
 ```
 curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset' \
