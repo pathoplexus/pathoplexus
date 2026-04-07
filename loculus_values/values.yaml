@@ -57,7 +57,7 @@ auth:
     orcid:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
-disableTaxonomyService: true
+disableTaxonomyService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
