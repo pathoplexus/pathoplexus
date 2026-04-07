@@ -1536,7 +1536,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "Aedes aegypti"
         hideInSearchResultsTable: true
         hideOnSequenceDetailsPage: true
-        required: true
+        desired: true
         position: last
     metadataTemplate:
       - geoLocCountry
