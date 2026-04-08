@@ -23,6 +23,7 @@ rule all:
                 "ebola-sudan",
                 "dengue",
                 "mpox",
+                "marburg",
                 "rsv-a",
                 "rsv-b",
                 "hmpv",
