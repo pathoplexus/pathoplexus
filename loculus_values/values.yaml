@@ -1802,20 +1802,6 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -3574,20 +3560,6 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016], see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
