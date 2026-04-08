@@ -22,6 +22,7 @@ rule all:
                 "ebola-zaire",
                 "ebola-sudan",
                 "dengue",
+                "marburg",
                 "mpox",
                 "rsv-a",
                 "rsv-b",
