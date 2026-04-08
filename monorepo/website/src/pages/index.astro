@@ -128,21 +128,19 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
         </section>
 
         <section>
-            <h2 class='text-center text-2xl font-semibold text-slate-900'>Explore the data</h2>
-            <div class='mt-8 flex justify-center'>
-                <div class=`flex flex-wrap justify-center gap-x-5 gap-y-4 ${configuredOrganisms.length === 5 ? 'max-w-4xl' : ''}`>
-                    {
-                        configuredOrganisms.map(({ key, displayName, image }) => (
-                            <OrganismCard
-                                key={key}
-                                image={image}
-                                displayName={displayName}
-                                organismStatistics={organismStatisticsMap.get(key)!}
-                                numberDaysAgoStatistics={numberDaysAgoStatistics}
-                            />
-                        ))
-                    }
-                </div>
+            <h2 class='text-2xl font-semibold text-slate-900'>Explore the data</h2>
+            <div class='mt-8 grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-x-5 gap-y-4'>
+                {
+                    configuredOrganisms.map(({ key, displayName, image }) => (
+                        <OrganismCard
+                            key={key}
+                            image={image}
+                            displayName={displayName}
+                            organismStatistics={organismStatisticsMap.get(key)!}
+                            numberDaysAgoStatistics={numberDaysAgoStatistics}
+                        />
+                    ))
+                }
             </div>
         </section>
 
