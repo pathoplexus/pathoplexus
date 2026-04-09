@@ -57,7 +57,7 @@ auth:
     orcid:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
-disableTaxonomyService: true
+disableTaxonomyService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -72,18 +72,25 @@ zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
     17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+   28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1264,11 +1271,17 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
-        desired: true
+        noInput: true
+        preprocessing:
+          function: scientific_name_from_id
+          inputs:
+            hostTaxonId: processed.hostTaxonId
+            hostNameScientific: hostNameScientific
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
-        autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1580
         ingest: ncbiHostCommonName
@@ -1278,6 +1291,14 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: hostSpecies
           displayGroup: hostSpecies
           label: Host
+        autocomplete: true
+        noInput: true
+        preprocessing:
+          function: common_name_from_id
+          inputs:
+            hostTaxonId: processed.hostTaxonId
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: hostTaxonId
         displayName: Host taxon ID
         type: int
@@ -1292,6 +1313,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
+        noInput: true
+        preprocessing:
+          function: validate_host
+          inputs:
+            host: host
+            hostNameScientific: hostNameScientific
+            hostTaxonId: hostTaxonId
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -1500,13 +1530,24 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
-    extraInputFields: []
+    extraInputFields:
+      - &hostConfig
+        name: host
+        type: string
+        displayName: "Host"
+        definition: "NCBI taxon ID or scientific name that uniquely identifies the host from which the sample was collected."
+        guidance: "You can provide either the scientific name of the organism (e.g., Aedes aegypti) or its NCBI taxon ID (e.g., 7159) in this field. We will validate your input and use it to populate the `host common name` and `host scientific name` fields. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
+        example: "Aedes aegypti"
+        hideInSearchResultsTable: true
+        hideOnSequenceDetailsPage: true
+        desired: true
+        position: last
     metadataTemplate:
       - geoLocCountry
       - sampleCollectionDate
       - authors
       - authorAffiliations
-      - hostNameScientific
+      - host
       - collectionDevice
       - collectionMethod
       - cultureId
@@ -1593,6 +1634,19 @@ organisms:
                   nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
                   nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                   genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+      - <<: *preprocessing
+        replicas: 1
+        version:
+          - 27
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+                - name: "singleReference"
+                  nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
+                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
+                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
     enaDeposition:
       singleReference:
         configFile:
@@ -1640,6 +1694,18 @@ organisms:
       - <<: *preprocessing
         version:
           - 23
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+                - name: "singleReference"
+                  nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
+                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
+                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
+      - <<: *preprocessing
+        version:
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1715,6 +1781,9 @@ organisms:
           required: true
           noEdit: true
           position: first
+        - <<: *hostConfig
+          desired: false
+          required: true
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -1728,20 +1797,6 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -1799,6 +1854,34 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+        configFile:
+          <<: *preprocessingConfigFile
+          segment_classification_method: "minimizer"
+          create_embl_file: false
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
+          segments:
+            - name: main
+              references:
+                - name: DENV-1
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-2
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-3
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-4
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version:
+          - 28
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -2011,6 +2094,18 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version:
+          - 25
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: nextstrain/wnv/all-lineages
+                nextclade_dataset_tag: "2026-03-04--12-40-26Z"
+                genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -2108,6 +2203,29 @@ organisms:
       - <<: *preprocessing
         version:
           - 20
+        configFile:
+          <<: *preprocessingConfigFile
+          log_level: DEBUG
+          segments:
+            - name: L
+              references:
+              - name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/L
+                genes: [RdRp]
+            - name: M
+              references:
+              - name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/M
+                genes: [GPC]
+            - name: S
+              references:
+              - name: singleReference
+                nextclade_dataset_name: community/pathoplexus/cchfv/S
+                genes: [NP]
+          segment_classification_method: "align"
+      - <<: *preprocessing
+        version:
+          - 21
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2267,7 +2385,7 @@ organisms:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2025-12-16--20-07-31Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
@@ -2443,15 +2561,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 17
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 18
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -2890,6 +3008,23 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 19
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches: 
+                  - rsv-a
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3005,6 +3140,23 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 20
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches:
+                  - rsv-b
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3096,6 +3248,19 @@ organisms:
         replicas: 1
         version:
           - 20
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
+                nextclade_dataset_tag: "2025-04-25--12-24-24Z"
+                genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      - <<: *preprocessing
+        replicas: 1
+        version:
+          - 21
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3200,6 +3365,19 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *preprocessing
+        version:
+          - 25
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
     ingest:
       <<: *ingest
       configFile:
@@ -3288,6 +3466,19 @@ organisms:
                 nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
                 nextclade_dataset_tag: "2025-09-09--12-13-13Z"
                 genes: [GP, L, NP, VP24, VP30, VP35, VP40]
+      - <<: *preprocessing
+        version:
+          - 22
+        replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
+                nextclade_dataset_tag: "2025-09-09--12-13-13Z"
+                genes: [GP, L, NP, VP24, VP30, VP35, VP40]
     ingest:
       image: ghcr.io/loculus-project/ingest
       configFile:
@@ -3341,6 +3532,9 @@ organisms:
           required: true
           noEdit: true
           position: first
+        - <<: *hostConfig
+          desired: false
+          required: true
       metadataAdd:
         - name: clade
           displayName: Clade
@@ -3354,20 +3548,6 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016], see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -3417,6 +3597,18 @@ organisms:
       - <<: *preprocessing
         version:
           - 26
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference 
+                nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
+          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+      - <<: *preprocessing
+        version:
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3478,6 +3670,10 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
+
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_latest"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:
