@@ -91,6 +91,7 @@ lineageSystemDefinitions:
   dengue:
    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+   29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1909,6 +1910,34 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version:
+          - 29
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segment_classification_method: "minimizer"
+          create_embl_file: false
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
+          segments:
+            - name: main
+              references:
+                - name: DENV-1
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-2
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-3
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-4
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
@@ -3614,6 +3643,18 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference 
+                nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
+          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+      - <<: *preprocessing
+        version:
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
