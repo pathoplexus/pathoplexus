@@ -1299,7 +1299,8 @@ defaultOrganismConfig: &defaultOrganismConfig
             hostTaxonId: processed.hostTaxonId
           args:
             taxonomy_service_url: "http://loculus-taxonomy-service:5000"
-      - name: hostTaxonId
+      - &hostTaxonIdConfig
+        name: hostTaxonId
         displayName: Host taxon ID
         type: int
         autocomplete: true
@@ -1785,6 +1786,8 @@ organisms:
           desired: false
           required: true
       metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
         - name: lineage
           displayName: Lineage
           header: "Lineage & Serotype"
@@ -3536,6 +3539,8 @@ organisms:
           desired: false
           required: true
       metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
         - name: clade
           displayName: Clade
           header: "Clade"
