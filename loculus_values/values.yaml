@@ -89,8 +89,8 @@ lineageSystemDefinitions:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+   30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1856,7 +1856,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -1883,7 +1883,7 @@ organisms:
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
       - <<: *preprocessing
         version:
-          - 29
+          - 30
         replicas: 2
         configFile:
           <<: *preprocessingConfigFile
@@ -3601,7 +3601,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3613,7 +3613,7 @@ organisms:
           nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
       - <<: *preprocessing
         version:
-          - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
