@@ -71,25 +71,18 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
-    17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
     18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
     19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
@@ -1626,19 +1619,6 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 26
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-                - name: "singleReference"
-                  nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
-                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
-                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
-      - <<: *preprocessing
-        replicas: 1
-        version:
           - 27
         configFile:
           <<: *preprocessingConfigFile
@@ -1694,18 +1674,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
-      - <<: *preprocessing
-        version:
-          - 23
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-                - name: "singleReference"
-                  nextclade_dataset_name: nextstrain/orthoebolavirus/sudv
-                  nextclade_dataset_tag: "2025-09-24--07-29-03Z"
-                  genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
       - <<: *preprocessing
         version:
           - 24
@@ -1859,35 +1827,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 27
-        configFile:
-          <<: *preprocessingConfigFile
-          segment_classification_method: "minimizer"
-          create_embl_file: false
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
-          segments:
-            - name: main
-              references:
-                - name: DENV-1
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-2
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-3
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-4
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        version:
           - 28
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -2091,18 +2032,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: nextstrain/wnv/all-lineages
-                nextclade_dataset_tag: "2026-03-04--12-40-26Z"
-                genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
-        version:
           - 25
         configFile:
           <<: *preprocessingConfigFile
@@ -2208,29 +2137,6 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
-        version:
-          - 20
-        configFile:
-          <<: *preprocessingConfigFile
-          log_level: DEBUG
-          segments:
-            - name: L
-              references:
-              - name: singleReference
-                nextclade_dataset_name: community/pathoplexus/cchfv/L
-                genes: [RdRp]
-            - name: M
-              references:
-              - name: singleReference
-                nextclade_dataset_name: community/pathoplexus/cchfv/M
-                genes: [GPC]
-            - name: S
-              references:
-              - name: singleReference
-                nextclade_dataset_name: community/pathoplexus/cchfv/S
-                genes: [NP]
-          segment_classification_method: "align"
       - <<: *preprocessing
         version:
           - 21
@@ -2383,7 +2289,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 17
+          - 18
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2570,15 +2476,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 18
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          segments:
-            - <<: *mpoxDataset
+      # - <<: *mpoxPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 18
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     batch_size: 10
+      #     segments:
+      #       - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -3003,25 +2909,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 18
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches: 
-                  - rsv-a
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
-        version:
           - 19
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3136,25 +3025,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 19
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches:
-                  - rsv-b
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
-        version:
           - 20
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3259,19 +3131,6 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 20
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
-                nextclade_dataset_tag: "2025-04-25--12-24-24Z"
-                genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      - <<: *preprocessing
-        replicas: 1
-        version:
           - 21
         configFile:
           <<: *preprocessingConfigFile
@@ -3368,20 +3227,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
-                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
-                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      - <<: *preprocessing
-        version:
           - 25
-        replicas: 2
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3467,19 +3314,6 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
-        version:
-          - 21
-        replicas: 1
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "community/genspectrum/marburg/HK1980/all-lineages"
-                nextclade_dataset_tag: "2025-09-09--12-13-13Z"
-                genes: [GP, L, NP, VP24, VP30, VP35, VP40]
       - <<: *preprocessing
         version:
           - 22
@@ -3611,18 +3445,6 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
-        version:
-          - 26
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference 
-                nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
-                genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
       - <<: *preprocessing
         version:
           - 27
