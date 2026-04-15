@@ -1888,7 +1888,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 29
-        replicas: 1
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -3022,7 +3022,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 20
-        replicas: 1
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3155,7 +3155,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 21
-        replicas: 1
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
