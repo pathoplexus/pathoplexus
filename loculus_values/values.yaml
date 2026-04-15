@@ -16,7 +16,7 @@ s3:
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
-    I agree to the <a href='/about/terms-of-use/data-use-terms' className='underline' target='_blank' rel='noopener noreferrer'>data use terms</a>, and I understand <a href='/about/citation' className='underline' target='_blank' rel='noopener noreferrer'>how to cite</a> Pathoplexus data.
+    I agree to the <a href='/about/terms-of-use/data-use-terms' target='_blank' rel='noopener noreferrer'>data use terms</a>, and I understand <a href='/about/citation' target='_blank' rel='noopener noreferrer'>how to cite</a> Pathoplexus data.
   enabled: true
   urls:
     open: https://pathoplexus.org/about/terms-of-use/open-data
