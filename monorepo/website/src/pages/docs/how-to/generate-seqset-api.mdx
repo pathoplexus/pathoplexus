@@ -111,10 +111,9 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
      -H 'Authorization: Bearer <TOKEN> \
      -d ''
 ```
-<br>
-<b>Important</b>
+
+<b>Important</b><br/>
 Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
-</br>
 Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
 been made. After, the older versions of your `SeqSet` can then be deleted using the `DELETE` method as shown in the example below. 
 Make sure the correct version you wish to delete is supplied in the url parameters.
@@ -126,6 +125,7 @@ curl -X 'DELETE' \
   -H 'Authorization: Bearer <TOKEN>'
 
 ```
+
 ## Accessing an existing SeqSet
 Once the SeqSet has been successfully created, it will exist on your account and details about that SeqSet 
 can be obtained using the `GET` method as shown in the example commands below.
