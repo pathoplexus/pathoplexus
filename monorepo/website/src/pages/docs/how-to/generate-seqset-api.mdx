@@ -111,7 +111,6 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
      -H 'Authorization: Bearer <TOKEN> \
      -d ''
 ```
-<b>Important</b><br/>
 Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
 Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
 been made. After, the older versions of your `SeqSet` can then be deleted using the `DELETE` method as shown in the example below. 
@@ -119,7 +118,7 @@ Make sure the correct version you wish to delete is supplied in the url paramete
 
 ```
 curl -X 'DELETE' \
-  'https://backend-demo.pathoplexus.org/delete-seqset?seqSetId=PPD_SS_463&version=1' \
+  'https://backend.pathoplexus.org/delete-seqset?seqSetId=PPD_SS_463&version=1' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer <TOKEN>'
 
@@ -131,7 +130,7 @@ can be obtained using the `GET` method as shown in the example commands below.
 
 ```
 curl -X 'GET' \
-  'https://backend-demo.pathoplexus.org/get-seqset?seqSetId=PPD_SS_463&version=2' \
+  'https://backend.pathoplexus.org/get-seqset?seqSetId=PPD_SS_463&version=2' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer <TOKEN>'
 
@@ -140,7 +139,23 @@ Similarly, specific records within that SeqSet can be accessed using the example
 
 ```
 curl -X 'GET' \
-  'https://backend-demo.pathoplexus.org/get-seqset-records?seqSetId=PPD_SS_463&version=2' \
+  'https://backend.pathoplexus.org/get-seqset-records?seqSetId=PPD_SS_463&version=2' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer <TOKEN>'
+```
+And if you wish to validate the SeqSet records, this can be done by using the `POST` method as shown below.
+
+```
+curl -X 'POST' \
+  'https://backend.pathoplexus.org/validate-seqset-records' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '[
+  {
+    "accession": "PPD_00EPD6G",
+    "type": "Loculus",
+    "isFocal": true
+  }
+]'
 ```
