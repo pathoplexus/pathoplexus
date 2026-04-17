@@ -22,9 +22,9 @@ A full list of endpoints for SeqSets can be found under the `seqset-citations-co
 the `/create-seqset`, `/update-seqset`, `create-seqset-doi`. 
 
 <InfoBox>
-<b>Important</b>
-Please note that the SeqSet endpoints require authentication or a bearer token. The details for authenticating
-via API or retrieving a token from the browser are explained [here](https://pathoplexus.org/docs/how-to/authentication-api)
+<b>Important</b><br/>
+<p>Please note that the SeqSet endpoints require authentication or a bearer token.</p>
+<p>The details for authenticating via API or retrieving a token from the browser are explained [here](https://pathoplexus.org/docs/how-to/authentication-api)</p>
 </InfoBox>
 
 ## Creating seqsets
@@ -62,10 +62,8 @@ If the SeqSet is was created successully you will get a 200 OK response code wit
 for the created seqset. Otherwise, an error code will be returned; for a description of the different error codes see the 
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
 
-<br>
-<b>Note</b>
-Please remember to replace your `TOKEN` in the header, and to replace the `name` and `description` with the information about your own SeqSet.
-</br>
+<b>Note:</b><br/>
+<p>Please remember to replace your <code>TOKEN</code> in the header, and to replace the <code>name</code> and <code>description</code> with the information about your own SeqSet.</p>
 
 ## Updating seqsets
 Once you have created a SeqSet, you are able to update it, for example by adding additional sequences or changing the name and description of the SeqSet. This 
