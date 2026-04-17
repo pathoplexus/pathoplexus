@@ -10,6 +10,7 @@ import InfoBox from '../../../components/asides/InfoBox.astro';
 - [Updating SeqSets](#Updating-seqsets)
 - [Create SeqSet doi](#Create-seqset-doi)
 - [Accessing an existing SeqSet](#Accessing-an-existing-SeqSet)
+- [Validating SeqSet records](#Validating SeqSet records)
 
 In order to use the Pathoplexus API for creating SeqSets, please ensure that you have read the [Data Use Terms](/about/terms-of-use/data-use-terms)
 and agree to them. For detailed information on how to use and interact with the APIs please checkout the <em>swagger UI</em>
@@ -56,7 +57,6 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset' \
         ]
      }
 ```
-
 If the SeqSet is was created successully you will get a 200 OK response code with the SeqSet ID and version number
 for the created seqset. Otherwise, an error code will be returned; for a description of the different error codes see the 
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
@@ -118,7 +118,7 @@ Make sure the correct version you wish to delete is supplied in the url paramete
 
 ```
 curl -X 'DELETE' \
-  'https://backend.pathoplexus.org/delete-seqset?seqSetId=PPD_SS_463&version=1' \
+  'https://backend.pathoplexus.org/delete-seqset?seqSetId=PP_SS_XX&version=1' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer <TOKEN>'
 
@@ -130,20 +130,21 @@ can be obtained using the `GET` method as shown in the example commands below.
 
 ```
 curl -X 'GET' \
-  'https://backend.pathoplexus.org/get-seqset?seqSetId=PPD_SS_463&version=2' \
+  'https://backend.pathoplexus.org/get-seqset?seqSetId=PP_SS_XX&version=2' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer <TOKEN>'
 
 ```
-Similarly, specific records within that SeqSet can be accessed using the example commands below.
+Similarly, records within that SeqSet can be accessed using the example commands below.
 
 ```
 curl -X 'GET' \
-  'https://backend.pathoplexus.org/get-seqset-records?seqSetId=PPD_SS_463&version=2' \
+  'https://backend.pathoplexus.org/get-seqset-records?seqSetId=PP_SS_XX&version=2' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer <TOKEN>'
 ```
-And if you wish to validate the SeqSet records, this can be done by using the `POST` method as shown below.
+## Validating SeqSet records
+If you wish to validate the SeqSet records, you can do this by using the `POST` method and supplying the accessions for the specific records as in the example shown below.
 
 ```
 curl -X 'POST' \
@@ -153,7 +154,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '[
   {
-    "accession": "PPD_00EPD6G",
+    "accession": "PP_0123456",
     "type": "Loculus",
     "isFocal": true
   }
