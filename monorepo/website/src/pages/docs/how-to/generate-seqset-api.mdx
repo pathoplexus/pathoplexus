@@ -61,8 +61,9 @@ If the SeqSet is was created successully you will get a 200 OK response code wit
 for the created seqset. Otherwise, an error code will be returned; for a description of the different error codes see the 
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
 
-<b>Note:</b><br/>
-<p>Please remember to replace your <code>TOKEN</code> in the header, and to replace the <code>name</code> and <code>description</code> with the information about your own SeqSet.</p>
+<InfoBox>
+<b>Note:</b><p>Please remember to replace your <code>TOKEN</code> in the header, as well as the <code>name</code> and <code>description</code> in the request body with the information about your own SeqSet.</p>
+</InfoBox>
 
 ## Updating seqsets
 Once you have created a SeqSet, you are able to update it, for example by adding additional sequences or changing the name and description of the SeqSet. This 
@@ -110,7 +111,6 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
      -H 'Authorization: Bearer <TOKEN> \
      -d ''
 ```
-
 <b>Important</b><br/>
 Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
 Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
