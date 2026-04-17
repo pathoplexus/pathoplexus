@@ -22,7 +22,7 @@ A full list of endpoints for SeqSets can be found under the `seqset-citations-co
 the `/create-seqset`, `/update-seqset`, `create-seqset-doi`. 
 
 <InfoBox>
-**Important**
+<b>Important</b>
 Please note that the SeqSet endpoints require authentication or a bearer token. The details for authenticating
 via API or retrieving a token from the browser are explained [here](https://pathoplexus.org/docs/how-to/authentication-api)
 </InfoBox>
@@ -63,7 +63,7 @@ for the created seqset. Otherwise, an error code will be returned; for a descrip
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
 
 <br>
-**Note**
+<b>Note</b>
 Please remember to replace your `TOKEN` in the header, and to replace the `name` and `description` with the information about your own SeqSet.
 </br>
 
@@ -114,7 +114,7 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
      -d ''
 ```
 <br>
-**Important**
+<b>Important</b>
 Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
 </br>
 Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
