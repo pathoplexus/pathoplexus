@@ -23,6 +23,7 @@ rule all:
                 "ebola-sudan",
                 "dengue",
                 "mpox",
+                "marburg",
                 "rsv-a",
                 "rsv-b",
                 "hmpv",
@@ -65,7 +66,7 @@ def url(w):
         case "metadata":
             return base + "details" + rest + "&dataFormat=TSV-ESCAPED"
         case "sequence":
-            return base + "unalignedNucleotideSequences" + rest
+            return base + "unalignedNucleotideSequences" + rest + "&fastaHeaderTemplate=%7BaccessionVersion%7D"
         case _:
             raise RuntimeError(f"Unreachable code reached: {filetype=}")
 

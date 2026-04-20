@@ -15,6 +15,8 @@ s3:
   enabled: false
 developmentDatabasePersistence: false
 dataUseTerms:
+  agreementHTML: >
+    I agree to the <a href='/about/terms-of-use/data-use-terms' target='_blank' rel='noopener noreferrer'>data use terms</a>, and I understand <a href='/about/citation' target='_blank' rel='noopener noreferrer'>how to cite</a> data from Pathoplexus.
   enabled: true
   urls:
     open: https://pathoplexus.org/about/terms-of-use/open-data
@@ -24,7 +26,7 @@ secrets:
     type: sealedsecret
     clusterWide: "true"
     encryptedData:
-      secretKey: AgCe0WPKrnWDroWZW/jHyZ0iT0WMa/ekYLcotWrUSU//1dv3Y7+pas36aVVIj5syNF1FbxhDG05BnoGKoOWxW/TnwmKLR92IKCqMOnGy5OXG0h4dvW55UyZqmA96dVhKagb1zoQhn7Nx8QMMsnraTnTYTbaw8on4ixcVvGhxMi/C50bYuexAkgFfPDO3io7Hkg2dfi+kzMKoc4m8Xn+yAOLnGG9RZQuSsj9jyqXYjkYuzgaMBvsmkljVUpvi+Ri04Ojt7JikPoM5e2uorx3K8K6CJ0efPhi+5UijnyGJqMfb4H1NwIRy1GEVetYQLuaPDUnD1Ym/eFIXl9AyiwVPVCb4HiKuEV+oAQU2bSVPgkkl3Zr5EPynBzJCCwO7LhSOUlYXBdv4oHK5cLngN/7mdtdR1lJcBb2SoZQ1lhFDLKKXfbDiiZ/K0ear0bCtwE+pdzRiuJlHPMk61++6jYtajgHPSxyvhrsgocXgGxVYH8uI35vrS1uKkcoECpsPVC3NIHEGM4dDUPU1cSzUnrAWbTDUz+pSmvdsm+6fFY0oWIBJ16mUPkaH/g17VOqLWsmS02H1uSB8dzESLwrmF8oOM5/21zm/YqSCj4V58QeP2gmJnrmfqHvSsw+nWIAEXCM3Qd69zaABNJdp80VCDI2Yj9yYGNqrKomXxgELPIZRpdB/lSshFqD1JhoAFXPs/ZA51ffPnwuV9Fo9d+j/VBNKjE/PbM6y98aiVd1h9dschUqHmA==
+      secretKey: AgAAhhj7sp07fSdDIEmjcM+vvyBIV19CcOa7oKBwr/5NoTBaBce3NKezOl1uOiG34g+dJ87jqcyR+LGIj51803SRyyu40fKLy5m1DKKCRh635LL/dZKk9S+h5Ra44FcjgDIKjk5FwGR4k+BDVqaoVXU4fHcai1i5de7X5Reuw4Mv6LBGNcbnKuqS0fCPh6E4CP0KHs9lR8qgi7HdwOSmmAH6CmyEm+Ow/q9Yt+ip/wCpQtQf2V0zhBuxxazNHqO7bhRpHiiqiMWjk610ixdCpXIjV0EU0QMs6a4hLLAb7dpLkCChAZ5UAt5ZXaXpVdi7S1AjFV548FTBv2FjktcL07CWxB1epZT70Qo2An+BUsGKOiWXbQn708yRVB9Th/N18x9DHmI/XwIw+EVGYxejKzi9n0UdbVkI5nxOuTKBG/WvjIQ97qH9tiaKBqPaGYm9aZAn1AQ0hR2pqEQjK7AM+9P8plUGvV4TUOhAKaHl1tthzD/1bNxkEp7heLjxwEL1SteDdrCxoW/PqVpXS9CtMENzPLhgDQ/wTQZF8mLDUCLNwNp1mqfWB0LMKyCq7a57gxVd2xfZ1O2bzwe+S5p/XF7fRI6td+IaEp07MDxLeuekItxBAXq6+Oh0ixH2EzzukV+PM7k+PZM5ecEjcC4OcNhPdYiK4MzcmPZU4SOF3J2qXdjV5KajmpRFdhYAyKfT4nxT69chBIf3FeBmH1Dqp6Q9yICPgvlezmrWq9LSyBunaA== 
   orcid:
     type: sealedsecret
     clusterWide: "true"
@@ -57,6 +59,7 @@ auth:
     orcid:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
+disableTaxonomyService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -70,19 +73,19 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
-    17: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+   28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1263,11 +1266,17 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
         example: "Homo sapiens"
-        desired: true
+        noInput: true
+        preprocessing:
+          function: scientific_name_from_id
+          inputs:
+            hostTaxonId: processed.hostTaxonId
+            hostNameScientific: hostNameScientific
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
-        autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1580
         ingest: ncbiHostCommonName
@@ -1277,7 +1286,16 @@ defaultOrganismConfig: &defaultOrganismConfig
           type: hostSpecies
           displayGroup: hostSpecies
           label: Host
-      - name: hostTaxonId
+        autocomplete: true
+        noInput: true
+        preprocessing:
+          function: common_name_from_id
+          inputs:
+            hostTaxonId: processed.hostTaxonId
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+      - &hostTaxonIdConfig
+        name: hostTaxonId
         displayName: Host taxon ID
         type: int
         autocomplete: true
@@ -1291,6 +1309,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Taxon ID for the host"
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
+        noInput: true
+        preprocessing:
+          function: validate_host
+          inputs:
+            host: host
+            hostNameScientific: hostNameScientific
+            hostTaxonId: hostTaxonId
+          args:
+            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -1499,13 +1526,24 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
-    extraInputFields: []
+    extraInputFields:
+      - &hostConfig
+        name: host
+        type: string
+        displayName: "Host"
+        definition: "NCBI taxon ID or scientific name that uniquely identifies the host from which the sample was collected."
+        guidance: "You can provide either the scientific name of the organism (e.g., Aedes aegypti) or its NCBI taxon ID (e.g., 7159) in this field. We will validate your input and use it to populate the `host common name` and `host scientific name` fields. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
+        example: "Aedes aegypti"
+        hideInSearchResultsTable: true
+        hideOnSequenceDetailsPage: true
+        desired: true
+        position: last
     metadataTemplate:
       - geoLocCountry
       - sampleCollectionDate
       - authors
       - authorAffiliations
-      - hostNameScientific
+      - host
       - collectionDevice
       - collectionMethod
       - cultureId
@@ -1562,6 +1600,7 @@ organisms:
           maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       website:
         <<: *website
@@ -1585,7 +1624,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1640,11 +1679,12 @@ organisms:
           maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1731,6 +1771,7 @@ organisms:
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:DENV-4+rich|fasta]}}"
         - name: "Country map"
           category: "Other"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       # adding custom description of submissionId to show on website
       extraInputFields:
@@ -1741,7 +1782,12 @@ organisms:
           required: true
           noEdit: true
           position: first
+        - <<: *hostConfig
+          desired: false
+          required: true
       metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
         - name: lineage
           displayName: Lineage
           header: "Lineage & Serotype"
@@ -1754,20 +1800,6 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -1824,7 +1856,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 27
+          - 28
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -1999,6 +2032,7 @@ organisms:
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
@@ -2030,7 +2064,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2118,6 +2152,7 @@ organisms:
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:S+rich|fasta]}}"
         - name: "Country map"
           category: "Other"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage_S
@@ -2152,7 +2187,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 20
+          - 21
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2227,6 +2262,7 @@ organisms:
           maxNumberOfRecommendedEntries: 200
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: clade
@@ -2304,7 +2340,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 17
+          - 18
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2315,7 +2351,7 @@ organisms:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2025-12-16--20-07-31Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
@@ -2494,7 +2530,7 @@ organisms:
       # - <<: *mpoxPreprocessing
       #   replicas: 3
       #   version:
-      #     - 17
+      #     - 18
       #   configFile:
       #     <<: *preprocessingConfigFile
       #     batch_size: 10
@@ -2882,6 +2918,7 @@ organisms:
           maxNumberOfRecommendedEntries: 1300
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
@@ -2926,7 +2963,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 18
+          - 19
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3000,6 +3037,7 @@ organisms:
           maxNumberOfRecommendedEntries: 1300
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
@@ -3044,7 +3082,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 19
+          - 20
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3118,6 +3156,7 @@ organisms:
           maxNumberOfRecommendedEntries: 1500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: lineage
@@ -3152,7 +3191,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 20
+          - 21
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3212,6 +3251,7 @@ organisms:
           maxNumberOfRecommendedEntries: 1000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: genotype
@@ -3250,7 +3290,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
+          - 25
+        replicas: 1
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3308,6 +3349,7 @@ organisms:
           maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       metadataAdd:
         - name: clade
@@ -3340,7 +3382,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 21
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3397,6 +3439,7 @@ organisms:
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
       # adding custom description of submissionId to show on website
       extraInputFields:
@@ -3407,7 +3450,12 @@ organisms:
           required: true
           noEdit: true
           position: first
+        - <<: *hostConfig
+          desired: false
+          required: true
       metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
         - name: clade
           displayName: Clade
           header: "Clade"
@@ -3420,20 +3468,6 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
-        # redeclaring hostNameScientific field, setting it to be required and show up by default in search UI
-        - name: hostNameScientific
-          displayName: Host name - scientific
-          generateIndex: true
-          autocomplete: true
-          header: "Host"
-          ingest: ncbiHostName
-          includeInDownloadsByDefault: true
-          order: 70
-          orderOnDetailsPage: 1560
-          definition: "The scientific name of the host from which the sample was collected. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all possible host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled [OBI:0600016], see [OBI:0600016])."
-          example: "Homo sapiens"
-          required: true
-          initiallyVisible: true
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -3482,7 +3516,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3544,6 +3578,10 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
+
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_latest"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:

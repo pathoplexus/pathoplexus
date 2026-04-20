@@ -5,7 +5,7 @@ Pathoplexus is a specialised genomic database for viruses of public health impor
 
 Pathoplexus aims to offer the best features of existing platforms, and to supplement these with new approaches that optimise data utility and preserve data autonomy. In particular, data submitters can easily share their data via Pathoplexus and receive credit through citable Pathoplexus datasets. Submitters can choose to have their data immediately deposited in the International Nucleotide Sequence Database Collaboration (INSDC) databases, without additional effort. Alternatively, submitters can choose to submit data with a time-limited restriction, during which use in publications is not permitted without involvement of the submitters. Only after this restriction ends is the data released to the INSDC. However, all users can freely access, explore, and download all data hosted in Pathoplexus. Data querying can be done both in an interactive and programmable fashion, the latter enabling embedding Pathoplexus in other tools.
 
-For the full Pathoplexus experience, head over to [Pathoplexus.org](https://pathoplexus.org/) to [browse our database](https://pathoplexus.org/organism-selector/search), [submit your own samples](https://pathoplexus.org/docs/how-to/upload-sequences), or read more about our [aims and governance](https://pathoplexus.org/about).
+For the full Pathoplexus experience, head over to [Pathoplexus.org](https://pathoplexus.org/) to [browse our database](https://pathoplexus.org/browse/select-organism), [submit your own samples](https://pathoplexus.org/docs/how-to/upload-sequences), or read more about our [aims and governance](https://pathoplexus.org/about).
 
 ### Our software
 Pathoplexus is powered by a new open-source software package, **[Loculus](https://loculus.org)**. Loculus is a general purpose tool for running virus sequence databases: anyone can use it to launch their own database for their pathogens of interest. These might include internal laboratory databases, or databases for collaborations or consortia. (Check out the [Loculus GitHub](https://github.com/loculus-project/loculus))
@@ -50,7 +50,7 @@ To clean up so you can see your real files run `git clean -fX monorepo`. (Don't 
 
 #### Snippet 
 
-Full commands to get website running locally (against main.loculus.org):
+Full commands to get PPX preview-main website running locally:
 
 ```
 # 1. Clone the Pathoplexus repo if you haven't already
@@ -67,7 +67,7 @@ cd monorepo/website
 cp .env.example .env
 
 # 5. Generate the local test configuration
-../generate_local_test_config.sh --from-live
+../generate_local_test_config.sh --values ../loculus_values/values.yaml --from-live --live-host preview-main.pathoplexus.org
 
 # 6. Install dependencies
 npm ci
@@ -83,3 +83,4 @@ Which commits end up on staging/production/demo is determined by the separate `p
 The commits of this repo (`pathoplexus/pathoplexus`) used by the respective deployments are mirrored in a read-only fashion to branches in this  (`pathoplexus/pathoplexus`) repository (branch names are `env/production`, `env/staging`, `env/demo`). Do not change the commits pointed at by these branches to avoid confusion.
 
 The update is done automatically by a GitHub workflow: https://github.com/pathoplexus/loculus_deployments/blob/main/.github/workflows/pathoplexus-repo-branch-updates.yml
+
