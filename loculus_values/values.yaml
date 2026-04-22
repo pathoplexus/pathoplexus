@@ -2144,11 +2144,11 @@ organisms:
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:L+rich|fasta]}}"
         - name: "Sealion (M)"
           category: "Sealion"
-          maxNumberOfRecommendedEntries: 2000
+          maxNumberOfRecommendedEntries: 5000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:M+rich|fasta]}}"
         - name: "Sealion (S)"
           category: "Sealion"
-          maxNumberOfRecommendedEntries: 2000
+          maxNumberOfRecommendedEntries: 10000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences:S+rich|fasta]}}"
         - name: "Country map"
           category: "Other"
