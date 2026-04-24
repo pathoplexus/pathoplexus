@@ -11,6 +11,7 @@ gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
+traefikVersion: 3
 s3:
   enabled: false
 developmentDatabasePersistence: false
