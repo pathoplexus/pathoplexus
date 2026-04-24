@@ -1,5 +1,6 @@
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
+readOnlyMode: true
 accessionPrefix: "PP_"
 bannerMessage: "This is a staging instance. You should not use it for analysis as it may contain inaccurate test data."
 bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/staging/banner.txt"
