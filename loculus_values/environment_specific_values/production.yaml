@@ -1,7 +1,6 @@
 accessionPrefix: "PP_"
 runDevelopmentMainDatabase: false
 runDevelopmentKeycloakDatabase: false
-readOnlyMode: true
 bannerMessage: ""
 bannerMessageURL: "https://pathoplexus.github.io/announcement_banners/banner.txt"
 submissionBannerMessage: ""
