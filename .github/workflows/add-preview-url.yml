@@ -1,0 +1,42 @@
+name: Add Preview URL to PR
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  update-pr-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update PR description with preview URL
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const hasPreviewLabel = pr.labels.some((label) => label.name === 'preview');
+
+            const previewSubdomain = pr.head.ref
+              .substring(0, 55)
+              .replace(/[_/.]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .toLowerCase();
+
+            const previewUrl = `https://preview-${previewSubdomain}.pathoplexus.org`;
+            const previewLine = hasPreviewLabel
+              ? `Preview: ${previewUrl}`
+              : 'Preview: Add `preview` label to enable';
+
+            const prBody = pr.body || '';
+            const updatedBody = prBody
+              .replace(/^Preview:.*$/gm, '')
+              .trim();
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              body: updatedBody ? `${updatedBody}\n\n${previewLine}` : previewLine,
+            });
