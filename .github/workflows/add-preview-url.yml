@@ -26,12 +26,12 @@ jobs:
 
             const previewUrl = `https://preview-${previewSubdomain}.pathoplexus.org`;
             const previewLine = hasPreviewLabel
-              ? `Preview: ${previewUrl}`
-              : 'Preview: Add `preview` label to enable';
+              ? `🚀 Preview: ${previewUrl}`
+              : '🚀 Preview: Add `preview` label to enable';
 
             const prBody = pr.body || '';
             const updatedBody = prBody
-              .replace(/^Preview:.*$/gm, '')
+              .replace(/^🚀 Preview:.*$/gm, '')
               .trim();
 
             await github.rest.pulls.update({
