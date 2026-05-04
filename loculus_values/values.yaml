@@ -201,7 +201,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
-        definition: Date the viral nucleotide accession was first released on the INSDC.
+        definition: Date the nucleotide accession was first released on the INSDC.
         type: date
         header: "INSDC"
         preprocessing:
@@ -226,7 +226,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
-        definition: Date the viral nucleotide accession was last updated on the INSDC.
+        definition: Date the nucleotide accession was last updated on the INSDC.
         header: "INSDC"
         orderOnDetailsPage: 1020
         preprocessing:
@@ -1278,7 +1278,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 70
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
-        guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find scientific names."
+        guidance: "Use https://www.ncbi.nlm.nih.gov/datasets/taxonomy/browser/ to find scientific names."
         example: "Homo sapiens"
         noInput: true
         preprocessing:
