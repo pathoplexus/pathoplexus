@@ -3619,8 +3619,8 @@ defaultResources:
     memory: "10Mi"
     cpu: "10m"
   limits:
-    memory: "1Gi"
-    cpu: "1000m"
+    memory: "200Mi"
+    cpu: "500m"
 
 taxonomyService:
   dbVersion: "ncbi_taxonomy_latest"
@@ -3629,11 +3629,11 @@ taxonomyService:
 resources:
   ingest:
     requests:
-      memory: "1Gi"
+      memory: "200Mi"
       cpu: "50m"
     limits:
       cpu: "200m"
-      memory: "10Gi"
+      memory: "1Gi"
   backend:
     requests:
       memory: "640Mi"
