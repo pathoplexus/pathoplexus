@@ -145,7 +145,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 10
         orderOnDetailsPage: 200
         definition: "The date on which the sample was collected."
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year."
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -189,6 +189,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: displayName
         displayName: Display name
+        definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
         preprocessing:
           function: concatenate
           inputs:
@@ -200,6 +201,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
+        definition: Date the nucleotide accession was first released on the INSDC.
         type: date
         header: "INSDC"
         preprocessing:
@@ -212,6 +214,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1000
       - name: earliestReleaseDate
         displayName: Earliest release date
+        definition: The earliest release date for the accession, across all versions in both Loculus and the INSDC.
         header: Submission details
         type: date
         rangeSearch: true
@@ -223,6 +226,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
+        definition: Date the nucleotide accession was last updated on the INSDC.
         header: "INSDC"
         orderOnDetailsPage: 1020
         preprocessing:
@@ -574,7 +578,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         columnWidth: 134
         order: 30
         orderOnDetailsPage: 460
-        definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)"
+        definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)."
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
@@ -588,7 +592,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         header: Sample details
         orderOnDetailsPage: 480
-        definition: "A local administrative region from which the sample was collected (ex: county or municipality)"
+        definition: "A local administrative region from which the sample was collected (ex: county or municipality)."
         desired: true
         example: "City of Toronto"
       - name: geoLocCity
@@ -612,7 +616,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         orderOnDetailsPage: 420
         type: float
-        definition: Geo-coordinate latitude in decimal degree (WGS84) format
+        definition: Geo-coordinate latitude in decimal degree (WGS84) format.
         guidance: Provide values in range -90 to 90, where positive values are north of the Equator.
         example: -34.603722
       - name: geoLocLongitude
@@ -620,7 +624,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         orderOnDetailsPage: 440
         type: float
-        definition: Geo-coordinate longitude in decimal degree (WGS84) format
+        definition: Geo-coordinate longitude in decimal degree (WGS84) format.
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
         example: -58.381592
       - name: specimenCollectorSampleId
@@ -662,11 +666,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 50
         orderOnDetailsPage: 820
         desired: true
-        definition: "List of author affiliations"
-        guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author"
+        definition: "List of author affiliations."
+        guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author."
         example: "EVE Group, MPI Department, Swiss TPH, Basel, Switzerland;  Anderson Group, IEB Department, School of Biology, University of Edinburgh, Edinburgh, Scotland"
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
+        definition: The country representing the submitter's affilation.
         generateIndex: true
         autocomplete: true
         hideOnSequenceDetailsPage: true
@@ -675,6 +680,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 980
       - name: insdcAccessionBase
         displayName: INSDC accession base
+        definition: The base accession assigned by the INSDC (GenBank/ENA/DDBJ) for this sequence, without the version number.
         header: "INSDC"
         orderOnDetailsPage: 940
         hideOnSequenceDetailsPage: true
@@ -683,6 +689,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: insdcVersion
         displayName: INSDC version
+        definition: The version number of the INSDC record, incremented each time the sequence record is updated.
         type: int
         header: "INSDC"
         orderOnDetailsPage: 960
@@ -692,6 +699,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: insdcAccessionFull
         displayName: INSDC accession
+        definition: The full versioned INSDC accession (base accession plus version number), searchable across GenBank, ENA, and DDBJ.
         includeInDownloadsByDefault: true
         customDisplay:
           type: linkWithMenu
@@ -745,8 +753,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "INSDC"
         orderOnDetailsPage: 935
         includeInDownloadsByDefault: true
-        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
-        definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
+        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. If you add this field, you should also add the corresponding BioProject."
+        definition: "Accession of corresponding public BioSample of the raw reads in the INSDC."
         example: "SAMN12345678"
         oneHeader: true
         preprocessing:
@@ -757,6 +765,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^SAM(E|D|N)[A-Z]?[0-9]+$"
       - name: gcaAccession
         displayName: GCA accession
+        definition: The GenBank genome assembly accession number for the sequence.
         customDisplay:
           type: link
           url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
@@ -768,13 +777,13 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Culture ID
         header: Sample details
         orderOnDetailsPage: 620
-        definition: "An ID useful to linking to a culture"
+        definition: "An ID useful to linking to a culture."
         example: "Plate7-1124"
         desired: true
       - name: sampleReceivedDate
         ontology_id: GENEPIO:0001177
         definition: The date on which the sample was received by the laboratory.
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year. Before sharing this data, ensure this date is not considered identifiable information."
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year. Before sharing this data, ensure this date is not considered identifiable information."
         example: '2020-03-20'
         displayName: Sample received date
         type: date
@@ -954,7 +963,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostHealthState
         ontology_id: GENEPIO:0001388
         definition: Health status of the host at the time of sample collection.
-        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit."
         example: Asymptomatic [NCIT:C3833]
         displayName: Host health state
         header: Host
@@ -962,13 +971,14 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostHealthOutcome
         ontology_id: GENEPIO:0001390
         definition: Disease outcome in the host.
-        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit."
         example: Recovered [NCIT:C49498]
         displayName: Host health outcome
         header: Host
         orderOnDetailsPage: 1740
       - name: travelHistory
         ontology_id: GENEPIO:0001416
+        definition: Travel history in last six months.
         guidance: Specify the countries travelled in the last six months; separate multiple travel events with a semicolon.
         example: Canada, Vancouver; USA, Seattle; Italy, Milan
         displayName: Travel history
@@ -1034,7 +1044,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingDate
         ontology_id: GENEPIO:0001447
         definition: The date the sample was sequenced.
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year."
         example: "2021-04-26"
         displayName: Sequencing date
         type: date
@@ -1061,6 +1071,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2060
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
+        definition: The model of the sequencing instrument used.
         guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your model, if not add your model in free text."
         example: Oxford Nanopore MinION [GENEPIO:0100142]
         displayName: Sequencing instrument
@@ -1101,8 +1112,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2160
       - name: sequencedByContactEmail
         ontology_id: GENEPIO:0100422
-        definition: The email address of the contact responsible for follow-up regarding the sequence. (This will be displayed publicly.)
-        guidance: As personnel turnover may render an individual's email obsolete, it is more preferable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
+        definition: The email address of the contact responsible for follow-up regarding the sequence.
+        guidance: This will be displayed publicly. As personnel turnover may render an individual's email obsolete, it is more preferable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
         example: enterics@lab.ca
         displayName: Sequenced by - contact email
         header: Sequencing
@@ -1159,8 +1170,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: breadthOfCoverage
         ontology_id: GENEPIO:0001475
-        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (depthOfCoverage).
-        guidance: Provide the percentage (as a number)
+        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (`depthOfCoverage`).
+        guidance: Provide the percentage as a number.
         example: "95"
         displayName: Breadth of coverage
         type: int
@@ -1209,7 +1220,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Diagnostic measurement - method
         header: Diagnostics
         orderOnDetailsPage: 2520
-        definition: "Type of diagnostic test performed"
+        definition: "Type of diagnostic test performed."
         example: "RT-PCR test"
       - name: diagnosticTargetPresence
         displayName: Diagnostic target - presence
@@ -1227,13 +1238,13 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Diagnostic measurement - value
         header: Diagnostics
         orderOnDetailsPage: 2580
-        definition: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test"
+        definition: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test."
         example: "39"
       - name: diagnosticMeasurementUnit
         displayName: Diagnostic measurement - unit
         header: Diagnostics
         orderOnDetailsPage: 2600
-        definition: "Unit of the diagnostic measurement value"
+        definition: "Unit of the diagnostic measurement value."
         example: "Cycle threshold (CT)"
       - name: length
         type: int
@@ -1245,6 +1256,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         perSegment: true
         displayName: Length
+        definition: The length of the sequence.
         columnWidth: 84
         order: 80
         orderOnDetailsPage: 2700
@@ -1266,6 +1278,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 70
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
+        guidance: "Use https://www.ncbi.nlm.nih.gov/datasets/taxonomy/browser/ to find scientific names."
         example: "Homo sapiens"
         noInput: true
         preprocessing:
@@ -1307,7 +1320,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Host"
         orderOnDetailsPage: 1540
         ingest: ncbiHostTaxId
-        definition: "Taxon ID for the host"
+        definition: "Taxon ID for the host from which the sample was collected."
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
         noInput: true
@@ -1335,7 +1348,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1940
-        definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions"
+        definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions."
       - name: passageNumber
         displayName: Passage number
         type: int
@@ -1349,10 +1362,11 @@ defaultOrganismConfig: &defaultOrganismConfig
         autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1980
-        definition: "The techniques used to subculture cells"
+        definition: "The techniques used to subculture cells."
         example: "Enzymatic Detachment"
       - name: ncbiSourceDb
         displayName: NCBI Source DB
+        definition: Indicates if the source of the viral nucleotide record is from a GenBank submitter or from NCBI-derived curation (RefSeq).
         generateIndex: true
         autocomplete: true
         header: "INSDC"
@@ -1361,6 +1375,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: ncbiVirusName
         displayName: NCBI Virus name
+        definition: Scientific name for the organism from the NCBI Taxonomy.
         generateIndex: true
         autocomplete: true
         hideOnSequenceDetailsPage: true
@@ -1369,6 +1384,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1160
       - name: ncbiVirusTaxId
         displayName: NCBI Virus tax ID
+        definition: Taxon ID for the organism from the NCBI Taxonomy.
         type: int
         autocomplete: true
         customDisplay:
@@ -1388,7 +1404,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
         guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
-        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
+        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368."
         preprocessing:
           function: check_regex
           inputs:
@@ -1400,6 +1416,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
       - name: totalSnps
         type: int
+        definition: "Total count of nucleotide substitutions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
@@ -1411,6 +1428,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
         type: int
+        definition: "Total count of inserted nucleotide positions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2740
@@ -1422,6 +1440,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
         type: int
+        definition: "Total count of deleted nucleotide positions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2760
@@ -1433,6 +1452,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
+        definition: "Total count of ambiguous nucleotides (not A, C, G, T, or N)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2780
@@ -1445,6 +1465,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
         type: int
+        definition: "Total count of missing (N) nucleotides."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2800
@@ -1457,6 +1478,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
         type: int
+        definition: "Total count of detected frame shifts."
         isSequenceFilter: true
         rangeSearch: true
         header: "Alignment and QC metrics"
@@ -1467,6 +1489,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
+        definition: "Frame-shifting insertions or deletions detected in CDS regions."
         header: "Alignment and QC metrics"
         isSequenceFilter: true
         orderOnDetailsPage: 2840
@@ -1477,6 +1500,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.frameShifts}
       - name: completeness
         type: float
+        definition: "Fraction of reference positions covered by the sequence (0.0 to 1.0)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
@@ -1499,6 +1523,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Any additional comments about the sample or sequence."
       - name: totalStopCodons
         displayName: '# of stop codons'
+        definition: "Number of penalized premature stop codons."
         type: int
         isSequenceFilter: true
         header: "Alignment and QC metrics"
@@ -1509,6 +1534,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
+        definition: "Premature stop codons not in the ignored list (penalized)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
@@ -1533,7 +1559,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         type: string
         displayName: "Host"
         definition: "NCBI taxon ID or scientific name that uniquely identifies the host from which the sample was collected."
-        guidance: "You can provide either the scientific name of the organism (e.g., Aedes aegypti) or its NCBI taxon ID (e.g., 7159) in this field. We will validate your input and use it to populate the `host common name` and `host scientific name` fields. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
+        guidance: "You can provide either the scientific name of the organism (e.g., `Aedes aegypti`) or its NCBI taxon ID (e.g., `7159`) in this field. We will validate your input and use it to populate the `hostNameCommon` and `hostNameScientific` fields. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use `Culicidae` when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to `Samples pooled`, see [OBI:0600016])."
         example: "Aedes aegypti"
         hideInSearchResultsTable: true
         hideOnSequenceDetailsPage: true
@@ -1582,6 +1608,7 @@ organisms:
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/orthoebolavirus/ebov/2025-09-24--07-29-03Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Outbreak"
           includeInDownloadsByDefault: true
@@ -1811,6 +1838,7 @@ organisms:
           required: true
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, for views on the datasets see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv1/2025-09-09--12-13-13Z/tree.json for DENV-1, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv2/2025-09-09--12-13-13Z/tree.json for DENV-2, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv3/2025-09-09--12-13-13Z/tree.json for DENV-3 and https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv4/2025-09-09--12-13-13Z/tree.json for DENV-4."
           header: "Lineage & Serotype"
           lineageSystem: dengue
           isSequenceFilter: true
@@ -1834,6 +1862,7 @@ organisms:
         # custom displayName construction for Dengue
         - name: displayName
           displayName: Display name
+          definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
           noInput: true
           preprocessing:
             function: build_display_name
@@ -1854,6 +1883,7 @@ organisms:
               regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
         - name: serotype
           displayName: Serotype
+          definition: "Which of the antigenically distinct types of dengue virus the sequence was most closely assigned to according to Nextclade."
           header: "Lineage & Serotype"
           noInput: true
           generateIndex: true
@@ -2062,6 +2092,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/wnv/all-lineages/2026-03-04--12-40-26Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Lineage"
           includeInDownloadsByDefault: true
@@ -2194,6 +2225,7 @@ organisms:
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/pathoplexus/cchfv/S/2025-09-24--07-29-03Z/CCHF_S.json?c=clade_membership for a view of the Nextclade dataset."
           header: "Lineage"
           isSequenceFilter: true
           relatesToSegment: S
@@ -2312,6 +2344,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2326,6 +2359,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=outbreak.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2339,6 +2373,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=lineage.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2357,8 +2392,8 @@ organisms:
           displayName: GISAID Isolate ID
           header: "Sample details"
           orderOnDetailsPage: 640
-          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)"
-          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
+          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
           example: "EPI_ISL_123456"
           preprocessing:
             function: check_regex
@@ -2972,6 +3007,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/rsv/a/EPI_ISL_412866/2025-08-25--09-00-35Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3099,6 +3135,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/rsv/b/EPI_ISL_1653999/2025-08-25--09-00-35Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3222,6 +3259,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hmpv/all-clades/NC_039199/2025-04-25--12-24-24Z/tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3321,6 +3359,7 @@ organisms:
       metadataAdd:
         - name: genotype
           displayName: Genotype
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/measles/genome/WHO-2012/2025-08-11--19-06-01Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Genotype"
           includeInDownloadsByDefault: true
@@ -3337,7 +3376,7 @@ organisms:
           displayName: "MeaNS2 ID"
           header: "Sample details"
           orderOnDetailsPage: 630
-          definition: "MeaNS2 ID"
+          definition: "MeaNS2 ID."
           guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
       website: 
         <<: *website
@@ -3419,6 +3458,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/genspectrum/marburg/HK1980/all-lineages/2025-09-09--12-13-13Z/marburg_tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Clade"
           noInput: true
@@ -3527,6 +3567,7 @@ organisms:
           required: true
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
           header: "Clade"
           includeInDownloadsByDefault: true
           noInput: true
@@ -3550,6 +3591,7 @@ organisms:
         # custom displayName construction for YFV
         - name: displayName
           displayName: Display name
+          definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
           noInput: true
           preprocessing:
             function: build_display_name

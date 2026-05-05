@@ -60,7 +60,7 @@ secrets:
       slack-token: AgBo9Li49WiC2PcK50vk2AHIvjs9xUTIcCTupSTKnEv3z5QYBrAwqvodhExQU7gLUJXLGTGCt/fZuPJ1h7alpNOcn1jy8Zfr9YSjmlojUcjBcSbIhH5dKwUjNbPrI+fY79B8MovMfqSflSOi8yPIEoaSTrCRilFh+qvPaYGNN7SD6P7eD6dvhTfkeAaGiIXcBI7Opy32YusutJAC+pU8Z1S19xxSTWylE/4j4lHPVRb9CN4qGNJOJ9uRnHnoj5IQXduWDpfGjcS5QmLcS5nxIJSeLhIRUfzG3/UjKYRqTZdlLvqrARQIdgV/qbnw3AFiS+QYWKk5zP87uN4USCkKmhMAO9mrUCUUOX4qIe4JYU64xzUlSLY2W8NQ0wdDjccMo7FcsBZRqPxx3qx/aL8LiqglpPXLJ4eHI8t3NIrY3SFLWufBwO5zOubV7pTKE68V3currdVDCIof4dq8JwsZTAHK/V4InHX5INTFAPGaKLPLUVX+iCUm+8JEMO5lTvMxqtxnYE0pPqB/roda0elunpxJ/Ta2N1vGx7QRIXcJUfYVxyosvJLkZUp/Ht+2ttjqA5p86KfO7HtICYaL2InlUse3yuzaK60Sp7x/2cqldDmag730mXE1lQhu5CzeJ2e0kpDyrbu/G0CBFZPD5hUgftnIYjcVCZwjj44e3FAA+kF3HYHA2yrYrKtddv5sCxc+0TTr4vfbGCDrZsoRB/svwJGdTzG9qAJY0hgiK3pozfjz6okVTaNFpG2J09mJFwnUSZTMP3VsG0+YMi4=
 replicas:
   backend: 2
-  website: 5
+  website: 2
   lapis: 1
 seqSets:
   enabled: true
@@ -113,13 +113,13 @@ resources:
   silo:
     requests:
       memory: "2Gi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "2Gi"
   lapis:
     requests:
       memory: "220Mi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "5Gi"
   silo-importer:
@@ -160,6 +160,45 @@ resources:
           cpu: "1000m"
         limits:
           memory: "3Gi"
+    marburg:
+      silo:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "220Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
+    yellow-fever:
+      silo:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "220Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
+    ebola-sudan:
+      silo:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "220Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
 defaultResources:
   requests:
     memory: "200Mi"
