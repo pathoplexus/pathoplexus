@@ -666,7 +666,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 50
         orderOnDetailsPage: 820
         desired: true
-        definition: "List of author affiliations"
+        definition: "List of author affiliations."
         guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author."
         example: "EVE Group, MPI Department, Swiss TPH, Basel, Switzerland;  Anderson Group, IEB Department, School of Biology, University of Edinburgh, Edinburgh, Scotland"
       - name: ncbiSubmitterCountry
@@ -777,7 +777,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Culture ID
         header: Sample details
         orderOnDetailsPage: 620
-        definition: "An ID useful to linking to a culture"
+        definition: "An ID useful to linking to a culture."
         example: "Plate7-1124"
         desired: true
       - name: sampleReceivedDate
@@ -3312,7 +3312,7 @@ organisms:
           displayName: "MeaNS2 ID"
           header: "Sample details"
           orderOnDetailsPage: 630
-          definition: "MeaNS2 ID"
+          definition: "MeaNS2 ID."
           guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
       website: 
         <<: *website
