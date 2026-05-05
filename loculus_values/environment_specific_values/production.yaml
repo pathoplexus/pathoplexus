@@ -112,7 +112,7 @@ resources:
       memory: "3Gi"
   silo:
     requests:
-      memory: "1Gi"
+      memory: "2Gi"
       cpu: "500m"
     limits:
       memory: "2Gi"
@@ -163,7 +163,7 @@ resources:
     marburg:
       silo:
         requests:
-          memory: "500Mi"
+          memory: "1Gi"
           cpu: "250m"
         limits:
           memory: "1Gi"
@@ -176,7 +176,7 @@ resources:
     yellow-fever:
       silo:
         requests:
-          memory: "500Mi"
+          memory: "1Gi"
           cpu: "250m"
         limits:
           memory: "1Gi"
@@ -189,7 +189,7 @@ resources:
     ebola-sudan:
       silo:
         requests:
-          memory: "500Mi"
+          memory: "1Gi"
           cpu: "250m"
         limits:
           memory: "1Gi"
