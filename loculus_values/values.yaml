@@ -1818,7 +1818,7 @@ organisms:
           required: true
         - name: lineage
           displayName: Lineage
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv1/2025-09-09--12-13-13Z/tree.json, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv2/2025-09-09--12-13-13Z/tree.json, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv3/2025-09-09--12-13-13Z/tree.json and https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv4/2025-09-09--12-13-13Z/tree.json for views of the Nextclade datasets."
+          definition: "Clade label assigned by Nextclade, for views on the datasets see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv1/2025-09-09--12-13-13Z/tree.json for DENV-1, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv2/2025-09-09--12-13-13Z/tree.json for DENV-2, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv3/2025-09-09--12-13-13Z/tree.json for DENV-3 and https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv4/2025-09-09--12-13-13Z/tree.json for DENV-4."
           header: "Lineage & Serotype"
           lineageSystem: dengue
           isSequenceFilter: true
@@ -2189,7 +2189,7 @@ organisms:
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/pathoplexus/cchfv/S/2025-09-24--07-29-03Z/CCHF_S.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/pathoplexus/cchfv/S/2025-09-24--07-29-03Z/CCHF_S.json?c=clade_membership for a view of the Nextclade dataset."
           header: "Lineage"
           isSequenceFilter: true
           relatesToSegment: S
@@ -3199,7 +3199,7 @@ organisms:
       metadataAdd:
         - name: lineage
           displayName: Lineage
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hmpv/all-clades/NC_039199/2025-04-25--12-24-24Z/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hmpv/all-clades/NC_039199/2025-04-25--12-24-24Z/tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3394,7 +3394,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/genspectrum/marburg/HK1980/all-lineages/2025-09-09--12-13-13Z/marburg_tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/genspectrum/marburg/HK1980/all-lineages/2025-09-09--12-13-13Z/marburg_tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Clade"
           noInput: true
