@@ -111,8 +111,12 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
     logger.info(entries)
 
     url = f"{BACKEND_URL}/{organism}/revoke"
+    revoked_accessions = []
     for entry in entries:
         accession = entry["accession"]
+        if accession in revoked_accessions:
+            logger.info(f"Already revoked {accession}, skipping.")
+            continue
         logger.debug(f"revoking: {accession}")
         body = {
             "accessions": [accession],
@@ -120,6 +124,7 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
         }
         logger.info(f"Revoking {accession} with body: {body}")
         make_request(url, username, password, json_body=body)
+        revoked_accessions.append(accession)
 
 
 def approve(organism: str, username: str, password: str) -> dict[str, Any]:
@@ -195,7 +200,6 @@ def main(insdc_accession, organism, username, password):
             logger.warning(
                 f"The sequence {sequence_id} is not suppressed or could not be determined."
             )
-
     revoke(organism, username, password, accessions_list=to_revoke)
     approve(organism, username, password)
 
