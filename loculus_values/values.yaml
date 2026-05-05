@@ -2315,6 +2315,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=outbreak.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2328,6 +2329,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=lineage.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
