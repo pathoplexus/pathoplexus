@@ -48,4 +48,4 @@ secrets:
 seqSets:
   enabled: True
   crossRef: null
-podPriorityValue: 10
+podPriorityValue: 500
