@@ -1875,7 +1875,6 @@ organisms:
         tableColumns:
           - sampleCollectionDate
           - earliestReleaseDate
-          - ncbiReleaseDate
           - geoLocCountry
           - authors
           - authorAffiliations
