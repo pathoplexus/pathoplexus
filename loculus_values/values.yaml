@@ -1631,7 +1631,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 3000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/treetime_rerooted_NC_002549.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/treetime_rerooted_NC_002549.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Zaire ebolavirus}}"
       website:
@@ -1714,7 +1713,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 3000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Sudan ebolavirus}}"
     preprocessing:
@@ -1810,19 +1808,15 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree (DENV-1)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_1/treetime_rerooted_NC_001477.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_1/treetime_rerooted_NC_001477.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:DENV-1|fasta]}}&metadataUrl={{[metadata]}}&organism={{dengue virus type 1}}"
         - name: "Place on viral UShER tree (DENV-2)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_2/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_2/treetime_rerooted_NC_001474.2.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_2/treetime_rerooted_NC_001474.2.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_2/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:DENV-2|fasta]}}&metadataUrl={{[metadata]}}&organism={{dengue virus type 2}}"
         - name: "Place on viral UShER tree (DENV-3)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_3/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_3/treetime_rerooted_NC_001475.2.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_3/treetime_rerooted_NC_001475.2.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_3/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:DENV-3|fasta]}}&metadataUrl={{[metadata]}}&organism={{dengue virus type 3}}"
         - name: "Place on viral UShER tree (DENV-4)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_4/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_4/treetime_rerooted_NC_002640.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_4/treetime_rerooted_NC_002640.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/dengue_virus_type_4/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:DENV-4|fasta]}}&metadataUrl={{[metadata]}}&organism={{dengue virus type 4}}"
       # adding custom description of submissionId to show on website
@@ -2090,7 +2084,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/treetime_rerooted_NC_009942.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/treetime_rerooted_NC_009942.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{West Nile virus}}"
       metadataAdd:
@@ -2215,15 +2208,12 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree (L)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/treetime_rerooted_NC_005301.3.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/treetime_rerooted_NC_005301.3.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:L|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae L segment}}"
         - name: "Place on viral UShER tree (M)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 5000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/treetime_rerooted_NC_005300.2.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/treetime_rerooted_NC_005300.2.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:M|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae M segment}}"
         - name: "Place on viral UShER tree (S)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 10000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/treetime_rerooted_NC_005302.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/treetime_rerooted_NC_005302.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:S|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae S segment}}"
       metadataAdd:
@@ -2338,11 +2328,9 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree (clade Ia)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 200
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/treetime_rerooted_NC_003310.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/treetime_rerooted_NC_003310.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Monkeypox virus clade Ia}}"
         - name: "Place on viral UShER tree (clade IIb)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 200
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/treetime_rerooted_NC_063383.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/treetime_rerooted_NC_063383.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Monkeypox virus clade IIb}}"
       metadataAdd:
@@ -3005,7 +2993,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 1300
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/midpoint_rerooted_NC_001803.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/midpoint_rerooted_NC_001803.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human respiratory syncytial virus A}}"
       metadataAdd:
@@ -3129,11 +3116,9 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree (B1)"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 1300
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/midpoint_rerooted_NC_001781.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/midpoint_rerooted_NC_001781.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus B1}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 1300
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/midpoint_rerooted_NC_038235.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/midpoint_rerooted_NC_038235.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus}}"
       metadataAdd:
@@ -3257,7 +3242,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 1500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/treetime_rerooted_NC_039199.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/treetime_rerooted_NC_039199.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human metapneumovirus}}"
       metadataAdd:
@@ -3357,7 +3341,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 1000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Measles morbillivirus}}"
       metadataAdd:
@@ -3460,7 +3443,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 3000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Marburg virus}}"
       metadataAdd:
@@ -3555,7 +3537,6 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
-          category: "Taxonium"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Yellow fever virus}}"
       # adding custom description of submissionId to show on website
