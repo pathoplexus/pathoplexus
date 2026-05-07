@@ -1713,6 +1713,10 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          category: "Taxonium"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Sudan ebolavirus}}"
     preprocessing:
       - <<: *preprocessing
         version:
@@ -3455,6 +3459,10 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          category: "Taxonium"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Marburg virus}}"
       metadataAdd:
         - name: clade
           displayName: Clade
