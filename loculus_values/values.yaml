@@ -2994,7 +2994,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 1300
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/midpoint_rerooted_NC_001803.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/midpoint_rerooted_NC_001803.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human respiratory syncytial virus A}}"
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/treetime_rerooted_NC_001803.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/treetime_rerooted_NC_001803.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human respiratory syncytial virus A}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
@@ -3117,10 +3117,7 @@ organisms:
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         - name: "Place on viral UShER tree (B1)"
           maxNumberOfRecommendedEntries: 1300
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/midpoint_rerooted_NC_001781.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/midpoint_rerooted_NC_001781.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus B1}}"
-        - name: "Place on viral UShER tree"
-          maxNumberOfRecommendedEntries: 1300
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/midpoint_rerooted_NC_038235.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/midpoint_rerooted_NC_038235.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_NC_038235_1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus}}"
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/treetime_rerooted_NC_001781.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/treetime_rerooted_NC_001781.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus B1}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
