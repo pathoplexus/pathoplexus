@@ -1556,6 +1556,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       multiFieldSearches:
         - name: identifier
           displayName: Identifier (INSDC, etc.)
+          orderInSearchDisplay: -10000
           fields:
             - accessionVersion
             - submissionId
