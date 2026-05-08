@@ -2153,7 +2153,7 @@ organisms:
       submissionDataTypes:
         <<: *defaultSubmissionDataTypes
         maxSequencesPerEntry: 3
-      organismName: "Andes virus"
+      organismName: "Andes Virus"
       nucleotideSequences: [L, M, S]
       image: "https://raw.githubusercontent.com/loculus-project/agent_store/eb5ead95768351c5ee1576065a731bb32e6502f2/andes-virus/images/viridis_invert.png"
       linkOuts:
@@ -2196,7 +2196,7 @@ organisms:
           <<: *preprocessingConfigFile
           create_embl_file: false
           taxon_id: 1980456
-          scientific_name: "Andes virus"
+          scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           nextclade_dataset_server: "https://raw.githubusercontent.com/loculus-project/agent_store/57a1a32725a6ba53cd557535e65076ad51b6d884/andes-virus/nextclade_data"
           segments:
@@ -2229,7 +2229,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 1980456
-          scientific_name: "Andes virus"
+          scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: L
