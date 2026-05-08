@@ -48,4 +48,4 @@ secrets:
 seqSets:
   enabled: True
   crossRef: null
-podPriorityClassName: demo
+podPriorityValue: 500
