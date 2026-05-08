@@ -3619,8 +3619,8 @@ defaultResources:
     memory: "10Mi"
     cpu: "10m"
   limits:
-    memory: "200Mi"
-    cpu: "500m"
+    memory: "1Gi"
+    cpu: "1000m"
 
 taxonomyService:
   dbVersion: "ncbi_taxonomy_latest"
