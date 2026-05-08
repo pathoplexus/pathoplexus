@@ -2155,7 +2155,7 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Andes virus"
       nucleotideSequences: [L, M, S]
-      image: "https://raw.githubusercontent.com/loculus-project/agent_store/9607d5fb7772685222e1769ed32169db3351e2a4/andes-virus/images/copper_r.png"
+      image: "https://raw.githubusercontent.com/loculus-project/agent_store/eb5ead95768351c5ee1576065a731bb32e6502f2/andes-virus/images/viridis_invert.png"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
