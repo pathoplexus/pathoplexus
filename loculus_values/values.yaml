@@ -2146,7 +2146,7 @@ organisms:
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/env.fasta]]"
             - name: prM
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/prM.fasta]]"
-  hanta-andes:
+  andv:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
@@ -2155,20 +2155,20 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Andes Virus [Hantavirus]"
       nucleotideSequences: [L, M, S]
-      image: "https://pathoplexus.github.io/reference_store/hanta-andes/images/viridis_invert.png"
+      image: "https://pathoplexus.github.io/reference_store/andv/images/viridis_invert.png"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 3000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=hanta-andes/L&dataset-server=https://pathoplexus.github.io/reference_store/hanta-andes/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=andv/L&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
         - name: "Nextclade (M)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 5000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=hanta-andes/M&dataset-server=https://pathoplexus.github.io/reference_store/hanta-andes/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=andv/M&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
         - name: "Nextclade (S)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 10000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=hanta-andes/S&dataset-server=https://pathoplexus.github.io/reference_store/hanta-andes/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=andv/S&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
         - name: "Country map"
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
@@ -2198,22 +2198,22 @@ organisms:
           taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
-          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/hanta-andes/nextclade_data"
+          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
           segments:
             - name: L
               references:
                 - name: singleReference
-                  nextclade_dataset_name: hanta-andes/L
+                  nextclade_dataset_name: andv/L
                   genes: [RdRp]
             - name: M
               references:
                 - name: singleReference
-                  nextclade_dataset_name: hanta-andes/M
+                  nextclade_dataset_name: andv/M
                   genes: [GPC]
             - name: S
               references:
                 - name: singleReference
-                  nextclade_dataset_name: hanta-andes/S
+                  nextclade_dataset_name: andv/S
                   genes: ["N", NSs]
     ingest:
       <<: *ingest
@@ -2223,7 +2223,7 @@ organisms:
         calculate_groups_override_json: true
         segment_identification:
           method: "minimizer"
-          minimizer_url: "https://pathoplexus.github.io/reference_store/hanta-andes/segment-minimizer.json"
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
           minimizer_parser: ["segment"]
     enaDeposition:
       singleReference:
@@ -2235,29 +2235,29 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/NC_003468.2.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003468.2.fasta]]"
             insdcAccessionFull: NC_003468.2
             genes:
               - name: RdRp
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/genes/RdRp.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/RdRp.fasta]]"
       - name: M
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/NC_003467.2.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003467.2.fasta]]"
             insdcAccessionFull: NC_003467.2
             genes:
               - name: GPC
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/genes/GPC.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/GPC.fasta]]"
       - name: S
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/NC_003466.1.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003466.1.fasta]]"
             insdcAccessionFull: NC_003466.1
             genes:
               - name: "N"
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/genes/N.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/N.fasta]]"
               - name: NSs
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/hanta-andes/genes/NSs.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/NSs.fasta]]"
   cchf:
     <<: *defaultOrganismConfig
     schema:
