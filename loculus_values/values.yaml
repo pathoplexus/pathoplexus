@@ -1553,6 +1553,18 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
+      multiFieldSearches:
+        - name: identifier
+          displayName: Identifier (INSDC, etc.)
+          orderInSearchDisplay: 0
+          fields:
+            - accessionVersion
+            - submissionId
+            - insdcAccessionFull
+            - bioprojectAccession
+            - gcaAccession
+            - biosampleAccession
+            - insdcRawReadsAccession
     extraInputFields:
       - &hostConfig
         name: host
