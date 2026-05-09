@@ -1553,6 +1553,18 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
+      multiFieldSearches:
+        - name: identifier
+          displayName: Identifier (INSDC, etc.)
+          orderInSearchDisplay: -10000
+          fields:
+            - accessionVersion
+            - submissionId
+            - insdcAccessionFull
+            - bioprojectAccession
+            - gcaAccession
+            - biosampleAccession
+            - insdcRawReadsAccession
     extraInputFields:
       - &hostConfig
         name: host
@@ -2146,6 +2158,118 @@ organisms:
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/env.fasta]]"
             - name: prM
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/prM.fasta]]"
+  andv:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      submissionDataTypes:
+        <<: *defaultSubmissionDataTypes
+        maxSequencesPerEntry: 3
+      organismName: "Andes Virus [Hantavirus]"
+      nucleotideSequences: [L, M, S]
+      image: "https://pathoplexus.github.io/reference_store/andv/images/viridis_invert.png"
+      linkOuts:
+        - name: "Nextclade (L)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=andv/L&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+        - name: "Nextclade (M)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 5000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=andv/M&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+        - name: "Nextclade (S)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 10000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=andv/S&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+        - name: "Country map"
+          category: "Other"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - geoLocCountry
+          - geoLocAdmin1
+          - authors
+          - authorAffiliations
+          - earliestReleaseDate
+          - hostNameScientific
+          - length_M
+          - length_S
+          - length_L
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          create_embl_file: false
+          taxon_id: 1980456
+          scientific_name: "Andes Virus"
+          molecule_type: "genomic RNA"
+          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          segments:
+            - name: L
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/L
+                  genes: [RdRp]
+            - name: M
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/M
+                  genes: [GPC]
+            - name: S
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/S
+                  genes: ["N", NSs]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 1980456
+        calculate_groups_override_json: true
+        segment_identification:
+          method: "minimizer"
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
+          minimizer_parser: ["segment"]
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 1980456
+          scientific_name: "Andes Virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: L
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003468.2.fasta]]"
+            insdcAccessionFull: NC_003468.2
+            genes:
+              - name: RdRp
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/RdRp.fasta]]"
+      - name: M
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003467.2.fasta]]"
+            insdcAccessionFull: NC_003467.2
+            genes:
+              - name: GPC
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/GPC.fasta]]"
+      - name: S
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003466.1.fasta]]"
+            insdcAccessionFull: NC_003466.1
+            genes:
+              - name: "N"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/N.fasta]]"
+              - name: NSs
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/NSs.fasta]]"
   cchf:
     <<: *defaultOrganismConfig
     schema:
