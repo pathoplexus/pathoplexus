@@ -5,7 +5,7 @@ import ErrorBox from './ErrorBox';
 
 const RestrictedUseWarning: React.FC = () => {
     return (
-        <ErrorBox title='Restricted-Use sequence' level='warning'>
+        <ErrorBox title='Restricted-Use sequence' level='warning' className='mb-6'>
             This sequence is only available under the{' '}
             <a href='https://pathoplexus.org/about/terms-of-use/restricted-data' className='underline'>
                 Restricted Use Terms
