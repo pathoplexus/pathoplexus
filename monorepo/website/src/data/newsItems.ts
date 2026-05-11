@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-05-11-andes-virus',
+        title: 'Andes virus: supporting response to the current Hantavirus outbreak',
+        date: '11 May 2026',
+        excerpt:
+            'Pathoplexus has launched support for Andes virus, the species of Hantavirus responsible for the current outbreak linked to the MV Hondius. This launch provides a space for researchers and public health teams to submit, search, download, and analyse Andes virus genomic data. Four teams, from four different countries, have already submitted genomes from the current outbreak since our launch on the evening of Saturday 9 May…',
+    },
+    {
         slug: '2026-03-12-expanding-pathoplexus-arbos',
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '12 March 2026',
