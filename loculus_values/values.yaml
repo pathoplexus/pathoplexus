@@ -2172,15 +2172,15 @@ organisms:
         - name: "Nextclade (L)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 3000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=andv/L&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/l"
         - name: "Nextclade (M)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 5000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=andv/M&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/m"
         - name: "Nextclade (S)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 10000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=andv/S&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/s"
         - name: "Country map"
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
@@ -2203,29 +2203,31 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 1
+          - 2
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
           taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
-          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
           segments:
             - name: L
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/L
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/l
+                  nextclade_dataset_tag: "2026-05-11--18-59-50Z"
                   genes: [RdRp]
             - name: M
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/M
-                  genes: [GPC]
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
+                  nextclade_dataset_tag: "2026-05-11--18-59-50Z"
+                  genes: [GPC, Gn, Gc]
             - name: S
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/S
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/s
+                  nextclade_dataset_tag: "2026-05-11--18-59-50Z"
                   genes: ["N", NSs]
     ingest:
       <<: *ingest
