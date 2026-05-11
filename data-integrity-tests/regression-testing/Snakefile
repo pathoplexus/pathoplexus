@@ -29,13 +29,14 @@ rule all:
                 "hmpv",
                 "measles",
                 "yellow-fever",
+                "andv"
             ],
             difftype=["seq", "meta"],
         ),
 
 
 def segments(w):
-    return ["L", "M", "S"] if w.organism == "cchf" else ["main"]
+    return ["L", "M", "S"] if w.organism in ["cchf", "andv"] else ["main"]
 
 
 def url(w):
