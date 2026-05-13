@@ -1287,7 +1287,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             hostTaxonId: processed.hostTaxonId
             hostNameScientific: hostNameScientific
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1307,11 +1307,13 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             hostTaxonId: processed.hostTaxonId
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: *taxonomy_service_url
       - &hostTaxonIdConfig
         name: hostTaxonId
         displayName: Host taxon ID
-        type: int
+        type: string
+        hierarchicalFilter: *taxonomy_service_url
+        hierarchicalSearchLabel: "include subtaxa"
         autocomplete: true
         customDisplay:
           type: hostSpecies
@@ -1331,7 +1333,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             hostNameScientific: hostNameScientific
             hostTaxonId: hostTaxonId
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
