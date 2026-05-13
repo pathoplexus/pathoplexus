@@ -24,14 +24,55 @@ export const tools: Tool[] = [
             'https://nextstrain.org/' +
             {
                 /* eslint-disable @typescript-eslint/naming-convention */
-                'andv': 'groups/hodcroftlab/andv/L',
                 'hmpv': 'hmpv/all/genome',
                 'mpox': 'mpox/all-clades',
                 'rsv-a': 'rsv/a/genome/6y',
                 'rsv-b': 'rsv/b/genome/6y',
                 /* eslint-enable @typescript-eslint/naming-convention */
             }[organism]!,
-        organisms: ['andv', 'hmpv', 'mpox', 'rsv-a', 'rsv-b'],
+        organisms: ['hmpv', 'mpox', 'rsv-a', 'rsv-b'],
+    },
+    {
+        name: 'Nextstrain segment L',
+        description:
+            'Nextstrain is an open-source project that visualizes the real-time evolution and geographic spread of pathogens using genomic sequencing data.',
+        image: '/images/external-tools/nextstrain.png',
+        url: (organism) =>
+            'https://nextstrain.org/' +
+            {
+                /* eslint-disable @typescript-eslint/naming-convention */
+                'andv': 'groups/hodcroftlab/andv/L',
+                /* eslint-enable @typescript-eslint/naming-convention */
+            }[organism]!,
+        organisms: ['andv'],
+    },
+    {
+        name: 'Nextstrain segment M',
+        description:
+            'Nextstrain is an open-source project that visualizes the real-time evolution and geographic spread of pathogens using genomic sequencing data.',
+        image: '/images/external-tools/nextstrain.png',
+        url: (organism) =>
+            'https://nextstrain.org/' +
+            {
+                /* eslint-disable @typescript-eslint/naming-convention */
+                'andv': 'groups/hodcroftlab/andv/M',
+                /* eslint-enable @typescript-eslint/naming-convention */
+            }[organism]!,
+        organisms: ['andv'],
+    },
+    {
+        name: 'Nextstrain segment S',
+        description:
+            'Nextstrain is an open-source project that visualizes the real-time evolution and geographic spread of pathogens using genomic sequencing data.',
+        image: '/images/external-tools/nextstrain.png',
+        url: (organism) =>
+            'https://nextstrain.org/' +
+            {
+                /* eslint-disable @typescript-eslint/naming-convention */
+                'andv': 'groups/hodcroftlab/andv/S',
+                /* eslint-enable @typescript-eslint/naming-convention */
+            }[organism]!,
+        organisms: ['andv'],
     },
     {
         name: 'Pathogen Sequence Counts and Maps',
