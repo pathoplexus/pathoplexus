@@ -1779,7 +1779,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://master.clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/bdbv&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/bdbv&dataset-tag=2026-05-15--16-16-45Z"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
@@ -1792,12 +1792,12 @@ organisms:
           - 1
         configFile:
           <<: *preprocessingConfigFile
-          nextclade_dataset_server: "https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
           segments:
             - name: main
               references:
                 - name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
+                  nextclade_dataset_tag: "2026-05-15--16-16-45Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
     ingest:
       <<: *ingest
@@ -1814,25 +1814,25 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/reference.fasta]]"
           insdcAccessionFull: NC_014373.1
           genes:
             - name: NP
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/NP.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP40.fasta]]"
             - name: GP
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/GP.fasta]]"
             - name: GP_003
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/GP_003.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/GP_003.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP30.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP24.fasta]]"
             - name: L
-              sequence: "[[URL:https://raw.githubusercontent.com/loculus-project/agent_store/main/bdbv/genes/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/L.fasta]]"
   dengue:
     <<: *defaultOrganismConfig
     schema:
