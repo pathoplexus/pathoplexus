@@ -1770,6 +1770,101 @@ organisms:
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP24.fasta]]"
             - name: L
               sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/L.fasta]]"
+  ebola-misc:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Ebola (other spp.)"
+      image: "/images/organisms/ebola_misc_small.jpg"
+      metadataAdd:
+        - name: length
+          type: int
+          header: "Sequence"
+          isSequenceFilter: true
+          noInput: true
+          rangeSearch: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          displayName: Length
+          definition: The length of the sequence.
+          columnWidth: 84
+          order: 80
+          orderOnDetailsPage: 2700
+        - name: totalSnps
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalInsertedNucs
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalDeletedNucs
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalAmbiguousNucs
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalUnknownNucs
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalFrameShifts
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: frameShifts
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: completeness
+          type: float
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: totalStopCodons
+          type: int
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+        - name: stopCodons
+          noInput: true
+          notSearchable: true
+          hideInSearchResultsTable: true
+          hideOnSequenceDetailsPage: true
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+                - name: singleReference
+                  genes: []
+    ingest: {}
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "N"
   dengue:
     <<: *defaultOrganismConfig
     schema:
