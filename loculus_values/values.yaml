@@ -1990,7 +1990,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        taxon_id: 3052464
+        taxon_id: 12637
     enaDeposition:
       DENV-1:
         configFile:
@@ -3759,7 +3759,7 @@ organisms:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
-        taxon_id: 3046277
+        taxon_id: 11089
         log_level: DEBUG
     enaDeposition:
       singleReference:
