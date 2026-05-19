@@ -2239,7 +2239,7 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Andes Virus [Hantavirus]"
       nucleotideSequences: [L, M, S]
-      image: "https://pathoplexus.github.io/reference_store/andv/images/viridis_invert.png"
+      image: "/images/organisms/andv.jpg"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
