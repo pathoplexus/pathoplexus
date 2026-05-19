@@ -2207,18 +2207,6 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-        - name: "Place on viral UShER tree (L)"
-          category: "Viral UShER"
-          maxNumberOfRecommendedEntries: 2000
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/treetime_rerooted_NC_005301.3.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/treetime_rerooted_NC_005301.3.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_L/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:L|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae L segment}}"
-        - name: "Place on viral UShER tree (M)"
-          category: "Viral UShER"
-          maxNumberOfRecommendedEntries: 5000
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/treetime_rerooted_NC_005300.2.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/treetime_rerooted_NC_005300.2.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_M/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:M|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae M segment}}"
-        - name: "Place on viral UShER tree (S)"
-          category: "Viral UShER"
-          maxNumberOfRecommendedEntries: 10000
-          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/treetime_rerooted_NC_005302.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/treetime_rerooted_NC_005302.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Orthonairovirus_haemorrhagiae_S/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences:S|fasta]}}&metadataUrl={{[metadata]}}&organism={{Orthonairovirus haemorrhagiae S segment}}"
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
