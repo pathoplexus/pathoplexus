@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-05-19-ebola-bundibugyo',
+        title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
+        date: '19 May 2026',
+        excerpt:
+            'In response to the current Ebola outbreak in the Democratic Republic of the Congo (DRC) and Uganda, Pathoplexus has added support for Bundibugyo virus (BDBV), an orthoebolavirus known to cause severe Ebola disease in humans. This addition is in response to reports from the health authorities…',
+    },
+    {
         slug: '2026-05-11-andes-virus',
         title: 'Andes virus: supporting response to the current hantavirus outbreak',
         date: '11 May 2026',
