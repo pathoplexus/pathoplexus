@@ -7,6 +7,20 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-05-19-ebola-bundibugyo',
+        title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
+        date: '19 May 2026',
+        excerpt:
+            'In response to the current Ebola outbreak in the Democratic Republic of the Congo (DRC) and Uganda, Pathoplexus has added support for Bundibugyo virus (BDBV), an orthoebolavirus known to cause severe Ebola disease in humans. This addition is in response to reports from the health authorities…',
+    },
+    {
+        slug: '2026-05-11-andes-virus',
+        title: 'Andes virus: supporting response to the current hantavirus outbreak',
+        date: '11 May 2026',
+        excerpt:
+            'Pathoplexus has launched support for Andes virus (ANDV), the species of hantavirus responsible for the current outbreak linked to the MV Hondius. This launch provides a space for researchers and public health teams to submit, search, download, and analyse Andes virus genomic data. Four teams, from four different countries…',
+    },
+    {
         slug: '2026-03-12-expanding-pathoplexus-arbos',
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '12 March 2026',
