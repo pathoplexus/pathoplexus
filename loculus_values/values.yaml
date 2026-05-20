@@ -1,6 +1,3 @@
-# REVERT DONT MERGE
-createTestAccounts: true
-# REVERT ABOVE
 preprocessingTimeout: 600
 getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
