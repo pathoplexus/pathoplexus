@@ -2396,6 +2396,8 @@ organisms:
           lineageSystem: cchfS
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
       website:
         <<: *website
         tableColumns:
