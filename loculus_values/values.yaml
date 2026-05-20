@@ -86,7 +86,7 @@ lineageSystemDefinitions:
   marburg:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1793,18 +1793,31 @@ organisms:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
-      - <<: *preprocessing
+      - &ebolaBdbvPreprocessing
+        <<: *preprocessing
         version:
           - 1
-        configFile:
+        configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
-            - name: main
+            - &ebolaBdbvPreprocessingSegment
+              name: main
               references:
-                - name: "singleReference"
+                - &ebolaBdbvPreprocessingReference
+                  name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
                   nextclade_dataset_tag: "2026-05-15--16-16-45Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
+      - <<: *ebolaBdbvPreprocessing
+        version:
+          - 2
+        configFile:
+          <<: *ebolaBdbvPreprocessingConfigFile
+          segments:
+            - <<: *ebolaBdbvPreprocessingSegment
+              references:
+                - <<: *ebolaBdbvPreprocessingReference
+                  nextclade_dataset_tag: "2026-05-18--20-09-34Z"
     ingest:
       <<: *ingest
       configFile:
