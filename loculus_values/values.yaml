@@ -1620,7 +1620,7 @@ organisms:
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/orthoebolavirus/ebov/2025-09-24--07-29-03Z/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/orthoebolavirus/ebov/2025-09-24--07-29-03Z/tree.json for a view of the Nextclade tree."
           isSequenceFilter: true
           header: "Outbreak"
           includeInDownloadsByDefault: true
@@ -1792,6 +1792,32 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      metadataAdd:
+        - name: outbreak
+          displayName: Outbreak
+          definition: "Outbreak assigned by Nextclade"
+          isSequenceFilter: true
+          header: "Outbreak"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.outbreak}
+          order: 5
+          orderOnDetailsPage: 740
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - outbreak
     preprocessing:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
