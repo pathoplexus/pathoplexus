@@ -3772,7 +3772,7 @@ organisms:
           - geoLocAdmin1
           - length
           - hostNameScientific
-          - lineage
+          - clade
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
