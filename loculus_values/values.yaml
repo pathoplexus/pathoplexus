@@ -1785,7 +1785,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/bdbv&dataset-tag=2026-05-15--16-16-45Z"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/bdbv"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
