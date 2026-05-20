@@ -1910,6 +1910,8 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
