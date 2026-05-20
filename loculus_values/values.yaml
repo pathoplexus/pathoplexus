@@ -1804,7 +1804,7 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           preprocessing:
-            inputs: {input: nextclade.outbreak}
+            inputs: {input: nextclade.customNodeAttributes.outbreak}
           order: 5
           orderOnDetailsPage: 740
       website:
