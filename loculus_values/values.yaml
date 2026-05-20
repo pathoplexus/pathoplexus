@@ -2400,6 +2400,7 @@ organisms:
             inputs: {input: nextclade.clade}
           order: 5
           orderOnDetailsPage: 740
+          columnWidth: 60
       website:
         <<: *website
         tableColumns:
