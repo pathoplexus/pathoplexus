@@ -1,6 +1,6 @@
 // The following code is in a separate file so that it can be overwritten by Pathoplexus.
 import type { TopNavigationItems } from './navigationItems.ts';
-import ToolIcon from '~icons/tabler/tool';
+import PresentationIcon from '~icons/tabler/presentation';
 
 export const extraStaticTopNavigationItems = [
     {
@@ -18,10 +18,10 @@ export const extraStaticTopNavigationItems = [
 ];
 
 export const extraSequenceRelatedTopNavigationItems = (organism: string | undefined): TopNavigationItems => {
-    const tools = {
-        text: 'Tools',
+    const resources = {
+        text: 'Resources',
         path: `/${organism}/external-tools`,
-        icon: ToolIcon,
+        icon: PresentationIcon,
     }
-    return [tools];
+    return [resources];
 }
