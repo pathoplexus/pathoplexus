@@ -38,15 +38,15 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
 
 <BaseLayout title='Home'>
     <div class='max-w-6xl mx-auto space-y-14'>
-        <section class='grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.15fr)]'>
-            <div>
+        <section class='grid gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.15fr)]'>
+            <div class='flex flex-col'>
                 <WelcomeMessage websiteName={websiteName} />
                 <div class='mt-6 flex flex-wrap gap-3'>
                     <CallToActionButton primary href='/browse/select-organism' >Browse database</CallToActionButton>
                     <CallToActionButton href='/submission/select-organism' >Submit sequences</CallToActionButton>
-                    
+
                 </div>
-                <div class='mt-6 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
+                <div class='mt-6 flex-1 rounded-2xl border border-base-200/70 bg-base-100 p-5 shadow-sm'>
                     <div class='flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between'>
                         <div class='max-w-lg'>
                             <span class='text-xs font-semibold uppercase tracking-wide text-primary/80'>Simple sequence sharing</span>
