@@ -1949,6 +1949,9 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          columnWidth: 80
+          orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -2435,6 +2438,9 @@ organisms:
           lineageSystem: cchfS
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+          columnWidth: 80
       website:
         <<: *website
         tableColumns:
@@ -3811,7 +3817,7 @@ organisms:
           - geoLocAdmin1
           - length
           - hostNameScientific
-          - lineage
+          - clade
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
