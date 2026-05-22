@@ -1,143 +1,123 @@
-import MiniSearch from 'minisearch';
 import { readFileSync, readdirSync } from 'fs';
+import { createHash } from 'node:crypto';
 import { join } from 'path';
 
+import MiniSearch from 'minisearch';
+import { parse as parseYaml } from 'yaml';
+
 interface SearchDocument {
-	id: string;
-	title: string;
-	section: 'docs' | 'about';
-	url: string;
-	content: string;
+    id: string;
+    title: string;
+    section: 'docs' | 'about';
+    url: string;
+    content: string;
 }
 
-const extractTextFromMdx = (content: string): string => {
-	// Remove frontmatter
-	let text = content.replace(/^---[\s\S]*?---\n/, '');
+interface SearchIndexPayload {
+    options: ConstructorParameters<typeof MiniSearch>[0];
+    documents: SearchDocument[];
+}
 
-	// Remove markdown links [text](url) -> text
-	text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+export interface BuildSearchIndexResult {
+    json: string;
+    etag: string;
+}
 
-	// Remove markdown headers
-	text = text.replace(/^#{1,6}\s+/gm, '');
+const FRONTMATTER_RE = /^---\n([\s\S]*?)\n---\n?/;
 
-	// Remove code blocks
-	text = text.replace(/```[\s\S]*?```/g, '');
-
-	// Remove inline code
-	text = text.replace(/`([^`]+)`/g, '$1');
-
-	// Remove HTML comments
-	text = text.replace(/<!--[\s\S]*?-->/g, '');
-
-	// Remove extra whitespace
-	text = text.replace(/\s+/g, ' ').trim();
-
-	return text;
+const splitFrontmatter = (content: string): { frontmatter: Record<string, unknown>; body: string } => {
+    const match = FRONTMATTER_RE.exec(content);
+    if (!match) return { frontmatter: {}, body: content };
+    let parsed: unknown = {};
+    try {
+        parsed = parseYaml(match[1]) ?? {};
+    } catch {
+        parsed = {};
+    }
+    const frontmatter = (typeof parsed === 'object' && parsed !== null ? parsed : {}) as Record<string, unknown>;
+    return { frontmatter, body: content.slice(match[0].length) };
 };
 
-const getMdxFilesFromDirectory = (directory: string): Array<{ path: string; section: 'docs' | 'about' }> => {
-	const files: Array<{ path: string; section: 'docs' | 'about' }> = [];
-	const section = directory.includes('docs') ? 'docs' : 'about';
+const stripMarkdown = (body: string): string =>
+    body
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/^#{1,6}\s+/gm, '')
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/<!--[\s\S]*?-->/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
-	const walkDir = (dir: string) => {
-		try {
-			const entries = readdirSync(dir, { withFileTypes: true });
-
-			for (const entry of entries) {
-				const fullPath = join(dir, entry.name);
-				if (entry.isDirectory()) {
-					walkDir(fullPath);
-				} else if (entry.name.endsWith('.mdx')) {
-					files.push({ path: fullPath, section });
-				}
-			}
-		} catch (error) {
-			console.error(`Error reading directory ${dir}:`, error);
-		}
-	};
-
-	walkDir(directory);
-	return files;
+const collectMdxFiles = (
+    directory: string,
+    section: 'docs' | 'about',
+): { path: string; section: 'docs' | 'about' }[] => {
+    const files: { path: string; section: 'docs' | 'about' }[] = [];
+    const walk = (dir: string) => {
+        let entries;
+        try {
+            entries = readdirSync(dir, { withFileTypes: true });
+        } catch {
+            return;
+        }
+        for (const entry of entries) {
+            const fullPath = join(dir, entry.name);
+            if (entry.isDirectory()) {
+                walk(fullPath);
+            } else if (entry.name.endsWith('.mdx')) {
+                files.push({ path: fullPath, section });
+            }
+        }
+    };
+    walk(directory);
+    return files;
 };
 
 const parseUrlFromPath = (filePath: string): string => {
-	// Convert file path to URL
-	// /path/to/src/pages/docs/how-to/revise-submissions.mdx -> /docs/how-to/revise-submissions
-	// /path/to/src/pages/docs/how-to/index.mdx -> /docs/how-to
-	const parts = filePath.split('/pages/')[1];
-	const urlPath = parts
-		.replace(/\.mdx$/, '')
-		.replace(/\/index$/, '');
-
-	return `/${urlPath}`;
+    // /…/src/pages/docs/how-to/revise-submissions.mdx -> /docs/how-to/revise-submissions
+    // /…/src/pages/docs/how-to/index.mdx              -> /docs/how-to
+    const parts = filePath.split('/pages/')[1];
+    const urlPath = parts.replace(/\.mdx$/, '').replace(/\/index$/, '');
+    return `/${urlPath}`;
 };
 
-const getTitleFromMdx = (content: string): string => {
-	// Try double quotes first
-	let match = content.match(/title:\s*"([^"]*)"/);
-	if (match) return match[1];
+let cached: BuildSearchIndexResult | undefined;
 
-	// Then try single quotes
-	match = content.match(/title:\s*'([^']*)'/);
-	if (match) return match[1];
+export const buildSearchIndex = (): BuildSearchIndexResult => {
+    if (cached) return cached;
 
-	// Fallback to unquoted (in case there's no quotes at all)
-	match = content.match(/title:\s*([^\n]+)/);
-	if (match) return match[1].trim();
+    const cwd = process.cwd();
+    const files = [
+        ...collectMdxFiles(join(cwd, 'src', 'pages', 'docs'), 'docs'),
+        ...collectMdxFiles(join(cwd, 'src', 'pages', 'about'), 'about'),
+    ];
 
-	return 'Untitled';
-};
+    const documents: SearchDocument[] = [];
+    let id = 0;
+    for (const { path, section } of files) {
+        const raw = readFileSync(path, 'utf-8');
+        const { frontmatter, body } = splitFrontmatter(raw);
+        const title =
+            typeof frontmatter.title === 'string' && frontmatter.title.length > 0 ? frontmatter.title : 'Untitled';
+        documents.push({
+            id: `doc-${id++}`,
+            title,
+            section,
+            url: parseUrlFromPath(path),
+            content: stripMarkdown(body),
+        });
+    }
 
-export const buildSearchIndex = async (): Promise<string> => {
-	const docsDirectory = join(process.cwd(), 'src', 'pages', 'docs');
-	const aboutDirectory = join(process.cwd(), 'src', 'pages', 'about');
+    const payload: SearchIndexPayload = {
+        options: {
+            fields: ['title', 'content'],
+            storeFields: ['title', 'url', 'section'],
+        },
+        documents,
+    };
 
-	const docFiles = getMdxFilesFromDirectory(docsDirectory);
-	const aboutFiles = getMdxFilesFromDirectory(aboutDirectory);
-	const allFiles = [...docFiles, ...aboutFiles];
-
-	const documents: SearchDocument[] = [];
-	let id = 0;
-
-	for (const { path, section } of allFiles) {
-		try {
-			const content = readFileSync(path, 'utf-8');
-			const title = getTitleFromMdx(content);
-			const textContent = extractTextFromMdx(content);
-			const url = parseUrlFromPath(path);
-
-			// Skip index pages as they'll be redundant
-			if (!url.endsWith('index')) {
-				documents.push({
-					id: `doc-${id++}`,
-					title,
-					section,
-					url,
-					content: textContent,
-				});
-			}
-		} catch (error) {
-			console.error(`Error processing ${path}:`, error);
-		}
-	}
-
-	const miniSearch = new MiniSearch({
-		fields: ['title', 'content'],
-		storeFields: ['title', 'url', 'section'],
-		searchOptions: {
-			boost: { title: 2 },
-			fuzzy: 0.2,
-		},
-	});
-
-	miniSearch.addAll(documents);
-
-	// Return a format that's easy to restore: options + raw documents
-	return JSON.stringify({
-		options: {
-			fields: ['title', 'content'],
-			storeFields: ['title', 'url', 'section'],
-		},
-		documents: documents,
-	});
+    const json = JSON.stringify(payload);
+    const etag = `"${createHash('sha1').update(json).digest('hex')}"`;
+    cached = { json, etag };
+    return cached;
 };
