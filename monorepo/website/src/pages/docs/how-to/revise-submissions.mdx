@@ -6,56 +6,94 @@ order: 43
 
 ### Contents:
 
-- [Editing the metadata](#editing-the-metadata)
-- [Editing the sequence](#editing-the-sequence)
-- [Submitting the revision](#submitting-the-revision)
+- [Editing in the website](#editing-in-the-website)
+- [Editing using files](#editing-using-files)
 
 Sequences can be corrected or updated after they have been submitted to Pathoplexus.
 Submitting these changes ("revisions") will cause the version of the sequence to be incremented, and previous versions of the metadata and sequence data can always be accessed via previous version numbers.
 (See [Versioning](/docs/concepts/versioning))
 
-The process of submitting revisions is very similar to original submission.
+You can revise sequences via the website (particularly good for a small number of sequences and relatively simple edits), or by reuploading updated files (good for large numbers of sequences, or more extensive revisions - but requires *the original data files* that were submitted!)
+
+## Editing in the website
+
+The easiest way to revise your sequences, especially for a small number of sequences, is to edit them directly on the Pathoplexus website. Here's how:
+
+### Accessing your sequences
+
+1. Navigate to the organism you want to revise sequences for
+2. Click 'Submit sequences' in the top sub-menu
+3. Click 'View' to display your previously submitted sequences for that organism
+
+### Starting a revision
+
+1. Scroll to the bottom of the list of sequences
+2. You'll see a 'Revise this sequence' button (this button is only visible to the group that originally submitted the sequence)
+3. Click this button to open the revision page
+
+### Making your edits
+
+On the revision page, you can:
+
+- **Edit metadata fields**: All metadata fields are directly editable in the form
+- **Replace the alignment file**: You can discard the current alignment file and upload a new one
+- **Undo changes**: As you edit, a curved arrow symbol appears to the right of each field. Click this arrow to revert that field to its current value if you want to undo any changes
+
+### Submitting your revisions
+
+1. Once you've finished making all your edits, click the 'Submit' button at the bottom of the page
+2. Confirm that you're ready to submit
+
+You'll then be taken to a review page similar to the initial submission dialog. This page shows all sequences for which you've made revisions.
+
+**Important:** Before your changes are made visible in the database, you must click 'Release valid sequences' - this is the same as with initial submissions, and without it, the changes will not take effect.
+
+You can release changes immediately as you revise sequences one by one, or you can revise multiple sequences and then release them all together.
+
+## Editing using files
+
+- [Editing the metadata](#editing-the-metadata)
+- [Editing the sequence](#editing-the-sequence)
+- [Submitting the revision](#submitting-the-revision)
+
+The process of submitting revisions using modified files is very similar to original submission.
 The main difference is that you must provide an `accession` column in the metadata file, which contains the Pathoplexus accession number(s) assigned when the sequences were submitted originally.
 
 **Important:** The `accession` column should contain the accession **without** the version number. For example, use `PP_0049AAG` rather than `PP_0049AAG.1`. (See [Accessions](/docs/concepts/accession) for more information on accession format.)
 
-
 **You must use the _original metadata_ when doing a revision!** (In other words, the original files you submitted to Pathoplexus.) Currently you will need to have this file locally - we aim to introduce a way to download this from Pathoplexus soon. If you do not have this file, please _contact us_ at [revisions@pathoplexus.org](mailto:revisions@pathoplexus.org) to help you do the revision.
 
+### Editing the metadata
 
-## Editing the metadata
-
-### How to create the metadata file
+#### How to create the metadata file
 
 The metadata file should include all the metadata fields that were originally included, **both** those that you wish to update and that should remain the same. (Not including a metadata column will set its value to 'empty'.)
 
-### Creating a matching FASTA file
+#### Creating a matching FASTA file
 
 Even if you are not revising the sequence, you must provide the a FASTA file that matches the metadata file you are uploading.
 It should only contain the sequences that are in the metadata file (if this is fewer than your original submission), and does not otherwise need to be edited. If you are submitting sequences to a multi-segmented organism and you submit more than one segment per entry, add a column `fastaIds` to your metadata, with a space-separated list of all fasta IDs that should be linked to a specific metadata entry.
 
-
 You can also edit the sequence at the same time as revising the metadata - simply prepare the FASTA file as explained in [Editing the sequence](#editing-the-sequence).
 
-## Editing the sequence
+### Editing the sequence
 
-### Creating the FASTA file
+#### Creating the FASTA file
 
 Create a FASTA file that contains only the sequences you'd like to revise, with whatever changes you'd like to make.
 There is no reason to edit the sequence IDs in the FASTA file, as long as they still match the fasta IDs listed in the `id` column (for single-segmented) or `fastaIds` column (for multi-segmented organisms) in your metadata file.
 
-### Creating the metadata file
+#### Creating the metadata file
 
 The metadata file should only have rows of data for the sequences in the FASTA file.
 It needs to include an `accession` column, which includes the Pathoplexus accessions assigned at initial submission (without the version number, e.g., `PP_0049AAG` not `PP_0049AAG.1`).
-
 
 You should also include the metadata `id` column, which will match the sequence ids in your FASTA file for single-segmented organisms. For multi-segmented organisms you should include both the metadata `id` column and a `fastaIds` column with a space-separated list of the fasta IDs of all sequences that should be linked to that metadata entry.
 If you want to edit any metadata fields as well, you can include these as described in [Editing the metadata](#editing-the-metadata).
 
 We also encourage you to add a short description or summary in the optional `versionComment` metadata field describing the reason for revising the sequence.
 
-## Submitting the revision
+### Submitting the revision
 
 To submit a revision, navigate to the `Submit` section of the Pathoplexus website using the link in the top-right corner of the website.
 Select the correct pathogen if requested, or ensure you're submitting to the correct pathogen database via the drop-down on the top-left of the website.
