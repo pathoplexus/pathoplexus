@@ -20,7 +20,7 @@ export const extraStaticTopNavigationItems = [
 export const extraSequenceRelatedTopNavigationItems = (organism: string | undefined): TopNavigationItems => {
     const resources = {
         text: 'Resources',
-        path: `/${organism}/external-tools`,
+        path: `/${organism}/external-resources`,
         icon: PresentationIcon,
     }
     return [resources];
