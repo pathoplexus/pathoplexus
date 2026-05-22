@@ -1911,6 +1911,7 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           order: 5
+          columnWidth: 80
           orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
