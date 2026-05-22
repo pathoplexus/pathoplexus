@@ -1888,19 +1888,19 @@ organisms:
         - name: "Nextclade (DENV-1)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # dengue is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1"
         - name: "Nextclade (DENV-2)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2"
         - name: "Nextclade (DENV-3)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3"
         - name: "Nextclade (DENV-4)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4"
         - name: "Sealion (DENV-1)"
           category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
@@ -1949,6 +1949,9 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          columnWidth: 80
+          orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -2283,15 +2286,15 @@ organisms:
         - name: "Nextclade (L)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 3000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=andv/L&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/l"
         - name: "Nextclade (M)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 5000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=andv/M&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/m"
         - name: "Nextclade (S)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 10000
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=andv/S&dataset-server=https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/s"
         - name: "Country map"
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
@@ -2435,6 +2438,9 @@ organisms:
           lineageSystem: cchfS
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+          columnWidth: 80
       website:
         <<: *website
         tableColumns:
@@ -3811,7 +3817,7 @@ organisms:
           - geoLocAdmin1
           - length
           - hostNameScientific
-          - lineage
+          - clade
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
