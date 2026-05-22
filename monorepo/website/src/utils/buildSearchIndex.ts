@@ -1,8 +1,4 @@
-import { readFileSync, readdirSync } from 'fs';
-import { createHash } from 'node:crypto';
-import { join } from 'path';
-
-import MiniSearch from 'minisearch';
+import type MiniSearch from 'minisearch';
 import { parse as parseYaml } from 'yaml';
 
 interface SearchDocument {
@@ -18,10 +14,16 @@ interface SearchIndexPayload {
     documents: SearchDocument[];
 }
 
-export interface BuildSearchIndexResult {
-    json: string;
-    etag: string;
-}
+const docsRaw = import.meta.glob<string>('../pages/docs/**/*.mdx', {
+    eager: true,
+    query: '?raw',
+    import: 'default',
+});
+const aboutRaw = import.meta.glob<string>('../pages/about/**/*.mdx', {
+    eager: true,
+    query: '?raw',
+    import: 'default',
+});
 
 const FRONTMATTER_RE = /^---\n([\s\S]*?)\n---\n?/;
 
@@ -48,76 +50,34 @@ const stripMarkdown = (body: string): string =>
         .replace(/\s+/g, ' ')
         .trim();
 
-const collectMdxFiles = (
-    directory: string,
-    section: 'docs' | 'about',
-): { path: string; section: 'docs' | 'about' }[] => {
-    const files: { path: string; section: 'docs' | 'about' }[] = [];
-    const walk = (dir: string) => {
-        let entries;
-        try {
-            entries = readdirSync(dir, { withFileTypes: true });
-        } catch {
-            return;
-        }
-        for (const entry of entries) {
-            const fullPath = join(dir, entry.name);
-            if (entry.isDirectory()) {
-                walk(fullPath);
-            } else if (entry.name.endsWith('.mdx')) {
-                files.push({ path: fullPath, section });
-            }
-        }
-    };
-    walk(directory);
-    return files;
+const pathToUrl = (modulePath: string): string => {
+    // ../pages/docs/how-to/revise-submissions.mdx -> /docs/how-to/revise-submissions
+    // ../pages/docs/how-to/index.mdx              -> /docs/how-to
+    const fromPages = modulePath.split('/pages/')[1];
+    return '/' + fromPages.replace(/\.mdx$/, '').replace(/\/index$/, '');
 };
 
-const parseUrlFromPath = (filePath: string): string => {
-    // /…/src/pages/docs/how-to/revise-submissions.mdx -> /docs/how-to/revise-submissions
-    // /…/src/pages/docs/how-to/index.mdx              -> /docs/how-to
-    const parts = filePath.split('/pages/')[1];
-    const urlPath = parts.replace(/\.mdx$/, '').replace(/\/index$/, '');
-    return `/${urlPath}`;
-};
-
-let cached: BuildSearchIndexResult | undefined;
-
-export const buildSearchIndex = (): BuildSearchIndexResult => {
-    if (cached) return cached;
-
-    const cwd = process.cwd();
-    const files = [
-        ...collectMdxFiles(join(cwd, 'src', 'pages', 'docs'), 'docs'),
-        ...collectMdxFiles(join(cwd, 'src', 'pages', 'about'), 'about'),
-    ];
-
-    const documents: SearchDocument[] = [];
-    let id = 0;
-    for (const { path, section } of files) {
-        const raw = readFileSync(path, 'utf-8');
+const buildDocuments = (modules: Record<string, string>, section: 'docs' | 'about'): SearchDocument[] => {
+    return Object.entries(modules).map(([modulePath, raw], i) => {
         const { frontmatter, body } = splitFrontmatter(raw);
         const title =
             typeof frontmatter.title === 'string' && frontmatter.title.length > 0 ? frontmatter.title : 'Untitled';
-        documents.push({
-            id: `doc-${id++}`,
+        return {
+            id: `${section}-${i}`,
             title,
             section,
-            url: parseUrlFromPath(path),
+            url: pathToUrl(modulePath),
             content: stripMarkdown(body),
-        });
-    }
-
-    const payload: SearchIndexPayload = {
-        options: {
-            fields: ['title', 'content'],
-            storeFields: ['title', 'url', 'section'],
-        },
-        documents,
-    };
-
-    const json = JSON.stringify(payload);
-    const etag = `"${createHash('sha1').update(json).digest('hex')}"`;
-    cached = { json, etag };
-    return cached;
+        };
+    });
 };
+
+const payload: SearchIndexPayload = {
+    options: {
+        fields: ['title', 'content'],
+        storeFields: ['title', 'url', 'section'],
+    },
+    documents: [...buildDocuments(docsRaw, 'docs'), ...buildDocuments(aboutRaw, 'about')],
+};
+
+export const searchIndexJson: string = JSON.stringify(payload);
