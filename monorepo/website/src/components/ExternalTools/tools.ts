@@ -24,13 +24,14 @@ export const tools: Tool[] = [
             'https://nextstrain.org/' +
             {
                 /* eslint-disable @typescript-eslint/naming-convention */
+                'ebola-bdbv': 'ebola/bdbv',
                 'hmpv': 'hmpv/all/genome',
                 'mpox': 'mpox/all-clades',
                 'rsv-a': 'rsv/a/genome/6y',
                 'rsv-b': 'rsv/b/genome/6y',
                 /* eslint-enable @typescript-eslint/naming-convention */
             }[organism]!,
-        organisms: ['hmpv', 'mpox', 'rsv-a', 'rsv-b'],
+        organisms: ['ebola-bdbv', 'hmpv', 'mpox', 'rsv-a', 'rsv-b'],
     },
     {
         name: 'Nextstrain segment L',
