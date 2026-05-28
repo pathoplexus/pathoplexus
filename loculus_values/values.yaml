@@ -145,8 +145,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         order: 10
         orderOnDetailsPage: 200
-        definition: "The date on which the sample was collected."
-        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year."
+        definition: "The date (or date range) on which the sample was collected."
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). If only a range is known please supply the range in ISO format `date_lower/date_upper` where `date_lower` and `date_upper` are in the format `YYYY-MM-DD`, `YYYY-MM` or `YYYY`. Please provide at least a year."
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -195,10 +195,10 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: concatenate
           inputs:
             geoLocCountry: geoLocCountry
-            sampleCollectionDate: sampleCollectionDate
+            sampleCollectionDate: processed.sampleCollectionDate
           args:
             order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
-            type: [string, ACCESSION_VERSION, string]
+            type: [string, ACCESSION_VERSION, dateRangeString]
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
@@ -1973,12 +1973,12 @@ organisms:
             inputs:
               serotype: ASSIGNED_REFERENCE
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [serotype, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [string, string, IDENTIFIER, string]
+              type: [string, string, IDENTIFIER, dateRangeString]
               # regex pattern constraints:
               # - Cannot start with a slash
               # - Four fields, separated by exactly three slashes
@@ -3794,12 +3794,12 @@ organisms:
             function: build_display_name
             inputs:
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [ARG:prefix, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [ARG:prefix, string, IDENTIFIER, string]
+              type: [ARG:prefix, string, IDENTIFIER, dateRangeString]
               prefix: 'YFV'
               # regex pattern constraints:
               # - Cannot start with a slash
