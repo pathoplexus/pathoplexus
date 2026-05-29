@@ -2338,7 +2338,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 2
+          - 1
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
