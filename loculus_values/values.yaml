@@ -70,7 +70,7 @@ sequenceFlagging:
 siloImport:
   siloTimeoutSeconds: 3600
   hardRefreshIntervalSeconds: 100_000 # ~27 hours
-  pollIntervalSeconds: 120
+  pollIntervalSeconds: 1200
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 20
 lineageSystemDefinitions:
