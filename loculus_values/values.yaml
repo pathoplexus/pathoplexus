@@ -1817,6 +1817,20 @@ organisms:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
           order: 5
           orderOnDetailsPage: 740
+        - name: mutationsFromOutbreakFounder
+          header: "Outbreak"
+          displayName: "Amino acid substitutions from outbreak clade founder"
+          customDisplay:
+            type: generatedBadge
+          noInput: true
+          generateIndex: false
+          autocomplete: false
+          initiallyVisible: false
+          includeInDownloadsByDefault: false
+          preprocessing:
+            inputs: {input: "nextclade.cladeNodeAttrFounderInfo.outbreak.aaMutations.*.privateSubstitutions"}
+          order: 95
+          orderOnDetailsPage: 95
       website:
         <<: *website
         tableColumns:
