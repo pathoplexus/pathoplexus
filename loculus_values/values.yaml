@@ -1676,7 +1676,7 @@ organisms:
         replicas: 1
         version:
           - 27
-          - 28
+          - 100
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1740,7 +1740,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 24
-          - 25
+          - 200
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1833,7 +1833,7 @@ organisms:
         <<: *preprocessing
         version:
           - 2
-          - 3
+          - 300
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -2039,7 +2039,7 @@ organisms:
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
       - <<: *denguePreprocessing
         version:
-          - 29
+          - 400
         replicas: 3
     ingest:
       <<: *ingest
@@ -2228,7 +2228,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 25
-          - 26
+          - 500
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2325,7 +2325,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 1
-          - 2
+          - 600
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2469,7 +2469,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 21
-          - 22
+          - 700
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2819,14 +2819,9 @@ organisms:
                   - OPG209
                   - OPG210
       - <<: *mpoxPreprocessing
-        replicas: 3
+        replicas: 5
         version:
-          - 19
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          segments:
-            - <<: *mpoxDataset
+          - 800
     ingest:
       <<: *ingest
       configFile:
@@ -3256,7 +3251,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvaPreprocessing
+        <<: *preprocessing
         version:
           - 19
         replicas: 1
@@ -3273,23 +3269,10 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
+      - <<: *rsvaPreprocessing
         version:
-          - 20
+          - 900
         replicas: 2
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches: 
-                  - rsv-a
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3396,7 +3379,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvbPreprocessing
+        <<: *preprocessing
         version:
           - 20
         replicas: 1
@@ -3413,23 +3397,10 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *preprocessing
+      - <<: *rsvbPreprocessing
         version:
-          - 21
+          - 1000
         replicas: 2
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
-                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
-                accepted_dataset_matches:
-                  - rsv-b
-                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
-          require_nextclade_sort_match: true
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3529,7 +3500,7 @@ organisms:
         replicas: 1
         version:
           - 21
-          - 22
+          - 1100
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3630,7 +3601,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &measlesPreprocessing
+        <<: *preprocessing
         version:
           - 25
         replicas: 1
@@ -3643,19 +3615,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      - <<: *preprocessing
+      - <<: *measlesPreprocessing
         version:
-          - 26
+          - 1400
         replicas: 2
-        configFile:
-          <<: *preprocessingConfigFile
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
-                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
-                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
     ingest:
       <<: *ingest
       configFile:
@@ -3742,7 +3705,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 22
-          - 23
+          - 1200
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3882,7 +3845,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
-          - 28
+          - 1300
         configFile:
           <<: *preprocessingConfigFile
           segments:
