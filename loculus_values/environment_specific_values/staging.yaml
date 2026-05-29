@@ -85,4 +85,4 @@ resources:
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
 siloImport:
-  pollIntervalSeconds: 60
+  pollIntervalSeconds: 120
