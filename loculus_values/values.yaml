@@ -1326,7 +1326,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "9606"
         noInput: true
         preprocessing:
-          function: validate_host
+          function: resolve_host_taxon_id
           inputs:
             host: host
             hostNameScientific: hostNameScientific
