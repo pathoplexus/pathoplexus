@@ -1817,6 +1817,20 @@ organisms:
             inputs: {input: nextclade.customNodeAttributes.outbreak}
           order: 5
           orderOnDetailsPage: 740
+        - name: mutationsFromOutbreakFounder
+          header: "Outbreak"
+          displayName: "Amino acid substitutions from outbreak clade founder"
+          customDisplay:
+            type: generatedBadge
+          noInput: true
+          generateIndex: false
+          autocomplete: false
+          initiallyVisible: false
+          includeInDownloadsByDefault: false
+          preprocessing:
+            inputs: {input: "nextclade.cladeNodeAttrFounderInfo.outbreak.aaMutations.*.privateSubstitutions"}
+          order: 95
+          orderOnDetailsPage: 95
       website:
         <<: *website
         tableColumns:
@@ -2325,6 +2339,31 @@ organisms:
       - <<: *preprocessing
         version:
           - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          create_embl_file: false
+          taxon_id: 1980456
+          scientific_name: "Andes Virus"
+          molecule_type: "genomic RNA"
+          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          segments:
+            - name: L
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/L
+                  genes: [RdRp]
+            - name: M
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/M
+                  genes: [GPC]
+            - name: S
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: andv/S
+                  genes: ["N", NSs]
+      - <<: *preprocessing
+        version:
           - 2
         configFile:
           <<: *preprocessingConfigFile
@@ -2332,6 +2371,9 @@ organisms:
           taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
+          alignment_requirement: ANY
+          segment_classification_method: minimizer
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
           nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
           segments:
             - name: L
