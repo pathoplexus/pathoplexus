@@ -2372,6 +2372,8 @@ organisms:
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
+          segment_classification_method: minimizer
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
           nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
           segments:
             - name: L
