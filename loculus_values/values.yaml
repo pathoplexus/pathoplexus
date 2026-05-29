@@ -2824,7 +2824,7 @@ organisms:
           - 19
         configFile:
           <<: *preprocessingConfigFile
-          batch_size: 50
+          batch_size: 10
           segments:
             - <<: *mpoxDataset
     ingest:
