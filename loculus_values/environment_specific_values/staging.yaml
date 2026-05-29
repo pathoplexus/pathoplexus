@@ -77,5 +77,12 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
+resources:
+  backend:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "3Gi" # Backend requires at least 635741K of memory
 siloImport:
   pollIntervalSeconds: 60
