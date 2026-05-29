@@ -76,18 +76,25 @@ zstdCompressionLevel: 20
 lineageSystemDefinitions:
   mpox:
     18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -145,8 +152,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         order: 10
         orderOnDetailsPage: 200
-        definition: "The date on which the sample was collected."
-        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year."
+        definition: "The date (or date range) on which the sample was collected."
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). If only a range is known please supply the range in ISO format `date_lower/date_upper` where `date_lower` and `date_upper` are in the format `YYYY-MM-DD`, `YYYY-MM` or `YYYY`. Please provide at least a year."
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -195,10 +202,10 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: concatenate
           inputs:
             geoLocCountry: geoLocCountry
-            sampleCollectionDate: sampleCollectionDate
+            sampleCollectionDate: processed.sampleCollectionDate
           args:
             order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
-            type: [string, ACCESSION_VERSION, string]
+            type: [string, ACCESSION_VERSION, dateRangeString]
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
@@ -1312,7 +1319,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - &hostTaxonIdConfig
         name: hostTaxonId
         displayName: Host taxon ID
-        type: int
+        type: string
         autocomplete: true
         customDisplay:
           type: hostSpecies
@@ -1326,7 +1333,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "9606"
         noInput: true
         preprocessing:
-          function: validate_host
+          function: resolve_host_taxon_id
           inputs:
             host: host
             hostNameScientific: hostNameScientific
@@ -1669,6 +1676,7 @@ organisms:
         replicas: 1
         version:
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1732,6 +1740,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 24
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1823,7 +1832,8 @@ organisms:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
         version:
-          - 1
+          - 2
+          - 3
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -1833,18 +1843,8 @@ organisms:
                 - &ebolaBdbvPreprocessingReference
                   name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
-                  nextclade_dataset_tag: "2026-05-15--16-16-45Z"
-                  genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
-      - <<: *ebolaBdbvPreprocessing
-        version:
-          - 2
-        configFile:
-          <<: *ebolaBdbvPreprocessingConfigFile
-          segments:
-            - <<: *ebolaBdbvPreprocessingSegment
-              references:
-                - <<: *ebolaBdbvPreprocessingReference
                   nextclade_dataset_tag: "2026-05-18--20-09-34Z"
+                  genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
     ingest:
       <<: *ingest
       configFile:
@@ -1973,12 +1973,12 @@ organisms:
             inputs:
               serotype: ASSIGNED_REFERENCE
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [serotype, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [string, string, IDENTIFIER, string]
+              type: [string, string, IDENTIFIER, dateRangeString]
               # regex pattern constraints:
               # - Cannot start with a slash
               # - Four fields, separated by exactly three slashes
@@ -2008,7 +2008,8 @@ organisms:
         defaultOrder: descending
         referenceIdentifierField: serotype
     preprocessing:
-      - <<: *preprocessing
+      - &denguePreprocessing
+        <<: *preprocessing
         version:
           - 28
         replicas: 1
@@ -2036,6 +2037,10 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *denguePreprocessing
+        version:
+          - 29
+        replicas: 3
     ingest:
       <<: *ingest
       configFile:
@@ -2223,6 +2228,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 25
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2319,6 +2325,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 1
+          - 2
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2462,6 +2469,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 21
+          - 22
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2810,15 +2818,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 18
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 19
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 50
+          segments:
+            - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -3265,6 +3273,23 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 20
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches: 
+                  - rsv-a
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3388,6 +3413,23 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 21
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches:
+                  - rsv-b
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -3487,6 +3529,7 @@ organisms:
         replicas: 1
         version:
           - 21
+          - 22
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3600,6 +3643,19 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *preprocessing
+        version:
+          - 26
+        replicas: 2
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
     ingest:
       <<: *ingest
       configFile:
@@ -3686,6 +3742,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 22
+          - 23
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3794,12 +3851,12 @@ organisms:
             function: build_display_name
             inputs:
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [ARG:prefix, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [ARG:prefix, string, IDENTIFIER, string]
+              type: [ARG:prefix, string, IDENTIFIER, dateRangeString]
               prefix: 'YFV'
               # regex pattern constraints:
               # - Cannot start with a slash
@@ -3825,6 +3882,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3888,7 +3946,7 @@ defaultResources:
     cpu: "1000m"
 
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_latest"
+  dbVersion: "ncbi_taxonomy_2026-05-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
