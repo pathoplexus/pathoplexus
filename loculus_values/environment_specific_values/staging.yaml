@@ -78,4 +78,4 @@ defaultResources:
     memory: "1Gi"
     cpu: "1000m"
 siloImport:
-  pollIntervalSeconds: 60
+  pollIntervalSeconds: 120
