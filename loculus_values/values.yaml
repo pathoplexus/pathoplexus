@@ -1312,7 +1312,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - &hostTaxonIdConfig
         name: hostTaxonId
         displayName: Host taxon ID
-        type: int
+        type: string
         autocomplete: true
         customDisplay:
           type: hostSpecies
@@ -3888,7 +3888,7 @@ defaultResources:
     cpu: "1000m"
 
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_latest"
+  dbVersion: "ncbi_taxonomy_2026-05-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
