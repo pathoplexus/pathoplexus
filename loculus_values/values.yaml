@@ -2008,7 +2008,8 @@ organisms:
         defaultOrder: descending
         referenceIdentifierField: serotype
     preprocessing:
-      - <<: *preprocessing
+      - &denguePreprocessing
+        <<: *preprocessing
         version:
           - 28
         replicas: 1
@@ -2036,34 +2037,10 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *preprocessing
+      - <<: *denguePreprocessing
         version:
           - 29
         replicas: 3
-        configFile:
-          <<: *preprocessingConfigFile
-          segment_classification_method: "minimizer"
-          create_embl_file: false
-          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
-          segments:
-            - name: main
-              references:
-                - name: DENV-1
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-2
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-3
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-                - name: DENV-4
-                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
-                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
-                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
     ingest:
       <<: *ingest
       configFile:
