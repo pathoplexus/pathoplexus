@@ -2011,8 +2011,35 @@ organisms:
       - <<: *preprocessing
         version:
           - 28
-          - 29
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segment_classification_method: "minimizer"
+          create_embl_file: false
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
+          segments:
+            - name: main
+              references:
+                - name: DENV-1
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv1
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-2
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv2
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-3
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv3
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+                - name: DENV-4
+                  nextclade_dataset_name: community/v-gen-lab/dengue/denv4
+                  nextclade_dataset_tag: 2025-09-09--12-13-13Z
+                  genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *preprocessing
+        version:
+          - 29
+        replicas: 3
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
@@ -2628,7 +2655,6 @@ organisms:
         replicas: 1
         version:
           - 18
-          - 19
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2815,15 +2841,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 18
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 19
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 50
+          segments:
+            - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -3256,8 +3282,24 @@ organisms:
       - <<: *preprocessing
         version:
           - 19
-          - 20
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+                nextclade_dataset_name: "nextstrain/rsv/a/EPI_ISL_412866"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches: 
+                  - rsv-a
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 20
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3380,8 +3422,24 @@ organisms:
       - <<: *preprocessing
         version:
           - 20
-          - 21
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/rsv/b/EPI_ISL_1653999"
+                nextclade_dataset_tag: "2025-08-25--09-00-35Z"
+                accepted_dataset_matches:
+                  - rsv-b
+                genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
+          require_nextclade_sort_match: true
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *preprocessing
+        version:
+          - 21
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3598,8 +3656,20 @@ organisms:
       - <<: *preprocessing
         version:
           - 25
-          - 26
         replicas: 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
+                nextclade_dataset_tag: "2025-08-11--19-06-01Z"
+                genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *preprocessing
+        version:
+          - 26
+        replicas: 2
         configFile:
           <<: *preprocessingConfigFile
           segments:
