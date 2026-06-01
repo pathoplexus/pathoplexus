@@ -210,4 +210,4 @@ sequenceFlagging:
   github:
     issueTemplate: sequence-metadata-issue.md
 siloImport:
-  pollIntervalSeconds: 120
+  pollIntervalSeconds: 30
