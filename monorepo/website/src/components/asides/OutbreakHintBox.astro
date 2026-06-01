@@ -1,0 +1,31 @@
+---
+import MaterialSymbolsCoronavirus from '~icons/material-symbols/coronavirus';
+
+interface Props {
+    title?: string;
+}
+
+const { title = 'In outbreak settings' } = Astro.props;
+---
+
+<div
+    class='outbreak-hint-box my-4 flex items-start gap-3 rounded-lg border border-rose-200 border-l-4 border-l-rose-500 bg-rose-50 p-4 text-sm shadow-sm'
+>
+    <span class='mt-0.5 shrink-0 text-xl leading-none text-rose-600'>
+        <MaterialSymbolsCoronavirus />
+    </span>
+    <div class='text-rose-900'>
+        <p class='mb-1 font-semibold text-rose-800'>{title}</p>
+        <slot />
+    </div>
+</div>
+
+<style is:global>
+    .outbreak-hint-box a {
+        @apply font-medium text-rose-700 underline;
+    }
+
+    .outbreak-hint-box a:hover {
+        @apply text-rose-900;
+    }
+</style>
