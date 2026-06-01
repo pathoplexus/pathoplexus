@@ -2371,7 +2371,7 @@ organisms:
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
-                  genes: [GPC]
+                  genes: [GPC, Gn, Gc]
             - name: S
               references:
                 - name: singleReference
@@ -2410,6 +2410,10 @@ organisms:
             genes:
               - name: GPC
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/GPC.fasta]]"
+              - name: Gn
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/genes/Gn.fasta]]"
+              - name: Gc
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/genes/Gc.fasta]]"
       - name: S
         references:
           - name: singleReference
