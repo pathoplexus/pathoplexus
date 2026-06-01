@@ -2349,22 +2349,22 @@ organisms:
           alignment_requirement: ANY
           segment_classification_method: minimizer
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
-          nextclade_dataset_server: "https://pathoplexus.github.io/reference_store/andv/nextclade_data"
+          nextclade_dataset_tag: "2026-05-29--13-46-38Z"
           segments:
             - name: L
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/L
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/l
                   genes: [RdRp]
             - name: M
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/M
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
                   genes: [GPC]
             - name: S
               references:
                 - name: singleReference
-                  nextclade_dataset_name: andv/S
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/s
                   genes: ["N", NSs]
     ingest:
       <<: *ingest
