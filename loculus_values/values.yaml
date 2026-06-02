@@ -2350,7 +2350,7 @@ organisms:
                   genes: ["N", NSs]
       - <<: *preprocessing
         version:
-          - 3
+          - 4
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2371,7 +2371,7 @@ organisms:
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
-                  genes: [GPC]
+                  genes: [GPC, Gn, Gc]
             - name: S
               references:
                 - name: singleReference
@@ -2397,29 +2397,33 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003468.2.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/reference.fasta]]"
             insdcAccessionFull: NC_003468.2
             genes:
               - name: RdRp
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/RdRp.fasta]]"
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/RdRp.fasta]]"
       - name: M
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003467.2.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/reference.fasta]]"
             insdcAccessionFull: NC_003467.2
             genes:
               - name: GPC
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/GPC.fasta]]"
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/GPC.fasta]]"
+              - name: Gn
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/Gn.fasta]]"
+              - name: Gc
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/Gc.fasta]]"
       - name: S
         references:
           - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/NC_003466.1.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/reference.fasta]]"
             insdcAccessionFull: NC_003466.1
             genes:
               - name: "N"
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/N.fasta]]"
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/N.fasta]]"
               - name: NSs
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/andv/genes/NSs.fasta]]"
+                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/NSs.fasta]]"
   cchf:
     <<: *defaultOrganismConfig
     schema:
