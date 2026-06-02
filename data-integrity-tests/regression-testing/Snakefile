@@ -17,8 +17,10 @@ rule all:
         expand(
             "results/{organism}.{difftype}.prod.staging.diff",
             organism=[
+                "andv",
                 "cchf",
                 "west-nile",
+                "ebola-bdbv",
                 "ebola-zaire",
                 "ebola-sudan",
                 "dengue",
@@ -35,7 +37,7 @@ rule all:
 
 
 def segments(w):
-    return ["L", "M", "S"] if w.organism == "cchf" else ["main"]
+    return ["L", "M", "S"] if w.organism == "cchf" or w.organism == "andv" else ["main"]
 
 
 def url(w):
