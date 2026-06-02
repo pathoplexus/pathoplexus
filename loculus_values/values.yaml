@@ -1688,27 +1688,27 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/reference.fasta]]"
           insdcAccessionFull: NC_002549.1
           genes:
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/NP.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP40.fasta]]"
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/GP.fasta]]"
             - name: ssGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/ssGP.fasta]]"
             - name: sGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/sGP.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP30.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP24.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/L.fasta]]"
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1756,27 +1756,27 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/reference.fasta]]"
           insdcAccessionFull: NC_006432.1
           genes:
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/NP.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP40.fasta]]"
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/GP.fasta]]"
             - name: ssGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/ssGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/ssGP.fasta]]"
             - name: sGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/sGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/sGP.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP30.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP24.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/L.fasta]]"
   ebola-bdbv:
     <<: *defaultOrganismConfig
     schema:
@@ -2075,109 +2075,109 @@ organisms:
       - name: main
         references:
           - name: DENV-1
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/reference.fasta]]"
             insdcAccessionFull: NC_001477.1
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS5.fasta]]"
           - name: DENV-2
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/reference.fasta]]"
             insdcAccessionFull: NC_001474.2
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS5.fasta]]"
           - name: DENV-3
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/reference.fasta]]"
             insdcAccessionFull: NC_001475.2
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS5.fasta]]"
           - name: DENV-4
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/reference.fasta]]"
             insdcAccessionFull: NC_002640.1
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS5.fasta]]"
   west-nile:
     <<: *defaultOrganismConfig
     schema:
@@ -2254,31 +2254,31 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/reference.fasta]]"
           insdcAccessionFull: NC_009942.1
           genes:
             - name: 2K
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/2K.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/2K.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS1.fasta]]"
             - name: NS2A
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS2A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS2A.fasta]]"
             - name: NS2B
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS2B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS2B.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS3.fasta]]"
             - name: NS4A
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS4A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS4A.fasta]]"
             - name: NS4B
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS4B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS4B.fasta]]"
             - name: NS5
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS5.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS5.fasta]]"
             - name: capsid
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/capsid.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/capsid.fasta]]"
             - name: env
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/env.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/env.fasta]]"
             - name: prM
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/prM.fasta]]"
   andv:
     <<: *defaultOrganismConfig
     schema:
@@ -2397,33 +2397,33 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/l/reference.fasta]]"
             insdcAccessionFull: NC_003468.2
             genes:
               - name: RdRp
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/RdRp.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/l/RdRp.fasta]]"
       - name: M
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/reference.fasta]]"
             insdcAccessionFull: NC_003467.2
             genes:
               - name: GPC
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/GPC.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/GPC.fasta]]"
               - name: Gn
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/Gn.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/Gn.fasta]]"
               - name: Gc
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/m/Gc.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/Gc.fasta]]"
       - name: S
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/reference.fasta]]"
             insdcAccessionFull: NC_003466.1
             genes:
               - name: "N"
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/N.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/N.fasta]]"
               - name: NSs
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/s/NSs.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/NSs.fasta]]"
   cchf:
     <<: *defaultOrganismConfig
     schema:
@@ -2540,27 +2540,27 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_L.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_L.fasta]]"
             insdcAccessionFull: NC_005301.3
             genes:
               - name: RdRp
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/RdRp.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/RdRp.fasta]]"
       - name: M
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_M.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_M.fasta]]"
             insdcAccessionFull: NC_005300.2
             genes:
               - name: GPC
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/GPC.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/GPC.fasta]]"
       - name: S
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_S.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_S.fasta]]"
             insdcAccessionFull: NC_005302.1
             genes:
               - name: NP
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/NP.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/NP.fasta]]"
   mpox:
     <<: *defaultOrganismConfig
     schema:
@@ -2873,7 +2873,7 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/mpox/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/mpox/reference.fasta]]"
           insdcAccessionFull: NC_063383.1
           genes:
             - name: OPG001
@@ -3324,31 +3324,31 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/reference.fasta]]"
           insdcAccessionFull: PP109421.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/N.fasta]]"
             - name: "NS1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/NS1.fasta]]"
             - name: "NS2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/NS2.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/SH.fasta]]"
   rsv-b:
     <<: *defaultOrganismConfig
     schema:
@@ -3447,31 +3447,31 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/reference.fasta]]"
           insdcAccessionFull: OP975389.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M2-2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M2-2.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/N.fasta]]"
             - name: "NS1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/NS1.fasta]]"
             - name: "NS2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/NS2.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/SH.fasta]]"
   hmpv:
     <<: *defaultOrganismConfig
     schema:
@@ -3550,27 +3550,27 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/reference.fasta]]"
           insdcAccessionFull: NC_039199.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M2-2.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/N.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/SH.fasta]]"
   measles:
     <<: *defaultOrganismConfig
     schema:
@@ -3654,25 +3654,25 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/reference.fasta]]"
           insdcAccessionFull: NC_001498.1
           genes:
             - name: "C"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/C.fasta]]"
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/F.fasta]]"
             - name: "H"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/H.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/H.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/M.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/N.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/P.fasta]]"
             - name: "V"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/V.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/V.fasta]]"
   marburg:
     <<: *defaultOrganismConfig
     schema:
@@ -3750,23 +3750,23 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/reference.fasta]]"
           insdcAccessionFull: NC_001608.3
           genes:
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/GP.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/L.fasta]]"
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/NP.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP24.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP30.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP40.fasta]]"
   yellow-fever:
     <<: *defaultOrganismConfig
     schema:
@@ -3889,33 +3889,33 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/reference.fasta]]"
           insdcAccessionFull: NC_002031.1
           genes:
             - name: C
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/C.fasta]]"
             - name: prM
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/prM.fasta]]"
             - name: M
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/M.fasta]]"
             - name: E
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/E.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/E.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS1.fasta]]"
             - name: NS2a
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2a.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS2a.fasta]]"
             - name: NS2b
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2b.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS2b.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS3.fasta]]"
             - name: NS4a
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4a.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4a.fasta]]"
             - name: 2K
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/2K.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/2K.fasta]]"
             - name: NS4b
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4b.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/RdRPol.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
