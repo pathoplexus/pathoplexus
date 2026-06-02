@@ -2350,7 +2350,7 @@ organisms:
                   genes: ["N", NSs]
       - <<: *preprocessing
         version:
-          - 3
+          - 4
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
