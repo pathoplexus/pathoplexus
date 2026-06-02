@@ -1325,6 +1325,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
         noInput: true
+        hierarchicalFilter: *taxonomy_service_url
+        hierarchicalSearchLabel: "include subtaxa"
         preprocessing:
           function: resolve_host_taxon_id
           inputs:
@@ -1943,8 +1945,6 @@ organisms:
         - <<: *hostTaxonIdConfig
           required: true
           initiallyVisible: true
-          hierarchicalFilter: *taxonomy_service_url
-          hierarchicalSearchLabel: "include subtaxa"
         - name: lineage
           displayName: Lineage
           definition: "Clade label assigned by Nextclade, for views on the datasets see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv1/2025-09-09--12-13-13Z/tree.json for DENV-1, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv2/2025-09-09--12-13-13Z/tree.json for DENV-2, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv3/2025-09-09--12-13-13Z/tree.json for DENV-3 and https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv4/2025-09-09--12-13-13Z/tree.json for DENV-4."
@@ -2203,8 +2203,6 @@ organisms:
       metadataAdd:
         - <<: *hostTaxonIdConfig
           initiallyVisible: true
-          hierarchicalFilter: *taxonomy_service_url
-          hierarchicalSearchLabel: "include subtaxa"
         - name: lineage
           displayName: Lineage
           definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/wnv/all-lineages/2026-03-04--12-40-26Z/tree.json for a view of the Nextclade dataset."
@@ -3809,8 +3807,6 @@ organisms:
         - <<: *hostTaxonIdConfig
           required: true
           initiallyVisible: true
-          hierarchicalFilter: *taxonomy_service_url
-          hierarchicalSearchLabel: "include subtaxa"
         - name: clade
           displayName: Clade
           definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
