@@ -1311,7 +1311,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             taxonomy_service_url: *taxonomy_service_url
       - &hostTaxonIdConfig
         name: hostTaxonId
-        displayName: Host taxon ID
+        displayName: "Host species"
         type: string
         autocomplete: true
         customDisplay:
