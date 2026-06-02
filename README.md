@@ -37,6 +37,14 @@ If you want to work with a dev preview, you need to clone the repo, then run
 
 to copy the monorepo into this repository, with .gitignore ignoring its contents.
 
+If you change `pathoplexus_app/values.yaml` to point at a different `loculusVersion`, first clean the ignored files that were copied from the previous Loculus version:
+
+```bash
+git clean -fX -d -- monorepo
+```
+
+Then run `./sync.sh` again. Do not use `rm -rf monorepo`, because `monorepo/` also contains tracked Pathoplexus overlay files that should be preserved.
+
 You can then cd to the `monorepo/website` directory and follow the [Loculus website development instructions](https://github.com/loculus-project/loculus/blob/main/website/README.md).
 
 #### Scope
