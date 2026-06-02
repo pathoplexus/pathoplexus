@@ -2,9 +2,9 @@
  * Pathoplexus color overrides.
  *
  * Loculus defines the default brand palette in base.css. Pathoplexus overrides
- * only these CSS theme variables so Tailwind utilities, daisyUI semantic
- * primary colors, and runtime reads via getThemeColor() all use the
- * Pathoplexus palette without overlaying the whole base stylesheet.
+ * only these CSS theme variables so the Tailwind utilities and runtime reads
+ * via getThemeColor() all use the Pathoplexus palette without overlaying the
+ * whole base stylesheet.
  */
 :root,
 :host {
