@@ -2397,7 +2397,7 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/reference.fasta]]"
+            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/orthohantavirus/andv/l/reference.fasta]]"
             insdcAccessionFull: NC_003468.2
             genes:
               - name: RdRp
