@@ -75,26 +75,26 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpox:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
     30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    31: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1675,8 +1675,8 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 28
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1739,8 +1739,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 25
           - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1846,8 +1846,8 @@ organisms:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
         version:
-          - 4
           - 5
+          - 6
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -2025,8 +2025,8 @@ organisms:
       - &denguePreprocessing
         <<: *preprocessing
         version:
-          - 29
           - 30
+          - 31
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2238,8 +2238,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2335,8 +2335,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 4
           - 5
+          - 6
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2486,8 +2486,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 22
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2649,7 +2649,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 19
+          - 20
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2839,7 +2839,7 @@ organisms:
       - <<: *mpoxPreprocessing
         replicas: 3
         version:
-          - 20
+          - 21
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 10
@@ -3276,8 +3276,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 20
           - 21
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3400,8 +3400,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 21
           - 22
+          - 23
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3514,8 +3514,8 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 22
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3618,8 +3618,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
           - 27
+          - 28
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3715,8 +3715,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
           - 24
+          - 25
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3855,8 +3855,8 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 28
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
