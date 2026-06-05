@@ -3913,7 +3913,7 @@ resources:
 # For backend and other required pods, set memory requests = memory limits to ensure guaranteed QoS
   ingest:
     requests:
-      memory: "200Mi"
+      memory: "100Mi"
       cpu: "50m"
     limits:
       cpu: "200m"
