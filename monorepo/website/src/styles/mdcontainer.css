@@ -192,6 +192,54 @@
     @apply text-lg font-semibold text-main my-3 border-t border-gray-300 mt-7 pt-5 mb-0;
 }
 
+/*
+ * Homepage FAQ — a responsive two-column card grid. Uses CSS multi-column so
+ * cards of differing heights flow and pack naturally (with break-inside:avoid
+ * keeping each card intact) instead of leaving gaps like a fixed grid would.
+ */
+.mdContainer .faqCards {
+    @apply mt-2;
+    column-gap: 1.25rem;
+    columns: 1;
+}
+
+@media (min-width: 768px) {
+    .mdContainer .faqCards {
+        columns: 2;
+    }
+}
+
+.mdContainer .faqCard {
+    @apply mb-5 rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-xs transition-shadow hover:shadow-md;
+    break-inside: avoid;
+}
+
+.mdContainer .faqCard h3 {
+    @apply text-lg font-semibold text-main mt-0 mb-2 leading-snug;
+    max-width: none;
+}
+
+.mdContainer .faqCard p {
+    @apply my-0 text-[0.9375rem] text-gray-600;
+    max-width: none;
+}
+
+.mdContainer .faqCard ul {
+    @apply my-0 text-[0.9375rem] text-gray-600;
+}
+
+.mdContainer .faqCard > ul > li {
+    @apply my-1;
+}
+
+.mdContainer .faqMore {
+    @apply mt-3 text-center;
+}
+
+.mdContainer .faqMore a {
+    @apply font-medium no-underline hover:underline;
+}
+
 .mdContainer blockquote {
     @apply my-5 pl-4 border-l-4 border-primary-200 text-gray-600 italic;
 }
