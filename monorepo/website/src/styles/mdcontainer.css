@@ -211,12 +211,12 @@
 }
 
 .mdContainer .faqCard p {
-    @apply my-0 text-[0.9375rem] text-gray-700;
+    @apply my-0 text-[0.9375rem] text-gray-800;
     max-width: none;
 }
 
 .mdContainer .faqCard ul {
-    @apply my-0 text-[0.9375rem] text-gray-700;
+    @apply my-0 text-[0.9375rem] text-gray-800;
     padding-left: 1.25rem;
     list-style-position: outside;
 }
