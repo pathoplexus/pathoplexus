@@ -1325,6 +1325,9 @@ defaultOrganismConfig: &defaultOrganismConfig
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
         noInput: true
+        hierarchicalFilter: "http://loculus-taxonomy-service:5000"
+        hierarchicalSearchLabel: "include subtaxa"
+        initiallyVisible: true
         preprocessing:
           function: resolve_host_taxon_id
           inputs:
