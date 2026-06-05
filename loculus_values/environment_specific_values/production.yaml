@@ -199,6 +199,32 @@ resources:
           cpu: "250m"
         limits:
           memory: "2Gi"
+    ebola-bdbv:
+      silo:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "220Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
+    andv:
+      silo:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      lapis:
+        requests:
+          memory: "220Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
 defaultResources:
   requests:
     memory: "200Mi"
