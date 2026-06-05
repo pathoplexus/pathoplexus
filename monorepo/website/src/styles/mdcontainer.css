@@ -1,7 +1,7 @@
 @reference './base.css';
 
 .mdContainerItself {
-    @apply max-w-3xl mx-auto break-normal w-full;
+    @apply max-w-2xl mx-auto break-normal w-full;
 }
 
 /*
@@ -32,24 +32,37 @@
     max-width: 65ch;
 }
 
+/*
+ * News pages (MdLayout) render through `.mdContainerItself` and use floated
+ * figures. Capping individual elements to a measure leaves a right-floated
+ * image stranded beyond the text, so let the (already narrow) container width
+ * set the measure there and have text wrap naturally around the float.
+ */
+.mdContainerItself h1,
+.mdContainerItself h2,
+.mdContainerItself h3,
+.mdContainerItself h4,
+.mdContainerItself p,
+.mdContainerItself ul,
+.mdContainerItself ol,
+.mdContainerItself blockquote {
+    max-width: none;
+}
+
 .mdContainer h1 {
     @apply text-3xl font-bold text-main mt-2 mb-4 tracking-tight leading-tight;
-    text-wrap: balance;
 }
 
 .mdContainer h2 {
     @apply text-2xl font-semibold text-main mt-10 mb-3 tracking-tight leading-snug;
-    text-wrap: balance;
 }
 
 .mdContainer h3 {
     @apply text-xl font-semibold text-main mt-8 mb-2 leading-snug;
-    text-wrap: balance;
 }
 
 .mdContainer h4 {
     @apply text-lg font-semibold text-main mt-6 mb-2 leading-snug;
-    text-wrap: balance;
 }
 
 .mdContainer img {
