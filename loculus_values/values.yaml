@@ -2286,9 +2286,9 @@ organisms:
             - name: prM
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/prM.fasta]]"
   andv:
+    <<: *defaultOrganismConfig
     # TO REVERT: NEED TO EXPLICITLY ENABLE ORGANSIMS
     enabled: true
-    <<: *defaultOrganismConfig
     schema:
       <<: *schema
       submissionDataTypes:
