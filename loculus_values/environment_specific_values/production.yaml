@@ -179,6 +179,13 @@ resources:
           cpu: "250m"
         limits:
           memory: "1Gi"
+      ingest:
+        requests:
+          memory: "200Mi"
+          cpu: "50m"
+        limits:
+          cpu: "200m"
+          memory: "10Gi"
     yellow-fever:
       <<: *smallOrganismQueryEngineResources
     ebola-sudan:
