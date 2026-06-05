@@ -193,25 +193,16 @@
 }
 
 /*
- * Homepage FAQ — a responsive two-column card grid. Uses CSS multi-column so
- * cards of differing heights flow and pack naturally (with break-inside:avoid
- * keeping each card intact) instead of leaving gaps like a fixed grid would.
+ * Homepage FAQ — a responsive two-column card grid. A CSS grid (rather than
+ * multi-column) so cards read left-to-right, row by row, and each row's cards
+ * share an equal height.
  */
 .mdContainer .faqCards {
-    @apply mt-2;
-    column-gap: 1.25rem;
-    columns: 1;
-}
-
-@media (min-width: 768px) {
-    .mdContainer .faqCards {
-        columns: 2;
-    }
+    @apply mt-2 grid grid-cols-1 gap-5 md:grid-cols-2;
 }
 
 .mdContainer .faqCard {
-    @apply mb-5 rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-xs transition-shadow hover:shadow-md;
-    break-inside: avoid;
+    @apply rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-xs transition-shadow hover:shadow-md;
 }
 
 .mdContainer .faqCard h3 {
