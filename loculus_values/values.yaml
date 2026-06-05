@@ -89,6 +89,8 @@ lineageSystemDefinitions:
   dengue:
     30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
+  # TO REVERT: NEED TO EXPLICITLY ENABLE ORGANSIMS
+  enabled: false
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
@@ -2281,6 +2283,8 @@ organisms:
             - name: prM
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/prM.fasta]]"
   andv:
+    # TO REVERT: NEED TO EXPLICITLY ENABLE ORGANSIMS
+    enabled: true
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
