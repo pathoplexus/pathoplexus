@@ -2326,6 +2326,21 @@ organisms:
           - length_L
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+      metadataAdd:
+        - name: displayName
+          displayName: Display name
+          definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. The identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
+          noInput: true
+          preprocessing:
+            function: build_display_name
+            inputs:
+              geoLocCountry: geoLocCountry
+              sampleCollectionDate: processed.sampleCollectionDate
+              specimenCollectorSampleId: specimenCollectorSampleId
+              submissionId: submissionId
+            args:
+              order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
+              type: [string, IDENTIFIER, dateRangeString]
     preprocessing:
       - <<: *preprocessing
         version:
