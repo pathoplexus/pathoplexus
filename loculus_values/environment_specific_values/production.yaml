@@ -79,6 +79,7 @@ enaDeposition:
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
 resources:
+# For backend and other required pods, set memory requests = memory limits to ensure guaranteed QoS
   website:
     requests:
       memory: "2Gi"

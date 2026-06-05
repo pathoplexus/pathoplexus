@@ -3910,7 +3910,6 @@ taxonomyService:
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
-# For backend and other required pods, set memory requests = memory limits to ensure guaranteed QoS
   ingest:
     requests:
       memory: "100Mi"
@@ -3920,7 +3919,7 @@ resources:
       memory: "10Gi"
   backend:
     requests:
-      memory: "3Gi"
+      memory: "640Mi"
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
