@@ -3754,7 +3754,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://maverbiest.github.io/nextclade_data/data_output"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
@@ -3782,7 +3782,7 @@ organisms:
           initiallyVisible: true
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/maverbiest.github.io/nextclade_data/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
           header: "Clade"
           includeInDownloadsByDefault: true
           noInput: true
@@ -3851,7 +3851,7 @@ organisms:
               - name: singleReference 
                 nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
                 genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+          nextclade_dataset_server: https://maverbiest.github.io/nextclade_data/data_output
     ingest:
       <<: *ingest
       configFile:
