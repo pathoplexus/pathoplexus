@@ -190,18 +190,21 @@ defaultOrganismConfig: &defaultOrganismConfig
           rangeDisplayName: Collection date
           bound: upper
         noInput: true
-      - name: displayName
+      - &displayNameConfig
+        name: displayName
         displayName: Display name
-        definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
+        definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is taken from `specimenCollectorSampleId` if set, otherwise `submissionId`. The identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
+        noInput: true
         preprocessing:
-          function: concatenate
+          function: build_display_name
           inputs:
             geoLocCountry: geoLocCountry
             sampleCollectionDate: processed.sampleCollectionDate
+            specimenCollectorSampleId: specimenCollectorSampleId
+            submissionId: submissionId
           args:
-            order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
-            type: [string, ACCESSION_VERSION, dateRangeString]
-        noInput: true
+            order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
+            type: [string, IDENTIFIER, dateRangeString]
       - name: ncbiReleaseDate
         displayName: NCBI release date
         definition: Date the nucleotide accession was first released on the INSDC.
@@ -1973,10 +1976,8 @@ organisms:
           example: "Isolate 1"
           desired: true
         # custom displayName construction for Dengue
-        - name: displayName
-          displayName: Display name
+        - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
-          noInput: true
           preprocessing:
             function: build_display_name
             inputs:
@@ -2329,21 +2330,6 @@ organisms:
           - length_L
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
-      metadataAdd:
-        - name: displayName
-          displayName: Display name
-          definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. The identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
-          noInput: true
-          preprocessing:
-            function: build_display_name
-            inputs:
-              geoLocCountry: geoLocCountry
-              sampleCollectionDate: processed.sampleCollectionDate
-              specimenCollectorSampleId: specimenCollectorSampleId
-              submissionId: submissionId
-            args:
-              order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [string, IDENTIFIER, dateRangeString]
     preprocessing:
       - <<: *preprocessing
         version:
@@ -3823,10 +3809,8 @@ organisms:
           example: "Isolate 1"
           desired: true
         # custom displayName construction for YFV
-        - name: displayName
-          displayName: Display name
+        - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
-          noInput: true
           preprocessing:
             function: build_display_name
             inputs:
