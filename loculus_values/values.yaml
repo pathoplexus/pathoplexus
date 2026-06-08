@@ -1286,7 +1286,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: scientific_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-            hostNameScientific: hostNameScientific
           args:
             taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
@@ -1331,8 +1330,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: resolve_host_taxon_id
           inputs:
             host: host
-            hostNameScientific: hostNameScientific
-            hostTaxonId: hostTaxonId
           args:
             taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
