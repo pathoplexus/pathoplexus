@@ -2361,7 +2361,7 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 1980456
         calculate_groups_override_json: true
-        grouping_override_url: "https://raw.githubusercontent.com/pathoplexus/curation_data/andv-curations/grouping_override/andv/curated_group_08-06-2026.json"
+        grouping_override_url: "https://pathoplexus.github.io/curation_data/grouping_override/andv/curated_group_08-06-2026.json"
         segment_identification:
           method: "minimizer"
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
