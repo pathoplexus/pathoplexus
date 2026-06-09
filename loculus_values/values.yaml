@@ -3904,7 +3904,7 @@ defaultResources:
     cpu: "1000m"
 
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-05-01"
+  dbVersion: "ncbi_taxonomy_2026-06-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
