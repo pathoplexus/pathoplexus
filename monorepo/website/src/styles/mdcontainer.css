@@ -11,7 +11,7 @@
  * size and rhythm as the docs and about pages.
  */
 .mdContainer {
-    @apply text-gray-700;
+    @apply text-gray-800;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
