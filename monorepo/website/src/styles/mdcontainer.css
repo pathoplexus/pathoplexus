@@ -13,7 +13,6 @@
 .mdContainer {
     @apply text-gray-800;
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
 
