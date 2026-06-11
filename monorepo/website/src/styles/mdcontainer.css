@@ -84,7 +84,7 @@
 
 /* Inside info-box asides the gray pill clashes with the blue background, so tint it to match. */
 .mdContainer .info-box-link :not(pre) > code {
-    @apply bg-primary-50 text-primary-900 border border-primary-300;
+    @apply bg-primary-100 text-primary-900;
 }
 
 .mdContainer ol {
