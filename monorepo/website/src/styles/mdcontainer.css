@@ -82,12 +82,17 @@
     @apply rounded bg-gray-100 text-gray-800 px-1.5 py-0.5 text-[0.875em] font-mono;
 }
 
+/* Inside info-box asides the gray pill clashes with the blue background, so tint it to match. */
+.mdContainer .info-box-link :not(pre) > code {
+    @apply bg-primary-50 text-primary-900 border border-primary-300;
+}
+
 .mdContainer ol {
     @apply list-decimal list-inside my-4;
 }
 
 .mdContainer ol li {
-    @apply ml-4 my-1.5;
+    @apply ml-4 my-1.5 marker:text-inherit;
 }
 
 .mdContainer .alternative-lists ol {
