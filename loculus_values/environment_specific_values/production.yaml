@@ -73,18 +73,19 @@ seqSets:
     hostUrl: "https://pathoplexus.org"
 podPriorityValue: 2000
 disableEnaSubmission: false
-enaDeposition: 
+enaDeposition:
   submitToEnaProduction: true
   enaDbName: Pathoplexus
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
 resources:
+# For backend and other required pods, set memory requests = memory limits to ensure guaranteed QoS
   website:
     requests:
-      memory: "1Gi"
+      memory: "2Gi"
       cpu: "1000m"
     limits:
-      memory: "5Gi"
+      memory: "2Gi"
   ena-submission:
     requests:
       memory: "80Mi"
@@ -106,10 +107,10 @@ resources:
       memory: "10Gi"
   keycloak:
     requests:
-      memory: "1500Mi"
+      memory: "2Gi"
       cpu: "1000m"
     limits:
-      memory: "3Gi"
+      memory: "2Gi"
   silo:
     requests:
       memory: "2Gi"
@@ -118,19 +119,19 @@ resources:
       memory: "2Gi"
   lapis:
     requests:
-      memory: "220Mi"
+      memory: "3Gi"
       cpu: "500m"
     limits:
-      memory: "5Gi"
+      memory: "3Gi"
   silo-importer:
     requests:
-      memory: "20Mi"
+      memory: "2Gi"
       cpu: "500m"
     limits:
-      memory: "10Gi"
+      memory: "2Gi"
   backend:
     requests:
-      memory: "1Gi"
+      memory: "3Gi"
       cpu: "1000m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
@@ -160,7 +161,7 @@ resources:
           cpu: "1000m"
         limits:
           memory: "3Gi"
-    marburg:
+    marburg: &smallOrganismQueryEngineResources
       silo:
         requests:
           memory: "1Gi"
@@ -172,39 +173,34 @@ resources:
           memory: "220Mi"
           cpu: "250m"
         limits:
-          memory: "2Gi"
+          memory: "220Mi"
+      silo-importer:
+        requests:
+          memory: "1Gi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+      ingest:
+        requests:
+          memory: "100Mi"
+          cpu: "20m"
+        limits:
+          cpu: "200m"
+          memory: "1Gi"
     yellow-fever:
-      silo:
-        requests:
-          memory: "1Gi"
-          cpu: "250m"
-        limits:
-          memory: "1Gi"
-      lapis:
-        requests:
-          memory: "220Mi"
-          cpu: "250m"
-        limits:
-          memory: "2Gi"
+      <<: *smallOrganismQueryEngineResources
     ebola-sudan:
-      silo:
-        requests:
-          memory: "1Gi"
-          cpu: "250m"
-        limits:
-          memory: "1Gi"
-      lapis:
-        requests:
-          memory: "220Mi"
-          cpu: "250m"
-        limits:
-          memory: "2Gi"
+      <<: *smallOrganismQueryEngineResources
+    ebola-bdbv:
+      <<: *smallOrganismQueryEngineResources
+    andv:
+      <<: *smallOrganismQueryEngineResources
 defaultResources:
   requests:
     memory: "200Mi"
     cpu: "200m"
   limits:
-    memory: "1Gi"
+    memory: "200Mi"
     cpu: "1000m"
 sequenceFlagging:
   github:

@@ -3910,7 +3910,7 @@ taxonomyService:
 resources:
   ingest:
     requests:
-      memory: "200Mi"
+      memory: "100Mi"
       cpu: "50m"
     limits:
       cpu: "200m"
