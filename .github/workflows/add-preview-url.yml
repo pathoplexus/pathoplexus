@@ -18,10 +18,6 @@ jobs:
             const pr = context.payload.pull_request;
             const hasPreviewLabel = pr.labels.some((label) => label.name === 'preview');
 
-            // Format the branch name exactly as ArgoCD does when generating the preview
-            // deployment, so the URL we write actually resolves. ArgoCD truncates the branch
-            // to 25 characters (matching loculus-project/loculus); using a longer limit here
-            // produced URLs that did not match the real, shorter preview subdomain.
             const previewSubdomain = pr.head.ref
               .substring(0, 25)
               .replace(/[_/.]+/g, '-')
