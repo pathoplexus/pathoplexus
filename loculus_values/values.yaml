@@ -75,19 +75,19 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpox:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1289,7 +1289,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: scientific_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-            hostNameScientific: hostNameScientific
           args:
             taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
@@ -1334,8 +1333,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: resolve_host_taxon_id
           inputs:
             host: host
-            hostNameScientific: hostNameScientific
-            hostTaxonId: hostTaxonId
           args:
             taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
@@ -1673,7 +1670,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1736,7 +1733,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 25
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1842,7 +1839,7 @@ organisms:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
         version:
-          - 4
+          - 5
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -2019,7 +2016,7 @@ organisms:
       - &denguePreprocessing
         <<: *preprocessing
         version:
-          - 29
+          - 30
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2233,7 +2230,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2329,7 +2326,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 4
+          - 6
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2362,6 +2359,7 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 1980456
         calculate_groups_override_json: true
+        grouping_override_url: "https://pathoplexus.github.io/curation_data/grouping_override/andv/curated_group_08-06-2026.json"
         segment_identification:
           method: "minimizer"
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
@@ -2479,7 +2477,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 22
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2641,7 +2639,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 19
+          - 20
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2831,7 +2829,7 @@ organisms:
       # - <<: *mpoxPreprocessing
       #   replicas: 3
       #   version:
-      #     - 19
+      #     - 20
       #   configFile:
       #     <<: *preprocessingConfigFile
       #     batch_size: 10
@@ -3268,7 +3266,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 20
+          - 21
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3391,7 +3389,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 21
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3504,7 +3502,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 22
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3607,7 +3605,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
+          - 27
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3703,7 +3701,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
+          - 24
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3755,7 +3753,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://maverbiest.github.io/nextclade_data/data_output"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
@@ -3783,7 +3781,7 @@ organisms:
           initiallyVisible: true
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/maverbiest.github.io/nextclade_data/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
           header: "Clade"
           includeInDownloadsByDefault: true
           noInput: true
@@ -3841,7 +3839,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3850,7 +3848,7 @@ organisms:
               - name: singleReference 
                 nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
                 genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+          nextclade_dataset_server: https://maverbiest.github.io/nextclade_data/data_output
     ingest:
       <<: *ingest
       configFile:
@@ -3905,7 +3903,7 @@ defaultResources:
     cpu: "1000m"
 
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-05-01"
+  dbVersion: "ncbi_taxonomy_2026-06-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:

@@ -1,6 +1,6 @@
 ---
 layout: ../../../layouts/DocLayout.astro
-title: "Revising a submission"
+title: "Revising submitted sequences"
 order: 43
 ---
 
@@ -13,7 +13,7 @@ Sequences can be corrected or updated after they have been submitted to Pathople
 Submitting these changes ("revisions") will cause the version of the sequence to be incremented, and previous versions of the metadata and sequence data can always be accessed via previous version numbers.
 (See [Versioning](/docs/concepts/versioning))
 
-You can revise sequences via the website (particularly good for a small number of sequences and relatively simple edits), or by reuploading updated files (good for large numbers of sequences, or more extensive revisions - but requires *the original data files* that were submitted!)
+You can revise sequences via the website (particularly good for a small number of sequences and relatively simple edits), or by reuploading updated files (good for large numbers of sequences, or more extensive revisions - but requires *the original data files* that were submitted, see docs below on how to download the original data from Loculus!)
 
 ## Editing in the website
 
@@ -27,7 +27,8 @@ The easiest way to revise your sequences, especially for a small number of seque
 
 ### Starting a revision
 
-1. Scroll to the bottom of the list of sequences
+1. Open the sequence in question
+2. Scroll to the bottom of the sequence's page
 2. You'll see a 'Revise this sequence' button (this button is only visible to the group that originally submitted the sequence)
 3. Click this button to open the revision page
 
@@ -52,46 +53,59 @@ You can release changes immediately as you revise sequences one by one, or you c
 
 ## Editing using files
 
-- [Editing the metadata](#editing-the-metadata)
-- [Editing the sequence](#editing-the-sequence)
-- [Submitting the revision](#submitting-the-revision)
+* [Preparing revision files](#preparing-revision-files)
+* [Editing the metadata](#editing-the-metadata)
+* [Editing the sequence](#editing-the-sequence)
+* [Submitting the revision](#submitting-the-revision)
 
-The process of submitting revisions using modified files is very similar to original submission.
-The main difference is that you must provide an `accession` column in the metadata file, which contains the Pathoplexus accession number(s) assigned when the sequences were submitted originally.
+Submitting revisions using modified files is very similar to making an original submission.
+
+The main difference is that revision metadata must include an `accession` column containing the Pathoplexus accession assigned during the original submission.
 
 **Important:** The `accession` column should contain the accession **without** the version number. For example, use `PP_0049AAG` rather than `PP_0049AAG.1`. (See [Accessions](/docs/concepts/accession) for more information on accession format.)
 
-**You must use the _original metadata_ when doing a revision!** (In other words, the original files you submitted to Pathoplexus.) Currently you will need to have this file locally - we aim to introduce a way to download this from Pathoplexus soon. If you do not have this file, please _contact us_ at [revisions@pathoplexus.org](mailto:revisions@pathoplexus.org) to help you do the revision.
+Whenever possible, use the **original metadata and sequence files** from your initial Pathoplexus submission as the starting point for your revision. You can either use your own copies of these files or download them from Pathoplexus.
+
+### Preparing revision files
+
+The easiest way to prepare revision files is to download your original submission data:
+
+1. Navigate to the organism you want to revise sequences for.
+2. Click **Submit sequences** in the top sub-menu.
+3. Click **View** to display your previously submitted sequences for that organism.
+4. Search for and select the entries you would like to revise and click **Download original data**.
+5. A zip folder containing the original metadata and FASTA files will be downloaded. Make your edits directly to these files.
+
+Pathoplexus automatically adds the required `accession` column to downloaded metadata.
+
+Alternatively, if you already have the original submission files, you can edit those directly. Add an `accession` column to the metadata file containing the Pathoplexus accessions assigned during the original submission.
+
+Your revision upload must always include:
+
+* a metadata file containing only the entries you want to revise
+* a matching FASTA file containing the corresponding sequences
+
+For single-segmented organisms, FASTA sequence IDs must match the values in the metadata `id` column.
+
+For multi-segmented organisms, include a `fastaIds` column in the metadata file containing a space-separated list of all FASTA IDs linked to each metadata entry.
+
+We encourage you to add a short description of your changes in the optional `versionComment` metadata field explaining the reason for the revision.
 
 ### Editing the metadata
 
-#### How to create the metadata file
+To revise metadata, edit the relevant fields in your metadata file. The metadata file should include all the metadata fields that were originally included, **both** those that you wish to update and that should remain the same. (Not including a metadata column will set its value to 'empty'.)
 
-The metadata file should include all the metadata fields that were originally included, **both** those that you wish to update and that should remain the same. (Not including a metadata column will set its value to 'empty'.)
-
-#### Creating a matching FASTA file
-
-Even if you are not revising the sequence, you must provide the a FASTA file that matches the metadata file you are uploading.
-It should only contain the sequences that are in the metadata file (if this is fewer than your original submission), and does not otherwise need to be edited. If you are submitting sequences to a multi-segmented organism and you submit more than one segment per entry, add a column `fastaIds` to your metadata, with a space-separated list of all fasta IDs that should be linked to a specific metadata entry.
-
-You can also edit the sequence at the same time as revising the metadata - simply prepare the FASTA file as explained in [Editing the sequence](#editing-the-sequence).
+The FASTA file does not need to be modified if the sequences are unchanged, but you must still include a matching FASTA file when submitting the revision.
 
 ### Editing the sequence
 
-#### Creating the FASTA file
+To revise sequences, edit the relevant sequences in the FASTA file.
 
-Create a FASTA file that contains only the sequences you'd like to revise, with whatever changes you'd like to make.
-There is no reason to edit the sequence IDs in the FASTA file, as long as they still match the fasta IDs listed in the `id` column (for single-segmented) or `fastaIds` column (for multi-segmented organisms) in your metadata file.
+The sequence IDs do not need to be changed as long as they still match the corresponding metadata entries (`id` for single-segmented organisms or `fastaIds` for multi-segmented organisms).
 
-#### Creating the metadata file
+You can also revise metadata fields at the same time by editing the metadata file.
 
-The metadata file should only have rows of data for the sequences in the FASTA file.
-It needs to include an `accession` column, which includes the Pathoplexus accessions assigned at initial submission (without the version number, e.g., `PP_0049AAG` not `PP_0049AAG.1`).
 
-You should also include the metadata `id` column, which will match the sequence ids in your FASTA file for single-segmented organisms. For multi-segmented organisms you should include both the metadata `id` column and a `fastaIds` column with a space-separated list of the fasta IDs of all sequences that should be linked to that metadata entry.
-If you want to edit any metadata fields as well, you can include these as described in [Editing the metadata](#editing-the-metadata).
-
-We also encourage you to add a short description or summary in the optional `versionComment` metadata field describing the reason for revising the sequence.
 
 ### Submitting the revision
 
