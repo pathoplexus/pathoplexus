@@ -41,7 +41,7 @@ export const CryptoDonationWidget: FC<CryptoDonationWidgetProps> = ({ addresses 
                     id='crypto-select'
                     value={selectedCrypto}
                     onChange={handleCryptoChange}
-                    className='px-2 py-1 text-sm border border-gray-200 rounded-sm focus:outline-hidden focus:ring-1 focus:ring-primary-400'
+                    className='pl-2 pr-8 py-1 text-sm border border-gray-200 rounded-sm focus:outline-hidden focus:ring-1 focus:ring-primary-400'
                 >
                     <option value='btc'>BTC</option>
                     <option value='eth'>ETH</option>
