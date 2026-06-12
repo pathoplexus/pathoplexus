@@ -23,7 +23,7 @@ You can only approve and release sequences that have yellow or green checkmarks 
 
 You can filter the processed sequences to only show those with warnings, errors, or which passed, to help you decide which actions to take.
 
-If see something you'd like to change, or want to try and resolve a warning, you can [edit the sequence](edit-submissions).
+If you see something you'd like to change, or want to try and resolve a warning, you can [edit the sequence](edit-submissions).
 
 ### Actioning individual sequences
 
@@ -51,7 +51,7 @@ You can also always view your released sequences by going to 'Browse' in the top
     To use the [demo instance](https://demo.pathoplexus.org) instead of the main instance, please replace `backend.pathoplexus.org` with `backend-demo.pathoplexus.org`.
 </InfoBox>
 
-The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token an include the token in the HTTP header `Authorization: Bearer <authentication token>`.
+The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token and include the token in the HTTP header `Authorization: Bearer <authentication token>`.
 
 You can retrieve a list of uploaded but not released sequences by sending a GET request to the endpoint:
 
@@ -61,7 +61,7 @@ https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group i
 
 The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`. The `sequenceEntries` field of the returned object contains a list of sequences with their corresponding `status`:
 
-- Sequence that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
+- Sequences that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
 - Sequences that are in the status `IN_PROCESSING` are currently being processed, please wait a few more moments.
 - Sequences that are in the status `HAS_ERRORS` contain errors. To find out details, we recommend going to the review page on the website: you can find it by going to the Submission Portal and clicking on "Review".
 - Sequences that are in the status `AWAITING_APPROVAL` have passed the processing and quality checks and can be approved.
