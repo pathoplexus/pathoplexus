@@ -72,7 +72,8 @@ seqSets:
     organization: "Pathoplexus"
     hostUrl: "https://pathoplexus.org"
     writeEnabled: true
-podPriorityValue: 2000
+podScheduling:
+  podPriorityValue: 2000
 disableEnaSubmission: false
 enaDeposition:
   submitToEnaProduction: true
