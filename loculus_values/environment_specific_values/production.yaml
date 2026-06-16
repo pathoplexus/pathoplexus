@@ -71,9 +71,10 @@ seqSets:
     email: "dois@pathoplexus.org"
     organization: "Pathoplexus"
     hostUrl: "https://pathoplexus.org"
+    writeEnabled: true
 podPriorityValue: 2000
 disableEnaSubmission: false
-enaDeposition: 
+enaDeposition:
   submitToEnaProduction: true
   enaDbName: Pathoplexus
   enaUniqueSuffix: Pathoplexus
