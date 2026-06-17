@@ -1,0 +1,55 @@
+@reference './base.css';
+
+/*
+ * Pathoplexus-specific prose styling, injected into the shared `.mdContainer`
+ * styling via the `extraStyles.css` extension point in Loculus'
+ * `mdcontainer.css`. Keeping it here means we add instance-specific styling
+ * without forking the upstream stylesheet.
+ */
+
+/*
+ * Homepage FAQ — a responsive two-column card grid. A CSS grid (rather than
+ * multi-column) so cards read left-to-right, row by row, and each row's cards
+ * share an equal height.
+ */
+.mdContainer .faqCards {
+    @apply mt-2 grid grid-cols-1 gap-5 md:grid-cols-2;
+}
+
+.mdContainer .faqCard {
+    @apply rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-xs transition-shadow hover:shadow-md;
+}
+
+.mdContainer .faqCard h3 {
+    @apply text-lg font-semibold text-main mt-0 mb-2 leading-snug;
+    max-width: none;
+}
+
+.mdContainer .faqCard p {
+    @apply my-0 text-[0.9375rem] text-gray-800;
+    max-width: none;
+}
+
+.mdContainer .faqCard ul {
+    @apply my-0 text-[0.9375rem] text-gray-800;
+    padding-left: 1.25rem;
+    list-style-position: outside;
+}
+
+.mdContainer .faqCard > ul > li {
+    @apply my-1;
+    margin-left: 0;
+}
+
+.mdContainer .faqMore {
+    @apply mt-6 text-center;
+}
+
+.mdContainer .faqMore p {
+    @apply my-0;
+    max-width: none;
+}
+
+.mdContainer .faqMore a {
+    @apply font-medium no-underline hover:underline;
+}
