@@ -76,18 +76,25 @@ zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpox:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    31: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1671,6 +1678,7 @@ organisms:
         replicas: 1
         version:
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1734,6 +1742,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1840,6 +1849,7 @@ organisms:
         <<: *preprocessing
         version:
           - 5
+          - 6
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -2017,6 +2027,7 @@ organisms:
         <<: *preprocessing
         version:
           - 30
+          - 31
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2231,6 +2242,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2327,6 +2339,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 6
+          - 7
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2478,6 +2491,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2826,15 +2840,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 20
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 21
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - <<: *mpoxDataset
     ingest:
       <<: *ingest
       configFile:
@@ -3267,6 +3281,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 21
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3390,6 +3405,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 22
+          - 23
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3503,6 +3519,7 @@ organisms:
         replicas: 1
         version:
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3616,6 +3633,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+          - 28
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3712,6 +3730,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 24
+          - 25
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3850,6 +3869,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
