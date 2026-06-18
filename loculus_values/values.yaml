@@ -3589,6 +3589,16 @@ organisms:
           orderOnDetailsPage: 630
           definition: "MeaNS2 ID."
           guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
+        - <<: *displayNameConfig
+          definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
+          preprocessing:
+            function: concatenate
+            inputs:
+              geoLocCountry: geoLocCountry
+              sampleCollectionDate: processed.sampleCollectionDate
+            args:
+              order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
+              type: [string, ACCESSION_VERSION, dateRangeString]
       website: 
         <<: *website
         tableColumns:
