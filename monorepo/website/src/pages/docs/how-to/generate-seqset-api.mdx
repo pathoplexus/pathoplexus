@@ -1,0 +1,162 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Generating SeqSets via the API"
+order: 51
+---
+import InfoBox from '../../../components/asides/InfoBox.astro';
+
+### Contents
+- [Creating SeqSets](#Creating-seqsets)
+- [Updating SeqSets](#Updating-seqsets)
+- [Create SeqSet doi](#Create-seqset-doi)
+- [Accessing an existing SeqSet](#Accessing-an-existing-SeqSet)
+- [Validating SeqSet records](#Validating-SeqSet-records)
+
+In order to use the Pathoplexus API for creating SeqSets, please ensure that you have read the [Data Use Terms](/about/terms-of-use/data-use-terms)
+and agree to them. For detailed information on how to use and interact with the APIs please checkout the <em>swagger UI</em>
+documentation. Here we shall demonstrate how to use curl from the terminal to generate SeqSets using the
+`POST`, `PUT`, `DELETE`, and `GET` http methods. To effectively interact with the API, you will need to learn about
+these methods as well as the endpoints.
+
+A full list of endpoints for SeqSets can be found under the `seqset-citations-controller` section in our
+[Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html) but here we shall focus on 
+the `/create-seqset`, `/update-seqset`, `create-seqset-doi`. 
+
+<InfoBox>
+<b>Important</b>
+<p>Please note that the SeqSet endpoints require authentication or a bearer token. The details for authenticating via API or retrieving a token from the browser are explained <a href="https://pathoplexus.org/docs/how-to/authentication-api">here</a></p>
+</InfoBox>
+
+## Creating seqsets
+A SeqSet can contain both focal and background sequences [explanation of the differences here](https://pathoplexus.org/about/terms-of-use/data-use-terms).
+To define this in our request we shall need to set the <em>isFocal</em> parameter to true or false on our data object in 
+the request body. The other parameters that we need to provide include the accession numbers of the sequences
+and the type. Please check the schema on the Swagger UI to understand the accepted data formats. Below is
+example code for creating a SeqSet for 2 sequences.
+
+```
+curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset' \
+     -H 'accept: application/json' \
+     -H 'Authorization: Bearer <TOKEN> \
+     -H 'Content-Type: application/json \
+     -d '{
+        "name": "Add name for your seqset",
+        "description": "Add a description for your seqset",
+        "records": [
+            {
+                "accession": "PP_12345",
+                "type": "Loculus",
+                "isFocal": true
+
+            },
+            {
+                "accession": "PP_654321",
+                "type": "Loculus",
+                "isFocal": false
+            }
+        ]
+     }
+```
+If the SeqSet is was created successully you will get a 200 OK response code with the SeqSet ID and version number
+for the created seqset. Otherwise, an error code will be returned; for a description of the different error codes see the 
+[Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
+
+<InfoBox>
+<b>Note:</b><p>Please remember to replace your <code>TOKEN</code> in the header, as well as the <code>name</code> and <code>description</code> in the request body with the information about your own SeqSet.</p>
+</InfoBox>
+
+## Updating seqsets
+Once you have created a SeqSet, you are able to update it, for example by adding additional sequences or changing the name and description of the SeqSet. This 
+will create a new version of that SeqSet, with the same Seqset ID. The older version will show the original set of sequences included. Below is an example for updating SeqSets.
+Take note of the additional parameters in the request body to include the `seqSetID`. The `name` and `description` parameters should always be supplied. You may choose to to maintain the previously used `name` and `description` but you cannot leave these values empty as this will return an error. 
+
+```
+curl -X 'PUT' 'https//backend.pathoplexus.org/create-seqset' \
+     -H 'accept: application/json' \
+     -H 'Authorization: Bearer <TOKEN> \
+     -H 'Content-Type: application/json \
+     -d '{
+        "seqSetId": "PP_SS_XX"
+        "name": "Add name for your seqset",
+        "description": "Add a description for your seqset",
+        "records": [
+            {
+                "accession": "PP_12345",
+                "type": "Loculus",
+                "isFocal": true
+
+            },
+            {
+                "accession": "PP_654321",
+                "type": "Loculus",
+                "isFocal": false
+            },
+            {
+                "accession": "PP_334422",
+                "type": "Loculus",
+                "isFocal": true
+            }
+        ]
+     }
+```
+If the SeqSet is updated successfully, you will get the 200 OK response with the SeqSet ID and the new version number.
+
+## Create SeqSet DOI
+After you have a created a SeqSet you can be able to generate a DOI for it. (As required by the [Data Use Terms when using Restricted Use data in some circumstances](https://pathoplexus.org/about/terms-of-use/data-use-terms#422-publications-and-preprints).) In order to this, you will need to
+parse the SeqSet ID and version of the seqset as parameters to the backend URL using the `POST` method. 
+
+```
+curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_XX&version=1' \
+     -H 'accept: application/json' \
+     -H 'Authorization: Bearer <TOKEN> \
+     -d ''
+```
+Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
+Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
+been made. After, the older versions of your `SeqSet` can then be deleted using the `DELETE` method as shown in the example below. 
+Make sure the correct version you wish to delete is supplied in the url parameters.
+
+```
+curl -X 'DELETE' \
+  'https://backend.pathoplexus.org/delete-seqset?seqSetId=PP_SS_XX&version=1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer <TOKEN>'
+
+```
+
+## Accessing an existing SeqSet
+Once the SeqSet has been successfully created, it will exist on your account and details about that SeqSet 
+can be obtained using the `GET` method as shown in the example commands below.
+
+```
+curl -X 'GET' \
+  'https://backend.pathoplexus.org/get-seqset?seqSetId=PP_SS_XX&version=2' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <TOKEN>'
+
+```
+Similarly, records within that SeqSet can be accessed using the example commands below.
+
+```
+curl -X 'GET' \
+  'https://backend.pathoplexus.org/get-seqset-records?seqSetId=PP_SS_XX&version=2' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <TOKEN>'
+```
+## Validating SeqSet records
+If you wish to validate the SeqSet records, you can do this by using the `POST` method and supplying the accessions for the specific records as in the example shown below.
+
+```
+curl -X 'POST' \
+  'https://backend.pathoplexus.org/validate-seqset-records' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer <TOKEN>' \
+  -H 'Content-Type: application/json' \
+  -d '[
+  {
+    "accession": "PP_0123456",
+    "type": "Loculus",
+    "isFocal": true
+  }
+]'
+```
