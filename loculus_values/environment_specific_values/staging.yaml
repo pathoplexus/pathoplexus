@@ -79,7 +79,6 @@ seqSets:
     databaseName: "Pathoplexus Database"
     email: "dois@pathoplexus.org"
     organization: "Pathoplexus"
-    hostUrl: "https://staging.pathoplexus.org"
     writeEnabled: false
 sequenceFlagging:
   github:
