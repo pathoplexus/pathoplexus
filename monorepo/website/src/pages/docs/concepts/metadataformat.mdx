@@ -22,6 +22,10 @@ Please format dates as YYYY-MM-DD. If the day is unknown, use YYYY-MM (e.g., `20
 
 Please format authors as a string where each author is separated using a semi-colon, and a comma is used to separate first names/initials from last name, e.g. `last name, first name;`. Last name(s) is mandatory, only ASCII alphabetical characters A-Z are allowed. For example: `Smith, Anna; Perez, Tom J.; Xu, X.L.;` or `Xu,;` if the first name is unknown.
 
+### Host organisms
+
+Please specify host organisms by entering their NCBI taxon id or scientific name in the `host` field. To ensure consistency across submissions, we validate this information using NCBI's taxonomy and reject submissions with invalid information. To find out the scientific name or taxon id of your host organism, please refer to the [NCBI taxonomy browser](https://www.ncbi.nlm.nih.gov/datasets/taxonomy/). In cases where the host organism is unknown, please enter 'unidentified' (which maps to [NCBI taxon 32644](https://www.ncbi.nlm.nih.gov/datasets/taxonomy/32644/)). 
+
 ## Overview
 
 <MetadataTable />
