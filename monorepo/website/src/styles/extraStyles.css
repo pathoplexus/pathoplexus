@@ -137,9 +137,11 @@
     transform: rotate(-135deg);
 }
 
-/* Answer body. */
+/* Answer body. The upstream `.mdContainer` rules cap prose at ~65ch; inside a
+ * card we want answers to use the full card width instead. */
 .mdContainer .faqPage details > *:not(summary) {
     @apply px-5 text-[0.9375rem] text-gray-700;
+    max-width: none;
 }
 
 .mdContainer .faqPage details > summary + * {
