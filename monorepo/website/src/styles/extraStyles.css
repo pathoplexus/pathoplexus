@@ -152,6 +152,20 @@
     @apply pb-5;
 }
 
+/* Bulleted answers: the upstream `.mdContainer > ul > li` indentation only
+ * applies to top-level lists, so inside a card the bullets would sit flush
+ * left. Indent the list and hang the markers in the gutter. */
+.mdContainer .faqPage details ul {
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 2.75rem;
+}
+
+.mdContainer .faqPage details ul li {
+    @apply my-1.5;
+    margin-left: 0;
+}
+
 /* Gentle reveal when a card is opened. */
 @keyframes faqReveal {
     from {
