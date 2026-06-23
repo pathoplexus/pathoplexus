@@ -1610,6 +1610,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     image: ghcr.io/loculus-project/ingest
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
+      muted_hashes_url: "https://pathoplexus.github.io/curation_data/muted_hashes/muted_hashes.tsv"
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
