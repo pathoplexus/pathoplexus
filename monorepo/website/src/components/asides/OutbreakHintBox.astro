@@ -22,10 +22,12 @@ const { title = 'In outbreak settings' } = Astro.props;
 
 <style is:global>
     .outbreak-hint-box a {
-        @apply font-medium text-amber-700 underline;
+        color: var(--color-amber-700);
+        font-weight: 500;
+        text-decoration-line: underline;
     }
 
     .outbreak-hint-box a:hover {
-        @apply text-amber-900;
+        color: var(--color-amber-900);
     }
 </style>
