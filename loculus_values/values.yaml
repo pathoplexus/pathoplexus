@@ -3950,7 +3950,7 @@ resources:
             - name: "singleReference"
               nextclade_dataset_name: community/itps/zikav
               nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: ["C", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", "NS4B", "NS5"]
+              genes: [ancC, "C", "prM", "Pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
     ingest:
       <<: *ingest
       configFile:
@@ -3969,8 +3969,14 @@ resources:
           sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/reference.fasta]]"
           insdcAccessionFull: NC_035889.1
           genes:
+            - name: ancC
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/ancC.fasta]]"
             - name: C
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/C.fasta]]"
+            - name: prM
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/prM.fasta]]"
+            - name: Pr
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/Pr.fasta]]"
             - name: E
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/E.fasta]]"
             - name: M
@@ -3985,6 +3991,8 @@ resources:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS3.fasta]]"
             - name: NS4A
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4A.fasta]]"
+            - name: 2K
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/2K.fasta]]"  
             - name: NS4B
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4B.fasta]]"
             - name: NS5
