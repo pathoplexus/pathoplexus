@@ -3922,3 +3922,73 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
+  zika-virus:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Zika virus"
+      image: ""
+      linkOuts:
+        - name: Nextclade
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/community/itps/zikav&dataset-tag=2026-04-14--11-55-23Z"
+          name: Sealion
+          maxNumberOfRecommendedEntries:
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"  
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+    preprocessing:
+    - <<: *preprocessing
+      version:
+        - 1
+      configFile:
+        <<: *preprocessingConfigFile
+        segments:
+        - name: main
+          references:
+            - name: "singleReference"
+              nextclade_dataset_name: community/itps/zikav
+              nextclade_dataset_tag: 2026-04-14--11-55-23Z
+              genes: ["C", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", "NS4B", "NS5"]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3048459
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 64320   
+          scientific_name: "Zika virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReferences
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/reference.fasta]]"
+          insdcAccessionFull: NC_035889.1
+          genes:
+            - name: C
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/C.fasta]]"
+            - name: E
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/E.fasta]]"
+            - name: M
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/M.fasta]]"
+            - name: NS1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS1.fasta]]"
+            - name: NS2A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS2A.fasta]]"
+            - name: NS2B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS2B.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS3.fasta]]"
+            - name: NS4A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4A.fasta]]"
+            - name: NS4B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4B.fasta]]"
+            - name: NS5
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS5.fasta]]"
+
+
+
