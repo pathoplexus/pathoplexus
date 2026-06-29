@@ -18,7 +18,7 @@ export const newsItems: NewsItem[] = [
         title: 'Annual Report 2024-25',
         date: '30 June 2026',
         excerpt:
-            'We are happy to publish the first Pathoplexus annual report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025. It summarizes our first year and four months, including the launch and growth of the platform…',
+            'We are happy to publish the first Pathoplexus Annual Report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025 and approved by the General Assembly on 10 June. It summarizes our first year and four months, including…',
     },
     {
         slug: '2026-05-19-ebola-bundibugyo',
