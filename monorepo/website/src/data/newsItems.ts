@@ -14,6 +14,13 @@ export const newsItems: NewsItem[] = [
             'Since our last full update in March, Pathoplexus has continued to grow rapidly - with two new pathogens added in response to active outbreaks, hundreds of new sequences from labs across the globe, and a number of exciting firsts for our community…',
     },
     {
+        slug: '2026-06-30-annual-report',
+        title: 'Annual Report 2024-25',
+        date: '30 June 2026',
+        excerpt:
+            'We are happy to publish the first Pathoplexus annual report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025. It summarizes our first year and four months, including the launch and growth of the platform…',
+    },
+    {
         slug: '2026-05-19-ebola-bundibugyo',
         title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
         date: '19 May 2026',
