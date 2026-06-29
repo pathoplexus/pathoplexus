@@ -8,7 +8,7 @@ export type NewsItem = {
 export const newsItems: NewsItem[] = [
     {
         slug: '2026-06-30-june-update',
-        title: 'Pathoplexus June Update: Outbreak Response, Global Firsts, and a Growing Community',
+        title: 'Pathoplexus June Update',
         date: '30 June 2026',
         excerpt:
             'Since our last full update in March, Pathoplexus has continued to grow rapidly - with two new pathogens added in response to active outbreaks, hundreds of new sequences from labs across the globe, and a number of exciting firsts for our community…',
