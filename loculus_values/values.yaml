@@ -3926,7 +3926,7 @@ resources:
     schema:
       <<: *schema
       organismName: "Zika virus"
-      image: ""
+      image: "images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
           maxNumberOfRecommendedEntries: 3000
