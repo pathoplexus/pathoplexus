@@ -23,13 +23,13 @@ You can only approve and release sequences that have yellow or green checkmarks 
 
 You can filter the processed sequences to only show those with warnings, errors, or which passed, to help you decide which actions to take.
 
-If see something you'd like to change, or want to try and resolve a warning, you can [edit the sequence](edit-submissions).
+If you see something you'd like to change, or want to try and resolve a warning, you can [edit the sequence](edit-submissions).
 
 ### Actioning individual sequences
 
-For each sequence, you have 3 options (2 if the sequence has an error), indicated to the right: release (paper plane), edit (pencil and paper), and discard (waste bin).
+For each sequence, you have 3 options (2 if the sequence has an error), indicated to the right: approve (right-arrow), edit (pencil and paper), and discard (waste bin).
 Clicking on any of these icons for one sequence, will execute the action on that sequence only.
-When you release or discard a sequence, it will no longer be shown on the page.
+When you approve or discard a sequence, it will no longer be shown on the page.
 
 ### Actioning sequences in bulk
 
@@ -37,11 +37,11 @@ You can also take action on multiple sequences at once, using the buttons above 
 
 Discarding: You can choose to discard either all sequences, or those with errors. If you discard all sequences, you will need to start the submission process over.
 
-Releasing: You can release all valid sequences (those without warnings or errors, and those with warnings), leaving only those with errors.
+Approving: You can approve all valid sequences (those without warnings or errors, and those with warnings), leaving only those with errors.
 
-Once you release your sequences, they will appear on Pathoplexus within a couple minutes.
+Once you approve your sequences, they will appear on Pathoplexus within a couple minutes.
 
-If you leave any sequences unreleased, you can view, [edit](/docs/how-to/edit-submissions), and approve/release (if they have no errors) them at a later time.
+If you leave any sequences unapproved, you can view, [edit](/docs/how-to/edit-submissions), and approve (if they have no errors) them at a later time.
 
 You can also always view your released sequences by going to 'Browse' in the top-right menu, then selecting the pathogen, then clicking 'View'.
 
@@ -51,7 +51,7 @@ You can also always view your released sequences by going to 'Browse' in the top
     To use the [demo instance](https://demo.pathoplexus.org) instead of the main instance, please replace `backend.pathoplexus.org` with `backend-demo.pathoplexus.org`.
 </InfoBox>
 
-The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token an include the token in the HTTP header `Authorization: Bearer <authentication token>`.
+The following API requests all require an authentication token. Please read [Authenticating via API guide](/docs/how-to/authentication-api) for the instructions to obtain the token and include the token in the HTTP header `Authorization: Bearer <authentication token>`.
 
 You can retrieve a list of uploaded but not released sequences by sending a GET request to the endpoint:
 
@@ -61,7 +61,7 @@ https://backend.pathoplexus.org/<organism>/get-sequences?groupIdsFilter=<group i
 
 The available values for the organism are: `cchf`, `ebola-sudan`, `ebola-zaire` and `west-nile`. The `sequenceEntries` field of the returned object contains a list of sequences with their corresponding `status`:
 
-- Sequence that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
+- Sequences that are in the status `RECEIVED` have not yet been processed. This should usually happen within a few minutes.
 - Sequences that are in the status `IN_PROCESSING` are currently being processed, please wait a few more moments.
 - Sequences that are in the status `HAS_ERRORS` contain errors. To find out details, we recommend going to the review page on the website: you can find it by going to the Submission Portal and clicking on "Review".
 - Sequences that are in the status `AWAITING_APPROVAL` have passed the processing and quality checks and can be approved.

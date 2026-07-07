@@ -41,6 +41,7 @@ secrets:
       .dockerconfigjson: AgBWKhV1q88KGSfzJq6Dq7qopEjILAWmKY4Wmc3+ryvtvfVkMkx/Tvbyhj8fQ5nerkPfJE+TQVqeBMn1Vln64ZYcw44Nv4yrGLZbpBVRusp6siKvNDPBG+PRnrYYxhuWFovSyCDfjZqIGk8P2URDfrxTTlKzsEOoqEHxQoTwV08ZUlBy+Aqpm9ljjBPLga9gwYkWdjb5vG2DTPOYJ46fsLaFH4wMWdWCY1hgrBXzMV1T12RFH0SXG5+qCnexiyhx98tVt+3bt3tdJYi6AJRC0eQ/OQM0n5OV0HHch+10id5Jy8DMNm25OECwFEp3YO9Er30iLekP7ARvQTAlYwT6OxLjG1zMPtnHGwJB8NiFOsQqZFjupe4pCygdQJU4/wlEYyl3dQvxygwqMDIMx5X3e0iOleJ1JN8VHXzBbWKiy1igujA3Mob4iRC9Stz0jjKOvUSsUbpP54dsU/zyGEKLKUeqWlMuTFL/lmKy/IKZwBnd+98rrZuL6cF0mx6d7TcuVhtvNAVgTp8a8ac7vhJvGF6IZUbLS5D24agZU+RuhOeKPFTvhNgxT8WNCMu4f8gkJPbY6y8qkHcG1oLJQncCSITnXl5tBIIAGijdOf83bX4KEi9uQ2B3l8SjbyAsbZUTZrqfc/7OVJlm2rr0qO2exoIPM6Lq1/06OOtNe483e9CUoBgQTRwKN6807R6uscnrHqy+KdRlhevJCPtxcGiDc7U1MnwuNXnuEnGMbp9KbZDVuPDM9GRXw6SgO3t48im17npls1Lj6CNys26paqM4qQQ/pwX14LMoNVigFlhkSaK+M400AQaYlpV3D5LRVzD2FJzB9AO9JsPEayifUgjNl8gezoEg867c/Cpx4Xf18jzahTHzMGbs44POATM=
 name: Pathoplexus
 accessionPrefix: "PPD_"
+dateFieldForGroupGraph: earliestReleaseDate
 additionalHeadHTML: '<script defer data-domain="pathoplexus.org" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script><script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script><meta property="og:type" content="website" /><meta property="og:image" content="https://pathoplexus.org/images/pathoplexus-preview.png" /><meta property="og:description" content="Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data, fostering global collaboration and public health response." />'
 website:
   websiteConfig:
@@ -69,24 +70,24 @@ sequenceFlagging:
 siloImport:
   siloTimeoutSeconds: 3600
   hardRefreshIntervalSeconds: 100_000 # ~27 hours
-  pollIntervalSeconds: 30
+  pollIntervalSeconds: 120
 pipelineVersionUpgradeCheckIntervalSeconds: 300
-zstdCompressionLevel: 20
+zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpox:
-    18: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
   rsv-a:
-    19: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-   28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -144,8 +145,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         order: 10
         orderOnDetailsPage: 200
-        definition: "The date on which the sample was collected."
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
+        definition: "The date (or date range) on which the sample was collected."
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). If only a range is known please supply the range in ISO format `date_lower/date_upper` where `date_lower` and `date_upper` are in the format `YYYY-MM-DD`, `YYYY-MM` or `YYYY`. Please provide at least a year."
         example: "2020-03-15"
       - name: sampleCollectionDateRangeLower
         displayName: Collection date (lower bound)
@@ -189,17 +190,19 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: displayName
         displayName: Display name
+        definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
         preprocessing:
           function: concatenate
           inputs:
             geoLocCountry: geoLocCountry
-            sampleCollectionDate: sampleCollectionDate
+            sampleCollectionDate: processed.sampleCollectionDate
           args:
             order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
-            type: [string, ACCESSION_VERSION, string]
+            type: [string, ACCESSION_VERSION, dateRangeString]
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
+        definition: Date the nucleotide accession was first released on the INSDC.
         type: date
         header: "INSDC"
         preprocessing:
@@ -212,6 +215,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1000
       - name: earliestReleaseDate
         displayName: Earliest release date
+        definition: The earliest release date for the accession, across all versions in both Loculus and the INSDC.
         header: Submission details
         type: date
         rangeSearch: true
@@ -223,6 +227,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: ncbiUpdateDate
         type: date
         displayName: NCBI update date
+        definition: Date the nucleotide accession was last updated on the INSDC.
         header: "INSDC"
         orderOnDetailsPage: 1020
         preprocessing:
@@ -574,7 +579,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         columnWidth: 134
         order: 30
         orderOnDetailsPage: 460
-        definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)"
+        definition: "A local administrative region from which the sample was collected (ex: Province, State, Canton)."
         example: "Ontario"
         desired: true
       - name: geoLocAdmin2
@@ -588,7 +593,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         header: Sample details
         orderOnDetailsPage: 480
-        definition: "A local administrative region from which the sample was collected (ex: county or municipality)"
+        definition: "A local administrative region from which the sample was collected (ex: county or municipality)."
         desired: true
         example: "City of Toronto"
       - name: geoLocCity
@@ -612,7 +617,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         orderOnDetailsPage: 420
         type: float
-        definition: Geo-coordinate latitude in decimal degree (WGS84) format
+        definition: Geo-coordinate latitude in decimal degree (WGS84) format.
         guidance: Provide values in range -90 to 90, where positive values are north of the Equator.
         example: -34.603722
       - name: geoLocLongitude
@@ -620,7 +625,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sample details
         orderOnDetailsPage: 440
         type: float
-        definition: Geo-coordinate longitude in decimal degree (WGS84) format
+        definition: Geo-coordinate longitude in decimal degree (WGS84) format.
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
         example: -58.381592
       - name: specimenCollectorSampleId
@@ -662,11 +667,12 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 50
         orderOnDetailsPage: 820
         desired: true
-        definition: "List of author affiliations"
-        guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author"
+        definition: "List of author affiliations."
+        guidance: "If multiple affiliations exist, create a semi-colon separated list in the same order as authors with one entry per author."
         example: "EVE Group, MPI Department, Swiss TPH, Basel, Switzerland;  Anderson Group, IEB Department, School of Biology, University of Edinburgh, Edinburgh, Scotland"
       - name: ncbiSubmitterCountry
         displayName: NCBI submitter country
+        definition: The country representing the submitter's affilation.
         generateIndex: true
         autocomplete: true
         hideOnSequenceDetailsPage: true
@@ -675,6 +681,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 980
       - name: insdcAccessionBase
         displayName: INSDC accession base
+        definition: The base accession assigned by the INSDC (GenBank/ENA/DDBJ) for this sequence, without the version number.
         header: "INSDC"
         orderOnDetailsPage: 940
         hideOnSequenceDetailsPage: true
@@ -683,6 +690,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: insdcVersion
         displayName: INSDC version
+        definition: The version number of the INSDC record, incremented each time the sequence record is updated.
         type: int
         header: "INSDC"
         orderOnDetailsPage: 960
@@ -692,6 +700,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         oneHeader: true
       - name: insdcAccessionFull
         displayName: INSDC accession
+        definition: The full versioned INSDC accession (base accession plus version number), searchable across GenBank, ENA, and DDBJ.
         includeInDownloadsByDefault: true
         customDisplay:
           type: linkWithMenu
@@ -745,8 +754,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "INSDC"
         orderOnDetailsPage: 935
         includeInDownloadsByDefault: true
-        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. (If you add this field also should add the corresponding BioProject.)"
-        definition: "Accession of corresponding public BioSample of the raw reads in the INSDC"
+        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. If you add this field, you should also add the corresponding BioProject."
+        definition: "Accession of corresponding public BioSample of the raw reads in the INSDC."
         example: "SAMN12345678"
         oneHeader: true
         preprocessing:
@@ -757,6 +766,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^SAM(E|D|N)[A-Z]?[0-9]+$"
       - name: gcaAccession
         displayName: GCA accession
+        definition: The GenBank genome assembly accession number for the sequence.
         customDisplay:
           type: link
           url: "https://www.ebi.ac.uk/ena/browser/view/__value__"
@@ -768,13 +778,13 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Culture ID
         header: Sample details
         orderOnDetailsPage: 620
-        definition: "An ID useful to linking to a culture"
+        definition: "An ID useful to linking to a culture."
         example: "Plate7-1124"
         desired: true
       - name: sampleReceivedDate
         ontology_id: GENEPIO:0001177
         definition: The date on which the sample was received by the laboratory.
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year. Before sharing this data, ensure this date is not considered identifiable information."
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year. Before sharing this data, ensure this date is not considered identifiable information."
         example: '2020-03-20'
         displayName: Sample received date
         type: date
@@ -883,7 +893,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         ontology_id: GENEPIO:0100435
         definition: The processing applied to samples post-collection, prior to further testing, characterization, or isolation procedures.
         guidance: 'Use this look-up service to identify a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi. If not applicable, leave blank.'
-        example: Samples pooled [OBI:0600016]
+        example: pooling specimens [OBI:0600016]
         displayName: Specimen processing
         header: Specimen processing
         orderOnDetailsPage: 1500
@@ -954,7 +964,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostHealthState
         ontology_id: GENEPIO:0001388
         definition: Health status of the host at the time of sample collection.
-        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit."
         example: Asymptomatic [NCIT:C3833]
         displayName: Host health state
         header: Host
@@ -962,13 +972,14 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: hostHealthOutcome
         ontology_id: GENEPIO:0001390
         definition: Disease outcome in the host.
-        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit"
+        guidance: "The standardized term can be sourced from this look-up service: https://www.ebi.ac.uk/ols4/ontologies/ncit."
         example: Recovered [NCIT:C49498]
         displayName: Host health outcome
         header: Host
         orderOnDetailsPage: 1740
       - name: travelHistory
         ontology_id: GENEPIO:0001416
+        definition: Travel history in last six months.
         guidance: Specify the countries travelled in the last six months; separate multiple travel events with a semicolon.
         example: Canada, Vancouver; USA, Seattle; Italy, Milan
         displayName: Travel history
@@ -1034,7 +1045,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingDate
         ontology_id: GENEPIO:0001447
         definition: The date the sample was sequenced.
-        guidance: "Please format YYYY-MM-DD. If day is unknown, use YYYY-MM (e.g., `2020-03`). If both day and month are unknown, use YYYY (e.g., `2020`). Please provide at least a year"
+        guidance: "Please format the date as `YYYY-MM-DD`. If day is unknown, use `YYYY-MM` (e.g., `2020-03`). If both day and month are unknown, use `YYYY` (e.g., `2020`). Please provide at least a year."
         example: "2021-04-26"
         displayName: Sequencing date
         type: date
@@ -1061,6 +1072,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2060
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
+        definition: The model of the sequencing instrument used.
         guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your model, if not add your model in free text."
         example: Oxford Nanopore MinION [GENEPIO:0100142]
         displayName: Sequencing instrument
@@ -1101,8 +1113,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2160
       - name: sequencedByContactEmail
         ontology_id: GENEPIO:0100422
-        definition: The email address of the contact responsible for follow-up regarding the sequence. (This will be displayed publicly.)
-        guidance: As personnel turnover may render an individual's email obsolete, it is more preferable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
+        definition: The email address of the contact responsible for follow-up regarding the sequence.
+        guidance: This will be displayed publicly. As personnel turnover may render an individual's email obsolete, it is more preferable to provide an address for a position or lab, to ensure accuracy of information and institutional memory.
         example: enterics@lab.ca
         displayName: Sequenced by - contact email
         header: Sequencing
@@ -1159,8 +1171,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: breadthOfCoverage
         ontology_id: GENEPIO:0001475
-        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (depthOfCoverage).
-        guidance: Provide the percentage (as a number)
+        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (`depthOfCoverage`).
+        guidance: Provide the percentage as a number.
         example: "95"
         displayName: Breadth of coverage
         type: int
@@ -1209,7 +1221,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Diagnostic measurement - method
         header: Diagnostics
         orderOnDetailsPage: 2520
-        definition: "Type of diagnostic test performed"
+        definition: "Type of diagnostic test performed."
         example: "RT-PCR test"
       - name: diagnosticTargetPresence
         displayName: Diagnostic target - presence
@@ -1227,13 +1239,13 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Diagnostic measurement - value
         header: Diagnostics
         orderOnDetailsPage: 2580
-        definition: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test"
+        definition: "Value of the diagnostic test. Ex: The Ct value result from a diagnostic SARS-CoV-2 RT-PCR test."
         example: "39"
       - name: diagnosticMeasurementUnit
         displayName: Diagnostic measurement - unit
         header: Diagnostics
         orderOnDetailsPage: 2600
-        definition: "Unit of the diagnostic measurement value"
+        definition: "Unit of the diagnostic measurement value."
         example: "Cycle threshold (CT)"
       - name: length
         type: int
@@ -1245,6 +1257,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         perSegment: true
         displayName: Length
+        definition: The length of the sequence.
         columnWidth: 84
         order: 80
         orderOnDetailsPage: 2700
@@ -1266,15 +1279,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         order: 70
         orderOnDetailsPage: 1560
         definition: "The scientific name of the host from which the sample was collected."
+        guidance: "Use https://www.ncbi.nlm.nih.gov/datasets/taxonomy/browser/ to find scientific names."
         example: "Homo sapiens"
         noInput: true
         preprocessing:
           function: scientific_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-            hostNameScientific: hostNameScientific
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1294,11 +1307,11 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs:
             hostTaxonId: processed.hostTaxonId
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: *taxonomy_service_url
       - &hostTaxonIdConfig
         name: hostTaxonId
-        displayName: Host taxon ID
-        type: int
+        displayName: "Host species"
+        type: string
         autocomplete: true
         customDisplay:
           type: hostSpecies
@@ -1307,18 +1320,18 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "Host"
         orderOnDetailsPage: 1540
         ingest: ncbiHostTaxId
-        definition: "Taxon ID for the host"
+        definition: "Taxon ID for the host from which the sample was collected."
         guidance: "Use https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi to find taxon ids."
         example: "9606"
         noInput: true
+        hierarchicalFilter: *taxonomy_service_url
+        hierarchicalSearchLabel: "include subtaxa"
         preprocessing:
-          function: validate_host
+          function: resolve_host_taxon_id
           inputs:
             host: host
-            hostNameScientific: hostNameScientific
-            hostTaxonId: hostTaxonId
           args:
-            taxonomy_service_url: "http://loculus-taxonomy-service:5000"
+            taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -1335,7 +1348,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1940
-        definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions"
+        definition: "Population of cells derived from a single cell or group of cells, which are cultured in the laboratory under controlled conditions."
       - name: passageNumber
         displayName: Passage number
         type: int
@@ -1349,10 +1362,11 @@ defaultOrganismConfig: &defaultOrganismConfig
         autocomplete: true
         header: "Host"
         orderOnDetailsPage: 1980
-        definition: "The techniques used to subculture cells"
+        definition: "The techniques used to subculture cells."
         example: "Enzymatic Detachment"
       - name: ncbiSourceDb
         displayName: NCBI Source DB
+        definition: Indicates if the source of the viral nucleotide record is from a GenBank submitter or from NCBI-derived curation (RefSeq).
         generateIndex: true
         autocomplete: true
         header: "INSDC"
@@ -1361,6 +1375,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         noInput: true
       - name: ncbiVirusName
         displayName: NCBI Virus name
+        definition: Scientific name for the organism from the NCBI Taxonomy.
         generateIndex: true
         autocomplete: true
         hideOnSequenceDetailsPage: true
@@ -1369,6 +1384,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1160
       - name: ncbiVirusTaxId
         displayName: NCBI Virus tax ID
+        definition: Taxon ID for the organism from the NCBI Taxonomy.
         type: int
         autocomplete: true
         customDisplay:
@@ -1388,7 +1404,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
         guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
-        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368"
+        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368."
         preprocessing:
           function: check_regex
           inputs:
@@ -1400,6 +1416,7 @@ defaultOrganismConfig: &defaultOrganismConfig
             pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
       - name: totalSnps
         type: int
+        definition: "Total count of nucleotide substitutions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
@@ -1411,6 +1428,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalSubstitutions}
       - name: totalInsertedNucs
         type: int
+        definition: "Total count of inserted nucleotide positions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2740
@@ -1422,6 +1440,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalInsertions}
       - name: totalDeletedNucs
         type: int
+        definition: "Total count of deleted nucleotide positions."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2760
@@ -1433,6 +1452,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: '# of deleted bases'
       - name: totalAmbiguousNucs
         type: int
+        definition: "Total count of ambiguous nucleotides (not A, C, G, T, or N)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2780
@@ -1445,6 +1465,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: "nextclade.totalNonACGTNs"}
       - name: totalUnknownNucs
         type: int
+        definition: "Total count of missing (N) nucleotides."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2800
@@ -1457,6 +1478,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.totalMissing}
       - name: totalFrameShifts
         type: int
+        definition: "Total count of detected frame shifts."
         isSequenceFilter: true
         rangeSearch: true
         header: "Alignment and QC metrics"
@@ -1467,6 +1489,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         preprocessing:
           inputs: {input: nextclade.totalFrameShifts}
       - name: frameShifts
+        definition: "Frame-shifting insertions or deletions detected in CDS regions."
         header: "Alignment and QC metrics"
         isSequenceFilter: true
         orderOnDetailsPage: 2840
@@ -1477,6 +1500,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.frameShifts}
       - name: completeness
         type: float
+        definition: "Fraction of reference positions covered by the sequence (0.0 to 1.0)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2720
@@ -1499,6 +1523,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Any additional comments about the sample or sequence."
       - name: totalStopCodons
         displayName: '# of stop codons'
+        definition: "Number of penalized premature stop codons."
         type: int
         isSequenceFilter: true
         header: "Alignment and QC metrics"
@@ -1509,6 +1534,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           inputs: {input: nextclade.qc.stopCodons.totalStopCodons}
       - name: stopCodons
         displayName: Stop Codons
+        definition: "Premature stop codons not in the ignored list (penalized)."
         isSequenceFilter: true
         header: "Alignment and QC metrics"
         orderOnDetailsPage: 2840
@@ -1527,13 +1553,25 @@ defaultOrganismConfig: &defaultOrganismConfig
         - length
       defaultOrderBy: sampleCollectionDate
       defaultOrder: descending
+      multiFieldSearches:
+        - name: identifier
+          displayName: Identifier (INSDC, etc.)
+          orderInSearchDisplay: -10000
+          fields:
+            - accessionVersion
+            - submissionId
+            - insdcAccessionFull
+            - bioprojectAccession
+            - gcaAccession
+            - biosampleAccession
+            - insdcRawReadsAccession
     extraInputFields:
       - &hostConfig
         name: host
         type: string
         displayName: "Host"
         definition: "NCBI taxon ID or scientific name that uniquely identifies the host from which the sample was collected."
-        guidance: "You can provide either the scientific name of the organism (e.g., Aedes aegypti) or its NCBI taxon ID (e.g., 7159) in this field. We will validate your input and use it to populate the `host common name` and `host scientific name` fields. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use 'Culicidae' when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to 'Samples pooled', see [OBI:0600016])."
+        guidance: "You can provide either the scientific name of the organism (e.g., `Aedes aegypti`) or its NCBI taxon ID (e.g., `7159`) in this field. We will validate your input and use it to populate the `hostNameCommon` and `hostNameScientific` fields. If the host is not known, please enter `unidentified`. When uploading data from a pooled sample, we recommend using a higher-level taxon that includes all host organisms in the sample pool. For example, you can use `Culicidae` when uploading data for a pooled mosquito sample (in addition to setting the `specimenProcessing` field to `pooling specimens`, see [OBI:0600016])."
         example: "Aedes aegypti"
         hideInSearchResultsTable: true
         hideOnSequenceDetailsPage: true
@@ -1572,6 +1610,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     image: ghcr.io/loculus-project/ingest
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
+      muted_hashes_url: "https://pathoplexus.github.io/curation_data/muted_hashes/muted_hashes.tsv"
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
@@ -1582,6 +1621,7 @@ organisms:
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/orthoebolavirus/ebov/2025-09-24--07-29-03Z/tree.json for a view of the Nextclade tree."
           isSequenceFilter: true
           header: "Outbreak"
           includeInDownloadsByDefault: true
@@ -1603,6 +1643,9 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/treetime_rerooted_NC_002549.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/treetime_rerooted_NC_002549.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zaire_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Zaire ebolavirus}}"
       website:
         <<: *website
         tableColumns:
@@ -1625,7 +1668,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 27
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1645,27 +1688,27 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/reference.fasta]]"
           insdcAccessionFull: NC_002549.1
           genes:
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/NP.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP40.fasta]]"
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/GP.fasta]]"
             - name: ssGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/ssGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/ssGP.fasta]]"
             - name: sGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/sGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/sGP.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP30.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/VP24.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-zaire/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-zaire/L.fasta]]"
   ebola-sudan:
     <<: *defaultOrganismConfig
     schema:
@@ -1682,10 +1725,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Sudan ebolavirus}}"
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1710,27 +1756,133 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/reference.fasta]]"
           insdcAccessionFull: NC_006432.1
           genes:
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/NP.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP40.fasta]]"
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/GP.fasta]]"
             - name: ssGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/ssGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/ssGP.fasta]]"
             - name: sGP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/sGP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/sGP.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP30.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/VP24.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/ebola-sudan/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/ebola-sudan/L.fasta]]"
+  ebola-bdbv:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Ebola Bundibugyo"
+      image: "/images/organisms/ebola_misc_small.jpg"
+      linkOuts:
+        - name: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/orthoebolavirus/bdbv"
+        - name: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      metadataAdd:
+        - name: outbreak
+          displayName: Outbreak
+          definition: "Outbreak assigned by Nextclade"
+          isSequenceFilter: true
+          header: "Outbreak"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.customNodeAttributes.outbreak}
+          order: 5
+          orderOnDetailsPage: 740
+        - name: mutationsFromOutbreakFounder
+          header: "Outbreak"
+          displayName: "Amino acid substitutions from outbreak clade founder"
+          customDisplay:
+            type: generatedBadge
+          noInput: true
+          generateIndex: false
+          autocomplete: false
+          initiallyVisible: false
+          includeInDownloadsByDefault: false
+          preprocessing:
+            inputs: {input: "nextclade.cladeNodeAttrFounderInfo.outbreak.aaMutations.*.privateSubstitutions"}
+          order: 95
+          orderOnDetailsPage: 95
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - outbreak
+    preprocessing:
+      - &ebolaBdbvPreprocessing
+        <<: *preprocessing
+        version:
+          - 5
+        configFile: &ebolaBdbvPreprocessingConfigFile
+          <<: *preprocessingConfigFile
+          segments:
+            - &ebolaBdbvPreprocessingSegment
+              name: main
+              references:
+                - &ebolaBdbvPreprocessingReference
+                  name: "singleReference"
+                  nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
+                  nextclade_dataset_tag: "2026-05-18--20-09-34Z"
+                  genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3052458
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 565995
+          scientific_name: "Bundibugyo virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/reference.fasta]]"
+          insdcAccessionFull: NC_014373.1
+          genes:
+            - name: NP
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/NP.fasta]]"
+            - name: VP35
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP35.fasta]]"
+            - name: VP40
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP40.fasta]]"
+            - name: GP
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/GP.fasta]]"
+            - name: GP_003
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/GP_003.fasta]]"
+            - name: VP30
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP30.fasta]]"
+            - name: VP24
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/VP24.fasta]]"
+            - name: L
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/bdbv/genes/L.fasta]]"
   dengue:
     <<: *defaultOrganismConfig
     schema:
@@ -1741,19 +1893,19 @@ organisms:
         - name: "Nextclade (DENV-1)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # dengue is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv1"
         - name: "Nextclade (DENV-2)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv2"
         - name: "Nextclade (DENV-3)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv3"
         - name: "Nextclade (DENV-4)"
           category: "Nextclade"
           maxNumberOfRecommendedEntries: 2500
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4&dataset-server=https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/v-gen-lab/dengue/denv4"
         - name: "Sealion (DENV-1)"
           category: "Sealion"
           maxNumberOfRecommendedEntries: 2500
@@ -1789,8 +1941,10 @@ organisms:
       metadataAdd:
         - <<: *hostTaxonIdConfig
           required: true
+          initiallyVisible: true
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, for views on the datasets see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv1/2025-09-09--12-13-13Z/tree.json for DENV-1, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv2/2025-09-09--12-13-13Z/tree.json for DENV-2, https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv3/2025-09-09--12-13-13Z/tree.json for DENV-3 and https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/v-gen-lab/dengue/denv4/2025-09-09--12-13-13Z/tree.json for DENV-4."
           header: "Lineage & Serotype"
           lineageSystem: dengue
           isSequenceFilter: true
@@ -1801,6 +1955,9 @@ organisms:
           includeInDownloadsByDefault: true
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          columnWidth: 80
+          orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
           header: Sample details
@@ -1814,18 +1971,19 @@ organisms:
         # custom displayName construction for Dengue
         - name: displayName
           displayName: Display name
+          definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
           noInput: true
           preprocessing:
             function: build_display_name
             inputs:
               serotype: ASSIGNED_REFERENCE
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [serotype, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [string, string, IDENTIFIER, string]
+              type: [string, string, IDENTIFIER, dateRangeString]
               # regex pattern constraints:
               # - Cannot start with a slash
               # - Four fields, separated by exactly three slashes
@@ -1834,6 +1992,7 @@ organisms:
               regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
         - name: serotype
           displayName: Serotype
+          definition: "Which of the antigenically distinct types of dengue virus the sequence was most closely assigned to according to Nextclade."
           header: "Lineage & Serotype"
           noInput: true
           generateIndex: true
@@ -1845,7 +2004,6 @@ organisms:
         tableColumns:
           - sampleCollectionDate
           - earliestReleaseDate
-          - ncbiReleaseDate
           - geoLocCountry
           - authors
           - authorAffiliations
@@ -1855,9 +2013,10 @@ organisms:
         defaultOrder: descending
         referenceIdentifierField: serotype
     preprocessing:
-      - <<: *preprocessing
+      - &denguePreprocessing
+        <<: *preprocessing
         version:
-          - 28
+          - 30
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -1886,7 +2045,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
-        taxon_id: 12637
+        taxon_id: 3052464
     enaDeposition:
       DENV-1:
         configFile:
@@ -1916,109 +2075,109 @@ organisms:
       - name: main
         references:
           - name: DENV-1
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/reference.fasta]]"
             insdcAccessionFull: NC_001477.1
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/NS5.fasta]]"
           - name: DENV-2
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/reference.fasta]]"
             insdcAccessionFull: NC_001474.2
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv2/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/NS5.fasta]]"
           - name: DENV-3
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/reference.fasta]]"
             insdcAccessionFull: NC_001475.2
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv3/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/NS5.fasta]]"
           - name: DENV-4
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/reference.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/reference.fasta]]"
             insdcAccessionFull: NC_002640.1
             genes:
               - name: C
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/C.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
               - name: E
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/E.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/E.fasta]]"
               - name: NS1
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS1.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS1.fasta]]"
               - name: NS2A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS2A.fasta]]"
               - name: NS2B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS2B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS2B.fasta]]"
               - name: NS3
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS3.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS3.fasta]]"
               - name: NS4A
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4A.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/2K.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/2K.fasta]]"
               - name: NS4B
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS4B.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS4B.fasta]]"
               - name: NS5
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/denv4/NS5.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/NS5.fasta]]"
   west-nile:
     <<: *defaultOrganismConfig
     schema:
@@ -2035,9 +2194,15 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/treetime_rerooted_NC_009942.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/treetime_rerooted_NC_009942.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/West_Nile_virus_385_99/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{West Nile virus}}"
       metadataAdd:
+        - <<: *hostTaxonIdConfig
+          initiallyVisible: true
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/wnv/all-lineages/2026-03-04--12-40-26Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Lineage"
           includeInDownloadsByDefault: true
@@ -2065,7 +2230,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 25
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2091,31 +2256,151 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/reference.fasta]]"
           insdcAccessionFull: NC_009942.1
           genes:
             - name: 2K
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/2K.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/2K.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS1.fasta]]"
             - name: NS2A
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS2A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS2A.fasta]]"
             - name: NS2B
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS2B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS2B.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS3.fasta]]"
             - name: NS4A
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS4A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS4A.fasta]]"
             - name: NS4B
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS4B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS4B.fasta]]"
             - name: NS5
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/NS5.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/NS5.fasta]]"
             - name: capsid
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/capsid.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/capsid.fasta]]"
             - name: env
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/env.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/env.fasta]]"
             - name: prM
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/west-nile/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/west-nile/prM.fasta]]"
+  andv:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      submissionDataTypes:
+        <<: *defaultSubmissionDataTypes
+        maxSequencesPerEntry: 3
+      organismName: "Andes Virus [Hantavirus]"
+      nucleotideSequences: [L, M, S]
+      image: "/images/organisms/andv.jpg"
+      linkOuts:
+        - name: "Nextclade (L)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:L+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/l"
+        - name: "Nextclade (M)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 5000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:M+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/m"
+        - name: "Nextclade (S)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 10000
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences:S+rich|fasta]}}&dataset-name=nextstrain/orthohantavirus/andv/s"
+        - name: "Country map"
+          category: "Other"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - geoLocCountry
+          - geoLocAdmin1
+          - authors
+          - authorAffiliations
+          - earliestReleaseDate
+          - hostNameScientific
+          - length_M
+          - length_S
+          - length_L
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 6
+        configFile:
+          <<: *preprocessingConfigFile
+          create_embl_file: false
+          taxon_id: 1980456
+          scientific_name: "Andes Virus"
+          molecule_type: "genomic RNA"
+          alignment_requirement: ANY
+          segment_classification_method: minimizer
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
+          nextclade_dataset_tag: "2026-05-29--13-46-38Z"
+          segments:
+            - name: L
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/l
+                  genes: [RdRp]
+            - name: M
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
+                  genes: [GPC, Gn, Gc]
+            - name: S
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: nextstrain/orthohantavirus/andv/s
+                  genes: ["N", NSs]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 1980456
+        calculate_groups_override_json: true
+        grouping_override_url: "https://pathoplexus.github.io/curation_data/grouping_override/andv/curated_group_08-06-2026.json"
+        segment_identification:
+          method: "minimizer"
+          minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
+          minimizer_parser: ["segment"]
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 1980456
+          scientific_name: "Andes Virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: L
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/l/reference.fasta]]"
+            insdcAccessionFull: NC_003468.2
+            genes:
+              - name: RdRp
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/l/RdRp.fasta]]"
+      - name: M
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/reference.fasta]]"
+            insdcAccessionFull: NC_003467.2
+            genes:
+              - name: GPC
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/GPC.fasta]]"
+              - name: Gn
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/Gn.fasta]]"
+              - name: Gc
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/m/Gc.fasta]]"
+      - name: S
+        references:
+          - name: singleReference
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/reference.fasta]]"
+            insdcAccessionFull: NC_003466.1
+            genes:
+              - name: "N"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/N.fasta]]"
+              - name: NSs
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orthohantavirus/andv/s/NSs.fasta]]"
   cchf:
     <<: *defaultOrganismConfig
     schema:
@@ -2158,6 +2443,7 @@ organisms:
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/pathoplexus/cchfv/S/2025-09-24--07-29-03Z/CCHF_S.json?c=clade_membership for a view of the Nextclade dataset."
           header: "Lineage"
           isSequenceFilter: true
           relatesToSegment: S
@@ -2169,6 +2455,9 @@ organisms:
           lineageSystem: cchfS
           preprocessing:
             inputs: {input: nextclade.clade}
+          order: 5
+          orderOnDetailsPage: 740
+          columnWidth: 80
       website:
         <<: *website
         tableColumns:
@@ -2188,7 +2477,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 21
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2228,27 +2517,27 @@ organisms:
       - name: L
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_L.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_L.fasta]]"
             insdcAccessionFull: NC_005301.3
             genes:
               - name: RdRp
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/RdRp.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/RdRp.fasta]]"
       - name: M
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_M.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_M.fasta]]"
             insdcAccessionFull: NC_005300.2
             genes:
               - name: GPC
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/GPC.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/GPC.fasta]]"
       - name: S
         references:
           - name: singleReference
-            sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/reference_S.fasta]]"
+            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/reference_S.fasta]]"
             insdcAccessionFull: NC_005302.1
             genes:
               - name: NP
-                sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/cchf/NP.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/cchf/NP.fasta]]"
   mpox:
     <<: *defaultOrganismConfig
     schema:
@@ -2265,9 +2554,16 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree (clade Ia)"
+          maxNumberOfRecommendedEntries: 200
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/treetime_rerooted_NC_003310.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/treetime_rerooted_NC_003310.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_Ia/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Monkeypox virus clade Ia}}"
+        - name: "Place on viral UShER tree (clade IIb)"
+          maxNumberOfRecommendedEntries: 200
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/treetime_rerooted_NC_063383.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/treetime_rerooted_NC_063383.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Monkeypox_virus_IIb/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Monkeypox virus clade IIb}}"
       metadataAdd:
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2282,6 +2578,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=outbreak.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2295,6 +2592,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=lineage.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2313,8 +2611,8 @@ organisms:
           displayName: GISAID Isolate ID
           header: "Sample details"
           orderOnDetailsPage: 640
-          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)"
-          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID"
+          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
           example: "EPI_ISL_123456"
           preprocessing:
             function: check_regex
@@ -2341,7 +2639,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 18
+          - 20
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2531,7 +2829,7 @@ organisms:
       # - <<: *mpoxPreprocessing
       #   replicas: 3
       #   version:
-      #     - 18
+      #     - 20
       #   configFile:
       #     <<: *preprocessingConfigFile
       #     batch_size: 10
@@ -2541,7 +2839,7 @@ organisms:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
-        taxon_id: 10244
+        taxon_id: 3431483
     enaDeposition:
       singleReference:
         configFile:
@@ -2552,7 +2850,7 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/mpox/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/mpox/reference.fasta]]"
           insdcAccessionFull: NC_063383.1
           genes:
             - name: OPG001
@@ -2921,9 +3219,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 1300
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/treetime_rerooted_NC_001803.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/treetime_rerooted_NC_001803.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_respiratory_syncytial_virus_A/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human respiratory syncytial virus A}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/rsv/a/EPI_ISL_412866/2025-08-25--09-00-35Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -2964,7 +3266,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 19
+          - 21
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2999,31 +3301,31 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/reference.fasta]]"
           insdcAccessionFull: PP109421.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/M2-2_2025-09-09T12.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/N.fasta]]"
             - name: "NS1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/NS1.fasta]]"
             - name: "NS2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/NS2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/NS2.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-a/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-a/SH.fasta]]"
   rsv-b:
     <<: *defaultOrganismConfig
     schema:
@@ -3040,9 +3342,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree (B1)"
+          maxNumberOfRecommendedEntries: 1300
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/treetime_rerooted_NC_001781.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/treetime_rerooted_NC_001781.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_orthopneumovirus_B1/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human orthopneumovirus B1}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/rsv/b/EPI_ISL_1653999/2025-08-25--09-00-35Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3083,7 +3389,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 20
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3118,31 +3424,31 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/reference.fasta]]"
           insdcAccessionFull: OP975389.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/M2-2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/M2-2.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/N.fasta]]"
             - name: "NS1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/NS1.fasta]]"
             - name: "NS2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/NS2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/NS2.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/rsv-b/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/rsv-b/SH.fasta]]"
   hmpv:
     <<: *defaultOrganismConfig
     schema:
@@ -3159,9 +3465,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 1500
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/treetime_rerooted_NC_039199.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/treetime_rerooted_NC_039199.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Human_metapneumovirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Human metapneumovirus}}"
       metadataAdd:
         - name: lineage
           displayName: Lineage
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hmpv/all-clades/NC_039199/2025-04-25--12-24-24Z/tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           noInput: true
           header: "Lineage"
@@ -3192,7 +3502,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 21
+          - 23
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3217,27 +3527,27 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/reference.fasta]]"
           insdcAccessionFull: NC_039199.1
           genes:
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/F.fasta]]"
             - name: "G"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/G.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/G.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M.fasta]]"
             - name: "M2-1"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M2-1.fasta]]"
             - name: "M2-2"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/M2-2.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/M2-2.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/N.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/P.fasta]]"
             - name: "SH"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/hmpv/SH.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hmpv/SH.fasta]]"
   measles:
     <<: *defaultOrganismConfig
     schema:
@@ -3254,9 +3564,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 1000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Measles morbillivirus}}"
       metadataAdd:
         - name: genotype
           displayName: Genotype
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/measles/genome/WHO-2012/2025-08-11--19-06-01Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Genotype"
           includeInDownloadsByDefault: true
@@ -3273,7 +3587,7 @@ organisms:
           displayName: "MeaNS2 ID"
           header: "Sample details"
           orderOnDetailsPage: 630
-          definition: "MeaNS2 ID"
+          definition: "MeaNS2 ID."
           guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
       website: 
         <<: *website
@@ -3291,7 +3605,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 25
+          - 27
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3317,25 +3631,25 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/reference.fasta]]"
           insdcAccessionFull: NC_001498.1
           genes:
             - name: "C"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/C.fasta]]"
             - name: "F"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/F.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/F.fasta]]"
             - name: "H"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/H.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/H.fasta]]"
             - name: "L"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/L.fasta]]"
             - name: "M"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/M.fasta]]"
             - name: "N"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/N.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/N.fasta]]"
             - name: "P"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/P.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/P.fasta]]"
             - name: "V"
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/measles/V.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/measles/V.fasta]]"
   marburg:
     <<: *defaultOrganismConfig
     schema:
@@ -3352,9 +3666,13 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/treetime_rerooted_NC_001608.4.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Marburg_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Marburg virus}}"
       metadataAdd:
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/genspectrum/marburg/HK1980/all-lineages/2025-09-09--12-13-13Z/marburg_tree.json?c=clade_membership for a view of the Nextclade dataset."
           isSequenceFilter: true
           header: "Clade"
           noInput: true
@@ -3383,7 +3701,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 22
+          - 24
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3409,23 +3727,23 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/reference.fasta]]"
           insdcAccessionFull: NC_001608.3
           genes:
             - name: GP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/GP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/GP.fasta]]"
             - name: L
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/L.fasta]]"
             - name: NP
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/NP.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/NP.fasta]]"
             - name: VP24
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP24.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP24.fasta]]"
             - name: VP30
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP30.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP30.fasta]]"
             - name: VP35
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP35.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP35.fasta]]"
             - name: VP40
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/marburg/VP40.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/marburg/VP40.fasta]]"
   yellow-fever:
     <<: *defaultOrganismConfig
     schema:
@@ -3435,13 +3753,16 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://maverbiest.github.io/nextclade_data/data_output"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Yellow fever virus}}"
       # adding custom description of submissionId to show on website
       extraInputFields:
         - name: id
@@ -3457,8 +3778,10 @@ organisms:
       metadataAdd:
         - <<: *hostTaxonIdConfig
           required: true
+          initiallyVisible: true
         - name: clade
           displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/maverbiest.github.io/nextclade_data/data_output/community/pathoplexus/yellow-fever-virus/unreleased/tree.json for a view of the Nextclade dataset."
           header: "Clade"
           includeInDownloadsByDefault: true
           noInput: true
@@ -3482,17 +3805,18 @@ organisms:
         # custom displayName construction for YFV
         - name: displayName
           displayName: Display name
+          definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
           noInput: true
           preprocessing:
             function: build_display_name
             inputs:
               geoLocCountry: geoLocCountry
-              sampleCollectionDate: sampleCollectionDate
+              sampleCollectionDate: processed.sampleCollectionDate
               specimenCollectorSampleId: specimenCollectorSampleId
               submissionId: submissionId
             args:
               order: [ARG:prefix, geoLocCountry, IDENTIFIER, sampleCollectionDate]
-              type: [ARG:prefix, string, IDENTIFIER, string]
+              type: [ARG:prefix, string, IDENTIFIER, dateRangeString]
               prefix: 'YFV'
               # regex pattern constraints:
               # - Cannot start with a slash
@@ -3511,13 +3835,13 @@ organisms:
           - geoLocAdmin1
           - length
           - hostNameScientific
-          - lineage
+          - clade
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
         version:
-          - 27
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3526,12 +3850,12 @@ organisms:
               - name: singleReference 
                 nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
                 genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://raw.githubusercontent.com/maverbiest/nextclade_data/yellow-fever-virus/data_output
+          nextclade_dataset_server: https://maverbiest.github.io/nextclade_data/data_output
     ingest:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
-        taxon_id: 11089
+        taxon_id: 3046277
         log_level: DEBUG
     enaDeposition:
       singleReference:
@@ -3543,33 +3867,33 @@ organisms:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/reference.fasta]]"
           insdcAccessionFull: NC_002031.1
           genes:
             - name: C
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/C.fasta]]"
             - name: prM
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/prM.fasta]]"
             - name: M
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/M.fasta]]"
             - name: E
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/E.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/E.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS1.fasta]]"
             - name: NS2a
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2a.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS2a.fasta]]"
             - name: NS2b
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS2b.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS2b.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS3.fasta]]"
             - name: NS4a
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4a.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4a.fasta]]"
             - name: 2K
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/2K.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/2K.fasta]]"
             - name: NS4b
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/NS4b.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
-              sequence: "[[URL:https://corneliusroemer.github.io/seqs/artefacts/yellow-fever-virus/RdRPol.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
@@ -3581,13 +3905,13 @@ defaultResources:
     cpu: "1000m"
 
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_latest"
+  dbVersion: "ncbi_taxonomy_2026-06-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:
     requests:
-      memory: "1Gi"
+      memory: "200Mi"
       cpu: "50m"
     limits:
       cpu: "200m"

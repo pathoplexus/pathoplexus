@@ -32,7 +32,7 @@ export const CryptoDonationWidget: FC<CryptoDonationWidgetProps> = ({ addresses 
     };
 
     return (
-        <div className='my-3 p-3 border border-gray-200 rounded bg-gray-50'>
+        <div className='my-3 p-3 border border-gray-200 rounded-sm bg-gray-50'>
             <div className='flex items-center gap-2 mb-2'>
                 <label htmlFor='crypto-select' className='text-sm text-gray-600'>
                     Currency:
@@ -41,7 +41,7 @@ export const CryptoDonationWidget: FC<CryptoDonationWidgetProps> = ({ addresses 
                     id='crypto-select'
                     value={selectedCrypto}
                     onChange={handleCryptoChange}
-                    className='px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-primary-400'
+                    className='pl-2 pr-8 py-1 text-sm border border-gray-200 rounded-sm focus:outline-hidden focus:ring-1 focus:ring-primary-400'
                 >
                     <option value='btc'>BTC</option>
                     <option value='eth'>ETH</option>
@@ -49,12 +49,12 @@ export const CryptoDonationWidget: FC<CryptoDonationWidgetProps> = ({ addresses 
             </div>
             <div className='flex items-center gap-2'>
                 <span className='text-sm text-gray-600'>Address:</span>
-                <code className='flex-1 p-2 bg-white border border-gray-200 rounded text-xs break-all font-mono text-gray-700'>
+                <code className='flex-1 p-2 bg-white border border-gray-200 rounded-sm text-xs break-all font-mono text-gray-700'>
                     {addresses[selectedCrypto]}
                 </code>
                 <button
                     onClick={handleCopyAddress}
-                    className='flex items-center gap-1 px-2 py-1 text-sm border border-gray-200 rounded hover:bg-gray-100 transition-colors'
+                    className='flex items-center gap-1 px-2 py-1 text-sm border border-gray-200 rounded-sm hover:bg-gray-100 transition-colors'
                 >
                     <ContentCopyIcon className='w-3 h-3' />
                     <span className='text-xs'>{buttonText}</span>

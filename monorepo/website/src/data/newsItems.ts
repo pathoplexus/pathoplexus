@@ -7,6 +7,34 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-06-30-june-update',
+        title: 'Pathoplexus June Update',
+        date: '30 June 2026',
+        excerpt:
+            'Since our last full update in March, Pathoplexus has continued to grow rapidly - with two new pathogens added in response to active outbreaks, hundreds of new sequences from labs across the globe, and a number of exciting firsts for our community…',
+    },
+    {
+        slug: '2026-06-30-annual-report',
+        title: 'Annual Report 2024-25',
+        date: '30 June 2026',
+        excerpt:
+            'We are happy to publish the first Pathoplexus Annual Report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025 and approved by the General Assembly on 10 June. It summarizes our first year and four months, including…',
+    },
+    {
+        slug: '2026-05-19-ebola-bundibugyo',
+        title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
+        date: '19 May 2026',
+        excerpt:
+            'In response to the current Ebola outbreak in the Democratic Republic of the Congo (DRC) and Uganda, Pathoplexus has added support for Bundibugyo virus (BDBV), an orthoebolavirus known to cause severe Ebola disease in humans. This addition…',
+    },
+    {
+        slug: '2026-05-11-andes-virus',
+        title: 'Andes virus: supporting response to the current hantavirus outbreak',
+        date: '11 May 2026',
+        excerpt:
+            'Pathoplexus has launched support for Andes virus (ANDV), the species of hantavirus responsible for the current outbreak linked to the MV Hondius. This launch provides a space for researchers and public health teams to submit, search, download, and analyse Andes virus genomic data. Four teams, from four different countries…',
+    },
+    {
         slug: '2026-03-12-expanding-pathoplexus-arbos',
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '12 March 2026',
