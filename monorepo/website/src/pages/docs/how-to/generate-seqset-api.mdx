@@ -27,7 +27,7 @@ the `/create-seqset`, `/update-seqset`, `create-seqset-doi`.
 <p>Please note that the SeqSet endpoints require authentication or a bearer token. The details for authenticating via API or retrieving a token from the browser are explained <a href="https://pathoplexus.org/docs/how-to/authentication-api">here</a></p>
 </InfoBox>
 
-## Creating seqsets
+## Creating SeqSets
 A SeqSet can contain both focal and background sequences [explanation of the differences here](https://pathoplexus.org/about/terms-of-use/data-use-terms).
 To define this in our request we shall need to set the <em>isFocal</em> parameter to true or false on our data object in 
 the request body. The other parameters that we need to provide include the accession numbers of the sequences
@@ -58,7 +58,7 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset' \
      }
 ```
 If the SeqSet is was created successully you will get a 200 OK response code with the SeqSet ID and version number
-for the created seqset. Otherwise, an error code will be returned; for a description of the different error codes see the 
+for the created SeqSet. Otherwise, an error code will be returned; for a description of the different error codes see the 
 [Swagger UI](https://backend.pathoplexus.org/swagger-ui/index.html#/seq-set-citations-controller/createSeqSet).
 
 <InfoBox>
@@ -103,7 +103,7 @@ If the SeqSet is updated successfully, you will get the 200 OK response with the
 
 ## Create SeqSet DOI
 After you have a created a SeqSet you can be able to generate a DOI for it. (As required by the [Data Use Terms when using Restricted Use data in some circumstances](https://pathoplexus.org/about/terms-of-use/data-use-terms#422-publications-and-preprints).) In order to this, you will need to
-parse the SeqSet ID and version of the seqset as parameters to the backend URL using the `POST` method. 
+pass the SeqSet ID and version of the SeqSet as parameters to the backend URL using the `POST` method. 
 
 ```
 curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_XX&version=1' \
@@ -112,7 +112,7 @@ curl -X 'POST' 'https//backend.pathoplexus.org/create-seqset-doi?seqSetID=PP_SS_
      -d ''
 ```
 Please note that after a DOI has been created for a SeqSet, it cannot no longer be deleted.
-Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have been made
+Therefore, you may want to create a `DOI` after all the necessary updates or changes to your SeqSet have 
 been made. After, the older versions of your `SeqSet` can then be deleted using the `DELETE` method as shown in the example below. 
 Make sure the correct version you wish to delete is supplied in the url parameters.
 
