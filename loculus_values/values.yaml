@@ -2603,6 +2603,9 @@ organisms:
           noInput: true
           generateIndex: true
           autocomplete: true
+          # should be set to false on next update (after reprocessing complete)
+          # as lineage itself is no longer unambiguous, outbreak is required
+          # otherwise filtering by A.1 includes sequences from 2 outbreaks
           initiallyVisible: true
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
@@ -2625,6 +2628,7 @@ organisms:
           columnWidth: 100
           order: 8
           orderOnDetailsPage: 760
+          hideOnSequenceDetailsPage: true
           lineageSystem: mpoxOutbreakLineage
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
@@ -2650,7 +2654,6 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - clade
-          - outbreakLineage
           - lineage
           - length
         defaultOrderBy: sampleCollectionDate
