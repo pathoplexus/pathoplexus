@@ -3965,7 +3965,7 @@ resources:
     referenceGenomes:
       - name: "main"
         references:
-        - name: singleReferences
+        - name: singleReference
           sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/reference.fasta]]"
           insdcAccessionFull: NC_035889.1
           genes:
