@@ -3932,7 +3932,7 @@ resources:
         - name: Nextclade
           maxNumberOfRecommendedEntries: 3000
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/community/itps/zikav&dataset-tag=2026-04-14--11-55-23Z"
-          name: Sealion
+        - name: Sealion
           maxNumberOfRecommendedEntries:
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"  
