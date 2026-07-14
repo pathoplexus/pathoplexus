@@ -3921,7 +3921,7 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
-  zika-virus:
+  zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
