@@ -3969,33 +3969,33 @@ resources:
           insdcAccessionFull: NC_035889.1
           genes:
             - name: ancC
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/ancC.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/ancC.fasta]]"
             - name: C
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/C.fasta]]"
             - name: prM
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/prM.fasta]]"
             - name: Pr
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/Pr.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/Pr.fasta]]"
             - name: E
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/E.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/E.fasta]]"
             - name: M
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/M.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS1.fasta]]"
             - name: NS2A
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS2A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS2A.fasta]]"
             - name: NS2B
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS2B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/S2B.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS3.fasta]]"
             - name: NS4A
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS4A.fasta]]"
             - name: 2K
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/2K.fasta]]"  
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/2K.fasta]]"  
             - name: NS4B
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS4B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS4B.fasta]]"
             - name: NS5
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/genes/NS5.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS5.fasta]]"
 
 
 
