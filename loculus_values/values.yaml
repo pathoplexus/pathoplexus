@@ -3945,8 +3945,8 @@ resources:
       configFile:
         <<: *preprocessingConfigFile
         segments:
-        - name: main
-          references:
+          - name: main
+            references:
             - name: "singleReference"
               nextclade_dataset_name: community/itps/zikav
               nextclade_dataset_tag: 2026-04-14--11-55-23Z
