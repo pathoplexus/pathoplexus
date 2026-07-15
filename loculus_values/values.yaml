@@ -3897,14 +3897,14 @@ zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Zika virus"
+      organismName: "Zika"
       image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
           maxNumberOfRecommendedEntries: 3000
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/community/itps/zikav&dataset-tag=2026-04-14--11-55-23Z"
         - name: Sealion
-          maxNumberOfRecommendedEntries:
+          maxNumberOfRecommendedEntries: 3000
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"  
           maxNumberOfRecommendedEntries: 45000
@@ -3931,43 +3931,43 @@ zika:
       singleReference:
         configFile:
           taxon_id: 64320   
-          scientific_name: "Zika virus"
+          scientific_name: "Zika"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
         - name: singleReference
-          sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/reference.fasta]]"
           insdcAccessionFull: NC_035889.1
           genes:
             - name: ancC
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/ancC.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/ancC.fasta]]"
             - name: C
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/C.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/C.fasta]]"
             - name: prM
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/prM.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/prM.fasta]]"
             - name: Pr
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/Pr.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/Pr.fasta]]"
             - name: E
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/E.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/E.fasta]]"
             - name: M
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/M.fasta]]"
             - name: NS1
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS1.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS1.fasta]]"
             - name: NS2A
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS2A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2A.fasta]]"
             - name: NS2B
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/S2B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2B.fasta]]"
             - name: NS3
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS3.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS3.fasta]]"
             - name: NS4A
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS4A.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4A.fasta]]"
             - name: 2K
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/2K.fasta]]"  
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"  
             - name: NS4B
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS4B.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
             - name: NS5
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS5.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS5.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
