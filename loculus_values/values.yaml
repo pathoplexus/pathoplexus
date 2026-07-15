@@ -3894,35 +3894,7 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
-ingest:
-  mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
-defaultResources:
-  requests:
-    memory: "10Mi"
-    cpu: "10m"
-  limits:
-    memory: "1Gi"
-    cpu: "1000m"
-
-taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-06-01"
-  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
-
-resources:
-  ingest:
-    requests:
-      memory: "200Mi"
-      cpu: "50m"
-    limits:
-      cpu: "200m"
-      memory: "10Gi"
-  backend:
-    requests:
-      memory: "640Mi"
-      cpu: "100m"
-    limits:
-      memory: "3Gi" # Backend requires at least 635741K of memory
-  zika:
+zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
@@ -3997,6 +3969,34 @@ resources:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS4B.fasta]]"
             - name: NS5
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/NS5.fasta]]"
+ingest:
+  mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
+defaultResources:
+  requests:
+    memory: "10Mi"
+    cpu: "10m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
 
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_2026-06-01"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
+
+resources:
+  ingest:
+    requests:
+      memory: "200Mi"
+      cpu: "50m"
+    limits:
+      cpu: "200m"
+      memory: "10Gi"
+  backend:
+    requests:
+      memory: "640Mi"
+      cpu: "100m"
+    limits:
+      memory: "3Gi" # Backend requires at least 635741K of memory
+  
 
 
