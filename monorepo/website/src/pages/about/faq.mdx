@@ -4,38 +4,49 @@ title: "Frequently Asked Questions (FAQ)"
 order: 4
 ---
 
-For questions about how to use Pathoplexus, or what certain terms mean, please see our [Documentation](/docs/concepts/accession).
+<div class="faqPage">
 
-For questions about our governance, please see our [Governance pages](/about/governance).
+<div class="faqIntro">
+
+Can't find your question below? For questions about **how to use Pathoplexus**, or what certain terms mean, please see our [Documentation](/docs/concepts/accession). For questions about our **governance**, please see our [Governance pages](/about/governance). If you still can't find an answer, feel free to reach out to us at [hello@pathoplexus.org](mailto:hello@pathoplexus.org)!
+
+</div>
 
 ## Questions about Pathoplexus
 
 <details>
 <summary> <span class="faq"> What makes Pathoplexus different? </span> </summary>
+
 Pathoplexus offers flexible data-sharing options: users can choose to share their data openly, or with time-limited protections to help ensure proper attribution and credit. 
 Pathoplexus integrates smoothly with existing INSDC-member databases (NCBI, ENA, and DDBJ), enabling data that's 'open' on Pathoplexus to also appear on INSDC, and INSDC data to be accessed through Pathoplexus.
 Pathoplexus is built on the latest tools for filtering, searching, and accessing data, making data sharing and analysis more accessible (through both the website and API) and fostering a connected, collaborative global research community.
+
 </details>
 
 <details>
 <summary> <span class="faq">How can I get involved?</span> </summary>
+
 To become part of the scientific community that helps drive Pathoplexus, you can join [PHA4GE](https://pha4ge.org/) and be part of the Data Repositories Working Group. You can also contribute code and feature suggestions to [Loculus](https://github.com/loculus-project/loculus), the custom-built open-source software that powers Pathoplexus.
+
 </details>
 
 <details>
 <summary> <span class="faq">Who is behind Pathoplexus? Who funds it?</span> </summary>
+
 Pathoplexus is a transparent, non-profit association with [members](/about/members) from 14 countries in 5 continents, and an [Executive Board](/about/eb) from around the globe.
 Pathoplexus' members and Executive Board are committed to running Pathoplexus according to our [Values](/about/governance/values).
 Pathoplexus is proud to work closely with [PHA4GE](https://pha4ge.org/), an international group working to establish better standards for public health and bioinformatics.
 PHA4GE was also key in helping to develop Pathoplexus from the ground up.
 
-At the moment, Pathoplexus is run almost entirely on donations and volunteer efforts, thus is independent of influence by larger players, and is truly a community-driven project. 
-We have received the following monetary assistance: support for one software developer working on Loculus via a [swissuniversities](https://www.swissuniversities.ch/en/) Open Research Data grant; legal advice for our GDPR statement via PHA4GE; contribution of contracted software developers via Prof Tanja Stadler, ETH Zurich; and donation of AWS compute time via Prof Artem Babian, University of Toronto. 
-Aside from this, Pathoplexus has been created by and is powered by thousands of hours of donated time and effort by members of the bioinformatics community (see our [members](../../about/members) and [development team](../../about/development-team)).
+Pathoplexus is a community-driven project. Its initial development was powered almost entirely by donated time and computational resources from the pathogen genomics community. Although we have now begun to receive [grants and donations](/about/funding), we are still heavily reliant on voluntary contributions of time and code (see our [members](../../about/members) and [development team](../../about/development-team)).
+
+The software that underpins Pathoplexus, Loculus, is an open-source academic project. You find out more about Loculus, as well as how it is funded, [here](https://loculus.org/).
+
 </details>
 
 <details>
 <summary> <span class="faq">How does Pathoplexus fit in among existing pathogen sequence sharing databases?</span> </summary>
+
 Pathoplexus is designed to be complementary to the existing pathogen sequence database ecosystem.
 Data from Pathoplexus, as long as it is used and acknowledged according to the [Data Use Terms](/about/terms-of-use/data-use-terms), can be analyzed alongside any other dataset
 (if the other dataset also permits this), and always retains a link to the original source (where applicable), so that mixing data and deduplication are fully supported.
@@ -45,15 +56,19 @@ For Open Data submitted to Pathoplexus, this means Pathoplexus can be used as si
 For Restricted-Use Data submitted to Pathoplexus, Pathoplexus serves as a 'temporary protected home' before it eventually becomes Open.
 
 Pathoplexus sequences are annotated with cross-references to the corresponding INSDC and GISAID accessions if available.
+
 </details>
 
 <details>
 <summary> <span class="faq">What is Pathoplexus doing about issues around pathogen access and benefits?</span> </summary>
+
 While developing Pathoplexus, the issue of countries and regions sharing sequences but not receiving an equitable share of the benefit that can be derived from those sequences (e.g. vaccines), was a topic we discussed deeply. This is also a topic that's currently under debate globally, with efforts to develop pathogen access and benefits sharing ("PABS") agreements. After much consideration, we don't feel a singular database is the place to try and fix this inequity - but we do want to be part of the eventual solution. This is why we [commit to adhering to future consensus-driven international PABS agreements](../../about/governance/values#article-4-beneficial-sharing).
+
 </details>
 
 <details>
 <summary> <span class="faq"> How can I try Pathoplexus out?</span> </summary>
+
 If you don't have sequences to upload for the pathogens we currently support - or just want to try out Pathoplexus before deciding if you want to use it - you
 can always use our [Demo Instance](https://demo.pathoplexus.org/)! Our Demo Instance works just like the 'real' Pathoplexus, but is wiped regularly and _no data is sent onward to INSDC_.
 
@@ -78,11 +93,13 @@ funding to build up and support our development.
 However, we're still keen to build a list of viruses that the community is keen to see on Pathoplexus. Please search our [GitHub Issues](https://github.com/pathoplexus/pathoplexus/issues)
 to see if anyone has already proposed the virus you'd like to suggest - if so, comment to support their proposal! If not, please create a new issue, outlining why
 you think it would be a great addition, and if possible, listing others in the community who support adding that virus!
+
 </details>
 
 
 <details>
 <summary> <span class="faq">How do you choose the pathogens to include?</span> </summary>
+
 In future, we aim to prioritize viruses that have a high public health interest and currently have a less-than-ideal sequence sharing situation, for any reason.
 For example, the community may not be sharing much data because of fear of 'scooping,' or they may find uploading the data too difficult.
 Alternatively, it could currently be fragmented and shared in different places, and Pathoplexus could be a way to bring it together.
@@ -92,29 +109,58 @@ We are also keen to add pathogens where there's support in that pathogen communi
 Finally, we will also consider the technical difficulty of including a new virus in prioritization. 
 For example, multi-segmented viruses require more work to ensure we're matching up segments correctly, and some viruses may be more difficult to write robust quality-control metrics for.
 However, none of this rules out adding a new virus completely - it may just have to wait a bit longer until we have sufficient resources!
+
 </details>
 
 ## Questions about data
 
 <details>
 <summary> <span class="faq"> Can I use the data on Pathoplexus?</span> </summary>
+
 Yes! Pathoplexus is designed to be used by everyone, and so all data is accessible. 
 However, Pathoplexus does have restrictions on how some data (“Restricted-Use Data”) can be used, particularly in publications and preprints, and has requirements on how all Restricted-Use Data is acknowledged. 
 
 You can find out more about these protections and how you can use data by reading our [Data Use Terms](/about/terms-of-use/data-use-terms). We also have summaries on how you can use [Open Data](/about/terms-of-use/open-data) and [Restricted-Use Data](/about/terms-of-use/restricted-data).
+
 </details>
 
 <details>
+<summary> <span class="faq">What is Pathoplexus's stance on commercial use?</span> </summary>
+
+<a id="commercial"></a>There are ongoing international negotiations on establishing a pathogen access and benefit sharing system (PABS), which Pathoplexus has engaged with, but which have not yet concluded. Until such a system exists, Pathoplexus leaves questions of commercial use to existing regulations and legislation. 
+
+Pathoplexus's <i>Restricted Use</i> terms are designed to regulate use in academic publications and preprints, to ensure that submitters feel secure that their academic priority to publish will be respected and that they will not be "scooped". In this model, all sequences are accessible to everyone, but some have time-limited conditions on how they can be used academically. We believe that this open-access, restricted-use model could serve as inspiration for a future PABS system where sequences are accessible publicly, but with any use for the development of medical countermeasures conferring benefit-sharing obligations.
+
+The current Pathoplexus <i>Restricted Use</i> terms do not address commercial PABS matters, and are not intended as a solution to this issue.
+
+
+</details>
+
+
+<details>
 <summary> <span class="faq"> How can I contribute data to Pathoplexus?</span> </summary>
+
 We’ve tried to make sharing your data as easy and flexible as possible! 
 
 You can upload data to any of our supported pathogens by first [creating an account](/docs/how-to/create-account) and then [submitting your sequences](/docs/how-to/upload-sequences) on the website or via the API (useful for computational pipelines).
 At submission, you can choose whether you’d like your data to be [protected for up to one year](/about/terms-of-use/restricted-data), or [open immediately](/about/terms-of-use/open-data).
 Once the data is open, it also appears on INSDC-member databases.
+
+</details>
+
+<details>
+<summary> <span class="faq">Can I contribute my wastewater sequencing data to Pathoplexus?</span> </summary>
+
+Pathoplexus currently does not accept uploads of raw sequencing reads. We recommend submitting your raw reads to one of the [INSDC](https://www.insdc.org/) databases. However, you may submit consensus sequences derived from wastewater sequencing data to Pathoplexus.
+
+If you do, please enter `waste water` (which corresponds to [ENVO:00002001]) in the `environmentalMaterial` metadata field when submitting your data.
+
+For some organisms on Pathoplexus, the `host` metadata field is required. Since wastewater samples do not have a clearly defined host organism, please enter `unidentified` in the `host` field for organisms where `host` is required.
 </details>
 
 <details>
 <summary> <span class="faq">Where does my data go when I submit it to Pathoplexus?</span> </summary>
+
 When you submit your data to Pathoplexus, it gets securely stored in our database, hosted on AWS in Europe (under GDPR). 
 
 If you've chosen for your data to be open straight away, it will be submitted to the European Nucleotide Archive (ENA). It can take up to a week for data to appear on ENA, due to processing delays on their side.
@@ -122,90 +168,62 @@ If you've chosen for your data to be open straight away, it will be submitted to
 It will then be synchronised across all INSDC-member databases (i.e. GenBank and DDBJ) in a short time, and will continue to be available on Pathoplexus.
 
 If you've selected the _Restricted-Use_ data terms, your data will not be submitted to the INSDC until it becomes _Open_.
+
 </details>
 
 <details>
 <summary> <span class="faq">Should I submit my data to both INSDC-member databases (Genbank, ENA, etc) and Pathoplexus?</span> </summary>
+
 No, you should _not_ submit your data to both INSDC and Pathoplexus, as it may result in your data being duplicated in both places.
 If you submit to INSDC, we will pull your data into Pathoplexus, so there's no need to submit it here!
 If you submit to Pathoplexus, the data will go to INSDC when you specify (and immediately, if you select the data is open), so there's no need to upload it to INSDC yourself - we'll take care of that!
 
 Since we keep a record of all the data we pass onto INSDC, we ensure we don't duplicate it - but we can't do this if users upload to both places separately!
+
 </details>
 
 <details>
 <summary> <span class="faq">I originally submitted my data to GISAID. Can I now submit it to Pathoplexus as well?</span> </summary>
+
 Yes, you can, as long as you have not shared your sequences to INSDC databases (Genbank, ENA, DDBJ).
 In contrast to Pathoplexus, GISAID does not submit data to the INSDC on your behalf.
 So unless you yourself submitted your sequences to the INSDC, you can submit them to Pathoplexus.
 To ensure data integrity, we encourage you to add your sequences' GISAID Isolate ID (EPI_ISL) to the `gisaidIsolateId` metadata field when you submit your sequences to Pathoplexus.
+
 </details>
 
 <details>
 <summary> <span class="faq">How is data use restricted in Pathoplexus?</span> </summary>
+
 When you submit your data to Pathoplexus, you have the option to restrict how it can be used for a limited time, or make it fully open straight away. 
 If you choose to keep your data restricted in how it can be used, it will have these protections for up to a year, giving you time to publish your research.
 After this period, or if you choose to share it openly immediately, your data will be released on international databases (INSDC-member databases).
 
 If you want to use data from Pathoplexus, it's critical you familiarize yourself with our [Data Use Terms](/about/terms-of-use/data-use-terms), 
 so you know how you can use sequences and how you must acknowledge them.
+
 </details>
 
 <details>
 <summary> <span class="faq">Where does Pathoplexus get its data?</span> </summary>
+
 We get our data two ways: ingesting ('pulling') open data from INSDC-member databases, and the data the Pathoplexus users upload to us directly.
 
 Pathoplexus ingests data from INSDC-member databases (specifically, from [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets)) for all the Pathogens it supports. 
 We do this automatically at regular intervals, but always preserve the link back to the INSDC source.
 You can easily tell if a sequence originated from INSDC if the 'Submitting group' is `Automated Ingest from INSDC/NCBI Virus`.
 
-Users can also submit data to us directly, which we eventually pass on to the INSDC network. All Restricted-Use data is directly submitted.
+Users can also submit data to us directly, which we eventually pass on to the INSDC network. All Open data is directly submitted, and Restricted data will be submitted after the Restricted-Use period lapses and it becomes Open.
 You can easily tell if Open data was submitted to us directly by seeing if the 'Submitting group' is anyone other than `Automated Ingest from INSDC/NCBI Virus`.
+
 </details>
 
-
-## Questions about our future and plans
-
-<details>
-<summary> <span class="faq">I'm a funding agency or organization interested in helping Pathoplexus, who should I contact?</span> </summary>
-We are incredibly grateful for support in turning Pathoplexus into a long-term project that can help improve pathogen sequence sharing!
-We're currently looking for support in all forms and sizes, and we'd love to chat with you. 
-Please send an email to [funding\@pathoplexus.org](mailto:funding@pathoplexus.org), and we'll be in touch!
-</details>
-
-<details>
-<summary> <span class="faq">What are Pathoplexus' current priorities?</span> </summary>
-Currently we're in our 'Initial Phase'. We're focusing on introducing ourselves to the community,
-getting feedback on Pathoplexus, and starting conversations about how Pathoplexus could help improve pathogen sequence sharing.
-
-We're also focused on attracting funding. Pathoplexus has been developed, and is currently running, thanks to volunteer efforts and donations of
-programmers and infrastructure. However, to turn Pathoplexus into something that can run for years to come, we need support in infrastructure
-(to run the computational side of the database), administration (to help manage and run Pathoplexus), and developers (to add features and make
-Pathoplexus a fully-fledged database).
-
-Pathoplexus hopes to be a long-term player in the pathogen sequence sharing space for as long as it's needed.
-However, it's also been purposefully designed to be able to _stop_ existing without any data being lost.
-If there comes a day when Pathoplexus isn't needed (because fear around data sharing has been alleviated via other methods, or because better solutions become available),
-it is bound to remain in existence long enough to ensure all remaining data is uploaded to INSDC, at which point it can 'fold gracefully,' with no data being lost.
-</details>
-
-<details>
-<summary> <span class="faq">What are Pathoplexus' future plans?</span> </summary>
-
-Once we secure funding, some of our top priorities are:
-- Improve our SeqSet visualization to give even more information about the sequences it includes
-- Add tracking of DOIs via CrossRef and link this to sequences to show their contribution to all publications
-- Start working with journals to add ethical sequence use to the consideration of submitted manuscripts
-- Perfect a system to quickly add new pathogens in crisis (or potential crisis) scenarios
-- Add more viral pathogens, as asked for by those pathogen communities
-- Expand our features, additional data we can provide to sequences, and our API
-- Enable federalization, allowing a 'Pathoplexus Network' that exchanges data on the same principles, but allows shared data 'ownership' and continued existence if any one 'node' goes down
-</details>
 
 ## Questions about our code
 
 <details>
 <summary> <span class="faq">What is the code underlying Pathoplexus? What is Loculus?</span> </summary>
+
 Pathoplexus is an instance of the broader pathogen data sequence sharing software Loculus.
 This means that Pathoplexus runs on Loculus code, with specific features, personalization, and most importantly, surrounding governance, that make it 'Pathoplexus.'
 All of the Pathoplexus code is open-source and you can view it [here](https://github.com/pathoplexus/pathoplexus).
@@ -216,12 +234,14 @@ or a university may have a Loculus instance to gather all the sequences they gen
 Alternatively, someone could create another Loculus instance to serve bacterial pathogens, much like Pathoplexus!
 
 All of the Loculus code is also open-source, and you can view it [here](https://github.com/loculus-project/loculus).
+
 </details>
 
 ## Questions about our website
 
 <details>
 <summary> <span class="faq">Where do the images of pathogens on the front page come from?</span> </summary>
+
 We're incredibly grateful to [NIAID](https://www.niaid.nih.gov/) for providing fantastic images of pathogens. You can check out their incredible [Flickr account](https://www.flickr.com/photos/niaid/) to see more great images.
 
 The images we use from NIAID are:
@@ -245,3 +265,5 @@ We are grateful to use this [Andes Virus image](https://www.frontiersin.org/jour
 Lastly, we are grateful to use this [Mpox Virus image](https://cdn.who.int/media/images/default-source/health-topics/monkeypox/12763.tmb-1200v.jpg?sfvrsn=cd044fbd_3) from the WHO.
 
 </details>
+
+</div>

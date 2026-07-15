@@ -1,0 +1,195 @@
+@reference './base.css';
+
+/*
+ * Pathoplexus-specific prose styling, injected into the shared `.mdContainer`
+ * styling via the `extraStyles.css` extension point in Loculus'
+ * `mdcontainer.css`. Keeping it here means we add instance-specific styling
+ * without forking the upstream stylesheet.
+ */
+
+/*
+ * Homepage FAQ — a responsive two-column card grid. A CSS grid (rather than
+ * multi-column) so cards read left-to-right, row by row, and each row's cards
+ * share an equal height.
+ */
+.mdContainer .faqCards {
+    @apply mt-2 grid grid-cols-1 gap-5 md:grid-cols-2;
+}
+
+.mdContainer .faqCard {
+    @apply rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-xs transition-shadow hover:shadow-md;
+}
+
+.mdContainer .faqCard h3 {
+    @apply text-lg font-semibold text-main mt-0 mb-2 leading-snug;
+    max-width: none;
+}
+
+.mdContainer .faqCard p {
+    @apply my-0 text-[0.9375rem] text-gray-800;
+    max-width: none;
+}
+
+.mdContainer .faqCard ul {
+    @apply my-0 text-[0.9375rem] text-gray-800;
+    padding-left: 1.25rem;
+    list-style-position: outside;
+}
+
+.mdContainer .faqCard > ul > li {
+    @apply my-1;
+    margin-left: 0;
+}
+
+.mdContainer .faqMore {
+    @apply mt-6 text-center;
+}
+
+.mdContainer .faqMore p {
+    @apply my-0;
+    max-width: none;
+}
+
+.mdContainer .faqMore a {
+    @apply font-medium no-underline hover:underline;
+}
+
+/*
+ * About-page FAQ (`/about/faq`) — a polished accordion built on native
+ * <details>/<summary>, so it needs no client-side JS and stays accessible.
+ * Everything is scoped under `.faqPage` so the plain <details> used on other
+ * docs/news pages keeps its default styling.
+ */
+
+.mdContainer .faqPage {
+    @apply mt-2;
+}
+
+/* Friendly helper callout pinned to the top of the page. */
+.mdContainer .faqPage .faqIntro {
+    @apply rounded-xl border border-primary-100 bg-primary-50/70 px-5 py-4 text-[0.9375rem] text-gray-700;
+}
+
+.mdContainer .faqPage .faqIntro p {
+    @apply my-0;
+    max-width: none;
+}
+
+/* Small, quiet category labels that group the questions. */
+.mdContainer .faqPage h2 {
+    @apply text-sm font-bold uppercase tracking-[0.08em] text-primary-700 mt-12 mb-3 leading-snug;
+    max-width: none;
+}
+
+.mdContainer .faqPage h2:first-of-type {
+    @apply mt-9;
+}
+
+/* Each question is a self-contained card. */
+.mdContainer .faqPage details {
+    @apply rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden transition-colors duration-150;
+    margin: 0.625rem 0;
+}
+
+.mdContainer .faqPage details:hover {
+    @apply border-gray-300;
+}
+
+.mdContainer .faqPage details[open] {
+    @apply border-primary-200 shadow-sm;
+}
+
+/* The clickable header row. */
+.mdContainer .faqPage summary {
+    @apply flex items-center justify-between gap-4 cursor-pointer select-none px-5 py-4;
+    list-style: none;
+}
+
+.mdContainer .faqPage summary::-webkit-details-marker {
+    display: none;
+}
+
+.mdContainer .faqPage details[open] summary {
+    @apply bg-gray-50/70 border-b border-gray-100;
+}
+
+.mdContainer .faqPage summary .faq {
+    @apply font-semibold text-main text-base leading-snug transition-colors duration-150;
+}
+
+.mdContainer .faqPage summary:hover .faq {
+    @apply text-primary-700;
+}
+
+/* Chevron drawn from two borders; points down when closed, up when open. */
+.mdContainer .faqPage summary::after {
+    content: '';
+    @apply flex-none ml-3 h-2.5 w-2.5 -mt-1 border-b-2 border-r-2 border-gray-400 transition-transform duration-200;
+    transform: rotate(45deg);
+}
+
+.mdContainer .faqPage summary:hover::after {
+    @apply border-primary-500;
+}
+
+.mdContainer .faqPage details[open] summary::after {
+    @apply mt-1;
+    transform: rotate(-135deg);
+}
+
+/* Answer body. The upstream `.mdContainer` rules cap prose at ~65ch; inside a
+ * card we want answers to use the full card width instead. */
+.mdContainer .faqPage details > *:not(summary) {
+    @apply px-5 text-[0.9375rem] text-gray-700;
+    max-width: none;
+}
+
+.mdContainer .faqPage details > summary + * {
+    @apply mt-4;
+}
+
+.mdContainer .faqPage details > *:last-child {
+    @apply pb-5;
+}
+
+/* Bulleted answers: the upstream `.mdContainer > ul > li` indentation only
+ * applies to top-level lists, so inside a card the bullets would sit flush
+ * left. Indent the list and hang the markers in the gutter. */
+.mdContainer .faqPage details ul {
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 2.75rem;
+}
+
+.mdContainer .faqPage details ul li {
+    @apply my-1.5;
+    margin-left: 0;
+}
+
+/* Gentle reveal when a card is opened. */
+@keyframes faqReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mdContainer .faqPage details[open] > *:not(summary) {
+    animation: faqReveal 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mdContainer .faqPage details,
+    .mdContainer .faqPage summary .faq,
+    .mdContainer .faqPage summary::after {
+        transition: none;
+    }
+
+    .mdContainer .faqPage details[open] > *:not(summary) {
+        animation: none;
+    }
+}
