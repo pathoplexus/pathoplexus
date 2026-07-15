@@ -7,6 +7,20 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-06-30-june-update',
+        title: 'Pathoplexus June Update',
+        date: '30 June 2026',
+        excerpt:
+            'Since our last full update in March, Pathoplexus has continued to grow rapidly - with two new pathogens added in response to active outbreaks, hundreds of new sequences from labs across the globe, and a number of exciting firsts for our community…',
+    },
+    {
+        slug: '2026-06-30-annual-report',
+        title: 'Annual Report 2024-25',
+        date: '30 June 2026',
+        excerpt:
+            'We are happy to publish the first Pathoplexus Annual Report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025 and approved by the General Assembly on 10 June. It summarizes our first year and four months, including…',
+    },
+    {
         slug: '2026-05-19-ebola-bundibugyo',
         title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
         date: '19 May 2026',

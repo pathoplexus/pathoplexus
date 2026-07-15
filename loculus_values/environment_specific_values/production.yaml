@@ -70,8 +70,9 @@ seqSets:
     databaseName: "Pathoplexus Database"
     email: "dois@pathoplexus.org"
     organization: "Pathoplexus"
-    hostUrl: "https://pathoplexus.org"
-podPriorityValue: 2000
+    writeEnabled: true
+podScheduling:
+  podPriorityValue: 2000
 disableEnaSubmission: false
 enaDeposition: 
   submitToEnaProduction: true
