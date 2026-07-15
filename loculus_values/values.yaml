@@ -3921,17 +3921,17 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
-  zika-virus:
+  zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
       organismName: "Zika virus"
-      image: "images/organisms/zika_virus.jpg"
+      image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
           maxNumberOfRecommendedEntries: 3000
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/community/itps/zikav&dataset-tag=2026-04-14--11-55-23Z"
-          name: Sealion
+        - name: Sealion
           maxNumberOfRecommendedEntries:
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
         - name: "Country map"  
@@ -3944,8 +3944,8 @@ resources:
       configFile:
         <<: *preprocessingConfigFile
         segments:
-        - name: main
-          references:
+          - name: main
+            references:
             - name: "singleReference"
               nextclade_dataset_name: community/itps/zikav
               nextclade_dataset_tag: 2026-04-14--11-55-23Z
@@ -3964,7 +3964,7 @@ resources:
     referenceGenomes:
       - name: "main"
         references:
-        - name: singleReferences
+        - name: singleReference
           sequence: "[[URL:https://pathoplexus.github.io/reference_store/zikav/reference.fasta]]"
           insdcAccessionFull: NC_035889.1
           genes:
