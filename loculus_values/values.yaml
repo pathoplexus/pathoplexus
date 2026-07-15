@@ -3898,7 +3898,7 @@ zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Zika"
+      organismName: "Zika virus"
       image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
@@ -3932,7 +3932,7 @@ zika:
       singleReference:
         configFile:
           taxon_id: 64320   
-          scientific_name: "Zika"
+          scientific_name: "Zika virus"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
