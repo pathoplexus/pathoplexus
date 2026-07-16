@@ -3894,11 +3894,11 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
-zika:
+  zika:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Zika"
+      organismName: "Zikav"
       image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
@@ -3911,18 +3911,18 @@ zika:
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
     preprocessing:
-    - <<: *preprocessing
-      version:
-        - 1
-      configFile:
-        <<: *preprocessingConfigFile
-        segments:
-          - name: main
-            references:
-            - name: "singleReference"
-              nextclade_dataset_name: community/itps/zikav
-              nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: [ancC, "C", "prM", "Pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: "singleReference"
+                nextclade_dataset_name: community/itps/zikav
+                nextclade_dataset_tag: 2026-04-14--11-55-23Z
+                genes: [ancC, "C", "prM", "Pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
     ingest:
       <<: *ingest
       configFile:
@@ -3932,7 +3932,7 @@ zika:
       singleReference:
         configFile:
           taxon_id: 64320   
-          scientific_name: "Zika"
+          scientific_name: "Zikav"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
