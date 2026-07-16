@@ -2654,6 +2654,7 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - clade
+          - outbreak
           - lineage
           - length
         defaultOrderBy: sampleCollectionDate
