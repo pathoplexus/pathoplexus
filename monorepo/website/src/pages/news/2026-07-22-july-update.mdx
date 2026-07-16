@@ -1,0 +1,116 @@
+---
+layout: ../../layouts/NewsLayout.astro
+title: 'Pathoplexus July Update'
+---
+
+
+
+# Pathoplexus July Update
+
+_By the Pathoplexus Team - 22 July 2026_
+
+In our [previous update](https://pathoplexus.org/news/2026-06-30-june-update) we highlighted many new submissions and the addition of two new organisms to Pathoplexus. In this post, we’ll focus on technical improvements and new features that have been introduced over the past months. Read on to find out more about our latest updates to Pathoplexus:
+
+
+ 
+### Sequence and SeqSet citations
+
+Pathoplexus now integrates data from [Crossref](https://www.crossref.org/) to show how [SeqSets](https://pathoplexus.org/docs/concepts/seqset) have been used in scientific publications. You can find this information directly on the SeqSet page. See here for an example of a SeqSet of West-Nile Virus sequences: https://pathoplexus.org/seqsets/PP_SS_200.1.
+
+
+![/gifs/news]
+
+Furthermore, this information is also displayed on the sequence details page when a sequence is part of a SeqSet that has been referenced by a scientific publication:
+
+ 
+
+When using a SeqSet in your publications, please remember to [cite it]( https://pathoplexus.org/about/citation) so those generating and sharing data are properly credited for their work.
+
+### Submission workflow
+
+#### Improved submission template
+ 
+When submitting your data to Pathoplexus, you can now download a rich XLSX submission template that contains definitions of our metadata fields and - where appropriate - lists accepted values: 
+
+ 
+
+These templates are available on the submission page or on in the docs here (example ANDV): https://pathoplexus.org/docs/concepts/metadataformat?organism=andv&fieldType=inputFields
+
+#### Improvements to revision and revocation
+
+It is now also possible to download the original data associated with multiple sequences to simplify batch revisions. Clicking the ‘Download 15 selected entries’ button in the image below would return the original submitted data for all selected sequences:
+
+ 
+
+In a further streamlining of our revocation process, we’ve removed the need to manually release a revocation after you click ‘Revoke this sequence’. Instead, the revocation will immediately be processed after providing a reason for the revocation and clicking ‘Confirm’ in the popup.
+
+#### Changes to our submission format
+ 
+We now support date ranges in the Lucene format (e.g., `[2014 TO 2015]`), as well as the ISO format (e.g. `2026-01-01/2026-02-10`).
+
+We now validate submitted host details using NCBI taxonomy data. You can specify the host organism by providing a scientific name _or_ NCBI taxon id in the new `host` metadata field. The submitted data is validated and used to generate `hostTaxonId`, `hostNameScientific`, and `hostNameCommon` metadata fields.
+
+
+### Search improvements
+
+#### Hierarchical taxonomy search
+ 
+Pathoplexus now validates host metadata, enabling hierarchical taxonomy searches on host information. When a higher-level taxon is selected, the search returns all sequences whose host belongs to any descendant taxon of the selected taxon.
+
+  
+
+This link, for example, shows all Dengue sequences observed in mosquitos, including seven species in the _Aedes_ genus and two in the _Culex_ genus: https://pathoplexus.org/dengue/search?hostTaxonId=7157*&
+
+#### New search features
+
+To improve usability, search filters are now organized into collapsible sections for metadata and sequence-based filters. For multi-segmented organisms, sequence filters are further grouped by segment. A new ‘Required segments’ filter also allows users to restrict results to records that include specific genome segments.
+
+Pathoplexus now supports multi-field search boxes that allow users to search multiple related data fields using a single input. Currently, this is supported for identifiers:
+
+ 
+
+#### Pathoplexus Docs Search
+
+The Pathoplexus’ [About](https://pathoplexus.org/about) and [Docs](https://pathoplexus.org/docs) pages now support free-text search for easier access to all types of information about Pathoplexus. This is available through the search box in the top left of these pages. This is available through the search box in the top left of these pages. 
+
+
+### Convenient version comparison
+
+Pathoplexus now has a ‘Compare versions’ feature to show changes between different versions of a sequence. You can find it by clicking the ‘Version’ button on the details page of any sequence with multiple versions:
+
+ 
+
+This will take you to a page highlighting which fields have changed between versions in a side-by-side table view. You can specify which two versions of a sequence you would like to compare, as well as whether to hide fields that haven’t changed between versions or not. After configuring the comparison view to your liking, you can share it by simply copying the URL. See here for an example: https://pathoplexus.org/seq/PP_006W6RC.3/versions?compare=2%2C3
+
+
+### Further updates and improvements
+
+Pathoplexus has added support for visualizing amino acid substitutions relative to the Ebola Bundibugyo outbreak clade founder.
+ 
+Pathoplexus now provides [linkOuts](https://pathoplexus.org/docs/how-to/use-tools-and-add-new-ones) to view sequence alignments of Pathplexus sequences using [Sealion](https://github.com/artic-network/sealion/tree/main), or to place sequences on phylogenetic trees constructed using [viral UShER](https://github.com/AngieHinrichs/viral_usher) and view them using [Taxonium](https://www.taxonium.org/).
+
+
+## General assembly and annual report
+
+The members of Pathoplexus met on 10 June 2026 for its General Assembly, reviewing the past year, approving the annual report and discussing the activities of the upcoming year. The minutes of the meeting are available here and the annual report can be found here.
+
+
+## Talks and Presentations
+ 
+### Past talks
+- 18 March — Emma Hodcroft spoke about Pathoplexus at the [35th Annual Meeting of the Society for Virology](https://g-f-v.org/en/events/35th-annual-meeting-of-the-society-of-virology/) in Heidelberg
+- 18-20 May - Anna Parker presented a Pathoplexus poster at [ViBioM](https://evbc.uni-jena.de/events/vibiom2026/) in Vilnius 
+
+
+### Upcoming talks
+- A poster on data sharing with Pathoplexus will be presented at [ECCB in Geneva, 31 Aug to 3 September](https://eccb2026.org/)
+- [*Ed: please add upcoming events if any*]
+
+
+## Meetings, Minutes, and Resolutions
+
+Pathoplexus is happy to announce that Prof Placide Mbala has joined the Pathoplexus Scientific Advisory Board. — Emma actually writing to placide to confirm he will join and get photo etc…
+-	Reminder to Emma - close out resolutions & ensure Placide’s is included in News & in right folders/PDF
+
+Remember that you can always check our [minutes from General Assemblies and Executive Board meetings, as well as Executive Board resolutions](https://pathoplexus.org/about/governance).
+
