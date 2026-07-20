@@ -74,6 +74,7 @@ siloImport:
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
+  # TODO: remove mpox lineage system after preprocessing with mpoxOutbreakLineage is complete
   mpox:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/lineages.yaml
