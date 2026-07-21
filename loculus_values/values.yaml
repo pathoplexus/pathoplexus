@@ -74,8 +74,13 @@ siloImport:
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
+  # TODO: remove mpox lineage system after preprocessing with mpoxOutbreakLineage is complete
   mpox:
     20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/lineages.yaml
+  mpoxOutbreakLineage:
+    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
@@ -2563,7 +2568,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json for a view of the Nextclade reference tree."
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2578,7 +2583,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
-          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=outbreak.
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=outbreak for a view of the Nextclade reference tree.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2592,7 +2597,26 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
-          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=lineage.
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=lineage for a view of the Nextclade reference tree.
+          isSequenceFilter: true
+          header: "Clade & Lineage"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          # should be set to false on next update (after reprocessing complete)
+          # as lineage itself is no longer unambiguous, outbreak is required
+          # otherwise filtering by A.1 includes sequences from 2 outbreaks
+          initiallyVisible: true
+          preprocessing:
+            inputs: {input: nextclade.customNodeAttributes.lineage}
+          columnWidth: 64
+          order: 7
+          orderOnDetailsPage: 740
+          lineageSystem: mpox
+        - name: outbreakLineage
+          displayName: Outbreak & Lineage
+          definition: Outbreak & Lineage assigned by Nextclade
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2601,11 +2625,12 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           preprocessing:
-            inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 64
-          order: 7
-          orderOnDetailsPage: 740
-          lineageSystem: mpox
+            inputs: {input: nextclade.customNodeAttributes.outbreakLineage}
+          columnWidth: 100
+          order: 8
+          orderOnDetailsPage: 760
+          hideOnSequenceDetailsPage: true
+          lineageSystem: mpoxOutbreakLineage
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
           displayName: GISAID Isolate ID
@@ -2630,6 +2655,7 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - clade
+          - outbreak
           - lineage
           - length
         defaultOrderBy: sampleCollectionDate
@@ -2650,7 +2676,7 @@ organisms:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2025-12-16--20-07-31Z
-                genes:
+                genes: &mpoxGenes
                   - OPG001
                   - OPG002
                   - OPG003
@@ -2826,15 +2852,20 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 20
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 25
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: nextstrain/mpox/all-clades
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
+                genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
