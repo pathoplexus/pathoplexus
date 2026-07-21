@@ -2568,7 +2568,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade"
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json for a view of the Nextclade reference tree."
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2583,7 +2583,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
-          definition: Outbreak assigned by Nextclade
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=outbreak for a view of the Nextclade reference tree.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2597,7 +2597,7 @@ organisms:
           orderOnDetailsPage: 720
         - name: lineage
           displayName: Lineage
-          definition: Lineage assigned by Nextclade
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=lineage for a view of the Nextclade reference tree.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
