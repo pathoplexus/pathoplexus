@@ -2612,22 +2612,6 @@ organisms:
           columnWidth: 74
           order: 6
           orderOnDetailsPage: 720
-        - name: lineage
-          displayName: Lineage
-          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=lineage for a view of the Nextclade reference tree.
-          isSequenceFilter: true
-          header: "Clade & Lineage"
-          includeInDownloadsByDefault: true
-          noInput: true
-          generateIndex: true
-          autocomplete: true
-          initiallyVisible: false
-          preprocessing:
-            inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 64
-          order: 7
-          orderOnDetailsPage: 740
-          lineageSystem: mpox
         - name: outbreakLineage
           displayName: Outbreak & Lineage
           definition: Outbreak & Lineage assigned by Nextclade
