@@ -2621,10 +2621,7 @@ organisms:
           noInput: true
           generateIndex: true
           autocomplete: true
-          # should be set to false on next update (after reprocessing complete)
-          # as lineage itself is no longer unambiguous, outbreak is required
-          # otherwise filtering by A.1 includes sequences from 2 outbreaks
-          initiallyVisible: true
+          initiallyVisible: false
           preprocessing:
             inputs: {input: nextclade.customNodeAttributes.lineage}
           columnWidth: 64
