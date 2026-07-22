@@ -202,7 +202,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       - &displayNameConfig
         name: displayName
         displayName: Display name
-        definition: "A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is taken from `specimenCollectorSampleId` if set, otherwise `submissionId`. The identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`."
+        definition: "A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four or three items, separated by slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`."
         preprocessing:
           function: build_display_name
           inputs:
@@ -213,6 +213,13 @@ defaultOrganismConfig: &defaultOrganismConfig
           args:
             order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
             type: [string, IDENTIFIER, dateRangeString]
+            # regex pattern constraints:
+            # - Cannot start with a slash
+            # - Four or three fields, separated by exactly two or three slashes
+            # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
+            # - Identifier is the second to last field (extracted through named capture group)
+            regex_pattern: '^(?:[^/]+/)?[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
+            human_readable_pattern: "<any>/<any>/<identifier>/<date>"
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
