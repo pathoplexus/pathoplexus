@@ -74,20 +74,27 @@ siloImport:
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
-  mpox:
-    20: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2025-09-09--12-13-13Z/lineages.yaml
+  mpoxOutbreakLineage:
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    31: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -188,17 +195,27 @@ defaultOrganismConfig: &defaultOrganismConfig
           rangeDisplayName: Collection date
           bound: upper
         noInput: true
-      - name: displayName
+      - &displayNameConfig
+        name: displayName
         displayName: Display name
-        definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
+        definition: "A human-readable label for the sequence record, with the format `{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four or three items, separated by slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`."
         preprocessing:
-          function: concatenate
+          function: build_display_name
           inputs:
             geoLocCountry: geoLocCountry
             sampleCollectionDate: processed.sampleCollectionDate
+            specimenCollectorSampleId: specimenCollectorSampleId
+            submissionId: submissionId
           args:
-            order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
-            type: [string, ACCESSION_VERSION, dateRangeString]
+            order: [geoLocCountry, IDENTIFIER, sampleCollectionDate]
+            type: [string, IDENTIFIER, dateRangeString]
+            # regex pattern constraints:
+            # - Cannot start with a slash
+            # - Four or three fields, separated by exactly two or three slashes
+            # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
+            # - Identifier is the second to last field (extracted through named capture group)
+            regex_pattern: '^(?:[^/]+/)?[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
+            human_readable_pattern: "<any>/<any>/<identifier>/<date>"
         noInput: true
       - name: ncbiReleaseDate
         displayName: NCBI release date
@@ -1669,6 +1686,7 @@ organisms:
         replicas: 1
         version:
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1732,6 +1750,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1838,6 +1857,7 @@ organisms:
         <<: *preprocessing
         version:
           - 5
+          - 6
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -1969,10 +1989,8 @@ organisms:
           example: "Isolate 1"
           desired: true
         # custom displayName construction for Dengue
-        - name: displayName
-          displayName: Display name
+        - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
-          noInput: true
           preprocessing:
             function: build_display_name
             inputs:
@@ -1990,6 +2008,7 @@ organisms:
               # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
               # - Identifier is the second to last field (extracted through named capture group)
               regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
+              human_readable_pattern: "<any>/<any>/<identifier>/<date>"
         - name: serotype
           displayName: Serotype
           definition: "Which of the antigenically distinct types of dengue virus the sequence was most closely assigned to according to Nextclade."
@@ -2017,6 +2036,7 @@ organisms:
         <<: *preprocessing
         version:
           - 30
+          - 31
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2231,6 +2251,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2327,6 +2348,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 6
+          - 7
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2478,6 +2500,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2563,7 +2586,7 @@ organisms:
       metadataAdd:
         - name: clade
           displayName: Clade
-          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json for a view of the Nextclade dataset."
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json for a view of the Nextclade reference tree."
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2578,7 +2601,7 @@ organisms:
           orderOnDetailsPage: 700
         - name: outbreak
           displayName: Outbreak
-          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=outbreak.
+          definition: Outbreak assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=outbreak for a view of the Nextclade reference tree.
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2590,9 +2613,9 @@ organisms:
           columnWidth: 74
           order: 6
           orderOnDetailsPage: 720
-        - name: lineage
-          displayName: Lineage
-          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2025-12-16--20-07-31Z/tree.json?c=lineage.
+        - name: outbreakLineage
+          displayName: Outbreak & Lineage
+          definition: Outbreak & Lineage assigned by Nextclade
           isSequenceFilter: true
           header: "Clade & Lineage"
           includeInDownloadsByDefault: true
@@ -2601,11 +2624,12 @@ organisms:
           autocomplete: true
           initiallyVisible: true
           preprocessing:
-            inputs: {input: nextclade.customNodeAttributes.lineage}
-          columnWidth: 64
-          order: 7
-          orderOnDetailsPage: 740
-          lineageSystem: mpox
+            inputs: {input: nextclade.customNodeAttributes.outbreakLineage}
+          columnWidth: 100
+          order: 8
+          orderOnDetailsPage: 760
+          hideOnSequenceDetailsPage: true
+          lineageSystem: mpoxOutbreakLineage
         - &gisaidIsolateIdMetadataField
           name: gisaidIsolateId
           displayName: GISAID Isolate ID
@@ -2630,6 +2654,7 @@ organisms:
           - authorAffiliations
           - earliestReleaseDate
           - clade
+          - outbreak
           - lineage
           - length
         defaultOrderBy: sampleCollectionDate
@@ -2639,7 +2664,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 20
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2650,7 +2675,7 @@ organisms:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2025-12-16--20-07-31Z
-                genes:
+                genes: &mpoxGenes
                   - OPG001
                   - OPG002
                   - OPG003
@@ -2826,15 +2851,20 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 20
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - <<: *mpoxDataset
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 26
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: nextstrain/mpox/all-clades
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
+                genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
@@ -3267,6 +3297,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 21
+          - 22
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3390,6 +3421,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 22
+          - 23
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3503,6 +3535,7 @@ organisms:
         replicas: 1
         version:
           - 23
+          - 24
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3589,6 +3622,16 @@ organisms:
           orderOnDetailsPage: 630
           definition: "MeaNS2 ID."
           guidance: "Add the MeaNS2 ID if sequence has also been uploaded to MeaNS2"
+        - <<: *displayNameConfig
+          definition: A human-readable label for the sequence record, with the format `{geoLocCountry}/{accessionVersion}/{sampleCollectionDate}`.
+          preprocessing:
+            function: concatenate
+            inputs:
+              geoLocCountry: geoLocCountry
+              sampleCollectionDate: processed.sampleCollectionDate
+            args:
+              order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
+              type: [string, ACCESSION_VERSION, dateRangeString]
       website: 
         <<: *website
         tableColumns:
@@ -3702,6 +3745,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 24
+          - 25
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3803,10 +3847,8 @@ organisms:
           example: "Isolate 1"
           desired: true
         # custom displayName construction for YFV
-        - name: displayName
-          displayName: Display name
+        - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
-          noInput: true
           preprocessing:
             function: build_display_name
             inputs:
@@ -3824,6 +3866,7 @@ organisms:
               # - Last field is a date in format YYYY, YYYY-MM, or YYYY-MM-DD
               # - Identifier is the second to last field (extracted through named capture group)
               regex_pattern: '^[^/][^/]*/[^/]+/(?P<identifier>[^/]+)/\d{4}(?:-\d{2}){0,2}$'
+              human_readable_pattern: "<any>/<any>/<identifier>/<date>"
       website:
         <<: *website
         tableColumns:
@@ -3842,6 +3885,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           segments:
