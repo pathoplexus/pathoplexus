@@ -2689,7 +2689,7 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
-                nextclade_dataset_tag: 2025-12-16--20-07-31Z
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
                 genes: &mpoxGenes
                   - OPG001
                   - OPG002
