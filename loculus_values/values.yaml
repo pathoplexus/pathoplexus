@@ -3948,7 +3948,7 @@ organisms:
               - name: prM
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/prM.fasta]]"
               - name: Pr
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/Pr.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/pr.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/E.fasta]]"
               - name: M
