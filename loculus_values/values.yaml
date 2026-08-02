@@ -3929,7 +3929,7 @@ organisms:
         <<: *ingest
         configFile:
           <<: *defaultIngestConfigFile
-          taxon_id: 3048459
+          taxon_id: 3048459 #Orthoflavivirus zikaense
       enaDeposition:
         singleReference:
           configFile:
