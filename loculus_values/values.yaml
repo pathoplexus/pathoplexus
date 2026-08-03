@@ -71,6 +71,10 @@ siloImport:
   siloTimeoutSeconds: 3600
   hardRefreshIntervalSeconds: 100_000 # ~27 hours
   pollIntervalSeconds: 120
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_2026-06-01"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
+  taxonomy_service_url: &taxonomy_service_url http://loculus-taxonomy-service:5000
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
@@ -1296,8 +1300,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: scientific_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-          args:
-            taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1316,8 +1318,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: common_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-          args:
-            taxonomy_service_url: *taxonomy_service_url
       - &hostTaxonIdConfig
         name: hostTaxonId
         displayName: "Host species"
@@ -1340,8 +1340,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: resolve_host_taxon_id
           inputs:
             host: host
-          args:
-            taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -3943,10 +3941,6 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
-
-taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-06-01"
-  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:
