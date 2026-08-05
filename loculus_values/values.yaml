@@ -1181,7 +1181,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           - name: "Sequel"
           - name: "Sequel II"
           - name: "Sequel IIe"
-          - name: "Tapestri"
           - name: "UG 100"
           # Fields listed in PLATFORM
           - name: "ILLUMINA"
