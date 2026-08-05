@@ -80,18 +80,25 @@ zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     31: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    32: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1087,12 +1094,110 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
         definition: The model of the sequencing instrument used.
-        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your model, if not add your model in free text."
-        example: Oxford Nanopore MinION [GENEPIO:0100142]
+        guidance: Select the sequencing instrument from the pick list.
+        example: MinION
         displayName: Sequencing instrument
         header: Sequencing
-        orderOnDetailsPage: 2080
         desired: true
+        orderOnDetailsPage: 2080
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingInstrument
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in INSTRUMENT (excluding `unspecified`)
+          - name: "454 GS"
+          - name: "454 GS 20"
+          - name: "454 GS FLX"
+          - name: "454 GS FLX Titanium"
+          - name: "454 GS FLX+"
+          - name: "454 GS Junior"
+          - name: "AB 310 Genetic Analyzer"
+          - name: "AB 3130 Genetic Analyzer"
+          - name: "AB 3130xL Genetic Analyzer"
+          - name: "AB 3500 Genetic Analyzer"
+          - name: "AB 3500xL Genetic Analyzer"
+          - name: "AB 3730 Genetic Analyzer"
+          - name: "AB 3730xL Genetic Analyzer"
+          - name: "AB 5500 Genetic Analyzer"
+          - name: "AB 5500xl Genetic Analyzer"
+          - name: "AB 5500xl-W Genetic Analysis System"
+          - name: "BGISEQ-50"
+          - name: "BGISEQ-500"
+          - name: "DNBSEQ-G400"
+          - name: "DNBSEQ-G400 FAST"
+          - name: "DNBSEQ-G50"
+          - name: "DNBSEQ-T7"
+          - name: "Element AVITI"
+          - name: "FASTASeq 300"
+          - name: "GENIUS"
+          - name: "GS111"
+          - name: "Genapsys Sequencer"
+          - name: "GenoCare 1600"
+          - name: "GenoLab M"
+          - name: "GridION"
+          - name: "Helicos HeliScope"
+          - name: "HiSeq X Five"
+          - name: "HiSeq X Ten"
+          - name: "Illumina Genome Analyzer"
+          - name: "Illumina Genome Analyzer II"
+          - name: "Illumina Genome Analyzer IIx"
+          - name: "Illumina HiScanSQ"
+          - name: "Illumina HiSeq 1000"
+          - name: "Illumina HiSeq 1500"
+          - name: "Illumina HiSeq 2000"
+          - name: "Illumina HiSeq 2500"
+          - name: "Illumina HiSeq 3000"
+          - name: "Illumina HiSeq 4000"
+          - name: "Illumina HiSeq X"
+          - name: "Illumina MiSeq"
+          - name: "Illumina MiniSeq"
+          - name: "Illumina NovaSeq 6000"
+          - name: "Illumina NovaSeq X"
+          - name: "Illumina iSeq 100"
+          - name: "Ion GeneStudio S5"
+          - name: "Ion GeneStudio S5 Plus"
+          - name: "Ion GeneStudio S5 Prime"
+          - name: "Ion Torrent Genexus"
+          - name: "Ion Torrent PGM"
+          - name: "Ion Torrent Proton"
+          - name: "Ion Torrent S5"
+          - name: "Ion Torrent S5 XL"
+          - name: "MGISEQ-2000RS"
+          - name: "MinION"
+          - name: "NextSeq 1000"
+          - name: "NextSeq 2000"
+          - name: "NextSeq 500"
+          - name: "NextSeq 550"
+          - name: "Onso"
+          - name: "PacBio RS"
+          - name: "PacBio RS II"
+          - name: "PromethION"
+          - name: "Revio"
+          - name: "Sentosa SQ301"
+          - name: "Sequel"
+          - name: "Sequel II"
+          - name: "Sequel IIe"
+          - name: "UG 100"
+          # Fields listed in PLATFORM
+          - name: "ILLUMINA"
+          - name: "PACBIO_SMRT"
+          - name: "OXFORD_NANOPORE"
+          - name: "BGISEQ"
+          - name: "LS454"
+          - name: "ION_TORRENT"
+          - name: "CAPILLARY"
+          - name: "DNBSEQ"
+          - name: "ELEMENT"
+          - name: "ULTIMA"
+          - name: "VELA_DIAGNOSTICS"
+          - name: "GENAPSYS"
+          - name: "GENEMIND"
+          - name: "TAPESTRI"
+          - name: "AVITI"
       - name: sequencingProtocol
         ontology_id: GENEPIO:0001454
         definition: The protocol used to generate the sequence.
@@ -1104,12 +1209,63 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
-        definition: The overarching DNA or RNA sequencing methodology that was used to determine the sequence of a biomaterial.
-        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your assay, if not add your methodology in free text."
-        example: whole genome sequencing assay [OBI:0002117]
+        definition: The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.
+        guidance: Select the sequencing technology from the pick list.
+        desired: true
+        example: WGS
         displayName: Sequencing assay type
         header: Sequencing
-        orderOnDetailsPage: 2120
+        orderOnDetailsPage: 2130
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingAssayType
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_STRATEGY
+          - name: "WGS"
+          - name: "WGA"
+          - name: "WXS"
+          - name: "RNA-Seq"
+          - name: "ssRNA-seq"
+          - name: "snRNA-seq"
+          - name: "miRNA-Seq"
+          - name: "ncRNA-Seq"
+          - name: "FL-cDNA"
+          - name: "EST"
+          - name: "Hi-C"
+          - name: "ATAC-seq"
+          - name: "WCS"
+          - name: "RAD-Seq"
+          - name: "CLONE"
+          - name: "POOLCLONE"
+          - name: "AMPLICON"
+          - name: "CLONEEND"
+          - name: "FINISHING"
+          - name: "ChIP-Seq"
+          - name: "MNase-Seq"
+          - name: "DNase-Hypersensitivity"
+          - name: "Bisulfite-Seq"
+          - name: "CTS"
+          - name: "MRE-Seq"
+          - name: "MeDIP-Seq"
+          - name: "MBD-Seq"
+          - name: "Tn-Seq"
+          - name: "VALIDATION"
+          - name: "FAIRE-seq"
+          - name: "SELEX"
+          - name: "RIP-Seq"
+          - name: "ChIA-PET"
+          - name: "Synthetic-Long-Read"
+          - name: "Targeted-Capture"
+          - name: "Tethered Chromatin Conformation Capture"
+          - name: "NOMe-seq"
+          - name: "ChM-Seq"
+          - name: "GBS"
+          - name: "Ribo-seq"
+          - name: "OTHER"
       - name: sequencedByOrganization
         ontology_id: GENEPIO:0100416
         definition: The name of the agency, organization or institution responsible for sequencing the isolate's genome.
@@ -1677,6 +1833,7 @@ organisms:
         replicas: 1
         version:
           - 30
+          - 31
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1740,6 +1897,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1846,6 +2004,7 @@ organisms:
         <<: *preprocessing
         version:
           - 6
+          - 7
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -2049,6 +2208,10 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *denguePreprocessing
+        replicas: 3
+        version:
+          - 32
     ingest:
       <<: *ingest
       configFile:
@@ -2235,7 +2398,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &yellowFeverPreprocessing
+        <<: *preprocessing
         version:
           - 28
         configFile:
@@ -2247,6 +2411,10 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      - <<: *yellowFeverPreprocessing
+        replicas: 2
+        version:
+          - 29
     ingest:
       <<: *ingest
       configFile:
@@ -2334,6 +2502,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 7
+          - 8
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
@@ -2485,6 +2654,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 24
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2850,20 +3020,13 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 26
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - name: main
-      #         references:
-      #         - name: singleReference
-      #           nextclade_dataset_name: nextstrain/mpox/all-clades
-      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
-      #           genes: *mpoxGenes
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 27
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
     ingest:
       <<: *ingest
       configFile:
@@ -3293,7 +3456,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvaPreprocessing
+        <<: *preprocessing
         version:
           - 22
         replicas: 1
@@ -3310,6 +3474,10 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *rsvaPreprocessing
+        replicas: 3
+        version:
+          - 23
     ingest:
       <<: *ingest
       configFile:
@@ -3416,7 +3584,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvbPreprocessing
+        <<: *preprocessing
         version:
           - 23
         replicas: 1
@@ -3433,6 +3602,10 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      - <<: *rsvbPreprocessing
+        replicas: 3
+        version:
+          - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3528,7 +3701,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &hmpvPreprocessing
+        <<: *preprocessing
         replicas: 1
         version:
           - 24
@@ -3541,6 +3715,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      - <<: *hmpvPreprocessing
+        replicas: 2
+        version:
+          - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3642,7 +3820,8 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &measlesPreprocessing
+        <<: *preprocessing
         version:
           - 27
         replicas: 1
@@ -3655,6 +3834,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      - <<: *measlesPreprocessing
+        replicas: 3
+        version:
+          - 28
     ingest:
       <<: *ingest
       configFile:
@@ -3741,6 +3924,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 25
+          - 26
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3880,6 +4064,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 30
+          - 31
         configFile:
           <<: *preprocessingConfigFile
           segments:
