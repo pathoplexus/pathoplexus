@@ -8,6 +8,7 @@ order: 50
 - [Creating a SeqSet](#creating-a-seqset)
 - [Sharing a SeqSet](#sharing-a-seqset)
 - [Adding a DOI](#adding-a-doi)
+- [How to cite a SeqSet](#how-to-cite-a-seqset)
 - [Viewing citations](#viewing-citations)
 - [Editing a SeqSet](#editing-a-seqset)
 - [Exporting a SeqSet](#exporting-a-seqset)
@@ -54,13 +55,74 @@ Thus, it's usually better to wait until you are confident that you have pulled t
 
 Once you have generated a DOI, you can no longer delete a SeqSet, as DOIs are intended to be persistent. 
 
+## How to cite a SeqSet
+
+Pathoplexus generates a ready-made citation for you, so you don't have to assemble one by hand.
+
+**Generate the DOI first.** The citation is built around the SeqSet's DOI, so create the DOI (see [above](#adding-a-doi)) before copying a citation. If you copy a citation from a SeqSet that has no DOI yet, it will point at the SeqSet's web page instead — that page can change over time and cannot be tracked as a citation. The DOI appears in the citation text as soon as it is generated, so you don't need to wait for the `doi.org` link to become resolvable before copying it.
+
+To get the citation text:
+
+1. Open the SeqSet you want to cite.
+2. Click the **'Export / Cite'** button at the top of the page.
+3. In the lower part of the dialog, choose your citation style: **BibTeX**, **MLA**, or **APA**.
+4. The citation appears in the text box below. Click **'Copy to clipboard'** and paste it into your reference manager or manuscript.
+
+Switching between the three styles updates the text box immediately, so you can preview each one before copying.
+
+### What the citation looks like
+
+**BibTeX** — paste this into your `.bib` file and cite it with the key on the first line:
+
+```bibtex
+@dataset{10_62599_PP_SS_123_1,
+	title = {SeqSet: My Ebola Sudan analysis},
+	journal = {Pathoplexus},
+	year = {2026},
+	url = {https://doi.org/10.62599/PP_SS_123.1},
+	doi = {10.62599/PP_SS_123.1}
+}
+```
+
+**MLA:**
+
+```
+SeqSet: My Ebola Sudan analysis. Pathoplexus, 2026. https://doi.org/10.62599/PP_SS_123.1
+```
+
+**APA:**
+
+```
+SeqSet: My Ebola Sudan analysis. (2026). Pathoplexus. https://doi.org/10.62599/PP_SS_123.1
+```
+
+A few things to note about the generated text:
+
+- The title is your SeqSet's name, prefixed with `SeqSet: `.
+- The year is the year the SeqSet was created, which may differ from the year you publish.
+- The citation lists Pathoplexus as the source and does not include an author or creator. Some journals require an author for dataset references; if so, add yourself (or your group) as the author or creator when you paste the citation in.
+
+Feel free to adjust the citation to match your target journal's dataset reference style — the important parts to keep are the DOI and the SeqSet name.
+
+### Put it in the reference list, not just the text
+
+**This is the part that matters most:** the SeqSet DOI must appear as a proper entry in your manuscript's **References** (or Bibliography) section, exactly as you would cite a paper — and be cited from the text like any other reference.
+
+Mentioning the DOI only in the body text, in a data-availability statement, in a footnote, or in a supplementary file is not enough. Only entries in the reference list get indexed by [Crossref](https://www.crossref.org/), and Crossref is how Pathoplexus discovers that your paper cites the SeqSet. A DOI mentioned in running text is invisible to this process.
+
+Citing it properly means:
+
+- Your paper appears in the 'Citations' section of the SeqSet page (see [Viewing citations](#viewing-citations)).
+- The people who generated and submitted the sequences you used get visible credit, because the citation is also shown on the individual sequence pages.
+- For Restricted-Use Data, this is a binding requirement of the [Data Use Terms](/about/terms-of-use/data-use-terms) — see [Citing Data from Pathoplexus](/about/citation) for exactly what is required in each case.
+
 ## Viewing citations
 
 Once a SeqSet has a DOI, Pathoplexus tracks the publications that cite it. When a paper includes the SeqSet's DOI in its reference list, the citation is registered with [Crossref](https://www.crossref.org/), and Pathoplexus periodically imports these citations from Crossref.
 
 Any publications that cite the SeqSet are shown in the 'Citations' section of the SeqSet page, under 'Cited in'. If no citations have been found yet, this reads 'No citations found.'. When there are more than a few, click 'View all citations' to see the full list.
 
-Because citations are discovered through Crossref, they only appear after the citing publication has been indexed there, so it can take some time for a new citation to show up. This is also why the DOI must be cited in the **References** section of a manuscript (not just mentioned in the text) — only references indexed by Crossref can be tracked.
+Because citations are discovered through Crossref, they only appear after the citing publication has been indexed there, so it can take some time for a new citation to show up. This is also why the DOI must be cited in the **References** section of a manuscript rather than only mentioned in the text — see [How to cite a SeqSet](#how-to-cite-a-seqset).
 
 ## Editing a SeqSet
 
@@ -73,9 +135,9 @@ Thus, it's usually better to finalize your set of sequences before generating a 
 
 ## Exporting a SeqSet
 
-You can use the 'Export' button when viewing a SeqSet, to export information about that SeqSet (including the accessions of the sequences included in the SeqSet) into JSON or TSV format.
+You can use the 'Export / Cite' button when viewing a SeqSet, to export information about that SeqSet (including the accessions of the sequences included in the SeqSet) into JSON or TSV format.
 
-You can also generate citation information in BibTeX, MLA, and APA style.
+The same dialog also gives you ready-made citation text in BibTeX, MLA, and APA style — see [How to cite a SeqSet](#how-to-cite-a-seqset).
 
 ## Deleting a SeqSet
 
