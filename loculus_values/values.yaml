@@ -1100,6 +1100,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: Sequencing
         desired: true
         orderOnDetailsPage: 2080
+        generateIndex: true
+        autocomplete: true
         preprocessing:
           function: process_options
           inputs:
@@ -1216,6 +1218,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Sequencing assay type
         header: Sequencing
         orderOnDetailsPage: 2130
+        generateIndex: true
+        autocomplete: true
         preprocessing:
           function: process_options
           inputs:
