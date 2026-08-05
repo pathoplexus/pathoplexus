@@ -3457,7 +3457,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - &rsvaPreprocessing
-      - <<: *preprocessing
+        <<: *preprocessing
         version:
           - 22
         replicas: 1
@@ -3585,7 +3585,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - &rsvbPreprocessing
-      - <<: *preprocessing
+        <<: *preprocessing
         version:
           - 23
         replicas: 1
@@ -3702,7 +3702,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - &hmpvPreprocessing
-      - <<: *preprocessing
+        <<: *preprocessing
         replicas: 1
         version:
           - 24
@@ -3821,7 +3821,7 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - &measlesPreprocessing
-      - <<: *preprocessing
+        <<: *preprocessing
         version:
           - 27
         replicas: 1
