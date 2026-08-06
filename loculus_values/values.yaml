@@ -3912,6 +3912,22 @@ organisms:
           - name: "Country map"  
             maxNumberOfRecommendedEntries: 45000
             url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        metadataAdd:
+          - name: clade
+            displayName: clade
+            definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/itps/zikav/2026-04-14--11-55-23Z/tree.json for a view of the Nextclade dataset."
+            isSequenceFilter: true
+            header: "clade"
+            generateIndex: true
+            autocomplete: true
+            initiallyVisible: true
+            includeInDownloadsByDefault: true
+            noInput: true
+            preprocessing:
+              inputs: { input: nextclade.clade }
+            columnWidth: 80
+            order: 5
+            orderOnDetailsPage: 740  
       preprocessing:
       - <<: *preprocessing
         version:
