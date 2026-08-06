@@ -12,7 +12,6 @@ issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
 traefikVersion: 3
-readOnlyMode: true
 s3:
   enabled: false
 developmentDatabasePersistence: false
