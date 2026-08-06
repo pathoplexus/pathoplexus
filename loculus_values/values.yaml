@@ -2826,7 +2826,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 28
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -3013,20 +3013,20 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - name: main
-      #         references:
-      #         - name: singleReference
-      #           nextclade_dataset_name: nextstrain/mpox/all-clades
-      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
-      #           genes: *mpoxGenes
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 28
+        configFile:
+          <<: *preprocessingConfigFile
+          batch_size: 10
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: nextstrain/mpox/all-clades
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
+                genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
