@@ -81,6 +81,7 @@ lineageSystemDefinitions:
   mpoxOutbreakLineage:
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
     27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
@@ -2837,7 +2838,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -3027,10 +3028,17 @@ organisms:
       - <<: *mpoxPreprocessing
         replicas: 3
         version:
-          - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 10
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: nextstrain/mpox/all-clades
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
+                genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
