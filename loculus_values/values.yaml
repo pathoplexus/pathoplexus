@@ -2838,7 +2838,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 26
+          - 27
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
