@@ -140,8 +140,9 @@ Anything it cannot resolve — an input that is not read from a tree, a multi-se
 whose lineage field names no segment — is a warning rather than a guess.
 
 This is the expensive part of `check`: a reference tree per dataset per tag, several MB each.
-Extracted value sets are cached under the temp dir (a tag is immutable, so they cannot go
-stale), which helps repeated local runs but not CI.
+They are all resolved first and then fetched concurrently, so the wait is the slowest single
+tree rather than their sum. Extracted value sets are also cached under the temp dir (a tag is
+immutable, so they cannot go stale), which helps repeated local runs but not CI.
 
 Runs on every PR touching `loculus_values/**` via `helm-template-check.yml`. It catches what
 `helm template` cannot: a pipeline entry that silently lost `segments:` to a shallow merge-key

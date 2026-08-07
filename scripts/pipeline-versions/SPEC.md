@@ -338,9 +338,17 @@ following the same split as the other remote checks: definite breakage is an err
 is a warning. Guessing a segment would invent exactly the false errors scoping exists to avoid.
 
 Assertion 11 is the only expensive one: it downloads a reference tree per dataset per tag, and
-they run to several MB (mpox's is ~5.6 MB, dengue has four). Caching the *extracted value set* —
-not the tree — is safe because a tag is immutable, but it only helps repeated local runs; CI
-starts with an empty cache every time. `--skip-remote-checks` turns it off along with 8c–8e.
+they run to several MB (mpox's is ~5.6 MB, dengue has four). Two things keep that bearable, and
+CI needs both:
+
+- **Resolve everything before fetching anything**, then fetch the whole batch concurrently.
+  The trees are independent, so wall-clock is the slowest single tree rather than their sum —
+  4.2 s → 1.6 s cold on the current config, once the lineage-URL existence checks (8d) are
+  batched the same way. A failure must attach to its own key, not abort the batch.
+- **Cache the extracted value set, not the tree.** Safe because a tag is immutable. This only
+  helps repeated local runs; CI starts with an empty cache every time.
+
+`--skip-remote-checks` turns it off along with 8c–8e.
 
 ---
 

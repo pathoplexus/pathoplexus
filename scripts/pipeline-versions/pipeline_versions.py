@@ -49,6 +49,7 @@ import subprocess
 import sys
 import tempfile
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -1502,22 +1503,23 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
                     # staying on a known dataset is usually deliberate.
                     infos.append(f"{where}: {dataset} is pinned to {tag}; {newest} is available")
 
-    seen: set[str] = set()
+    # One request per distinct URL, all at once: they are independent and there are as
+    # many of them as there are organisms with a lineage system.
+    where = {}
     for name in organisms:
         for system in doc.organisms[name].lineage_systems:
             for version, (_line, url) in sorted(doc.lineage.get(system, {}).items()):
-                if url in seen:
-                    continue
-                seen.add(url)
-                try:
-                    resp = requests.head(url, timeout=30, allow_redirects=True)
-                except Exception as exc:
-                    warnings.append(f"{name}: could not reach {system}.{version} at {url} ({exc})")
-                    continue
-                if not resp.ok:
-                    errors.append(
-                        f"{name}: lineageSystemDefinitions.{system}.{version} is {resp.status_code} at {url}"
-                    )
+                where.setdefault(url, (name, system, version))
+
+    def head(url: str) -> int:
+        return requests.head(url, timeout=30, allow_redirects=True).status_code
+
+    for url, status in _fetch_parallel(set(where), head).items():
+        name, system, version = where[url]
+        if isinstance(status, Exception):
+            warnings.append(f"{name}: could not reach {system}.{version} at {url} ({status})")
+        elif status >= 400:
+            errors.append(f"{name}: lineageSystemDefinitions.{system}.{version} is {status} at {url}")
     return errors, warnings, infos
 
 
@@ -1588,7 +1590,7 @@ def _tree_values(server: str, dataset: str, tag: str, attr: str) -> set[str]:
     return values
 
 
-def _hierarchy_names(url: str, cache: dict[str, set[str]]) -> set[str]:
+def _hierarchy_names(url: str) -> set[str]:
     """Every lineage name the SILO hierarchy defines, including aliases.
 
     Keys are stringified because YAML resolves some of them to other types -- mpox's
@@ -1596,15 +1598,13 @@ def _hierarchy_names(url: str, cache: dict[str, set[str]]) -> set[str]:
     """
     import requests  # noqa: PLC0415  (only this code path needs it)
 
-    if url not in cache:
-        resp = requests.get(url, timeout=60)
-        resp.raise_for_status()
-        hierarchy = yaml.safe_load(resp.text) or {}
-        names = {str(k) for k in hierarchy}
-        for value in hierarchy.values():
-            names.update(str(a) for a in (value or {}).get("aliases") or [])
-        cache[url] = names
-    return cache[url]
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    hierarchy = yaml.safe_load(resp.text) or {}
+    names = {str(k) for k in hierarchy}
+    for value in hierarchy.values():
+        names.update(str(a) for a in (value or {}).get("aliases") or [])
+    return names
 
 
 def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]]:
@@ -1623,10 +1623,63 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
     with its own hierarchy URL, and a superseded-but-still-running version whose pairing
     is broken is a live failure, not a stale preference.
     """
+    units, warnings = _coverage_units(doc, organisms)
+    trees = _fetch_parallel({t for unit in units for t in unit.trees}, lambda t: _tree_values(*t))
+    hierarchies = _fetch_parallel({unit.url for unit in units}, _hierarchy_names)
+
     errors: list[str] = []
+    for unit in units:
+        assignable: set[str] = set()
+        unresolved = False
+        for tree in unit.trees:
+            got = trees[tree]
+            if isinstance(got, Exception):
+                warnings.append(
+                    f"{unit.organism}: could not read the reference tree for {tree[1]} at "
+                    f"{tree[2]} ({got}); coverage not checked."
+                )
+                unresolved = True
+            else:
+                assignable |= got
+        if unresolved or not assignable:
+            continue
+
+        defined = hierarchies[unit.url]
+        if isinstance(defined, Exception):
+            warnings.append(f"{unit.organism}: could not read {unit.url} ({defined}); coverage not checked.")
+            continue
+        if missing := sorted(assignable - defined):
+            shown = ", ".join(missing[:8])
+            more = f" (+{len(missing) - 8} more)" if len(missing) > 8 else ""
+            errors.append(
+                f"{unit.organism}: version {unit.version} can assign {len(missing)} lineage(s) that "
+                f"lineageSystemDefinitions.{unit.system}.{unit.version} does not define: "
+                f"{shown}{more}. Its dataset and its hierarchy are out of step."
+            )
+    return errors, warnings
+
+
+@dataclass(frozen=True)
+class _CoverageUnit:
+    """One (pipeline version, lineage system) pair and the trees it must be covered by."""
+
+    organism: str
+    system: str
+    version: int
+    url: str  # the hierarchy for this system at this version
+    trees: tuple[tuple[str, str, str, str], ...]  # (server, dataset, tag, attribute)
+
+
+def _coverage_units(doc: Doc, organisms: list[str]) -> tuple[list[_CoverageUnit], list[str]]:
+    """Resolve what has to be compared, without fetching any of it.
+
+    Kept separate so every tree and hierarchy can be fetched in one parallel batch: the
+    trees are the slow part of `check` by an order of magnitude, and they are all
+    independent.
+    """
+    units: list[_CoverageUnit] = []
     warnings: list[str] = []
     index_cache: dict[str, dict[str, set[str]]] = {}
-    hierarchy_cache: dict[str, set[str]] = {}
 
     for name in organisms:
         org = doc.organisms[name]
@@ -1645,7 +1698,8 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
                 continue
 
             for entry in entries:
-                segments = (entry.get("configFile") or {}).get("segments") or []
+                config_file = entry.get("configFile") or {}
+                segments = config_file.get("segments") or []
                 if fld.segments is not None:
                     scoped = [s for s in segments if str(s.get("name")) in fld.segments]
                 elif len(segments) <= 1:
@@ -1657,8 +1711,7 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
                     )
                     continue
 
-                assignable: set[str] = set()
-                unresolved = False
+                trees = []
                 for seg in scoped:
                     for ref in seg.get("references") or []:
                         dataset = ref.get("nextclade_dataset_name")
@@ -1666,47 +1719,48 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
                             continue
                         server = (
                             ref.get("nextclade_dataset_server")
-                            or (entry.get("configFile") or {}).get("nextclade_dataset_server")
+                            or config_file.get("nextclade_dataset_server")
                             or DEFAULT_DATASET_SERVER
                         )
                         tag = ref.get("nextclade_dataset_tag")
-                        try:
-                            if not tag:
-                                # Unpinned follows whatever the server currently serves,
-                                # which is what the pipeline would pick up too.
+                        if not tag:
+                            # Unpinned follows whatever the server currently serves,
+                            # which is what the pipeline would pick up too.
+                            try:
                                 available = _dataset_index(server, index_cache).get(dataset)
-                                if not available:
-                                    continue  # missing dataset: already an error above
-                                tag = max(available)
-                            assignable |= _tree_values(server, dataset, tag, attr)
-                        except Exception as exc:
-                            warnings.append(
-                                f"{name}: could not read the reference tree for {dataset} "
-                                f"at {tag or 'the newest tag'} ({exc}); coverage not checked."
-                            )
-                            unresolved = True
-                if unresolved or not assignable:
-                    continue
+                            except Exception as exc:
+                                warnings.append(f"{name}: could not read {server}/index.json ({exc})")
+                                continue
+                            if not available:
+                                continue  # missing dataset: already an error above
+                            tag = max(available)
+                        trees.append((server, dataset, tag, attr))
 
                 for version in _vlist(entry):
                     located = doc.lineage.get(fld.system, {}).get(version)
-                    if not located:
-                        continue  # already an error above
-                    url = located[1]
-                    try:
-                        defined = _hierarchy_names(url, hierarchy_cache)
-                    except Exception as exc:
-                        warnings.append(f"{name}: could not read {url} ({exc}); coverage not checked.")
-                        continue
-                    if missing := sorted(assignable - defined):
-                        shown = ", ".join(missing[:8])
-                        more = f" (+{len(missing) - 8} more)" if len(missing) > 8 else ""
-                        errors.append(
-                            f"{name}: version {version} can assign {len(missing)} lineage(s) that "
-                            f"lineageSystemDefinitions.{fld.system}.{version} does not define: "
-                            f"{shown}{more}. Its dataset and its hierarchy are out of step."
-                        )
-    return errors, warnings
+                    if trees and located:  # a missing hierarchy key is already an error
+                        units.append(_CoverageUnit(name, fld.system, version, located[1], tuple(trees)))
+    return units, warnings
+
+
+def _fetch_parallel(keys, fetch):
+    """Run `fetch` over distinct keys concurrently, returning results or the exception.
+
+    Network-bound and independent, so threads are enough; a failure belongs to its own
+    key rather than aborting the batch.
+    """
+    if not keys:
+        return {}
+
+    def attempt(key):
+        try:
+            return fetch(key)
+        except Exception as exc:  # reported against the key that produced it
+            return exc
+
+    keys = sorted(keys)
+    with ThreadPoolExecutor(max_workers=min(8, len(keys))) as pool:
+        return dict(zip(keys, pool.map(attempt, keys), strict=True))
 
 
 def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> list[str]:
