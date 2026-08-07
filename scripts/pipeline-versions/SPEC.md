@@ -130,14 +130,14 @@ The config was valid YAML and rendered cleanly. Only a semantic check catches it
 status                                          show current state
 bump   [--organisms …] [--mode …] [--expand-organisms …]
        [--replicas N] [--anchor-threshold N] [--dry-run]
-prune  [--organisms …] [--keep-stubs] [--dry-run]
+prune  [--organisms …] [--dry-run]
 check  [--organisms …] [--allow-empty-segments]
 ```
 
 `--organisms a,b,c` scopes every command; omitted means all. An unknown name is an error.
 
-Exit codes: `0` success, `1` invariant violated / nothing to do with a skip, `2` bad usage or a
-refusal outside per-organism handling.
+Exit codes: `0` success, `1` an invariant was violated or an organism could not be handled,
+`2` bad usage.
 
 ### 2.1 `bump` — add the next version, leaving the current one running
 
@@ -177,14 +177,12 @@ Requirements:
   block list if needed.
 - **All modes** add `lineageSystemDefinitions[system][new] = <URL of the current highest
   version>` for every lineage system the organism references.
-- `--replicas` defaults to a leftover stub's value if one exists, else 3. A stub's *replicas* is
-  a deliberate capacity choice and is honoured; a stub's *version* is stale by construction and
-  must always be overwritten (see §3.1).
+- The new entry is **appended after the current highest**, never inserted (§1.2). `--replicas`
+  defaults to 3.
 
 ### 2.2 `prune` — drop superseded versions
 
-Keeps the highest version, removes the rest, and removes leftover commented-out stubs unless
-`--keep-stubs`.
+Keeps the highest version, removes the rest, and removes any leftover commented-out stub.
 
 Two collapses, selected by whether the entries' **resolved** configs differ:
 

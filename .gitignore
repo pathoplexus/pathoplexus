@@ -17,3 +17,8 @@ monorepo/**/GEMINI.md
 
 /tmp/
 __pycache__/
+.venv/
+.coverage
+.coverage.*
+.pytest_cache/
+scripts/pipeline-versions/uv.lock

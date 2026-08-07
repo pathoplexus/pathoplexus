@@ -51,8 +51,8 @@ everything while flattening just the ones you intend to edit.
 After an expand bump, **edit the new entry** — that is what it is for. `check` will tell you if
 the edit dropped something the old entry had.
 
-Replicas for the new entry default to 3 (more pods clear the reprocessing backlog faster), or
-to a leftover stub's value if there is one. Override with `--replicas N`.
+Replicas for the new entry default to 3 -- more pods clear the reprocessing backlog faster.
+Override with `--replicas N`.
 
 Long scalar lists — mpox's ~175 gene names — are aliased rather than duplicated once they
 exceed `--anchor-threshold` lines (default 5). Short lists are duplicated.
@@ -102,8 +102,11 @@ ERROR: mpox: entry 1 (version [27]) has no segments.
 ## Tests
 
 ```bash
-uv run scripts/pipeline-versions/test_pipeline_versions.py
+uv run scripts/pipeline-versions/test_pipeline_versions.py   # tests
+uv run --with ruff ruff check scripts/pipeline-versions      # lint
 ```
+
+Config for both is in `pyproject.toml` next to the scripts.
 
 Parallel by default. Fixtures come from pinned commits in this repo's history, not the working
 tree — the tool edits the working tree, so tests must not depend on it. If `values.yaml`'s

@@ -39,6 +39,11 @@ jobs:
       - name: Test the checker itself
         run: uv run scripts/pipeline-versions/test_pipeline_versions.py
 
+      - name: Lint and format check
+        run: |
+          uv run --with ruff ruff check scripts/pipeline-versions
+          uv run --with ruff ruff format --check scripts/pipeline-versions
+
   get-environments:
     runs-on: ubuntu-latest
     outputs:

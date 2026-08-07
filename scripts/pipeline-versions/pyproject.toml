@@ -1,0 +1,42 @@
+# Tooling config for the pipeline-versions scripts. There is no package here -- the two
+# scripts carry their own PEP 723 dependencies and run under `uv run` -- so this file
+# exists only to give ruff, ty and pytest a consistent configuration.
+#
+#   uv run test_pipeline_versions.py          # tests, parallel by default
+#   uv run --with ruff ruff check .            # lint
+#   uv run --with ruff ruff format .           # format
+#   uv run --with ty ty check .                # types -- needs the deps resolvable:
+#       uv venv .venv && uv pip install --python .venv pyyaml pytest
+
+[tool.ruff]
+line-length = 110
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "F",    # pyflakes
+    "E", "W",
+    "I",    # import sorting
+    "UP",   # pyupgrade
+    "B",    # bugbear
+    "SIM",  # simplify
+    "C4",   # comprehensions
+    "RET",  # returns
+    "ARG",  # unused arguments
+    "PIE",
+    "RUF",
+    "PL",
+]
+ignore = [
+    "PLR0911", "PLR0912", "PLR0913", "PLR0915",  # this is branchy config surgery by nature
+    "PLR2004",  # literal indents and versions read better inline
+    "PLR0917",  # positional args in internal helpers
+    "E741",     # `l` for a line is idiomatic throughout
+    "RET504",   # a named result before returning is often the clearer form
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test_pipeline_versions.py" = ["S101", "PLR2004", "ARG001"]
+
+[tool.pytest.ini_options]
+addopts = "-q"

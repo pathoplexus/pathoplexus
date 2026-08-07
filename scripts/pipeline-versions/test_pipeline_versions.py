@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.14"
 # dependencies = ["PyYAML>=6.0", "pytest>=8", "pytest-xdist>=3"]
 # ///
 """Tests for pipeline_versions.py.
@@ -13,8 +13,6 @@ configurations rather than invented ones. The most important case is
 in production during the 2026-08-05 mpox incident.
 """
 
-from __future__ import annotations
-
 import re
 import subprocess
 import sys
@@ -24,7 +22,7 @@ import pytest
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent))
-import pipeline_versions as pv  # noqa: E402
+import pipeline_versions as pv
 
 REPO = Path(__file__).resolve().parents[2]
 VALUES = REPO / "loculus_values" / "values.yaml"
@@ -47,7 +45,9 @@ LEGACY_STUB_COMMIT = "f9de729"
 def _blob(commit: str) -> str:
     return subprocess.run(
         ["git", "-C", str(REPO), "show", f"{commit}:loculus_values/values.yaml"],
-        capture_output=True, text=True, check=True,
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout
 
 
@@ -113,7 +113,10 @@ def test_check_catches_a_missing_lineage_version(work, capsys):
     """SILO looks this up at import time; helm renders it happily."""
     text = work.read_text().replace(
         "    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/"
-        "definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml\n", "", 1)
+        "definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml\n",
+        "",
+        1,
+    )
     work.write_text(text)
     assert _run(work, "check", "--organisms", "mpox") == 1
     assert "lineageSystemDefinitions.mpoxOutbreakLineage has no entry" in capsys.readouterr().err
@@ -138,21 +141,18 @@ def test_check_warns_about_stale_stubs(legacy, capsys):
 # -------------------------------------------------------------------------- bump
 
 
-def test_bump_reuses_a_commented_stub_and_overwrites_its_stale_version(legacy):
-    before = legacy.read_text()
+def test_bump_ignores_a_leftover_stub_rather_than_reusing_it(legacy):
+    """Stubs are a dead idiom: bump appends, and prune is what clears them.
+
+    Reusing one meant inheriting a version that is stale by construction. The entry is
+    appended after the current highest instead, which is also the only position that
+    keeps existing Deployment indices stable.
+    """
     assert _run(legacy, "bump", "--organisms", "dengue") == 0
-    assert _versions(legacy, "dengue") == [32, 33]
-    # The stub was replaced in place, not appended alongside.
-    assert before.count("# - <<: *denguePreprocessing") == 1
-    assert "# - <<: *denguePreprocessing" not in legacy.read_text()
-    assert len(pv.load(legacy).organisms["dengue"].stubs) == 0
-
-
-def test_bump_keeps_a_stubs_deliberate_replica_count(legacy):
-    """west-nile and hmpv chose 2, not the default 3."""
-    assert _run(legacy, "bump", "--organisms", "west-nile") == 0
-    new = max(pv.load(legacy).organisms["west-nile"].active, key=lambda i: i.max_version)
-    assert new.replicas == 2
+    org = pv.load(legacy).organisms["dengue"]
+    assert org.versions == [32, 33]
+    assert org.active[-1].start > org.active[0].end - 1  # appended after the current entry
+    assert len(org.stubs) == 1  # untouched; prune removes it
 
 
 def test_bump_replicas_override_wins(work):
@@ -184,7 +184,7 @@ def test_bump_qualifies_an_anchor_name_already_taken_within_the_organism(work):
 
 def test_bump_adds_the_lineage_version_key(work):
     assert _run(work, "bump", "--organisms", "mpox") == 0
-    assert 29 in pv.load(work).lineage.entries["mpoxOutbreakLineage"]
+    assert 29 in pv.load(work).lineage["mpoxOutbreakLineage"]
 
 
 def test_bump_append_mode_extends_the_version_list(work):
@@ -261,10 +261,10 @@ def test_bump_leaves_untouched_organisms_byte_identical(work):
     after = work.read_text().split("\n")
     # Every line outside andv's block and the lineage block must be unchanged.
     org = doc_before.organisms["andv"]
-    untouched_before = original[:org.prepro_key_line] + original[org.prepro_end:]
+    untouched_before = original[: org.prepro_key_line] + original[org.prepro_end :]
     doc_after = pv.load(work)
     o2 = doc_after.organisms["andv"]
-    untouched_after = after[:o2.prepro_key_line] + after[o2.prepro_end:]
+    untouched_after = after[: o2.prepro_key_line] + after[o2.prepro_end :]
     assert untouched_before == untouched_after
 
 
@@ -291,7 +291,7 @@ def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(legacy):
     so the survivor is re-pointed there and the collapse proceeds.
     """
     before = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
-    v28 = [e for e in before if e["version"] == [28]][0]
+    v28 = next(e for e in before if e["version"] == [28])
 
     assert _run(legacy, "prune", "--organisms", "mpox") == 0
 
@@ -305,7 +305,7 @@ def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(legacy):
     assert len(after) == 1
     assert pv._config_signature(after[0]) == pv._config_signature(v28)
     assert len(after[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
-    assert sorted(doc.lineage.entries["mpoxOutbreakLineage"]) == [28]
+    assert sorted(doc.lineage["mpoxOutbreakLineage"]) == [28]
     assert "mpoxPreprocessing" not in "\n".join(doc.lines)
 
 
@@ -400,7 +400,8 @@ def test_a_refusal_aborts_the_whole_run(tmp_path, capsys):
     path = _synthetic(tmp_path, NEWER_OVERRIDES_TAG).with_name("multi.yaml")
     text = (SYNTHETIC % NEWER_OVERRIDES_TAG).replace(
         "      - &testvPreprocessing\n        <<: *preprocessing\n",
-        "      - &testvPreprocessing\n        <<: *preprocessing\n        dockerTag: \"pinned\"\n")
+        '      - &testvPreprocessing\n        <<: *preprocessing\n        dockerTag: "pinned"\n',
+    )
     path.write_text(text)
     before = path.read_text()
     assert _run(path, "prune") == 1
@@ -455,33 +456,33 @@ def test_prune_clears_a_stale_lineage_key_on_a_single_version_organism(work, cap
     reporting it. A key can outlive its entry via a skipped prune or a hand edit."""
     _add_lineage_key(work, "marburg", 25)
     assert pv.load(work).organisms["marburg"].versions == [26]
-    assert sorted(pv.load(work).lineage.entries["marburg"]) == [25, 26]
+    assert sorted(pv.load(work).lineage["marburg"]) == [25, 26]
 
     assert _run(work, "prune", "--organisms", "marburg") == 0
     assert "nothing to do" not in capsys.readouterr().out
-    assert sorted(pv.load(work).lineage.entries["marburg"]) == [26]
+    assert sorted(pv.load(work).lineage["marburg"]) == [26]
 
 
 def test_prune_clears_a_stale_lineage_key_above_the_current_version(work):
     """`< keep_version` missed these; the rule is "not used by a surviving entry"."""
     _add_lineage_key(work, "marburg", 99)
     assert _run(work, "prune", "--organisms", "marburg") == 0
-    assert sorted(pv.load(work).lineage.entries["marburg"]) == [26]
+    assert sorted(pv.load(work).lineage["marburg"]) == [26]
 
 
 def test_prune_keeps_lineage_keys_for_versions_still_deployed(work):
     """ebola-sudan-style multi-version entries: every live version keeps its key."""
     assert _run(work, "bump", "--organisms", "hmpv", "--mode", "append") == 0
     assert pv.load(work).organisms["hmpv"].versions == [25, 26]
-    assert sorted(pv.load(work).lineage.entries["hmpv"]) == [25, 26]
+    assert sorted(pv.load(work).lineage["hmpv"]) == [25, 26]
     assert _run(work, "check", "--organisms", "hmpv") == 0
 
 
 def test_prune_drops_stale_lineage_versions(work):
     assert _run(work, "bump", "--organisms", "hmpv") == 0
-    assert sorted(pv.load(work).lineage.entries["hmpv"]) == [25, 26]
+    assert sorted(pv.load(work).lineage["hmpv"]) == [25, 26]
     assert _run(work, "prune", "--organisms", "hmpv") == 0
-    assert sorted(pv.load(work).lineage.entries["hmpv"]) == [26]
+    assert sorted(pv.load(work).lineage["hmpv"]) == [26]
 
 
 def test_prune_removes_stubs_by_default(work):
@@ -490,12 +491,6 @@ def test_prune_removes_stubs_by_default(work):
     org = pv.load(work).organisms["rsv-a"]
     assert org.versions == [24]
     assert len(org.stubs) == 0
-
-
-def test_prune_keep_stubs_leaves_them(work):
-    assert _run(work, "bump", "--organisms", "rsv-b") == 0
-    assert _run(work, "prune", "--organisms", "rsv-b", "--keep-stubs") == 0
-    assert pv.load(work).organisms["rsv-b"].versions == [25]
 
 
 def test_prune_clears_a_preexisting_stale_stub(legacy):
@@ -517,21 +512,20 @@ def test_expand_bump_spells_out_the_config_for_hand_editing(work):
     assert entries[0]["configFile"] == entries[1]["configFile"]
     doc = pv.load(work)
     new = doc.organisms["measles"].active[-1]
-    body = "\n".join(doc.lines[new.start:new.end])
+    body = "\n".join(doc.lines[new.start : new.end])
     assert "nextclade_dataset_tag" in body  # editable in place, not hidden behind a merge
     assert new.merge_alias == "preprocessing"  # independent of its sibling
 
 
 def test_expand_duplicates_short_lists_but_anchors_long_ones(work):
-    assert _run(work, "bump", "--organisms", "measles,mpox",
-                "--expand-organisms", "measles,mpox") == 0
+    assert _run(work, "bump", "--organisms", "measles,mpox", "--expand-organisms", "measles,mpox") == 0
     doc = pv.load(work)
     measles = doc.organisms["measles"].active[-1]
     mpox = doc.organisms["mpox"].active[-1]
     # measles: 8 genes on one line -> duplicated inline.
-    assert "genes: [" in "\n".join(doc.lines[measles.start:measles.end])
+    assert "genes: [" in "\n".join(doc.lines[measles.start : measles.end])
     # mpox: 175 genes -> aliased rather than copied, so the entry stays small.
-    assert "genes: *mpoxGenes" in "\n".join(doc.lines[mpox.start:mpox.end])
+    assert "genes: *mpoxGenes" in "\n".join(doc.lines[mpox.start : mpox.end])
     assert mpox.end - mpox.start < 30
 
 
@@ -542,7 +536,7 @@ def test_expand_then_prune_relocates_the_gene_anchor(work):
     has to move into the survivor -- and the survivor must resolve identically.
     """
     before = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
-    keep_cfg = [e for e in before if e["version"] == [28]][0]["configFile"]
+    keep_cfg = next(e for e in before if e["version"] == [28])["configFile"]
 
     assert _run(work, "bump", "--organisms", "mpox", "--expand-organisms", "mpox") == 0
     assert _run(work, "prune", "--organisms", "mpox") == 0
@@ -562,8 +556,7 @@ def test_expand_then_prune_relocates_the_gene_anchor(work):
 
 
 def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):
-    assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a",
-                "--replicas", "4") == 0
+    assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a", "--replicas", "4") == 0
     assert pv.load(work).organisms["rsv-a"].active[-1].replicas == 4
     assert _run(work, "prune", "--organisms", "rsv-a") == 0
     org = pv.load(work).organisms["rsv-a"]
@@ -577,8 +570,19 @@ def test_anchor_threshold_is_configurable(work):
     Uses ebola-bdbv, whose highest entry *defines* its gene list rather than inheriting
     an alias, so both branches are reachable.
     """
-    assert _run(work, "bump", "--organisms", "ebola-bdbv",
-                "--expand-organisms", "ebola-bdbv", "--anchor-threshold", "1") == 0
+    assert (
+        _run(
+            work,
+            "bump",
+            "--organisms",
+            "ebola-bdbv",
+            "--expand-organisms",
+            "ebola-bdbv",
+            "--anchor-threshold",
+            "1",
+        )
+        == 0
+    )
     entries = yaml.safe_load(work.read_text())["organisms"]["ebola-bdbv"]["preprocessing"]
     assert entries[-1]["configFile"] == entries[-2]["configFile"]
 
@@ -592,12 +596,26 @@ def test_expand_copy_never_redefines_an_anchor(work):
     for org in ALL_ORGANISMS:
         w = work.with_name(f"{org}.yaml")
         w.write_text(_blob(BASE_COMMIT))
-        if pv.main(["--values", str(w), "bump", "--organisms", org,
-                    "--expand-organisms", org, "--anchor-threshold", "10000"]) != 0:
+        if (
+            pv.main(
+                [
+                    "--values",
+                    str(w),
+                    "bump",
+                    "--organisms",
+                    org,
+                    "--expand-organisms",
+                    org,
+                    "--anchor-threshold",
+                    "10000",
+                ]
+            )
+            != 0
+        ):
             continue
         doc = pv.load(w)
         new = doc.organisms[org].active[-1]
-        defined = re.findall(r"(?<![\w*])&(\w+)", "\n".join(doc.lines[new.start:new.end]))
+        defined = re.findall(r"(?<![\w*])&(\w+)", "\n".join(doc.lines[new.start : new.end]))
         assert defined == [], f"{org}: generated entry redefines {defined}"
 
 
@@ -628,7 +646,9 @@ def test_scoping_leaves_other_organisms_alone(work):
 def test_benign_formatting_does_not_trip_the_cross_check(work):
     text = work.read_text().replace(
         "    preprocessing:\n      - &denguePreprocessing",
-        "    preprocessing:\n\n      - &denguePreprocessing", 1)
+        "    preprocessing:\n\n      - &denguePreprocessing",
+        1,
+    )
     work.write_text(text)
     pv.load(work)  # a blank line is fine
     text = work.read_text().replace("      - &denguePreprocessing\n", "      - &denguePreprocessing  \n", 1)
