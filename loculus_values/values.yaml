@@ -1995,18 +1995,15 @@ organisms:
           - length
           - outbreak
     preprocessing:
-      - &ebolaBdbvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 7
-        configFile: &ebolaBdbvPreprocessingConfigFile
+        configFile:
           <<: *preprocessingConfigFile
           segments:
-            - &ebolaBdbvPreprocessingSegment
-              name: main
+            - name: main
               references:
-                - &ebolaBdbvPreprocessingReference
-                  name: "singleReference"
+                - name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
                   nextclade_dataset_tag: "2026-05-18--20-09-34Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
@@ -2173,8 +2170,7 @@ organisms:
         defaultOrder: descending
         referenceIdentifierField: serotype
     preprocessing:
-      - &denguePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 32
         replicas: 1
@@ -2388,8 +2384,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &westNilePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 29
         configFile:
@@ -2826,7 +2821,7 @@ organisms:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
@@ -3431,8 +3426,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &rsvAPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 23
         replicas: 1
@@ -3555,8 +3549,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &rsvBPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 24
         replicas: 1
@@ -3668,8 +3661,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &hmpvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         replicas: 1
         version:
           - 25
@@ -3783,8 +3775,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &measlesPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 28
         replicas: 1
