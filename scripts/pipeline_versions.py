@@ -379,106 +379,278 @@ def _config_signature(entry: dict) -> dict:
     return {k: v for k, v in entry.items() if k not in ("version", "replicas")}
 
 
+def _indent(line: str) -> int:
+    return len(line) - len(line.lstrip())
+
+
+def _block_end(lines: list[str], key_line: int) -> int:
+    """Exclusive end of the block owned by the key at `key_line`."""
+    base = _indent(lines[key_line])
+    for j in range(key_line + 1, len(lines)):
+        if not lines[j].strip():
+            continue
+        if _indent(lines[j]) <= base:
+            return j
+    return len(lines)
+
+
+@dataclass
+class ScalarSeq:
+    """A key whose value is a block sequence of scalars, e.g. a long `genes:` list."""
+
+    key_line: int
+    end: int  # exclusive
+    key: str
+    anchor: str | None
+
+    @property
+    def n_lines(self) -> int:
+        return self.end - self.key_line
+
+
+def _scalar_seqs(lines: list[str], start: int, end: int) -> list[ScalarSeq]:
+    """Find every `key:` whose value is a flat block sequence of scalars in [start, end)."""
+    found: list[ScalarSeq] = []
+    for i in range(start, min(end, len(lines))):
+        m = re.match(r"^(\s*)([\w-]+):\s*(?:&(\w+))?\s*$", lines[i])
+        if not m:
+            continue
+        pad, key, anchor = m.group(1), m.group(2), m.group(3)
+        stop = min(_block_end(lines, i), end)
+        body = [l for l in lines[i + 1 : stop] if l.strip()]
+        if not body:
+            continue
+        # Every line must be a scalar item at exactly one level in. Anything deeper
+        # means nested maps, which we must never collapse behind an alias -- that is
+        # where the per-version values (dataset tags) live.
+        if all(re.match(rf"^{pad}  - \S", l) and not l.rstrip().endswith(":") for l in body):
+            found.append(ScalarSeq(key_line=i, end=stop, key=key, anchor=anchor))
+    return found
+
+
 # ---------------------------------------------------------------------------- bump
 
 
 DEFAULT_BUMP_REPLICAS = 3
+# Duplicating a short list is clearer than an alias; only long ones earn an anchor.
+DEFAULT_ANCHOR_THRESHOLD = 5
 
 
-def plan_bump(doc: Doc, org_name: str, mode: str, replicas: int | None) -> list[Edit]:
+def plan_bump(doc: Doc, org_name: str, mode: str, replicas: int | None, threshold: int) -> list[Edit]:
     org = doc.organisms[org_name]
     if not org.active:
         raise Problem(f"{org_name}: no active preprocessing entries")
 
     new_version = org.max_version + 1
     target = max(org.active, key=lambda i: i.max_version)
-    edits: list[Edit] = []
 
     if mode == "append":
-        # Same config, same replicas: the chart's flattenPreprocessingVersions expands
-        # a version list into one identical Deployment per version.
-        if target.version_key_line is None:
-            raise Problem(f"{org_name}: no 'version:' key found on the highest entry")
-        if len(target.version_value_lines) != len(target.versions):
-            raise Problem(f"{org_name}: cannot edit this 'version:' form in append mode")
-        if target.version_value_lines and target.version_value_lines[0] != target.version_key_line:
-            last = max(target.version_value_lines)
-            edits.append(
-                Edit(last + 1, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {new_version}"],
-                     f"{org_name}: version {new_version} appended to existing entry")
-            )
-        else:  # scalar or flow form -> rewrite as a block list
-            edits.append(
-                Edit(
-                    target.version_key_line,
-                    target.version_key_line + 1,
-                    [f"{' ' * KEY_INDENT}version:"]
-                    + [f"{' ' * (KEY_INDENT + 2)}- {v}" for v in target.versions + [new_version]],
-                    f"{org_name}: version list rewritten as a block list, {new_version} added",
-                )
-            )
-    else:  # mode == "entry"
-        anchor = target.anchor
+        edits = _bump_append(doc, org_name, target, new_version)
+    elif mode == "inherit":
+        edits = _bump_inherit(doc, org_name, org, target, new_version, replicas)
+    elif mode == "expand":
+        edits = _bump_expand(doc, org_name, org, target, new_version, replicas, threshold)
+    else:
+        raise Problem(f"unknown bump mode {mode!r}")
+
+    return edits + _plan_lineage_bump(doc, org, new_version)
+
+
+def _bump_append(doc: Doc, org_name: str, target: Item, new_version: int) -> list[Edit]:
+    """Add the version to the existing entry's list.
+
+    The chart expands a version list into one identical Deployment per version, so
+    this is the right shape when nothing changes but the counter.
+    """
+    if target.version_key_line is None:
+        raise Problem(f"{org_name}: the highest entry has no 'version:' key")
+    if len(target.version_value_lines) != len(target.versions):
+        raise Problem(f"{org_name}: 'version:' is not a block list")
+    if target.version_value_lines and target.version_value_lines[0] != target.version_key_line:
+        last = max(target.version_value_lines)
+        return [Edit(last + 1, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {new_version}"],
+                     f"{org_name}: version {new_version} appended to the existing entry")]
+    return [Edit(
+        target.version_key_line,
+        target.version_key_line + 1,
+        [f"{' ' * KEY_INDENT}version:"]
+        + [f"{' ' * (KEY_INDENT + 2)}- {v}" for v in target.versions + [new_version]],
+        f"{org_name}: 'version:' rewritten as a block list, {new_version} added",
+    )]
+
+
+def _pick_replicas(org: Organism, stub: Item | None, replicas: int | None) -> int:
+    """A stub's replicas is a deliberate capacity choice (west-nile and hmpv use 2)."""
+    if replicas is not None:
+        return replicas
+    if stub is not None and stub.replicas:
+        return stub.replicas
+    return DEFAULT_BUMP_REPLICAS
+
+
+def _ensure_anchor(doc: Doc, org_name: str, target: Item) -> tuple[str, list[Edit]]:
+    """Give `target` an anchor if it has none, so a sibling entry can inherit from it."""
+    if target.anchor:
+        return target.anchor, []
+    # Names collide two ways: an earlier entry of this organism took the obvious name
+    # (mpox), or another organism did -- west-nile's anchor is misnamed
+    # &yellowFeverPreprocessing. Qualify by version rather than fail.
+    taken = _all_anchors(doc.lines)
+    anchor = f"{_camel(org_name)}Preprocessing"
+    if anchor in taken:
+        anchor = f"{anchor}V{target.max_version}"
+    if anchor in taken:
+        raise Problem(f"{org_name}: no free anchor name (tried '{anchor}')")
+    head = doc.lines[target.start][ITEM_INDENT + 2 :]
+    return anchor, [Edit(
+        target.start,
+        target.start + 1,
+        [f"{' ' * ITEM_INDENT}- &{anchor}", f"{' ' * KEY_INDENT}{head}"],
+        f"{org_name}: added anchor &{anchor} to the existing entry so the new one can inherit it",
+    )]
+
+
+def _place(org: Organism, target: Item, block: list[str], org_name: str,
+           new_version: int, n_replicas: int) -> list[Edit]:
+    """Write the new entry, reusing a leftover commented-out stub if one is there.
+
+    A stub's version is stale by construction -- every one in the file today names a
+    version that is already active -- so it is always overwritten.
+    """
+    stub = org.stubs[-1] if org.stubs else None
+    if stub is not None:
+        return [Edit(stub.start, stub.end, block,
+                     f"{org_name}: replaced the leftover commented-out stub with version "
+                     f"{new_version}, replicas {n_replicas}")]
+    return [Edit(target.end, target.end, block,
+                 f"{org_name}: added entry for version {new_version}, replicas {n_replicas}")]
+
+
+def _bump_inherit(doc: Doc, org_name: str, org: Organism, target: Item,
+                  new_version: int, replicas: int | None) -> list[Edit]:
+    """Second entry inheriting the current one's config wholesale. Minimal diff."""
+    anchor, edits = _ensure_anchor(doc, org_name, target)
+    n_replicas = _pick_replicas(org, org.stubs[-1] if org.stubs else None, replicas)
+    block = [
+        f"{' ' * ITEM_INDENT}- <<: *{anchor}",
+        f"{' ' * KEY_INDENT}replicas: {n_replicas}",
+        f"{' ' * KEY_INDENT}version:",
+        f"{' ' * (KEY_INDENT + 2)}- {new_version}",
+    ]
+    return edits + _place(org, target, block, org_name, new_version, n_replicas)
+
+
+def _bump_expand(doc: Doc, org_name: str, org: Organism, target: Item, new_version: int,
+                 replicas: int | None, threshold: int) -> list[Edit]:
+    """Second entry with a fully spelled-out configFile, ready to hand-edit.
+
+    This is the shape a real bump needs: the reason to bump is usually a new nextclade
+    dataset tag, and the old entry must keep the old tag. Re-declaring `configFile:`
+    means it must repeat everything -- a merge key would replace, not deep-merge.
+
+    Where possible the entry merges the *global* `*preprocessing` anchor rather than the
+    organism's, so it does not depend on its sibling and prune can simply delete the old
+    entry. Whether that substitution is safe is *computed*, not assumed -- a per-entry
+    `image`, `args` or `dockerTag` would make the two differ -- and the caller separately
+    asserts the resolved configs match.
+    """
+    lines = doc.lines
+    merge_base, base_edits = _expand_merge_base(doc, org_name, org, target)
+    cfg_line = None
+    for item in reversed(org.active[: org.active.index(target) + 1]):
+        for i in range(item.start, item.end):
+            if re.match(rf"^ {{{KEY_INDENT}}}configFile:", lines[i]):
+                cfg_line = i
+                break
+        if cfg_line is not None:
+            break
+    if cfg_line is None:
+        raise Problem(f"{org_name}: no entry declares a 'configFile:' to copy")
+    cfg_end = _block_end(lines, cfg_line)
+
+    edits: list[Edit] = list(base_edits)
+    taken = _all_anchors(lines)
+    # Splice out long scalar lists (mpox's ~175 gene names) behind an alias. Short ones
+    # are duplicated -- an alias saves nothing and costs a cross-entry dependency.
+    replacements: list[tuple[int, int, str]] = []
+    for seq in _scalar_seqs(lines, cfg_line, cfg_end):
+        if seq.n_lines <= threshold:
+            continue
+        anchor = seq.anchor
         if anchor is None:
-            # The new entry must alias the current one, so the current one needs a name.
-            # This is the one unavoidable touch to the entry we are otherwise leaving alone.
-            # Names collide in two ways: an earlier entry of this organism already took
-            # the obvious name (mpox), or another organism did -- west-nile's anchor is
-            # misnamed &yellowFeverPreprocessing. Qualify by version rather than fail.
-            taken = _all_anchors(doc.lines)
-            anchor = f"{_camel(org_name)}Preprocessing"
+            anchor = f"{_camel(org_name)}{seq.key[:1].upper()}{seq.key[1:]}"
             if anchor in taken:
                 anchor = f"{anchor}V{target.max_version}"
             if anchor in taken:
-                raise Problem(f"{org_name}: cannot derive a free anchor name (tried '{anchor}')")
-            head = doc.lines[target.start][ITEM_INDENT + 2 :]
-            edits.append(
-                Edit(
-                    target.start,
-                    target.start + 1,
-                    [f"{' ' * ITEM_INDENT}- &{anchor}", f"{' ' * KEY_INDENT}{head}"],
-                    f"{org_name}: added anchor &{anchor} to the existing entry "
-                    f"(needed so the new entry can inherit from it)",
-                )
-            )
+                raise Problem(f"{org_name}: no free anchor name (tried '{anchor}')")
+            taken.add(anchor)
+            pad = " " * _indent(lines[seq.key_line])
+            edits.append(Edit(
+                seq.key_line, seq.key_line + 1, [f"{pad}{seq.key}: &{anchor}"],
+                f"{org_name}: anchored the {seq.n_lines - 1}-item '{seq.key}' list as "
+                f"&{anchor} instead of duplicating it",
+            ))
+        replacements.append((seq.key_line, seq.end, f"{' ' * _indent(lines[seq.key_line])}{seq.key}: *{anchor}"))
 
-        stub = next((s for s in org.stubs if s.merge_alias == anchor), None)
-        if stub is None and org.stubs:
-            stub = org.stubs[-1]
-
-        # The stub's *version* is stale by construction and must never be trusted. Its
-        # *replicas* is a deliberate past choice about reprocessing capacity for this
-        # organism (west-nile and hmpv use 2, not 3), so inherit it unless overridden.
-        n_replicas = replicas
-        if n_replicas is None:
-            n_replicas = stub.replicas if stub and stub.replicas else DEFAULT_BUMP_REPLICAS
-
-        block = [
-            f"{' ' * ITEM_INDENT}- <<: *{anchor}",
-            f"{' ' * KEY_INDENT}replicas: {n_replicas}",
-            f"{' ' * KEY_INDENT}version:",
-            f"{' ' * (KEY_INDENT + 2)}- {new_version}",
-        ]
-
-        if stub is not None:
-            # Reuse the commented-out template the repo leaves behind after a prune.
-            # Its version/replicas are stale by construction -- dengue's stub says
-            # version 32 while dengue is *at* 32 -- so they are always overwritten,
-            # never trusted. A duplicate version makes helm fail outright.
-            edits.append(
-                Edit(stub.start, stub.end, block,
-                     f"{org_name}: uncommented the existing stub as version {new_version} "
-                     f"with replicas {n_replicas} (stub said version {stub.versions or '?'}, "
-                     f"which is stale and was overwritten)")
-            )
+    cfg: list[str] = []
+    i = cfg_line
+    while i < cfg_end:
+        hit = next((r for r in replacements if r[0] == i), None)
+        if hit:
+            cfg.append(hit[2])
+            i = hit[1]
         else:
-            edits.append(
-                Edit(target.end, target.end, block,
-                     f"{org_name}: added entry for version {new_version} with replicas {n_replicas}")
-            )
+            # The copy must not redefine an anchor the source already defines. YAML
+            # permits redefinition -- later aliases silently bind to the newer node --
+            # so leaving one in would quietly change what any alias between the two
+            # points at. Anything worth sharing was turned into an alias above.
+            cfg.append(re.sub(r"\s*(?<![\w*])&\w+(?=\s|$)", "", lines[i]) or lines[i])
+            i += 1
 
-    edits += _plan_lineage_bump(doc, org, new_version)
-    return edits
+    n_replicas = _pick_replicas(org, org.stubs[-1] if org.stubs else None, replicas)
+    block = [
+        f"{' ' * ITEM_INDENT}- <<: *{merge_base}",
+        f"{' ' * KEY_INDENT}replicas: {n_replicas}",
+        f"{' ' * KEY_INDENT}version:",
+        f"{' ' * (KEY_INDENT + 2)}- {new_version}",
+    ] + cfg
+    return edits + _place(org, target, block, org_name, new_version, n_replicas)
+
+
+# Keys a generated entry always declares for itself, so whatever a merge key would have
+# supplied for them is irrelevant when comparing two candidate merge bases.
+_OVERRIDDEN = ("version", "replicas", "configFile")
+
+
+def _expand_merge_base(doc: Doc, org_name: str, org: Organism, target: Item) -> tuple[str, list[Edit]]:
+    """Choose what a flattened entry should merge from.
+
+    Prefer the global `*preprocessing`: an entry merging that is independent of its
+    siblings, so prune is a plain deletion. That is only correct if the two agree on
+    every key the new entry does not declare itself (`image`, `args`, ...). They do for
+    every organism today, but a per-entry `image`/`args`/`dockerTag` would break it, so
+    compare rather than assume and fall back to the sibling anchor when they differ.
+    """
+    entries = _resolved_entries(doc, org_name)
+    resolved_target = entries[org.active.index(target)]
+    global_base = doc.resolved.get("defaultOrganismConfig", {}).get("preprocessing", [{}])[0]
+
+    def residual(entry: dict) -> dict:
+        return {k: v for k, v in entry.items() if k not in _OVERRIDDEN}
+
+    if residual(resolved_target) == residual(global_base):
+        return "preprocessing", []
+
+    differing = sorted(
+        set(residual(resolved_target)) | set(residual(global_base))
+        if residual(resolved_target) != residual(global_base)
+        else []
+    )
+    anchor, edits = _ensure_anchor(doc, org_name, target)
+    for e in edits:
+        e.note += f" ({org_name} differs from the global *preprocessing in {differing})"
+    return anchor, edits
+
 
 
 def _plan_lineage_bump(doc: Doc, org: Organism, new_version: int) -> list[Edit]:
@@ -514,103 +686,137 @@ def _all_anchors(lines: list[str]) -> set[str]:
 # --------------------------------------------------------------------------- prune
 
 
-def plan_prune(doc: Doc, org_name: str, delete: bool) -> list[Edit]:
+def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
+    """Drop every superseded pipeline version, keeping only the highest.
+
+    Two collapses, chosen by whether the entries actually differ:
+
+    * all entries share a config -- keep the first (it holds the anchors), renumber it
+      to the surviving version, delete the rest. Its own `replicas` survives, which is
+      the wanted "back down to steady state".
+    * they differ -- the highest entry's config is the one that must survive, so the
+      lower entries are deleted and any anchor they define that a survivor still
+      aliases is relocated into the survivor.
+
+    Either way the caller re-reads the file and asserts the surviving entry resolves to
+    exactly what the highest entry resolved to before.
+    """
     org = doc.organisms[org_name]
     if not org.active:
         raise Problem(f"{org_name}: no active preprocessing entries")
 
     keep_version = org.max_version
-    if len(org.versions) == 1:
-        return []  # nothing outdated
-
     edits: list[Edit] = []
-    entries = _resolved_entries(doc, org_name)
+
+    if not keep_stubs:
+        for stub in org.stubs:
+            edits.append(Edit(stub.start, stub.end, [],
+                              f"{org_name}: removed leftover commented-out stub"))
+
+    if len(org.versions) == 1:
+        if not edits:
+            return []
+        return edits + _plan_lineage_prune(doc, org, keep_version)
 
     if len(org.active) == 1:
-        # One entry serving several versions: drop all but the highest.
         item = org.active[0]
-        doomed = [ln for v, ln in zip(item.versions, item.version_value_lines) if v != keep_version]
         if len(set(item.version_value_lines)) != len(item.version_value_lines):
-            raise Problem(f"{org_name}: inline version list -- rewrite by hand")
-        for ln in sorted(doomed):
-            edits.append(Edit(ln, ln + 1, [],
-                              f"{org_name}: dropped version {item.versions[item.version_value_lines.index(ln)]}"))
+            raise Problem(f"{org_name}: 'version:' is not a block list")
+        for version, ln in zip(item.versions, item.version_value_lines):
+            if version != keep_version:
+                edits.append(Edit(ln, ln + 1, [], f"{org_name}: dropped version {version}"))
+        return edits + _plan_lineage_prune(doc, org, keep_version)
+
+    entries = _resolved_entries(doc, org_name)
+    sigs = [_config_signature(e) for e in entries]
+    uniform = all(yaml.safe_dump(s, sort_keys=True) == yaml.safe_dump(sigs[0], sort_keys=True)
+                  for s in sigs)
+
+    if uniform:
+        keep, doomed = org.active[0], org.active[1:]
+        replicas_edit: list[Edit] = []
+        note_extra = f", replicas stays {keep.replicas}"
     else:
-        # Several entries. Keep the FIRST one physically -- it carries the anchors the
-        # later ones alias -- renumber it to the surviving version, and comment out the
-        # rest. That is exactly what PR #1096 did by hand.
-        base, *rest = org.active
-        sigs = [_config_signature(e) for e in entries]
-        differing = [
-            k
-            for k in set().union(*(s.keys() for s in sigs))
-            if len({yaml.safe_dump(s.get(k), sort_keys=True) for s in sigs}) > 1
+        keep, doomed = org.active[-1], org.active[:-1]
+        # Reprocessing is over, so drop back to the steady-state replica count -- that of
+        # the oldest entry, which is the one that was running before the bump raised it.
+        # With the usual two entries this is the second-highest version.
+        steady = org.active[0]
+        replicas_edit = []
+        if (keep.replicas_line is not None and steady.replicas is not None
+                and keep.replicas != steady.replicas):
+            replicas_edit = [Edit(
+                keep.replicas_line, keep.replicas_line + 1,
+                [f"{' ' * KEY_INDENT}replicas: {steady.replicas}"],
+                f"{org_name}: replicas back to {steady.replicas} now reprocessing is done",
+            )]
+        note_extra = ""
+    edits += replicas_edit
+
+    for item in doomed:
+        edits += _relocate_anchors(doc, org_name, item, keep, doomed)
+        edits.append(Edit(item.start, item.end, [],
+                          f"{org_name}: removed entry for version(s) {item.versions}"))
+
+    if keep.max_version != keep_version or len(keep.versions) > 1:
+        if keep.version_key_line is None:
+            raise Problem(f"{org_name}: the surviving entry has no 'version:' key")
+        first, last = min(keep.version_value_lines), max(keep.version_value_lines)
+        edits.append(Edit(first, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {keep_version}"],
+                          f"{org_name}: surviving entry set to version {keep_version}{note_extra}"))
+
+    return edits + _plan_lineage_prune(doc, org, keep_version)
+
+
+def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
+                      all_doomed: list[Item]) -> list[Edit]:
+    """Move anchor definitions out of a block being deleted into the surviving entry.
+
+    A flattened entry aliases the long lists it did not duplicate (mpox's gene names),
+    and those anchors are defined on the entry prune is about to remove. The definition
+    is spliced into the first surviving alias site, re-indented to match it.
+
+    Only aliases in text that will still exist afterwards count -- an alias inside
+    another entry being removed in the same pass is not a reason to keep anything.
+    """
+    lines = doc.lines
+    edits: list[Edit] = []
+
+    def doomed_line(i: int) -> bool:
+        return any(d.start <= i < d.end for d in all_doomed)
+
+    for anchor in dict.fromkeys(doomed.inner_anchors):
+        users = [
+            i for i, line in enumerate(lines)
+            if re.search(rf"(?<!\w)\*{re.escape(anchor)}\b", line)
+            and not doomed_line(i)
+            and not line.lstrip().startswith("#")
         ]
-        if differing:
+        if not users:
+            continue
+
+        src = next((i for i in range(doomed.start, doomed.end)
+                    if re.search(rf"(?<!\w)&{re.escape(anchor)}\b", lines[i])), None)
+        if src is None:
+            raise Problem(f"{org_name}: anchor &{anchor} is used outside the removed entry "
+                          f"but its definition could not be located")
+
+        dst = users[0]
+        m = re.match(rf"^(\s*)([\w-]+):\s*\*{re.escape(anchor)}\s*$", lines[dst])
+        if m is None or not (keep.start <= dst < keep.end):
             raise Problem(
-                f"{org_name}: the pipeline entries do not share the same config -- they "
-                f"differ in {sorted(differing)}. Collapsing them means choosing which "
-                f"config survives, and the entry to keep ({keep_version}) is not the one "
-                f"holding the anchors. Resolve this by hand.\n"
-                f"  (This is the state today's mpox block is in: entry {keep_version} "
-                f"aliases *{base.anchor} and inherits gene lists from it.)"
+                f"{org_name}: anchor &{anchor} is aliased at line {dst + 1} in a form this "
+                f"tool cannot relocate ({lines[dst].strip()!r})"
             )
-
-        for item in rest:
-            escaping = _aliases_outside(doc.lines, item)
-            if escaping:
-                raise Problem(
-                    f"{org_name}: entry with version(s) {item.versions} defines anchor(s) "
-                    f"{sorted(escaping)} that are aliased elsewhere in the file. Removing "
-                    f"it would orphan them. Resolve by hand."
-                )
-
-        # Renumber the surviving entry.
-        if base.max_version != keep_version:
-            if base.version_key_line is None:
-                raise Problem(f"{org_name}: no 'version:' key on the entry being kept")
-            first = min(base.version_value_lines)
-            last = max(base.version_value_lines)
-            edits.append(
-                Edit(first, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {keep_version}"],
-                     f"{org_name}: surviving entry renumbered {base.versions} -> [{keep_version}] "
-                     f"(replicas stays {base.replicas})")
-            )
-        elif len(base.versions) > 1:
-            first, last = min(base.version_value_lines), max(base.version_value_lines)
-            edits.append(
-                Edit(first, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {keep_version}"],
-                     f"{org_name}: version list trimmed to [{keep_version}]")
-            )
-
-        for item in rest:
-            body = doc.lines[item.start : item.end]
-            if delete:
-                edits.append(Edit(item.start, item.end, [],
-                                  f"{org_name}: deleted entry for version(s) {item.versions}"))
-            else:
-                commented = [
-                    (l[:ITEM_INDENT] + "# " + l[ITEM_INDENT:]) if l.strip() else l for l in body
-                ]
-                edits.append(Edit(item.start, item.end, commented,
-                                  f"{org_name}: commented out entry for version(s) {item.versions} "
-                                  f"(kept as a template for the next bump)"))
-
-    edits += _plan_lineage_prune(doc, org, keep_version)
+        src_end = _block_end(lines, src)
+        shift = len(m.group(1)) - _indent(lines[src])
+        body = [(" " * shift + l) if l.strip() else l for l in lines[src + 1 : src_end]]
+        edits.append(Edit(
+            dst, dst + 1, [f"{m.group(1)}{m.group(2)}: &{anchor}"] + body,
+            f"{org_name}: moved the &{anchor} definition into the surviving entry",
+        ))
     return edits
 
-
-def _aliases_outside(lines: list[str], item: Item) -> set[str]:
-    """Anchors defined inside `item` that something outside `item` still aliases."""
-    escaping = set()
-    for anchor in set(item.inner_anchors):
-        for i, line in enumerate(lines):
-            if item.start <= i < item.end:
-                continue
-            if re.search(rf"(?<!\w)\*{re.escape(anchor)}\b", line) and not line.lstrip().startswith("#"):
-                escaping.add(anchor)
-                break
-    return escaping
 
 
 def _plan_lineage_prune(doc: Doc, org: Organism, keep_version: int) -> list[Edit]:
@@ -661,10 +867,7 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
             if lost := sorted(older - ks):
                 errors.append(
                     f"{name}: entry {idx} (version {entry['version']}) is missing "
-                    f"configFile key(s) {lost} that an earlier, lower-version entry "
-                    f"declares. A shallow merge-key override is the usual cause: "
-                    f"re-declaring `configFile:` replaces the inherited value entirely, "
-                    f"it does not deep-merge into it."
+                    f"configFile key(s) {lost} that a lower-version entry declares."
                 )
 
         # 3. No segments means alignment_requirement=NONE: the pipeline aligns nothing,
@@ -673,8 +876,7 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
             for idx, entry in enumerate(entries):
                 if not entry.get("configFile", {}).get("segments"):
                     errors.append(
-                        f"{name}: entry {idx} (version {entry['version']}) has no segments. "
-                        f"The pipeline would align nothing and could never error."
+                        f"{name}: entry {idx} (version {entry['version']}) has no segments."
                     )
 
         # 4. Deployment and ConfigMap names embed the entry's index in the *flattened*
@@ -686,8 +888,7 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
         flat = [v for e in entries for v in (e["version"] if isinstance(e["version"], list) else [e["version"]])]
         if flat != sorted(flat):
             errors.append(
-                f"{name}: pipeline versions are declared out of order ({flat}). Adding a "
-                f"version would land mid-list and rename later entries' Deployments."
+                f"{name}: pipeline versions are declared out of order ({flat})."
             )
 
         # 5. SILO looks lineage definitions up by exact pipeline version, no fallback.
@@ -695,12 +896,18 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
         #    only fails if the lineage system name itself is absent, not a version key.
         #    So CI cannot catch it and this check is the only guard.
         for system in org.lineage_systems:
-            block = doc.lineage.entries.get(system, {})
+            if system not in doc.lineage.entries:
+                errors.append(
+                    f"{name}: schema references lineageSystem '{system}' but "
+                    f"lineageSystemDefinitions has no '{system}' key."
+                )
+                continue
+            block = doc.lineage.entries[system]
             for v in org.versions:
                 if v not in block:
                     errors.append(
                         f"{name}: lineageSystemDefinitions.{system} has no entry for "
-                        f"pipeline version {v}. SILO import will fail."
+                        f"pipeline version {v}."
                     )
             for v in sorted(block):
                 if v not in org.versions:
@@ -716,9 +923,8 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
             clash = sorted(set(stub.versions) & set(org.versions))
             if clash:
                 warnings.append(
-                    f"{name}: commented-out stub declares version {clash} which is already "
-                    f"active. Uncommenting it as-is would make helm fail; use "
-                    f"`pipeline_versions.py bump` or edit the version."
+                    f"{name}: commented-out stub declares version {clash}, which is already "
+                    f"active. Run `pipeline_versions.py prune` to remove it."
                 )
 
     for w in warnings:
@@ -769,7 +975,47 @@ def _selected(doc: Doc, arg: str | None) -> list[str]:
     return wanted
 
 
-def _emit(doc: Doc, new_lines: list[str], notes: list[str], dry_run: bool) -> int:
+def _verify(before: Doc, after: Doc, organisms: list[str], cmd: str) -> list[str]:
+    """Post-condition: the config that survives must be the one that was meant to.
+
+    This is what makes the textual splices (and the anchor relocation in particular)
+    trustworthy -- it compares fully resolved configs, so a mis-moved anchor or a
+    dropped nested key shows up as a mismatch rather than shipping.
+    """
+    problems: list[str] = []
+    for name in organisms:
+        old = _resolved_entries(before, name)
+        new_entries = _resolved_entries(after, name)
+        if not old or not new_entries:
+            continue
+        if cmd == "prune":
+            want = _config_signature(max(old, key=lambda e: max(_vlist(e))))
+            got = _config_signature(new_entries[-1])
+            if want != got:
+                problems.append(
+                    f"{name}: after prune the surviving entry does not resolve to the "
+                    f"highest version's config"
+                )
+        else:
+            if len(new_entries) > len(old):
+                want = _config_signature(max(old, key=lambda e: max(_vlist(e))))
+                got = _config_signature(new_entries[-1])
+                if want != got:
+                    diff = sorted(k for k in set(want) | set(got) if want.get(k) != got.get(k))
+                    problems.append(
+                        f"{name}: the new entry does not resolve to the same config as the "
+                        f"entry it was generated from (differs in {diff})"
+                    )
+    return problems
+
+
+def _vlist(entry: dict) -> list[int]:
+    v = entry.get("version")
+    return v if isinstance(v, list) else [v]
+
+
+def _emit(doc: Doc, new_lines: list[str], notes: list[str], dry_run: bool,
+          organisms: list[str], cmd: str) -> int:
     if not notes:
         print("nothing to do")
         return 0
@@ -780,24 +1026,42 @@ def _emit(doc: Doc, new_lines: list[str], notes: list[str], dry_run: bool) -> in
     print()
     for n in notes:
         print(f"  * {n}")
-    if dry_run:
-        print("\n(dry run -- no changes written)")
-        return 0
 
     text = "\n".join(new_lines)
     try:
-        yaml.safe_load(text)  # cheap guard against having produced invalid YAML
+        yaml.safe_load(text)
     except yaml.YAMLError as exc:
-        print(f"\nrefusing to write: result does not parse as YAML: {exc}", file=sys.stderr)
+        print(f"\nrefusing to write: the result is not valid YAML: {exc}", file=sys.stderr)
         return 1
+
+    # Verify before writing, so a bad transform never reaches the file.
+    scratch = doc.path.with_name(doc.path.name + ".verify.tmp")
+    try:
+        scratch.write_text(text)
+        after = load(scratch)
+        problems = _verify(doc, after, organisms, cmd)
+    except Problem as exc:
+        problems = [str(exc)]
+    finally:
+        scratch.unlink(missing_ok=True)
+
+    if problems:
+        for msg in problems:
+            print(f"\nrefusing to write: {msg}", file=sys.stderr)
+        return 1
+
+    if dry_run:
+        print("\n(dry run -- no changes written; verification passed)")
+        return 0
+
     doc.path.write_text(text)
     print(f"\nwrote {doc.path}")
 
-    after = load(doc.path)
-    rc = run_check(after, sorted(after.organisms), allow_empty_segments=False)
+    rc = run_check(load(doc.path), sorted(doc.organisms), allow_empty_segments=False)
     if rc:
         print("\nthe written file FAILS check -- review the diff above", file=sys.stderr)
     return rc
+
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -814,21 +1078,28 @@ def main(argv: list[str] | None = None) -> int:
 
     sp = sub.add_parser("bump", help="add the next pipeline version, keeping the current one")
     common(sp)
-    sp.add_argument("--mode", choices=("entry", "append"), default="entry",
-                   help="entry: add a second list entry that inherits from the current one "
-                        "(lets you raise replicas or hand-edit the config). "
-                        "append: add the version to the existing entry's version list "
-                        "(minimal diff; identical config and replicas). Default: entry")
+    sp.add_argument("--mode", choices=("inherit", "expand", "append"), default="inherit",
+                   help="inherit (default): a second entry that inherits the current "
+                        "config via a merge key -- minimal diff, for when only the version "
+                        "and replicas change. "
+                        "expand: a second entry with the configFile spelled out in full, "
+                        "ready to hand-edit (a new nextclade dataset tag, say). "
+                        "append: add the version to the existing entry's version list.")
+    sp.add_argument("--expand-organisms",
+                   help="comma-separated organisms to bump with --mode expand, overriding "
+                        "--mode for those only. Must be within --organisms if that is given.")
     sp.add_argument("--replicas", type=int, default=None,
-                   help="replicas for the new entry in --mode entry. Default: reuse the "
-                        f"commented-out stub's value if there is one, else {DEFAULT_BUMP_REPLICAS}. "
-                        "More replicas means the reprocessing backlog clears faster.")
+                   help="replicas for the new entry. Default: reuse the value from a "
+                        f"leftover stub if there is one, else {DEFAULT_BUMP_REPLICAS}.")
+    sp.add_argument("--anchor-threshold", type=int, default=DEFAULT_ANCHOR_THRESHOLD,
+                   help="in expand mode, alias a scalar list rather than duplicating it "
+                        f"once it spans more than this many lines (default: {DEFAULT_ANCHOR_THRESHOLD})")
     sp.add_argument("--dry-run", action="store_true")
 
     sp = sub.add_parser("prune", help="remove superseded pipeline versions")
     common(sp)
-    sp.add_argument("--delete", action="store_true",
-                   help="delete the superseded entry instead of commenting it out")
+    sp.add_argument("--keep-stubs", action="store_true",
+                   help="leave leftover commented-out entries in place instead of removing them")
     sp.add_argument("--dry-run", action="store_true")
 
     sp = sub.add_parser("check", help="assert config invariants (exit 1 on failure)")
@@ -846,14 +1117,23 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd == "check":
             return run_check(doc, organisms, args.allow_empty_segments)
 
+        expand_only: list[str] = []
+        if args.cmd == "bump" and args.expand_organisms:
+            expand_only = [o.strip() for o in args.expand_organisms.split(",") if o.strip()]
+            if outside := [o for o in expand_only if o not in organisms]:
+                raise Problem(
+                    f"--expand-organisms names {outside}, which --organisms does not include"
+                )
+
         edits: list[Edit] = []
         problems: list[str] = []
         for name in organisms:
             try:
                 if args.cmd == "bump":
-                    edits += plan_bump(doc, name, args.mode, args.replicas)
+                    mode = "expand" if name in expand_only else args.mode
+                    edits += plan_bump(doc, name, mode, args.replicas, args.anchor_threshold)
                 else:
-                    edits += plan_prune(doc, name, args.delete)
+                    edits += plan_prune(doc, name, args.keep_stubs)
             except Problem as exc:
                 problems.append(str(exc))
 
@@ -866,7 +1146,7 @@ def main(argv: list[str] | None = None) -> int:
 
         new_lines = apply_edits(doc.lines, edits)
         notes = [e.note for e in sorted(edits, key=lambda e: e.start)]
-        rc = _emit(doc, new_lines, notes, args.dry_run)
+        rc = _emit(doc, new_lines, notes, args.dry_run, organisms, args.cmd)
         return rc or (1 if problems else 0)
 
     except Problem as exc:

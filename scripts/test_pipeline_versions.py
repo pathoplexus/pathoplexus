@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["PyYAML>=6.0", "pytest>=8"]
+# dependencies = ["PyYAML>=6.0", "pytest>=8", "pytest-xdist>=3"]
 # ///
 """Tests for pipeline_versions.py.
 
@@ -15,6 +15,7 @@ in production during the 2026-08-05 mpox incident.
 
 from __future__ import annotations
 
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -99,7 +100,7 @@ def test_check_catches_duplicate_versions(work, capsys):
 def test_check_warns_about_stale_stubs(capsys):
     _run(VALUES, "check")
     out = capsys.readouterr().out
-    assert "dengue: commented-out stub declares version [32] which is already active" in out
+    assert "dengue: commented-out stub declares version [32], which is already active" in out
 
 
 # -------------------------------------------------------------------------- bump
@@ -237,19 +238,22 @@ def test_bump_dry_run_writes_nothing(work):
 # ------------------------------------------------------------------------- prune
 
 
-def test_prune_is_a_noop_when_nothing_is_outdated(work, capsys):
-    assert _run(work, "prune", "--organisms", "dengue") == 0
+def test_prune_is_a_noop_when_there_is_nothing_to_do(work, capsys):
+    """andv has one version and no stub, so prune has nothing to change."""
+    assert _run(work, "prune", "--organisms", "andv") == 0
     assert "nothing to do" in capsys.readouterr().out
 
 
-def test_prune_refuses_the_mpox_block(work, capsys):
-    """Entry 28 aliases *mpoxPreprocessing and inherits gene lists from entry 27.
+def test_prune_refuses_when_a_survivor_merges_from_a_doomed_entry(work, capsys):
+    """Today's mpox: entry 28 is `<<: *mpoxPreprocessing`, defined on entry 27.
 
-    Collapsing that automatically is exactly the anchor surgery that caused the
-    incident, so the tool must decline and say why.
+    Deleting 27 would orphan that merge key, and a merge-key alias cannot be relocated
+    the way a plain value alias can -- so the tool declines rather than guessing.
+    Bumping mpox with --expand-organisms first makes the survivor self-contained and
+    the prune then succeeds (see the expand tests).
     """
     assert _run(work, "prune", "--organisms", "mpox") != 0
-    assert "do not share the same config" in capsys.readouterr().err
+    assert "cannot relocate" in capsys.readouterr().err
 
 
 def test_bump_then_prune_returns_to_a_single_entry(work):
@@ -260,7 +264,7 @@ def test_bump_then_prune_returns_to_a_single_entry(work):
     assert org.versions == [29]
     assert len(org.active) == 1
     assert org.active[0].replicas == 1  # back down from the bump's 3
-    assert len(org.stubs) == 1  # template kept for next time
+    assert org.stubs == []  # clean add/remove, no commented-out leftovers
     assert _run(work, "check", "--organisms", "measles") == 0
 
 
@@ -278,12 +282,122 @@ def test_prune_drops_stale_lineage_versions(work):
     assert sorted(pv.load(work).lineage.entries["hmpv"]) == [26]
 
 
-def test_prune_delete_mode_removes_the_stub(work):
+def test_prune_removes_stubs_by_default(work):
     assert _run(work, "bump", "--organisms", "rsv-a") == 0
-    assert _run(work, "prune", "--organisms", "rsv-a", "--delete") == 0
+    assert _run(work, "prune", "--organisms", "rsv-a") == 0
     org = pv.load(work).organisms["rsv-a"]
     assert org.versions == [24]
     assert len(org.stubs) == 0
+
+
+def test_prune_keep_stubs_leaves_them(work):
+    assert _run(work, "bump", "--organisms", "rsv-b") == 0
+    assert _run(work, "prune", "--organisms", "rsv-b", "--keep-stubs") == 0
+    assert pv.load(work).organisms["rsv-b"].versions == [25]
+
+
+def test_prune_clears_a_preexisting_stale_stub(work):
+    """The six stubs in the file today all name an already-active version."""
+    assert len(pv.load(work).organisms["dengue"].stubs) == 1
+    assert _run(work, "prune", "--organisms", "dengue") == 0
+    org = pv.load(work).organisms["dengue"]
+    assert org.stubs == [] and org.versions == [32]
+
+
+# ------------------------------------------------------------- expand (flattened)
+
+
+def test_expand_bump_spells_out_the_config_for_hand_editing(work):
+    """The reason to bump is usually a new nextclade dataset tag, which means the new
+    entry needs its own full configFile -- a merge key would replace, not deep-merge."""
+    assert _run(work, "bump", "--organisms", "measles", "--expand-organisms", "measles") == 0
+    entries = yaml.safe_load(work.read_text())["organisms"]["measles"]["preprocessing"]
+    assert [e["version"] for e in entries] == [[28], [29]]
+    assert entries[0]["configFile"] == entries[1]["configFile"]
+    doc = pv.load(work)
+    new = doc.organisms["measles"].active[-1]
+    body = "\n".join(doc.lines[new.start:new.end])
+    assert "nextclade_dataset_tag" in body  # editable in place, not hidden behind a merge
+    assert new.merge_alias == "preprocessing"  # independent of its sibling
+
+
+def test_expand_duplicates_short_lists_but_anchors_long_ones(work):
+    assert _run(work, "bump", "--organisms", "measles,mpox",
+                "--expand-organisms", "measles,mpox") == 0
+    doc = pv.load(work)
+    measles = doc.organisms["measles"].active[-1]
+    mpox = doc.organisms["mpox"].active[-1]
+    # measles: 8 genes on one line -> duplicated inline.
+    assert "genes: [" in "\n".join(doc.lines[measles.start:measles.end])
+    # mpox: 175 genes -> aliased rather than copied, so the entry stays small.
+    assert "genes: *mpoxGenes" in "\n".join(doc.lines[mpox.start:mpox.end])
+    assert mpox.end - mpox.start < 30
+
+
+def test_expand_then_prune_relocates_the_gene_anchor(work):
+    """The case the whole anchor-relocation path exists for.
+
+    mpox's ~175-name gene list is anchored on an entry prune deletes, so the definition
+    has to move into the survivor -- and the survivor must resolve identically.
+    """
+    before = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
+    keep_cfg = [e for e in before if e["version"] == [28]][0]["configFile"]
+
+    assert _run(work, "bump", "--organisms", "mpox", "--expand-organisms", "mpox") == 0
+    assert _run(work, "prune", "--organisms", "mpox") == 0
+
+    entries = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
+    assert len(entries) == 1
+    assert entries[0]["version"] == [29]
+    assert entries[0]["configFile"] == keep_cfg
+    assert len(entries[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
+
+    doc = pv.load(work)
+    text = "\n".join(doc.lines)
+    assert "genes: &mpoxGenes" in text  # definition survived, relocated
+    assert "*mpoxGenes" not in text  # nothing left aliasing it
+    assert "mpoxPreprocessing" not in text  # the obsolete anchor is gone entirely
+    assert _run(work, "check", "--organisms", "mpox") == 0
+
+
+def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):
+    assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a",
+                "--replicas", "4") == 0
+    assert pv.load(work).organisms["rsv-a"].active[-1].replicas == 4
+    assert _run(work, "prune", "--organisms", "rsv-a") == 0
+    org = pv.load(work).organisms["rsv-a"]
+    assert org.versions == [24]
+    assert org.active[0].replicas == 1
+
+
+def test_anchor_threshold_is_configurable(work):
+    """Raising the threshold above a list's length duplicates it instead of aliasing.
+
+    Uses ebola-bdbv, whose highest entry *defines* its gene list rather than inheriting
+    an alias, so both branches are reachable.
+    """
+    assert _run(work, "bump", "--organisms", "ebola-bdbv",
+                "--expand-organisms", "ebola-bdbv", "--anchor-threshold", "1") == 0
+    entries = yaml.safe_load(work.read_text())["organisms"]["ebola-bdbv"]["preprocessing"]
+    assert entries[-1]["configFile"] == entries[-2]["configFile"]
+
+
+def test_expand_copy_never_redefines_an_anchor(work):
+    """YAML lets an anchor be redefined, and later aliases bind to the newer node.
+
+    A duplicated block must therefore drop the source's `&name`, or an alias sitting
+    between the two would silently start pointing somewhere else.
+    """
+    for org in ALL_ORGANISMS:
+        w = work.with_name(f"{org}.yaml")
+        w.write_text(VALUES.read_text())
+        if pv.main(["--values", str(w), "bump", "--organisms", org,
+                    "--expand-organisms", org, "--anchor-threshold", "10000"]) != 0:
+            continue
+        doc = pv.load(w)
+        new = doc.organisms[org].active[-1]
+        defined = re.findall(r"(?<![\w*])&(\w+)", "\n".join(doc.lines[new.start:new.end]))
+        assert defined == [], f"{org}: generated entry redefines {defined}"
 
 
 def test_prune_keeps_versions_ascending_so_deployment_indices_are_stable(work):
@@ -354,4 +468,6 @@ def test_version_mismatch_between_scan_and_parser_raises(work, monkeypatch):
 
 
 if __name__ == "__main__":
-    sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
+    # Each test re-parses a 4000-line file, so this is embarrassingly parallel.
+    extra = sys.argv[1:] or ["-n", "auto"]
+    sys.exit(pytest.main([__file__, "-q", *extra]))
