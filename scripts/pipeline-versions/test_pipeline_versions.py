@@ -458,6 +458,22 @@ def test_dropping_an_anchor_alone_on_a_dash_line_keeps_the_yaml_valid(legacy):
     assert item.merge_alias == "preprocessing"
 
 
+def test_an_anchor_may_not_share_the_dash_line_with_a_key(tmp_path, capsys):
+    """`- &name key: value` looks like a tidy one-line form, but YAML binds the anchor to
+    the key *scalar*: `*name` then resolves to the string "key". It parses without
+    complaint, which is exactly why check has to catch it."""
+    path = _synthetic(tmp_path, "")
+    text = path.read_text().replace(
+        "      - &testvPreprocessing\n        <<: *preprocessing\n",
+        "      - &testvPreprocessing replicas: 1\n        <<: *preprocessing\n",
+    )
+    path.write_text(text)
+    assert yaml.safe_load(text)  # parses happily -- that is the danger
+
+    assert _run(path, "check") == 1
+    assert "it binds the key, not the entry" in capsys.readouterr().err
+
+
 def test_check_warns_about_an_unused_anchor(legacy, capsys):
     _run(legacy, "check", "--organisms", "dengue")
     assert "anchor &denguePreprocessing is defined but never aliased" in capsys.readouterr().out

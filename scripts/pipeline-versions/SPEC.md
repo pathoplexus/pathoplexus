@@ -243,6 +243,7 @@ operate on the **resolved** (merge-key-expanded) view.
 | 6 | no lineage key for a version no entry uses | warning |
 | 7 | no commented-out stub naming an already-active version | warning |
 | 8 | no anchor on a pipeline entry that nothing aliases | warning |
+| 9 | no anchor sharing its line with a key (`- &name key: value`) | error |
 
 **Assertion 2 is the incident check and its asymmetry is deliberate.** A newer entry *adding* a
 key is an ordinary config change and is exactly what hand-editing a generated draft looks like;
@@ -289,7 +290,28 @@ knows an `&` inside a quoted scalar is not an anchor. The linkOut URLs are full 
 definitions. The tokens also carry exact line marks, so the positions come from the parser
 rather than a second guess at the text.
 
-### 3.4 Anchor naming
+### 3.4 An entry's anchor must be alone on its line
+
+```yaml
+      - &denguePreprocessing      # correct: binds the mapping
+        <<: *preprocessing
+```
+
+The tempting one-line form is wrong:
+
+```yaml
+      - &denguePreprocessing <<: *preprocessing
+```
+
+YAML binds a property in that position to the **key scalar**, not to the mapping, so
+`*denguePreprocessing` resolves to the string `"<<"` / `"replicas"` / whatever the first key
+is. With a merge key it happens to blow up (`expected a mapping ... but found scalar`); with a
+plain alias it resolves to a string and reports nothing at all. Assertion 9 catches it.
+
+This is why adding an anchor costs three diff lines rather than one — a one-line edit is not
+available.
+
+### 3.5 Anchor naming
 
 Pipeline-entry anchors are `<camelCase organism>Preprocessing` — `westNilePreprocessing`,
 `rsvAPreprocessing`, `ebolaBdbvPreprocessing`. An organism only carries one if something
@@ -309,7 +331,7 @@ The convention is not enforced by anything, so it can drift again.
 > misleading, it made yellow-fever's own generated anchor collide, producing the meaningless
 > name `yellowFeverPreprocessingV31`.
 
-### 3.5 Other
+### 3.6 Other
 
 - `values.schema.json` does not require `configFile` or `configFile.segments`.
 

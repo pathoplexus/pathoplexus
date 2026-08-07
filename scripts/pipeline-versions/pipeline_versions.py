@@ -188,14 +188,14 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     merge_alias_line: int | None = None
     has_own_config_file = False
 
-    # The anchor and/or merge key may sit on the "- " line itself.
+    # An entry's anchor has to sit alone on the "- " line. `- &name key: value` is legal
+    # YAML but binds the anchor to the *key scalar*, so the alias resolves to the string
+    # "key" rather than the mapping -- usually with no error at all. check flags it.
     head = body[0][ITEM_INDENT + 2 :]
     if m := re.match(r"^&(\w+)\s*$", head):
         anchor = m.group(1)
     elif m := re.match(r"^<<:\s*\*(\w+)\s*$", head):
         merge_alias, merge_alias_line = m.group(1), start
-    elif m := re.match(r"^&(\w+)\s+<<:\s*\*(\w+)\s*$", head):
-        anchor, merge_alias, merge_alias_line = m.group(1), m.group(2), start
 
     for off, raw in enumerate(body):
         lineno = start + off
@@ -1100,6 +1100,16 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                     warnings.append(
                         f"{name}: anchor &{anchor} is defined but never aliased. "
                         f"Run `pipeline_versions.py prune` to remove it."
+                    )
+                # 8. `- &name key: value` binds the anchor to the key scalar, not the
+                #    mapping, so the alias silently resolves to the string "key". The
+                #    anchor has to be alone on the line.
+                line = doc.lines[doc.anchors.defs[anchor]]
+                if re.match(rf"^\s*- &{re.escape(anchor)}\s+\S", line):
+                    errors.append(
+                        f"{name}: anchor &{anchor} shares a line with a key "
+                        f"({line.strip()!r}); it binds the key, not the entry. Put it on "
+                        f"its own line."
                     )
 
     for w in warnings:
