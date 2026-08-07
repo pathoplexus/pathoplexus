@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import requests
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -111,19 +112,31 @@ def test_check_passes_on_the_working_copy():
     Whatever state values.yaml is in right now, it must satisfy the invariants -- this
     is the same assertion CI makes on every PR.
     """
-    assert _run(VALUES, "check", "--skip-model-check") == 0
+    assert _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks") == 0
 
 
 def test_check_catches_the_mpox_incident(tmp_path, capsys):
     """The whole point. A segment-less pipeline entry must not pass."""
-    assert _run(_at(INCIDENT_COMMIT, tmp_path), "check", "--skip-model-check", "--organisms", "mpox") == 1
+    assert (
+        _run(
+            _at(INCIDENT_COMMIT, tmp_path),
+            "check",
+            "--skip-model-check",
+            "--skip-remote-checks",
+            "--organisms",
+            "mpox",
+        )
+        == 1
+    )
     err = capsys.readouterr().err
     assert "missing configFile key(s) ['segments']" in err
     assert "has no segments" in err
 
 
 def test_check_passes_on_a_clean_historical_config(tmp_path):
-    assert _run(_at(PRE_INCIDENT_COMMIT, tmp_path), "check", "--skip-model-check") == 0
+    assert (
+        _run(_at(PRE_INCIDENT_COMMIT, tmp_path), "check", "--skip-model-check", "--skip-remote-checks") == 0
+    )
 
 
 def test_check_catches_a_missing_lineage_version(work, capsys):
@@ -135,7 +148,7 @@ def test_check_catches_a_missing_lineage_version(work, capsys):
         1,
     )
     work.write_text(text)
-    assert _run(work, "check", "--skip-model-check", "--organisms", "mpox") == 1
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 1
     assert "lineageSystemDefinitions.mpoxOutbreakLineage has no entry" in capsys.readouterr().err
 
 
@@ -145,12 +158,12 @@ def test_check_catches_duplicate_versions(work, capsys):
     lines = list(doc.lines)
     lines[max(item.version_value_lines)] = "          - 27"  # collide with entry 0
     work.write_text("\n".join(lines))
-    assert _run(work, "check", "--skip-model-check", "--organisms", "mpox") == 1
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 1
     assert "version 27 declared by entries" in capsys.readouterr().err
 
 
 def test_check_warns_about_stale_stubs(legacy, capsys):
-    _run(legacy, "check", "--skip-model-check")
+    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks")
     out = capsys.readouterr().out
     assert "dengue: commented-out stub declares version [32], which is already active" in out
 
@@ -487,13 +500,13 @@ def test_an_organism_may_have_several_lineage_systems(tmp_path):
         "testvL": [31],
         "testvM": [31],
     }
-    assert _run(path, "check", "--skip-model-check") == 0
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 0
 
 
 def test_check_covers_every_lineage_system_not_just_the_first(tmp_path, capsys):
     path = tmp_path / "multi.yaml"
     path.write_text(MULTI_LINEAGE.replace("  testvM:\n    30: https://example.invalid/M.yaml\n", ""))
-    assert _run(path, "check", "--skip-model-check") == 1
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 1
     assert "lineageSystemDefinitions has no 'testvM' key" in capsys.readouterr().err
 
 
@@ -558,7 +571,8 @@ def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, loculus, ca
             "          segments:\n",
         )
     )
-    assert _run(path, "check", "--loculus", str(loculus)) == 0  # a warning; see run_check
+    # a warning, not an error; see the note in run_check
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 0
     out = capsys.readouterr().out
     assert "configFile.nextclade_dataset_tag: Extra inputs are not permitted" in out
 
@@ -577,7 +591,7 @@ def test_model_rejects_a_key_the_pipeline_does_not_declare(tmp_path, loculus, ca
         "          <<: *preprocessingConfigFile\n          taxon_id: 12345\n",
     )
     path.write_text(text)
-    _run(path, "check", "--loculus", str(loculus))
+    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
     assert "configFile.taxon_id: Extra inputs are not permitted" in capsys.readouterr().out
 
 
@@ -589,7 +603,7 @@ def test_model_rejects_a_misspelled_nested_key(tmp_path, loculus, capsys):
     """
     path = tmp_path / "nested.yaml"
     path.write_text(MULTI_SEGMENT.replace("              references:\n", "              referneces:\n", 1))
-    _run(path, "check", "--loculus", str(loculus))
+    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
     assert "configFile.segments.0.referneces: Extra inputs are not permitted" in capsys.readouterr().out
 
 
@@ -601,7 +615,7 @@ def test_model_rejects_a_bad_enum_value(tmp_path, loculus, capsys):
             "          <<: *preprocessingConfigFile\n          alignment_requirement: SOMETIMES\n",
         )
     )
-    _run(path, "check", "--loculus", str(loculus))
+    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
     assert "alignment_requirement: Input should be 'ANY', 'ALL' or 'NONE'" in capsys.readouterr().out
 
 
@@ -613,7 +627,7 @@ def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
             '          <<: *preprocessingConfigFile\n          batch_size: "ten"\n',
         )
     )
-    _run(path, "check", "--loculus", str(loculus))
+    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
     out = capsys.readouterr().out
     assert "configFile.batch_size" in out and "valid integer" in out
 
@@ -624,7 +638,7 @@ def test_model_accepts_every_key_the_real_config_uses(loculus, capsys):
     Only andv's two misplaced keys should be reported -- if this starts failing after a
     loculusVersion bump, the schema needs regenerating, not loosening.
     """
-    _run(VALUES, "check", "--loculus", str(loculus))
+    _run(VALUES, "check", "--loculus", str(loculus), "--skip-remote-checks")
     unknown = [ln for ln in capsys.readouterr().out.splitlines() if "Extra inputs are not permitted" in ln]
     assert unknown, "expected andv's two misplaced keys"
     assert all("andv" in ln for ln in unknown), unknown
@@ -727,8 +741,100 @@ def test_status_rejects_an_unknown_column(capsys):
 
 def test_check_warns_about_an_unpinned_dataset(capsys):
     """A version is supposed to identify a config; an unpinned dataset breaks that."""
-    _run(VALUES, "check", "--skip-model-check", "--organisms", "cchf")
+    _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "cchf")
     assert "no nextclade_dataset_tag" in capsys.readouterr().out
+
+
+# ----------------------------------------------------------------- remote existence
+
+
+@pytest.fixture
+def fake_server(monkeypatch):
+    """Stand in for the nextclade dataset server and the lineage definition hosts.
+
+    Mocked rather than live: these assertions are about the tool's logic, and pinning
+    them to whatever nextstrain currently publishes would make the suite fail for
+    reasons that have nothing to do with this code.
+    """
+    # Tags sort lexicographically, as the real ones do, so "newest" is well defined.
+    index = {
+        "collections": [
+            {
+                "datasets": [
+                    {"path": "ds/L", "versions": [{"tag": t} for t in ("OLD-L", "NEW-L", "ZZ-NEWEST")]},
+                    {"path": "ds/M", "versions": [{"tag": "SAME-M"}]},
+                ]
+            }
+        ]
+    }
+
+    class Resp:
+        def __init__(self, payload=None, status=200):
+            self._payload, self.status_code = payload, status
+
+        @property
+        def ok(self):
+            return self.status_code < 400
+
+        def json(self):
+            return self._payload
+
+        def raise_for_status(self):
+            if not self.ok:
+                raise RuntimeError(self.status_code)
+
+    monkeypatch.setattr(requests, "get", lambda url, **kw: Resp(index))
+    monkeypatch.setattr(requests, "head", lambda url, **kw: Resp(status=404 if "missing" in url else 200))
+
+
+def test_remote_check_catches_a_dataset_that_does_not_exist(tmp_path, fake_server, capsys):
+    """A misspelled dataset name cannot be caught locally -- only the server knows."""
+    path = tmp_path / "badname.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_name: ds/L", "nextclade_dataset_name: ds/typo"))
+    assert _run(path, "check", "--skip-model-check") == 1
+    assert "dataset ds/typo does not exist" in capsys.readouterr().err
+
+
+def test_remote_check_catches_a_tag_that_was_never_published(tmp_path, fake_server, capsys):
+    path = tmp_path / "badtag.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_tag: OLD-L", "nextclade_dataset_tag: NOPE"))
+    assert _run(path, "check", "--skip-model-check") == 1
+    err = capsys.readouterr().err
+    assert "has no tag NOPE" in err
+    assert "newest available: ZZ-NEWEST" in err
+
+
+def test_remote_check_reports_a_newer_tag_as_info_not_a_problem(tmp_path, fake_server, capsys):
+    """Staying on a known dataset is usually deliberate, so this is information."""
+    path = tmp_path / "older.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "check", "--skip-model-check", "-v") == 0
+    assert "is pinned to OLD-L; ZZ-NEWEST is available" in capsys.readouterr().out
+
+
+def test_info_is_hidden_without_verbose(tmp_path, fake_server, capsys):
+    path = tmp_path / "older.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "check", "--skip-model-check") == 0
+    assert "is available" not in capsys.readouterr().out
+
+
+def test_quiet_shows_errors_only(tmp_path, fake_server, capsys):
+    path = tmp_path / "badname.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_name: ds/L", "nextclade_dataset_name: ds/typo"))
+    assert _run(path, "check", "--skip-model-check", "-q") == 1
+    captured = capsys.readouterr()
+    assert "does not exist" in captured.err
+    assert captured.out == ""
+
+
+def test_remote_check_catches_an_unreachable_lineage_url(tmp_path, fake_server, capsys):
+    path = tmp_path / "badurl.yaml"
+    path.write_text(
+        MULTI_LINEAGE.replace("https://example.invalid/L.yaml", "https://example.invalid/missing.yaml")
+    )
+    assert _run(path, "check", "--skip-model-check") == 1
+    assert "is 404 at" in capsys.readouterr().err
 
 
 # ----------------------------------------------------------------------- anchors
@@ -790,12 +896,12 @@ def test_an_anchor_may_not_share_the_dash_line_with_a_key(tmp_path, capsys):
     path.write_text(text)
     assert yaml.safe_load(text)  # parses happily -- that is the danger
 
-    assert _run(path, "check", "--skip-model-check") == 1
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 1
     assert "it binds the key, not the entry" in capsys.readouterr().err
 
 
 def test_check_warns_about_an_unused_anchor(legacy, capsys):
-    _run(legacy, "check", "--skip-model-check", "--organisms", "dengue")
+    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "dengue")
     assert "anchor &denguePreprocessing is defined but never aliased" in capsys.readouterr().out
 
 
@@ -821,7 +927,7 @@ def test_bump_then_prune_returns_to_a_single_entry(work):
     assert len(org.active) == 1
     assert org.active[0].replicas == 1  # back down from the bump's 3
     assert org.stubs == []  # clean add/remove, no commented-out leftovers
-    assert _run(work, "check", "--skip-model-check", "--organisms", "measles") == 0
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "measles") == 0
 
 
 def test_bump_then_prune_in_append_mode(work):
@@ -863,7 +969,7 @@ def test_prune_keeps_lineage_keys_for_versions_still_deployed(work):
     assert _run(work, "bump", "--organisms", "hmpv", "--mode", "append") == 0
     assert pv.load(work).organisms["hmpv"].versions == [25, 26]
     assert sorted(pv.load(work).lineage["hmpv"]) == [25, 26]
-    assert _run(work, "check", "--skip-model-check", "--organisms", "hmpv") == 0
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "hmpv") == 0
 
 
 def test_prune_drops_stale_lineage_versions(work):
@@ -942,7 +1048,7 @@ def test_expand_then_prune_relocates_the_gene_anchor(work):
     assert "genes:" in text
     assert "mpoxGenes" not in text
     assert "mpoxPreprocessing" not in text
-    assert _run(work, "check", "--skip-model-check", "--organisms", "mpox") == 0
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 0
 
 
 def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):

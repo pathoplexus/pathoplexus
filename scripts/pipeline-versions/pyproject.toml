@@ -36,7 +36,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"test_pipeline_versions.py" = ["S101", "PLR2004", "ARG001"]
+"test_pipeline_versions.py" = ["S101", "PLR2004", "ARG001", "ARG005"]  # stub lambdas ignore args
 
 [tool.pytest.ini_options]
 addopts = "-q"

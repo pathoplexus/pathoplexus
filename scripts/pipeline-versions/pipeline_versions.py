@@ -55,6 +55,8 @@ import yaml
 DEFAULT_VALUES = "loculus_values/values.yaml"
 PREPRO_SRC = "preprocessing/nextclade/src"
 LOCULUS_URL = "https://github.com/loculus-project/loculus.git"
+# Config.nextclade_dataset_server's default in the preprocessing model.
+DEFAULT_DATASET_SERVER = "https://data.clades.nextstrain.org/v3"
 
 # Indentation of the organisms.<org>.preprocessing list items. The file is uniform
 # here; _locate() asserts its textual scan against the parsed document, so a layout
@@ -1020,6 +1022,8 @@ def run_check(
     allow_empty_segments: bool,
     loculus: Path | None = None,
     skip_model_check: bool = False,
+    skip_remote_checks: bool = False,
+    verbosity: int = 1,
 ) -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -1150,22 +1154,39 @@ def run_check(
     if not skip_model_check:
         try:
             note, *found = _validate_config_files(doc, organisms, loculus)
-            print(note)
+            if verbosity >= 1:
+                print(note)
             warnings += found
         except Problem as exc:
             # Offline, most likely. The rest of check is still worth having, so say what
             # was skipped rather than failing the whole run over it.
-            print(f"warning: skipped configFile model validation: {exc}")
+            warnings.append(f"skipped configFile model validation: {exc}")
 
-    for w in warnings:
-        print(f"warning: {w}")
+    # 10. Everything above is local. These two are not knowable from the file alone: a
+    #     misspelled dataset name, or a tag that was never published, only shows up when
+    #     preprocessing tries to fetch it.
+    infos: list[str] = []
+    if not skip_remote_checks:
+        remote_errors, remote_warnings, remote_infos = _verify_remote(doc, organisms)
+        errors += remote_errors
+        warnings += remote_warnings
+        infos += remote_infos
+
+    if verbosity >= 2:
+        for note in infos:
+            print(f"info: {note}")
+    if verbosity >= 1:
+        for w in warnings:
+            print(f"warning: {w}")
     for e in errors:
         print(f"ERROR: {e}", file=sys.stderr)
 
+    tally = f"{len(errors)} error(s), {len(warnings)} warning(s), {len(infos)} info"
     if errors:
-        print(f"\n{len(errors)} error(s), {len(warnings)} warning(s)", file=sys.stderr)
+        print(f"\n{tally}", file=sys.stderr)
         return 1
-    print(f"\nOK: {len(organisms)} organism(s) checked, {len(warnings)} warning(s)")
+    if verbosity >= 1:
+        print(f"\nOK: {len(organisms)} organism(s) checked -- {tally}")
     return 0
 
 
@@ -1302,6 +1323,81 @@ def _pipeline_config_model(loculus: Path | None, repo: Path):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def _dataset_index(server: str, cache: dict[str, dict[str, set[str]]]) -> dict[str, set[str]]:
+    """Dataset path -> available tags, from a nextclade dataset server's index.json."""
+    import requests  # noqa: PLC0415  (only this code path needs it)
+
+    if server not in cache:
+        resp = requests.get(f"{server}/index.json", timeout=30)
+        resp.raise_for_status()
+        cache[server] = {
+            ds["path"]: {v["tag"] for v in ds.get("versions", [])}
+            for collection in resp.json().get("collections", [])
+            for ds in collection.get("datasets", [])
+        }
+    return cache[server]
+
+
+def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """Check that every dataset and lineage definition the config names actually exists.
+
+    A misspelled dataset name or a tag that was never published is a runtime failure the
+    config cannot reveal on its own -- nothing local knows what the server holds. Returns
+    Returns (errors, warnings, infos): a missing dataset or tag is an error because
+    preprocessing cannot run without it; anything that merely failed to fetch is a
+    warning, since a transient outage should not be indistinguishable from a broken
+    config; and a pinned tag that is simply no longer the newest is information, not a
+    problem -- staying on a known dataset is usually deliberate.
+    """
+    import requests  # noqa: PLC0415  (only this code path needs it)
+
+    errors: list[str] = []
+    warnings: list[str] = []
+    infos: list[str] = []
+    index_cache: dict[str, dict[str, set[str]]] = {}
+
+    for name in organisms:
+        for ref in _dataset_refs(_resolved_entries(doc, name)):
+            server = ref.get("nextclade_dataset_server") or DEFAULT_DATASET_SERVER
+            dataset = ref.ref["nextclade_dataset_name"]
+            where = f"{name}: version {ref.versions} segment {ref.segment}"
+            try:
+                available = _dataset_index(server, index_cache)
+            except Exception as exc:
+                warnings.append(f"{where}: could not read {server}/index.json ({exc})")
+                continue
+            if dataset not in available:
+                errors.append(f"{where}: dataset {dataset} does not exist on {server}")
+            elif tag := ref.get("nextclade_dataset_tag"):
+                newest = max(available[dataset], default="none")
+                if tag not in available[dataset]:
+                    errors.append(
+                        f"{where}: dataset {dataset} has no tag {tag} on {server} "
+                        f"(newest available: {newest})"
+                    )
+                elif tag != newest:
+                    # Not a problem: staying on a known dataset is usually deliberate.
+                    infos.append(f"{where}: {dataset} is pinned to {tag}; {newest} is available")
+
+    seen: set[str] = set()
+    for name in organisms:
+        for system in doc.organisms[name].lineage_systems:
+            for version, (_line, url) in sorted(doc.lineage.get(system, {}).items()):
+                if url in seen:
+                    continue
+                seen.add(url)
+                try:
+                    resp = requests.head(url, timeout=30, allow_redirects=True)
+                except Exception as exc:
+                    warnings.append(f"{name}: could not reach {system}.{version} at {url} ({exc})")
+                    continue
+                if not resp.ok:
+                    errors.append(
+                        f"{name}: lineageSystemDefinitions.{system}.{version} is {resp.status_code} at {url}"
+                    )
+    return errors, warnings, infos
+
+
 def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> list[str]:
     """Run each organism's configFile through the pipeline's own model."""
     from pydantic import ValidationError  # noqa: PLC0415  (only this code path needs it)
@@ -1422,7 +1518,6 @@ DEFAULT_STATUS_COLUMNS = (
     "organism",
     "versions",
     "replicas",
-    "entries",
     "nextcladeDatasetTag",
     "lineageDefinitions",
 )
@@ -1549,7 +1644,16 @@ def _emit(
     doc.path.write_text(text)
     print(f"\nwrote {doc.path}")
 
-    rc = run_check(load(doc.path), sorted(doc.organisms), allow_empty_segments=False)
+    # Structural invariants only: bump and prune copy existing config verbatim, so they
+    # cannot introduce an unknown key or a dataset that does not exist, and neither
+    # command should need the network to write a file.
+    rc = run_check(
+        load(doc.path),
+        sorted(doc.organisms),
+        allow_empty_segments=False,
+        skip_model_check=True,
+        skip_remote_checks=True,
+    )
     if rc:
         print("\nthe written file FAILS check -- review the diff above", file=sys.stderr)
     return rc
@@ -1617,6 +1721,8 @@ def main(argv: list[str] | None = None) -> int:
     sp = sub.add_parser("check", help="assert config invariants (exit 1 on failure)")
     common(sp)
     sp.add_argument("--allow-empty-segments", action="store_true")
+    sp.add_argument("-q", "--quiet", action="store_true", help="errors only")
+    sp.add_argument("-v", "--verbose", action="store_true", help="also show info, e.g. a newer dataset tag")
     sp.add_argument(
         "--loculus",
         type=Path,
@@ -1628,6 +1734,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="do not validate configFile against the preprocessing pipeline's model",
     )
+    sp.add_argument(
+        "--skip-remote-checks",
+        action="store_true",
+        help="do not verify that nextclade datasets and lineage definition URLs exist",
+    )
 
     args = p.parse_args(argv)
 
@@ -1638,7 +1749,15 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd == "status":
             return run_status(doc, organisms, args.columns)
         if args.cmd == "check":
-            return run_check(doc, organisms, args.allow_empty_segments, args.loculus, args.skip_model_check)
+            return run_check(
+                doc,
+                organisms,
+                args.allow_empty_segments,
+                args.loculus,
+                args.skip_model_check,
+                args.skip_remote_checks,
+                verbosity=0 if args.quiet else 2 if args.verbose else 1,
+            )
 
         expand_only: list[str] = []
         if args.cmd == "bump" and args.expand_organisms:
