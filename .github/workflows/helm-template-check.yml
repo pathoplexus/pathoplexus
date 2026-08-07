@@ -30,19 +30,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          path: pathoplexus
+
+      - name: Get Loculus version
+        id: loculus-version
+        run: |
+          LOCULUS_VERSION=$(grep 'loculusVersion:' pathoplexus/pathoplexus_app/values.yaml | awk '{print $2}' | tr -d '"')
+          echo "version=$LOCULUS_VERSION" >> $GITHUB_OUTPUT
+
+      # Needed so `check` can validate each configFile against the preprocessing
+      # pipeline's own pydantic model, at exactly the version being deployed.
+      - name: Checkout Loculus repository
+        uses: actions/checkout@v7
+        with:
+          repository: loculus-project/loculus
+          ref: ${{ steps.loculus-version.outputs.version }}
+          path: loculus
+          fetch-depth: 0
 
       - uses: astral-sh/setup-uv@v5
 
       - name: Check preprocessing pipeline version config
-        run: uv run scripts/pipeline-versions/pipeline_versions.py check
+        run: uv run scripts/pipeline-versions/pipeline_versions.py check --loculus ../loculus
+        working-directory: pathoplexus
 
       - name: Test the checker itself
         run: uv run scripts/pipeline-versions/test_pipeline_versions.py
+        working-directory: pathoplexus
 
       - name: Lint and format check
         run: |
           uv run --with ruff ruff check scripts/pipeline-versions
           uv run --with ruff ruff format --check scripts/pipeline-versions
+        working-directory: pathoplexus
 
   get-environments:
     runs-on: ubuntu-latest
@@ -86,18 +107,10 @@ jobs:
           ref: ${{ steps.loculus-version.outputs.version }}
           path: loculus
 
-      - uses: astral-sh/setup-uv@v5
-
       - name: Install Helm
         uses: azure/setup-helm@v5
         with:
           version: ${{ env.HELM_VERSION }}
-
-      - name: Preprocessing config schema is current for the pinned loculusVersion
-        run: |
-          uv run pathoplexus/scripts/pipeline-versions/generate_schema.py \
-            --loculus loculus --repo pathoplexus --check
-        working-directory: ${{ github.workspace }}
 
       - name: Template Helm chart for ${{ matrix.environment }}
         run: |

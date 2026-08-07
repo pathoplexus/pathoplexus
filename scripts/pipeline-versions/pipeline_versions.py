@@ -1,7 +1,11 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.14"
-# dependencies = ["PyYAML>=6.0"]
+# dependencies = ["PyYAML>=6.0", "pydantic>=2",
+#                 # only for `check --loculus`, which imports the preprocessing config
+#                 # model; these are its transitive imports at the pinned version.
+#                 "requests", "unidecode", "pyjwt", "python-dateutil", "pytz", "pandas",
+#                 "biopython"]
 # ///
 """Manage preprocessing pipeline versions in loculus_values/values.yaml.
 
@@ -37,9 +41,11 @@ carrying it is deleted, rewriting distant parts of the document.
 
 import argparse
 import difflib
-import json
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -47,6 +53,7 @@ from pathlib import Path
 import yaml
 
 DEFAULT_VALUES = "loculus_values/values.yaml"
+PREPRO_SRC = "preprocessing/nextclade/src"
 
 # Indentation of the organisms.<org>.preprocessing list items. The file is uniform
 # here; _locate() asserts its textual scan against the parsed document, so a layout
@@ -1006,8 +1013,7 @@ def _plan_lineage_prune(doc: Doc, org: Organism, surviving: list[int]) -> list[E
 # --------------------------------------------------------------------------- check
 
 
-def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int:
-    models = load_schema()["models"]
+def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool, loculus: Path | None = None) -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -1110,31 +1116,6 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                     f"so its dataset is not pinned to this pipeline version."
                 )
 
-        # 8b. Validate configFile against the pipeline's own model. A key the model does
-        #     not declare is dropped by pydantic, so it reads as configured while doing
-        #     nothing -- and neither helm nor values.schema.json constrains this object.
-        #     `nextclade_dataset_tag` was a Config field until loculus d3c43c019 moved it
-        #     onto the reference, so a config written against the old shape still looks
-        #     right.
-        #
-        #     A warning rather than an error only because andv is in this state today and
-        #     fixing it decides which dataset it pins. Once that is resolved this should
-        #     be an error: nothing legitimate lands here.
-        for idx, entry in enumerate(entries):
-            cf = entry.get("configFile") or {}
-            at = f"{name}: entry {idx} (version {entry['version']}) configFile"
-            found = _schema_problems(at, {k: v for k, v in cf.items() if k != "segments"}, models["Config"])
-            for seg in cf.get("segments") or []:
-                seg_at = f"{at}.segments[{seg.get('name')}]"
-                found += _schema_problems(
-                    seg_at, {k: v for k, v in seg.items() if k != "references"}, models["Segment"]
-                )
-                for ref in seg.get("references") or []:
-                    found += _schema_problems(
-                        f"{seg_at}.references[{ref.get('name')}]", ref, models["Reference"]
-                    )
-            warnings += found
-
         for item in org.active:
             for anchor in _anchors_in(doc, item.start, item.end):
                 if not doc.anchors.uses.get(anchor):
@@ -1152,6 +1133,19 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                         f"({line.strip()!r}); it binds the key, not the entry. Put it on "
                         f"its own line."
                     )
+
+    # 8b. Validate each configFile against the preprocessing pipeline's own pydantic
+    #     model. A key it does not declare is dropped in silence -- pydantic ignores
+    #     unknown fields, and values.schema.json sets additionalProperties: false on
+    #     segments and references but not on configFile itself -- so it reads as
+    #     configured while doing nothing. Warnings for now: andv is in that state today
+    #     and fixing it is a config decision.
+    if loculus is not None:
+        note, *found = _validate_config_files(doc, organisms, loculus)
+        print(note)
+        warnings += found
+    else:
+        print("skipping configFile model validation (pass --loculus <checkout> to enable)")
 
     for w in warnings:
         print(f"warning: {w}")
@@ -1206,57 +1200,72 @@ class Ref:
 # does not set its own.
 CONFIG_FALLBACK_KEYS = frozenset({"nextclade_dataset_server"})
 
-SCHEMA_PATH = Path(__file__).parent / "preprocessing-config-schema.json"
 
-# YAML values acceptable for each annotation kind the schema records. bool is checked
-# before int because bool is an int subclass in Python.
-_KIND_TYPES: dict[str, tuple[type, ...]] = {
-    "bool": (bool,),
-    "int": (int,),
-    "float": (int, float),
-    "str": (str,),
-    "list": (list,),
-    "dict": (dict,),
-}
+def _pipeline_config_model(loculus: Path, repo: Path):
+    """Import the real pydantic Config from the loculus source PPX pins.
 
+    PPX runs exactly one preprocessing pipeline, so the authority on what a configFile may
+    contain is that pipeline's own model -- not a schema restated here, which would drift.
+    Subclassing it with extra="forbid" turns pydantic's normal silence about unknown keys
+    into the error we want: `Config` itself ignores them, which is how andv's misplaced
+    `nextclade_dataset_tag` went unnoticed.
 
-def load_schema() -> dict:
-    """The configFile shape, derived from the loculus source PPX pins.
-
-    PPX runs only the nextclade preprocessing pipeline, so its configFile shape is exactly
-    what `Config`, `Segment` and `Reference` declare. Anything else is dropped in silence,
-    because pydantic ignores unknown fields and neither helm nor values.schema.json
-    constrains this object -- the schema sets `additionalProperties: false` on segments
-    and references, but not on configFile itself.
-
-    Regenerated by generate_schema.py; CI fails if it is stale for the pinned version.
+    The commit is extracted rather than read from the working tree, so validation is
+    against the version actually pinned even if the checkout sits elsewhere.
     """
-    if not SCHEMA_PATH.exists():
-        raise Problem(f"{SCHEMA_PATH.name} is missing; run generate_schema.py")
-    return json.loads(SCHEMA_PATH.read_text())
+    version = re.search(
+        r"^loculusVersion:\s*(\S+)", (repo / "pathoplexus_app" / "values.yaml").read_text(), re.M
+    )
+    if not version:
+        raise Problem("could not read loculusVersion from pathoplexus_app/values.yaml")
+    ref = version.group(1).strip('"')
+
+    tmp = tempfile.mkdtemp(prefix="prepro-model-")
+    try:
+        archive = subprocess.run(
+            ["git", "-C", str(loculus), "archive", ref, PREPRO_SRC],
+            capture_output=True,
+            check=False,
+        )
+        if archive.returncode:
+            raise Problem(
+                f"could not read {PREPRO_SRC} at {ref} from {loculus}: {archive.stderr.decode().strip()}"
+            )
+        subprocess.run(["tar", "-x", "-C", tmp], input=archive.stdout, check=True)
+        sys.path.insert(0, str(Path(tmp) / PREPRO_SRC))
+        try:
+            from loculus_preprocessing.config import Config  # noqa: PLC0415  (needs sys.path above)
+        except ImportError as exc:
+            raise Problem(
+                f"could not import the preprocessing config model at {ref}: {exc}. "
+                f"Its dependencies may have changed; add the missing one to this "
+                f"script's PEP 723 header."
+            ) from exc
+        from pydantic import ConfigDict  # noqa: PLC0415  (only this code path needs it)
+
+        return type("StrictConfig", (Config,), {"model_config": ConfigDict(extra="forbid")}), ref
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
-def _type_ok(value: object, kind: str | None) -> bool:
-    """Whether a YAML value matches the annotation. Unrecognised kinds pass.
+def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path) -> list[str]:
+    """Run each organism's configFile through the pipeline's own model."""
+    from pydantic import ValidationError  # noqa: PLC0415  (only this code path needs it)
 
-    Enums, nested models and tuples are recorded as null by the generator, and only their
-    key name is checked -- better to say nothing than to say something wrong.
-    """
-    if kind is None:
-        return True
-    if kind in ("int", "float"):
-        # bool is an int subclass, but `batch_size: true` is not an int anyone meant.
-        return isinstance(value, _KIND_TYPES[kind]) and not isinstance(value, bool)
-    return isinstance(value, _KIND_TYPES[kind])
-
-
-def _schema_problems(where: str, obj: dict, fields: dict[str, str | None]) -> list[str]:
-    out = []
-    for key, value in obj.items():
-        if key not in fields:
-            out.append(f"{where}.{key} is not a field of the preprocessing config")
-        elif not _type_ok(value, fields[key]):
-            out.append(f"{where}.{key} should be {fields[key]}, not {type(value).__name__} ({value!r})")
+    # The pinned loculusVersion belongs to the repo this script ships in, not to
+    # whichever values file is being checked -- which may be a fixture in a tmpdir.
+    model, ref = _pipeline_config_model(loculus, Path(__file__).parents[2])
+    out = [f"validated against the preprocessing config model at loculus {ref[:9]}"]
+    for name in organisms:
+        for idx, entry in enumerate(_resolved_entries(doc, name)):
+            try:
+                model(**(entry.get("configFile") or {}))
+            except ValidationError as exc:
+                for err in exc.errors():
+                    where = ".".join(str(p) for p in err["loc"])
+                    out.append(
+                        f"{name}: entry {idx} (version {entry['version']}) configFile.{where}: {err['msg']}"
+                    )
     return out
 
 
@@ -1551,6 +1560,12 @@ def main(argv: list[str] | None = None) -> int:
     sp = sub.add_parser("check", help="assert config invariants (exit 1 on failure)")
     common(sp)
     sp.add_argument("--allow-empty-segments", action="store_true")
+    sp.add_argument(
+        "--loculus",
+        type=Path,
+        help="path to a loculus checkout. Enables validating each configFile against the "
+        "preprocessing pipeline's own pydantic model, at the pinned loculusVersion.",
+    )
 
     args = p.parse_args(argv)
 
@@ -1561,7 +1576,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd == "status":
             return run_status(doc, organisms, args.columns)
         if args.cmd == "check":
-            return run_check(doc, organisms, args.allow_empty_segments)
+            return run_check(doc, organisms, args.allow_empty_segments, args.loculus)
 
         expand_only: list[str] = []
         if args.cmd == "bump" and args.expand_organisms:

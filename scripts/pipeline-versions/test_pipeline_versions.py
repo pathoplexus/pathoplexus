@@ -1,7 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.14"
-# dependencies = ["PyYAML>=6.0", "pytest>=8", "pytest-xdist>=3"]
+# dependencies = ["PyYAML>=6.0", "pytest>=8", "pytest-xdist>=3", "pydantic>=2",
+#                 "requests", "unidecode", "pyjwt", "python-dateutil", "pytz", "pandas",
+#                 "biopython"]
 # ///
 """Tests for pipeline_versions.py.
 
@@ -41,6 +43,10 @@ BASE_COMMIT = "24b71a8"
 # it finds -- in an old branch, or from a hand edit -- so those tests pin to this instead.
 LEGACY_STUB_COMMIT = "f9de729"
 
+# A loculus checkout, needed to validate a configFile against the preprocessing
+# pipeline's own pydantic model. Sibling of the pathoplexus clone; skipped when absent.
+LOCULUS = REPO.parent / "loculus"
+
 
 def _blob(commit: str) -> str:
     return subprocess.run(
@@ -62,6 +68,13 @@ def work(tmp_path: Path) -> Path:
     path = tmp_path / "values.yaml"
     path.write_text(_blob(BASE_COMMIT))
     return path
+
+
+@pytest.fixture
+def loculus() -> Path:
+    if not (LOCULUS / ".git").exists():
+        pytest.skip(f"no loculus checkout at {LOCULUS}")
+    return LOCULUS
 
 
 @pytest.fixture
@@ -524,7 +537,7 @@ def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsy
     assert "M:unpinned" in out
 
 
-def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, capsys):
+def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, loculus, capsys):
     """`nextclade_dataset_tag` on configFile reads as configured and does nothing.
 
     The preprocessing Config model declares no such field and pydantic drops unknown
@@ -541,12 +554,12 @@ def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, capsys):
             "          segments:\n",
         )
     )
-    assert _run(path, "check") == 0  # a warning for now; see the note in run_check
+    assert _run(path, "check", "--loculus", str(loculus)) == 0  # a warning; see run_check
     out = capsys.readouterr().out
-    assert "configFile.nextclade_dataset_tag is not a field of the preprocessing config" in out
+    assert "configFile.nextclade_dataset_tag: Extra inputs are not permitted" in out
 
 
-def test_schema_rejects_a_key_the_pipeline_does_not_declare(tmp_path, capsys):
+def test_model_rejects_a_key_the_pipeline_does_not_declare(tmp_path, loculus, capsys):
     """PPX runs only the nextclade pipeline, so the configFile shape is known exactly.
 
     Anything else is dropped by pydantic, and neither helm nor values.schema.json
@@ -560,11 +573,11 @@ def test_schema_rejects_a_key_the_pipeline_does_not_declare(tmp_path, capsys):
         "          <<: *preprocessingConfigFile\n          taxon_id: 12345\n",
     )
     path.write_text(text)
-    _run(path, "check")
-    assert "configFile.taxon_id is not a field of the preprocessing config" in capsys.readouterr().out
+    _run(path, "check", "--loculus", str(loculus))
+    assert "configFile.taxon_id: Extra inputs are not permitted" in capsys.readouterr().out
 
 
-def test_schema_rejects_a_wrongly_typed_value(tmp_path, capsys):
+def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
     path = tmp_path / "typed.yaml"
     path.write_text(
         MULTI_SEGMENT.replace(
@@ -572,32 +585,21 @@ def test_schema_rejects_a_wrongly_typed_value(tmp_path, capsys):
             '          <<: *preprocessingConfigFile\n          batch_size: "ten"\n',
         )
     )
-    _run(path, "check")
-    assert "configFile.batch_size should be int, not str" in capsys.readouterr().out
+    _run(path, "check", "--loculus", str(loculus))
+    out = capsys.readouterr().out
+    assert "configFile.batch_size" in out and "valid integer" in out
 
 
-def test_schema_accepts_every_key_the_real_config_uses(capsys):
+def test_model_accepts_every_key_the_real_config_uses(loculus, capsys):
     """Guards against a schema so strict it fires on legitimate config.
 
     Only andv's two misplaced keys should be reported -- if this starts failing after a
     loculusVersion bump, the schema needs regenerating, not loosening.
     """
-    _run(VALUES, "check")
-    unknown = [
-        ln for ln in capsys.readouterr().out.splitlines() if "is not a field of the preprocessing" in ln
-    ]
+    _run(VALUES, "check", "--loculus", str(loculus))
+    unknown = [ln for ln in capsys.readouterr().out.splitlines() if "Extra inputs are not permitted" in ln]
+    assert unknown, "expected andv's two misplaced keys"
     assert all("andv" in ln for ln in unknown), unknown
-
-
-def test_schema_records_the_pinned_loculus_version():
-    schema = pv.load_schema()
-    pinned = re.search(
-        r"^loculusVersion:\s*(\S+)", (REPO / "pathoplexus_app" / "values.yaml").read_text(), re.M
-    ).group(1)
-    assert schema["loculusVersion"] == pinned.strip('"'), (
-        "schema is stale; regenerate with generate_schema.py"
-    )
-    assert set(schema["models"]) == {"Config", "Segment", "Reference"}
 
 
 def test_a_configfile_level_server_is_inherited(tmp_path, capsys):

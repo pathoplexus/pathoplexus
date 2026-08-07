@@ -120,30 +120,31 @@ ERROR: mpox: entry 1 (version [27]) is missing configFile key(s) ['segments'] th
 ERROR: mpox: entry 1 (version [27]) has no segments.
 ```
 
-## The configFile schema
+## Validating configFile
 
-PPX runs exactly one preprocessing pipeline, so the shape of `configFile` is known:
-whatever `Config`, `Segment` and `Reference` declare in the loculus source that
-`pathoplexus_app/values.yaml` pins. `check` validates against that and reports any key the
-model does not declare.
-
-This matters because such a key is **silently dropped**. pydantic ignores unknown fields,
-and `values.schema.json` sets `additionalProperties: false` on `segments` and `references`
-but not on `configFile` itself — so helm renders it happily. andv has two: a
-`nextclade_dataset_tag` written in the pre-`d3c43c019` position (where it no longer does
-anything, leaving the dataset unpinned) and a stray `taxon_id` that belongs to the ingest
-config.
-
-`preprocessing-config-schema.json` is generated, not hand-written:
+PPX runs exactly one preprocessing pipeline, so the authority on what `configFile` may
+contain is that pipeline's own pydantic model. Give `check` a loculus checkout and it
+imports `Config` at the pinned `loculusVersion`, subclasses it with `extra="forbid"`, and
+runs every organism's `configFile` through it:
 
 ```bash
-uv run scripts/pipeline-versions/generate_schema.py --loculus ../loculus
+uv run scripts/pipeline-versions/pipeline_versions.py check --loculus ../loculus
 ```
 
-It records the `loculusVersion` it came from, and CI re-derives it against the loculus
-checkout it already makes for the helm step, failing if the committed copy is stale. So it
-cannot drift from the pipeline actually deployed. Regenerate whenever `loculusVersion`
-moves.
+That gets unknown keys, misspellings, wrong types, bad enum values and nested-model errors
+in one step, with pydantic's own messages — and it cannot drift, because it *is* the model.
+Without `--loculus` the rest of `check` still runs and this step is skipped with a note.
+
+It matters because an unknown key is **silently dropped**: pydantic ignores extras, and
+`values.schema.json` sets `additionalProperties: false` on `segments` and `references` but
+not on `configFile` itself, so helm renders it happily. andv has two — a
+`nextclade_dataset_tag` in the position it occupied before loculus `d3c43c019` moved it
+onto the reference, and a stray `taxon_id` belonging to the ingest config.
+
+The commit is extracted with `git archive`, so validation is against the pinned version
+even if the checkout is on another branch. If a future `loculusVersion` needs a dependency
+the model imports, the run fails with a message naming it — add it to the script's PEP 723
+header.
 
 ## Tests
 
