@@ -154,6 +154,26 @@ def test_bump_append_mode_extends_the_version_list(work):
     assert org.versions == [25, 26]
 
 
+ALL_ORGANISMS = sorted(pv.load(VALUES).organisms)
+
+
+@pytest.mark.parametrize("org", ALL_ORGANISMS)
+def test_bumped_entry_inherits_the_full_config(work, org):
+    """The single most important property of generated output.
+
+    This resolved-config equality is the closest available stand-in for diffing the
+    rendered chart, which needs helm. It is precisely what the incident violated.
+    """
+    before = yaml.safe_load(work.read_text())["organisms"][org]["preprocessing"]
+    if pv.main(["--values", str(work), "bump", "--organisms", org]) != 0:
+        pytest.skip(f"{org}: bump not applicable")
+    entries = yaml.safe_load(work.read_text())["organisms"][org]["preprocessing"]
+    assert len(entries) == len(before) + 1
+    assert entries[-1]["configFile"] == entries[-2]["configFile"]
+    assert entries[-1]["configFile"].get("segments")
+    assert _run(work, "check", "--organisms", org) == 0
+
+
 def test_bump_output_is_valid_yaml_and_only_versions_change(work):
     before = yaml.safe_load(work.read_text())
     assert _run(work, "bump", "--organisms", "measles") == 0
@@ -165,6 +185,33 @@ def test_bump_output_is_valid_yaml_and_only_versions_change(work):
     assert [e["version"] for e in entries] == [[28], [29]]
     # The new entry must inherit the full config, not a shallow-merged fragment.
     assert entries[0]["configFile"] == entries[1]["configFile"]
+
+
+def _check_configs(work: Path, configs: list[dict]) -> int:
+    """Run the real run_check over a synthetic preprocessing list for one organism."""
+    doc = pv.load(work)
+    doc.resolved["organisms"]["andv"]["preprocessing"] = [
+        {"version": [i + 1], "configFile": c} for i, c in enumerate(configs)
+    ]
+    doc.organisms["andv"].lineage_systems = []
+    doc.organisms["andv"].items = []
+    return pv.run_check(doc, ["andv"], allow_empty_segments=False)
+
+
+def test_check_is_directional_newer_may_add_but_not_lose_keys(work, capsys):
+    """Hand-editing a generated draft to *add* config is normal and must not fail CI.
+
+    Only the reverse -- a newer entry losing a key an older one declares -- is the
+    incident's signature, and that is what must be an error.
+    """
+    seg = {"segments": [{"name": "main"}]}
+
+    assert _check_configs(work, [seg, {**seg, "batch_size": 5}]) == 0
+
+    assert _check_configs(work, [{**seg, "batch_size": 5}, {"batch_size": 5}]) == 1
+    err = capsys.readouterr().err
+    assert "missing configFile key(s) ['segments']" in err
+    assert "lower-version entry" in err
 
 
 def test_bump_leaves_untouched_organisms_byte_identical(work):
@@ -263,8 +310,7 @@ def test_scoping_leaves_other_organisms_alone(work):
     assert changed == {"dengue", "rsv-a"}
 
 
-def test_layout_drift_is_detected_not_silently_mis_edited(work):
-    """The textual scan is cross-checked against the parser on every load."""
+def test_benign_formatting_does_not_trip_the_cross_check(work):
     text = work.read_text().replace(
         "    preprocessing:\n      - &denguePreprocessing",
         "    preprocessing:\n\n      - &denguePreprocessing", 1)
@@ -273,6 +319,38 @@ def test_layout_drift_is_detected_not_silently_mis_edited(work):
     text = work.read_text().replace("      - &denguePreprocessing\n", "      - &denguePreprocessing  \n", 1)
     work.write_text(text)
     pv.load(work)  # trailing whitespace is fine
+
+
+def test_layout_drift_raises_rather_than_mis_editing(work):
+    """The guard that justifies editing this file textually at all.
+
+    If the indentation the line scanner assumes ever changes, every edit below it
+    would be unsafe -- so load() cross-checks its textual scan against the parsed
+    document and refuses rather than proceeding on a partial view.
+    """
+    lines = work.read_text().split("\n")
+    org = pv.load(work).organisms["dengue"]
+    for i in range(org.prepro_key_line + 1, org.prepro_end):
+        if lines[i].strip():
+            lines[i] = "  " + lines[i]  # re-indent the whole list by 2
+    lines[org.prepro_key_line] = "    preprocessing:"
+    work.write_text("\n".join(lines))
+    with pytest.raises(pv.Problem, match="textual scan"):
+        pv.load(work)
+
+
+def test_version_mismatch_between_scan_and_parser_raises(work, monkeypatch):
+    real = pv._parse_item
+
+    def lying(lines, start, end, commented):
+        item = real(lines, start, end, commented)
+        if item.versions == [32]:
+            item.versions = [99]
+        return item
+
+    monkeypatch.setattr(pv, "_parse_item", lying)
+    with pytest.raises(pv.Problem, match="Refusing to edit"):
+        pv.load(work)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,8 @@ on:
     paths:
       - 'loculus_values/**'
       - 'pathoplexus_app/**'
+      - 'scripts/pipeline_versions.py'
+      - 'scripts/test_pipeline_versions.py'
       - '.github/workflows/helm-template-check.yml'
   push:
     branches:
@@ -12,6 +14,8 @@ on:
     paths:
       - 'loculus_values/**'
       - 'pathoplexus_app/**'
+      - 'scripts/pipeline_versions.py'
+      - 'scripts/test_pipeline_versions.py'
       - '.github/workflows/helm-template-check.yml'
 env:
   HELM_VERSION: 'v3.17.1' # Should track version used by argocd
@@ -31,6 +35,9 @@ jobs:
 
       - name: Check preprocessing pipeline version config
         run: uv run scripts/pipeline_versions.py check
+
+      - name: Test the checker itself
+        run: uv run scripts/test_pipeline_versions.py
 
   get-environments:
     runs-on: ubuntu-latest

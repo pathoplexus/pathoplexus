@@ -646,18 +646,26 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                 seen[v] = idx
 
         # 2. The incident check. Merge keys are shallow, so re-declaring configFile
-        #    under a second entry silently drops any nested key you forget to repeat.
+        #    under a newer entry silently drops any nested key you forget to repeat.
         #    Comparing resolved key sets catches that with no domain knowledge.
+        #
+        #    Deliberately asymmetric: only a *newer* entry missing a key an *older* one
+        #    declares is an error. That is the incident's direction -- v27 lost the
+        #    `segments` that v26 had. A newer entry *adding* a key is an ordinary config
+        #    change (a new alignment_requirement, create_embl_file, ...) and is exactly
+        #    what someone hand-editing a generated draft would do, so it must not fail CI.
+        #    Entries are in ascending version order; check 4 enforces that.
         keysets = [frozenset(e.get("configFile", {})) for e in entries]
-        if len(set(keysets)) > 1:
-            union = frozenset().union(*keysets)
-            for idx, (entry, ks) in enumerate(zip(entries, keysets)):
-                if missing := sorted(union - ks):
-                    errors.append(
-                        f"{name}: entry {idx} (version {entry['version']}) is missing "
-                        f"configFile key(s) {missing} that sibling entries declare. A "
-                        f"shallow merge-key override is the usual cause."
-                    )
+        for idx, (entry, ks) in enumerate(zip(entries, keysets)):
+            older = frozenset().union(*keysets[:idx]) if idx else frozenset()
+            if lost := sorted(older - ks):
+                errors.append(
+                    f"{name}: entry {idx} (version {entry['version']}) is missing "
+                    f"configFile key(s) {lost} that an earlier, lower-version entry "
+                    f"declares. A shallow merge-key override is the usual cause: "
+                    f"re-declaring `configFile:` replaces the inherited value entirely, "
+                    f"it does not deep-merge into it."
+                )
 
         # 3. No segments means alignment_requirement=NONE: the pipeline aligns nothing,
         #    annotates nothing, and cannot emit an alignment error.
