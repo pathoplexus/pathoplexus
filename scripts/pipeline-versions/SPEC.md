@@ -245,6 +245,7 @@ operate on the **resolved** (merge-key-expanded) view.
 | 6 | no lineage key for a version no entry uses | warning |
 | 7 | no commented-out stub naming an already-active version | warning |
 | 8 | every dataset reference pins a `nextclade_dataset_tag` | warning |
+| 8b | no reference-only key set at `configFile` level | warning |
 | 9 | no anchor on a pipeline entry that nothing aliases | warning |
 | 10 | no anchor sharing its line with a key (`- &name key: value`) | error |
 

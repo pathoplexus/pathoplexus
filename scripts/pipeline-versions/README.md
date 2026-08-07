@@ -19,6 +19,24 @@ uv run scripts/pipeline-versions/pipeline_versions.py status
 | | |
 |---|---|
 | `status` | versions, replicas, entry count, nextclade dataset tags, lineage definition URLs |
+
+`status` columns:
+
+| column | meaning |
+|---|---|
+| `versions` | every pipeline version the organism currently declares |
+| `replicas` | pod count per entry |
+| `entries` | how many items are in the organism's `preprocessing:` YAML list. Two versions can come from **one** entry (same config deployed twice) or **two** entries (configs that may differ) — that is what this distinguishes, and it decides what `prune` has to do |
+| `nextcladeDatasetTag` | the pinned dataset tag, labelled per segment when segments differ, or `unpinned` |
+| `lineageDefinitions` | the URL SILO loads for the organism's lineage system |
+
+`--columns` appends more: `datasetName`, `datasetServer`, `segments`, `minimizerUrl`,
+`batchSize`, `alignmentRequirement`, `image`. Useful for spot-checking what a pipeline
+actually pulls:
+
+```bash
+uv run scripts/pipeline-versions/pipeline_versions.py status --columns datasetName,datasetServer
+```
 | `bump`   | add the next version, leaving the current one running |
 | `prune`  | drop superseded versions once reprocessing is done |
 | `check`  | assert the invariants; exit 1 on failure. Runs in CI |

@@ -39,6 +39,7 @@ import argparse
 import difflib
 import re
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -1099,14 +1100,30 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
         #    config, but a reference with no `nextclade_dataset_tag` follows whatever
         #    nextclade currently serves, so the effective config can change underneath a
         #    version that never moved.
+        for ref in _dataset_refs(entries):
+            if not ref.get("nextclade_dataset_tag"):
+                warnings.append(
+                    f"{name}: version {ref.versions} segment {ref.segment} uses "
+                    f"{ref.ref['nextclade_dataset_name']} with no nextclade_dataset_tag, "
+                    f"so its dataset is not pinned to this pipeline version."
+                )
+
+        # A key that only exists on a reference does nothing at configFile level: the
+        # preprocessing Config does not declare it and pydantic drops unknown fields, so
+        # it reads as configured while having no effect at all. `nextclade_dataset_tag`
+        # was a Config field until loculus d3c43c019 moved it onto the reference, so a
+        # config written against the old shape still looks right.
+        #
+        # A warning rather than an error only because andv is in this state today and
+        # fixing it changes which dataset it pins. Once that is resolved this should be
+        # an error -- nothing legitimate sets these here.
         for idx, entry in enumerate(entries):
-            for ref in _dataset_refs(entry):
-                if not ref.get("nextclade_dataset_tag"):
-                    warnings.append(
-                        f"{name}: entry {idx} (version {entry['version']}) uses "
-                        f"{ref['nextclade_dataset_name']} with no nextclade_dataset_tag, "
-                        f"so its dataset is not pinned to this pipeline version."
-                    )
+            for key in sorted(REFERENCE_ONLY_KEYS & set(entry.get("configFile") or {})):
+                warnings.append(
+                    f"{name}: entry {idx} (version {entry['version']}) sets {key} directly "
+                    f"on configFile, where the preprocessing pipeline ignores it. It "
+                    f"belongs on a segment's reference."
+                )
 
         for item in org.active:
             for anchor in _anchors_in(doc, item.start, item.end):
@@ -1150,28 +1167,82 @@ def _dataset_refs(entry: dict) -> list[dict]:
     ]
 
 
-def _dataset_tags(entry: dict) -> list[str]:
-    """Dataset tags a pipeline entry pins, labelled per segment when they differ.
+@dataclass
+class Ref:
+    """One nextclade dataset reference, with the entry and segment it belongs to."""
 
-    A reference naming a dataset but pinning no tag reads as "unpinned": nextclade serves
-    whatever is current, so the entry's effective config can change without the pipeline
-    version moving. Segments can legitimately pin different tags -- their datasets are
-    released independently -- so label which is which rather than listing bare values.
+    versions: list[int]
+    segment: str
+    name: str
+    config_file: dict
+    ref: dict
+
+    def get(self, key: str) -> str | None:
+        """A reference's effective value, mirroring what the pipeline actually resolves.
+
+        Only `nextclade_dataset_server` falls back to the configFile. The preprocessing
+        Config model declares it and applies the fallback explicitly
+        (`config.py: if ds.nextclade_dataset_server is None: ... = self.nextclade_dataset_server`),
+        whereas the dataset is otherwise built from `reference.model_dump()` alone. Config
+        has no `nextclade_dataset_tag` field, so one written at configFile level is
+        silently dropped by pydantic -- see CONFIG_ONLY_KEYS.
+        """
+        if key in CONFIG_FALLBACK_KEYS:
+            return self.ref.get(key) or self.config_file.get(key)
+        return self.ref.get(key)
+
+
+# configFile keys the preprocessing Config declares, which a reference inherits when it
+# does not set its own.
+CONFIG_FALLBACK_KEYS = frozenset({"nextclade_dataset_server"})
+
+# Keys that only mean something on a *reference*. Written at configFile level they are
+# silently ignored -- Config does not declare them, and pydantic drops unknown fields.
+REFERENCE_ONLY_KEYS = frozenset({"nextclade_dataset_tag", "nextclade_dataset_name", "genes"})
+
+
+def _dataset_refs(entries: list[dict]) -> list[Ref]:
+    """Every reference that names a nextclade dataset, across an organism's entries."""
+    out = []
+    for entry in entries:
+        cf = entry.get("configFile") or {}
+        for seg in cf.get("segments") or []:
+            for ref in seg.get("references") or []:
+                if ref.get("nextclade_dataset_name"):
+                    out.append(Ref(_vlist(entry), str(seg.get("name")), str(ref.get("name")), cf, ref))
+    return out
+
+
+def _describe(refs: list[Ref], key: str, missing: str = "-") -> str:
+    """One cell's worth of a per-reference value, labelled only by what actually varies.
+
+    An organism can have several entries (versions) and several segments, each pinning its
+    own dataset. Listing bare values would not say which is which; labelling everything
+    when they all agree is noise. So: collapse when identical, otherwise prefix with
+    whichever of version and segment distinguishes them.
     """
-    labelled: list[tuple[str, str]] = []
-    segments = entry.get("configFile", {}).get("segments") or []
-    for seg in segments:
-        refs = [r for r in seg.get("references") or [] if r.get("nextclade_dataset_name")]
-        for ref in refs:
-            # Whichever of segment/reference actually distinguishes them: cchf has three
-            # segments each with one reference, dengue one segment with four references.
-            label = seg.get("name") if len(segments) > 1 else ref.get("name")
-            labelled.append((str(label), ref.get("nextclade_dataset_tag") or "unpinned"))
+    if not refs:
+        return missing
+    values = [r.get(key) or missing for r in refs]
+    if len(set(values)) == 1:
+        return values[0]
 
-    tags = {t for _, t in labelled}
-    if len(tags) <= 1:
-        return sorted(tags)
-    return [f"{label}:{tag}" for label, tag in labelled]
+    # Label by whichever of segment and reference name distinguishes them: cchf has three
+    # segments each with one reference, dengue one segment with four references.
+    many_segments = len({r.segment for r in refs}) > 1
+    grouped: dict[str, list[tuple[Ref, str]]] = {}
+    for r, value in zip(refs, values, strict=True):
+        grouped.setdefault(r.segment if many_segments else r.name, []).append((r, value))
+
+    cells = []
+    for label, members in grouped.items():
+        # Add the version only where it is what differs -- a dataset name that is the same
+        # in every version does not need one prefix per version.
+        if len({v for _, v in members}) == 1:
+            cells.append(f"{label}:{members[0][1]}")
+        else:
+            cells += [f"v{','.join(map(str, r.versions))}/{label}:{v}" for r, v in members]
+    return ",".join(cells)
 
 
 def _lineage_urls(doc: Doc, org: Organism) -> str:
@@ -1188,26 +1259,68 @@ def _lineage_urls(doc: Doc, org: Organism) -> str:
     return ",".join(out) or "-"
 
 
-def run_status(doc: Doc, organisms: list[str]) -> int:
+@dataclass
+class StatusRow:
+    """Everything a status column might need about one organism."""
+
+    doc: Doc
+    org: Organism
+    entries: list[dict]  # resolved pipeline entries
+    refs: list[Ref]  # every nextclade reference across those entries
+
+    def config(self, key: str) -> str:
+        """Distinct values of a configFile key across the entries."""
+        seen = dict.fromkeys(
+            str(e.get("configFile", {}).get(key)) for e in self.entries if e.get("configFile", {}).get(key)
+        )
+        return ",".join(seen) or "-"
+
+
+# `entries` is the number of items in the organism's `preprocessing:` list -- what
+# distinguishes one entry serving several versions (identical config) from several
+# entries (possibly differing configs).
+STATUS_COLUMNS: dict[str, Callable[[StatusRow], str]] = {
+    "organism": lambda c: c.org.name,
+    "versions": lambda c: ",".join(map(str, c.org.versions)),
+    "replicas": lambda c: ",".join(str(i.replicas if i.replicas is not None else 1) for i in c.org.active),
+    "entries": lambda c: str(len(c.org.active)),
+    "nextcladeDatasetTag": lambda c: _describe(c.refs, "nextclade_dataset_tag", "unpinned"),
+    "lineageDefinitions": lambda c: _lineage_urls(c.doc, c.org),
+    # Not shown by default -- useful for spot-checking what a pipeline actually pulls.
+    "datasetName": lambda c: _describe(c.refs, "nextclade_dataset_name"),
+    "datasetServer": lambda c: _describe(c.refs, "nextclade_dataset_server", "(nextclade default)"),
+    "segments": lambda c: ",".join(dict.fromkeys(r.segment for r in c.refs)) or "-",
+    "minimizerUrl": lambda c: c.config("minimizer_url"),
+    "batchSize": lambda c: c.config("batch_size"),
+    "alignmentRequirement": lambda c: c.config("alignment_requirement"),
+    "image": lambda c: ",".join(dict.fromkeys(str(e.get("image")) for e in c.entries)),
+}
+
+DEFAULT_STATUS_COLUMNS = (
+    "organism",
+    "versions",
+    "replicas",
+    "entries",
+    "nextcladeDatasetTag",
+    "lineageDefinitions",
+)
+
+
+def run_status(doc: Doc, organisms: list[str], extra: str | None = None) -> int:
+    headers = list(DEFAULT_STATUS_COLUMNS)
+    for col in (c.strip() for c in (extra or "").split(",") if c.strip()):
+        if col not in STATUS_COLUMNS:
+            raise Problem(f"unknown column {col!r}. Available: {sorted(STATUS_COLUMNS)}")
+        if col not in headers:
+            headers.append(col)
+
     rows = []
     for name in organisms:
-        org = doc.organisms[name]
         entries = _resolved_entries(doc, name)
-        reps = ",".join(str(i.replicas if i.replicas is not None else 1) for i in org.active)
-        tags = list(dict.fromkeys(t for e in entries for t in _dataset_tags(e)))
-        rows.append(
-            (
-                name,
-                ",".join(map(str, org.versions)),
-                reps,
-                str(len(org.active)),
-                ",".join(tags) or "-",
-                _lineage_urls(doc, org),
-            )
-        )
+        ctx = StatusRow(doc, doc.organisms[name], entries, _dataset_refs(entries))
+        rows.append(tuple(STATUS_COLUMNS[c](ctx) for c in headers))
 
-    headers = ("organism", "versions", "replicas", "entries", "nextcladeDatasetTag", "lineageDefinitions")
-    widths = [max(len(str(r[i])) for r in [headers, *rows]) for i in range(len(headers))]
+    widths = [max(len(str(r[i])) for r in [tuple(headers), *rows]) for i in range(len(headers))]
     fmt = "  ".join(f"{{:<{w}}}" for w in widths)
     print(fmt.format(*headers))
     print(fmt.format(*("-" * w for w in widths)))
@@ -1332,6 +1445,11 @@ def main(argv: list[str] | None = None) -> int:
 
     sp = sub.add_parser("status", help="show current pipeline versions")
     common(sp)
+    sp.add_argument(
+        "--columns",
+        help="extra columns to append, comma-separated. Available: "
+        + ", ".join(c for c in sorted(STATUS_COLUMNS) if c not in DEFAULT_STATUS_COLUMNS),
+    )
 
     sp = sub.add_parser("bump", help="add the next pipeline version, keeping the current one")
     common(sp)
@@ -1382,7 +1500,7 @@ def main(argv: list[str] | None = None) -> int:
         organisms = _selected(doc, getattr(args, "organisms", None))
 
         if args.cmd == "status":
-            return run_status(doc, organisms)
+            return run_status(doc, organisms, args.columns)
         if args.cmd == "check":
             return run_check(doc, organisms, args.allow_empty_segments)
 

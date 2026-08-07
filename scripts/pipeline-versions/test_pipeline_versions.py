@@ -524,6 +524,115 @@ def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsy
     assert "M:unpinned" in out
 
 
+def test_a_reference_only_key_on_configfile_is_reported(tmp_path, capsys):
+    """`nextclade_dataset_tag` on configFile reads as configured and does nothing.
+
+    The preprocessing Config model declares no such field and pydantic drops unknown
+    keys, so the dataset stays unpinned while looking pinned. Only
+    `nextclade_dataset_server` has a real configFile-level fallback, applied explicitly in
+    config.py.
+    """
+    path = tmp_path / "seg.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n          segments:\n",
+            "          <<: *preprocessingConfigFile\n"
+            "          nextclade_dataset_tag: IGNORED\n"
+            "          segments:\n",
+        )
+    )
+    assert _run(path, "check") == 0  # a warning for now; see the note in run_check
+    assert "sets nextclade_dataset_tag directly on configFile" in capsys.readouterr().out
+
+
+def test_a_configfile_level_server_is_inherited(tmp_path, capsys):
+    """The one key that does fall back, because config.py applies it explicitly."""
+    path = tmp_path / "srv.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n          segments:\n",
+            "          <<: *preprocessingConfigFile\n"
+            "          nextclade_dataset_server: https://example.invalid/data\n"
+            "          segments:\n",
+            1,
+        )
+    )
+    assert _run(path, "status", "--columns", "datasetServer") == 0
+    assert "https://example.invalid/data" in capsys.readouterr().out
+
+
+MULTI_SEGMENT = """\
+lineageSystemDefinitions: {}
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  seg:
+    schema: {metadata: []}
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - {name: r, nextclade_dataset_name: ds/L, nextclade_dataset_tag: OLD-L}
+            - name: M
+              references:
+                - {name: r, nextclade_dataset_name: ds/M, nextclade_dataset_tag: SAME-M}
+      - <<: *preprocessing
+        replicas: 3
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - {name: r, nextclade_dataset_name: ds/L, nextclade_dataset_tag: NEW-L}
+            - name: M
+              references:
+                - {name: r, nextclade_dataset_name: ds/M, nextclade_dataset_tag: SAME-M}
+"""
+
+
+def test_status_labels_across_both_versions_and_segments(tmp_path, capsys):
+    """Two entries times two segments, where only segment L differs between versions.
+
+    The version prefix belongs only where the version is what differs; M is identical in
+    both, so it collapses. And a dataset *name* that never varies by version gets no
+    version prefix at all.
+    """
+    path = tmp_path / "seg.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "status", "--columns", "datasetName") == 0
+    out = capsys.readouterr().out
+    assert "v30/L:OLD-L,v31/L:NEW-L,M:SAME-M" in out
+    assert "L:ds/L,M:ds/M" in out
+
+
+def test_status_extra_columns(capsys):
+    """Asserted structurally: which organism uses which server is config that moves."""
+    assert _run(VALUES, "status", "--columns", "datasetServer,datasetName") == 0
+    lines = capsys.readouterr().out.splitlines()
+    assert "datasetServer" in lines[0]
+    assert "datasetName" in lines[0]
+    assert lines[0].index("datasetServer") < lines[0].index("datasetName")  # order given
+    assert any("nextstrain/" in ln for ln in lines[2:])  # dataset names are rendered
+
+
+def test_status_rejects_an_unknown_column(capsys):
+    assert _run(VALUES, "status", "--columns", "nosuchcolumn") == 2
+    assert "unknown column 'nosuchcolumn'" in capsys.readouterr().err
+
+
 def test_check_warns_about_an_unpinned_dataset(capsys):
     """A version is supposed to identify a config; an unpinned dataset breaks that."""
     _run(VALUES, "check", "--organisms", "cchf")
