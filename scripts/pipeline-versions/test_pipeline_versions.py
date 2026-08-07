@@ -411,6 +411,94 @@ def test_a_refusal_aborts_the_whole_run(tmp_path, capsys):
     assert path.read_text() == before
 
 
+# ---------------------------------------------------------------- lineage systems
+
+
+MULTI_LINEAGE = """\
+lineageSystemDefinitions:
+  testvL:
+    30: https://example.invalid/L.yaml
+  testvM:
+    30: https://example.invalid/M.yaml
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  testv:
+    schema:
+      metadata:
+        - name: lineageL
+          lineageSystem: testvL
+      metadataAdd:
+        - name: lineageM
+          lineageSystem: testvM
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds
+                  nextclade_dataset_tag: TAG
+"""
+
+
+def test_an_organism_may_have_several_lineage_systems(tmp_path):
+    """cchf already declares one system for one of three segments, so a second is
+    plausible. Every lineage system must be kept in step, not just the first."""
+    path = tmp_path / "multi.yaml"
+    path.write_text(MULTI_LINEAGE)
+    assert pv.load(path).organisms["testv"].lineage_systems == ["testvL", "testvM"]
+
+    assert _run(path, "bump") == 0
+    assert {k: sorted(v) for k, v in pv.load(path).lineage.items()} == {
+        "testvL": [30, 31],
+        "testvM": [30, 31],
+    }
+
+    assert _run(path, "prune") == 0
+    assert {k: sorted(v) for k, v in pv.load(path).lineage.items()} == {
+        "testvL": [31],
+        "testvM": [31],
+    }
+    assert _run(path, "check") == 0
+
+
+def test_check_covers_every_lineage_system_not_just_the_first(tmp_path, capsys):
+    path = tmp_path / "multi.yaml"
+    path.write_text(MULTI_LINEAGE.replace("  testvM:\n    30: https://example.invalid/M.yaml\n", ""))
+    assert _run(path, "check") == 1
+    assert "lineageSystemDefinitions has no 'testvM' key" in capsys.readouterr().err
+
+
+# ------------------------------------------------------------------------ status
+
+
+def test_status_reports_dataset_tags_and_lineage_versions(capsys):
+    _run(VALUES, "status")
+    out = capsys.readouterr().out
+    assert "nextcladeDatasetTag" in out
+    assert "mpoxOutbreakLineage:28" in out  # system with the versions it defines
+    assert "2026-07-07--14-07-11Z" in out
+    # An organism naming a dataset but pinning no tag reads as unpinned, not blank.
+    assert "unpinned" in out
+
+
+def test_check_warns_about_an_unpinned_dataset(capsys):
+    """A version is supposed to identify a config; an unpinned dataset breaks that."""
+    _run(VALUES, "check", "--organisms", "cchf")
+    assert "no nextclade_dataset_tag" in capsys.readouterr().out
+
+
 # ----------------------------------------------------------------------- anchors
 
 

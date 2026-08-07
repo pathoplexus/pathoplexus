@@ -7,7 +7,8 @@
 
 Three subcommands:
 
-  status  Show each organism's pipeline versions, replicas, anchors and lineage keys.
+  status  Show each organism's pipeline versions, replicas, dataset tags and
+          lineage keys.
   bump    Add the next pipeline version for an organism (keeps the current one running).
   prune   Drop superseded pipeline versions, keeping only the highest.
   check   Assert the invariants that a hand edit can silently violate. Meant for CI.
@@ -786,7 +787,7 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
     if uniform:
         keep, doomed = org.active[0], org.active[1:]
         replicas_edit: list[Edit] = []
-        note_extra = f", replicas stays {keep.replicas}"
+        note_extra = f", replicas stays {keep.replicas if keep.replicas is not None else 1}"
     else:
         keep, doomed = org.active[-1], org.active[:-1]
         # Reprocessing is over, so drop back to the steady-state replica count -- that of
@@ -1094,6 +1095,19 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
 
         # 7. Anchors with no referent. An anchor exists to be aliased, so one that is not
         #    is either a leftover or a sign that the alias meant to use it went missing.
+        # 8. An unpinned nextclade dataset. The pipeline version is meant to identify a
+        #    config, but a reference with no `nextclade_dataset_tag` follows whatever
+        #    nextclade currently serves, so the effective config can change underneath a
+        #    version that never moved.
+        for idx, entry in enumerate(entries):
+            for ref in _dataset_refs(entry):
+                if not ref.get("nextclade_dataset_tag"):
+                    warnings.append(
+                        f"{name}: entry {idx} (version {entry['version']}) uses "
+                        f"{ref['nextclade_dataset_name']} with no nextclade_dataset_tag, "
+                        f"so its dataset is not pinned to this pipeline version."
+                    )
+
         for item in org.active:
             for anchor in _anchors_in(doc, item.start, item.end):
                 if not doc.anchors.uses.get(anchor):
@@ -1101,7 +1115,7 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                         f"{name}: anchor &{anchor} is defined but never aliased. "
                         f"Run `pipeline_versions.py prune` to remove it."
                     )
-                # 8. `- &name key: value` binds the anchor to the key scalar, not the
+                # 9. `- &name key: value` binds the anchor to the key scalar, not the
                 #    mapping, so the alias silently resolves to the string "key". The
                 #    anchor has to be alone on the line.
                 line = doc.lines[doc.anchors.defs[anchor]]
@@ -1127,18 +1141,51 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
 # -------------------------------------------------------------------------- status
 
 
+def _dataset_refs(entry: dict) -> list[dict]:
+    return [
+        ref
+        for seg in entry.get("configFile", {}).get("segments") or []
+        for ref in seg.get("references") or []
+        if ref.get("nextclade_dataset_name")
+    ]
+
+
+def _dataset_tags(entry: dict) -> list[str]:
+    """Distinct dataset tags a pipeline entry pins.
+
+    A reference naming a dataset but pinning no tag reads as "unpinned": nextclade serves
+    whatever is current, so the entry's effective config can change without the pipeline
+    version moving.
+    """
+    tags = [ref.get("nextclade_dataset_tag") or "unpinned" for ref in _dataset_refs(entry)]
+    return list(dict.fromkeys(tags))
+
+
 def run_status(doc: Doc, organisms: list[str]) -> int:
     rows = []
     for name in organisms:
         org = doc.organisms[name]
-        shape = "one entry" if len(org.active) == 1 else f"{len(org.active)} entries"
+        entries = _resolved_entries(doc, name)
         reps = ",".join(str(i.replicas if i.replicas is not None else 1) for i in org.active)
-        anchors = ",".join(i.anchor for i in org.active if i.anchor) or "-"
-        stubs = ";".join(f"v{s.versions or '?'}" for s in org.stubs) or "-"
-        systems = ",".join(org.lineage_systems) or "-"
-        rows.append((name, ",".join(map(str, org.versions)), reps, shape, anchors, stubs, systems))
+        tags = list(dict.fromkeys(t for e in entries for t in _dataset_tags(e)))
+        # Show each lineage system with the versions it defines, so a mismatch against the
+        # versions column is visible at a glance. check turns that into a hard error.
+        systems = (
+            ",".join(f"{s}:{','.join(map(str, sorted(doc.lineage.get(s, {}))))}" for s in org.lineage_systems)
+            or "-"
+        )
+        rows.append(
+            (
+                name,
+                ",".join(map(str, org.versions)),
+                reps,
+                str(len(org.active)),
+                ",".join(tags) or "-",
+                systems,
+            )
+        )
 
-    headers = ("organism", "versions", "replicas", "shape", "anchor", "stub", "lineageSystem")
+    headers = ("organism", "versions", "replicas", "entries", "nextcladeDatasetTag", "lineageSystem:versions")
     widths = [max(len(str(r[i])) for r in [headers, *rows]) for i in range(len(headers))]
     fmt = "  ".join(f"{{:<{w}}}" for w in widths)
     print(fmt.format(*headers))

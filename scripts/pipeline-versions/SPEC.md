@@ -127,7 +127,9 @@ The config was valid YAML and rendered cleanly. Only a semantic check catches it
 ## 2. Commands
 
 ```
-status                                          show current state
+status                                          per organism: versions, replicas, entry
+                                                count, dataset tags, lineage systems with
+                                                the versions they define
 bump   [--organisms …] [--mode …] [--expand-organisms …]
        [--replicas N] [--anchor-threshold N] [--dry-run]
 prune  [--organisms …] [--dry-run]
@@ -242,8 +244,9 @@ operate on the **resolved** (merge-key-expanded) view.
 | 5 | every referenced lineage system exists, and every declared version has a key under it | error |
 | 6 | no lineage key for a version no entry uses | warning |
 | 7 | no commented-out stub naming an already-active version | warning |
-| 8 | no anchor on a pipeline entry that nothing aliases | warning |
-| 9 | no anchor sharing its line with a key (`- &name key: value`) | error |
+| 8 | every dataset reference pins a `nextclade_dataset_tag` | warning |
+| 9 | no anchor on a pipeline entry that nothing aliases | warning |
+| 10 | no anchor sharing its line with a key (`- &name key: value`) | error |
 
 **Assertion 2 is the incident check and its asymmetry is deliberate.** A newer entry *adding* a
 key is an ordinary config change and is exactly what hand-editing a generated draft looks like;
