@@ -483,7 +483,14 @@ DEFAULT_BUMP_REPLICAS = 3
 DEFAULT_ANCHOR_THRESHOLD = 5
 
 
-def plan_bump(doc: Doc, org_name: str, mode: str, replicas: int | None, threshold: int) -> list[Edit]:
+def plan_bump(
+    doc: Doc,
+    org_name: str,
+    mode: str,
+    replicas: int | None,
+    threshold: int,
+    update_datasets: bool = False,
+) -> list[Edit]:
     org = doc.organisms[org_name]
     if not org.active:
         raise Problem(f"{org_name}: no active preprocessing entries")
@@ -496,7 +503,7 @@ def plan_bump(doc: Doc, org_name: str, mode: str, replicas: int | None, threshol
     elif mode == "inherit":
         edits = _bump_inherit(doc, org_name, target, new_version, replicas)
     elif mode == "expand":
-        edits = _bump_expand(doc, org_name, org, target, new_version, replicas, threshold)
+        edits = _bump_expand(doc, org_name, org, target, new_version, replicas, threshold, update_datasets)
     else:
         raise Problem(f"unknown bump mode {mode!r}")
 
@@ -596,6 +603,7 @@ def _bump_expand(
     new_version: int,
     replicas: int | None,
     threshold: int,
+    update_datasets: bool = False,
 ) -> list[Edit]:
     """Second entry with a fully spelled-out configFile, ready to hand-edit.
 
@@ -667,6 +675,13 @@ def _bump_expand(
             cfg.append(re.sub(r"\s*(?<![\w*])&\w+(?=\s|$)", "", lines[i]) or lines[i])
             i += 1
 
+    notes: list[str] = []
+    if update_datasets:
+        server = (_resolved_entries(doc, org_name)[org.active.index(target)].get("configFile") or {}).get(
+            "nextclade_dataset_server"
+        ) or DEFAULT_DATASET_SERVER
+        cfg, notes = _retag_to_newest(cfg, server, org_name)
+
     n_replicas = replicas if replicas is not None else DEFAULT_BUMP_REPLICAS
     block = [
         f"{' ' * ITEM_INDENT}- <<: *{merge_base}",
@@ -675,7 +690,75 @@ def _bump_expand(
         f"{' ' * (KEY_INDENT + 2)}- {new_version}",
         *cfg,
     ]
-    return edits + _place(target, block, org_name, new_version, n_replicas)
+    placed = _place(target, block, org_name, new_version, n_replicas)
+    for note in notes:
+        placed[0].note += f"\n    {note}"
+    return edits + placed
+
+
+def _retag_to_newest(cfg: list[str], server: str, org_name: str) -> tuple[list[str], list[str]]:
+    """Point the new entry's dataset tags at the newest the server publishes.
+
+    Only ever applied to the copy: the entry being superseded keeps the tag it has been
+    processing with, which is the whole reason a bump makes a second entry. A reference
+    that pinned nothing gets a tag added -- picking up the newest is the point, and
+    leaving it unpinned would let the dataset move again straight away.
+    """
+    index_cache: dict[str, dict[str, set[str]]] = {}
+    out: list[str] = []
+    notes: list[str] = []
+    dataset: str | None = None
+
+    for line in cfg:
+        if "nextclade_dataset_name" in line and not re.match(r"^\s*nextclade_dataset_name:\s*\S+\s*$", line):
+            # A flow mapping (`- {name: r, nextclade_dataset_name: ...}`) or an inline
+            # comment. Say so rather than leaving the tag quietly unchanged.
+            notes.append(f"{org_name}: could not retag {line.strip()!r}; edit it by hand")
+            out.append(line)
+            continue
+        if m := re.match(r"^\s*nextclade_dataset_name:\s*(\S+)\s*$", line):
+            dataset = m.group(1).strip("\"'")
+            out.append(line)
+            continue
+        if (m := re.match(r"^(\s*)nextclade_dataset_tag:\s*(\S+)\s*$", line)) and dataset:
+            newest = _newest_tag(dataset, server, index_cache, notes, org_name)
+            old = m.group(2).strip("\"'")
+            if newest and newest != old:
+                notes.append(f"{dataset}: {old} -> {newest}")
+                out.append(f'{m.group(1)}nextclade_dataset_tag: "{newest}"')
+                continue
+        out.append(line)
+
+    # A reference that named a dataset but pinned no tag: add one, immediately after the
+    # name so it reads the way every other entry does.
+    final: list[str] = []
+    for line in out:
+        final.append(line)
+        if m := re.match(r"^(\s*)nextclade_dataset_name:\s*(\S+)\s*$", line):
+            idx = out.index(line)
+            following = out[idx + 1] if idx + 1 < len(out) else ""
+            if "nextclade_dataset_tag:" in following:
+                continue
+            ds = m.group(2).strip("\"'")
+            newest = _newest_tag(ds, server, index_cache, notes, org_name)
+            if newest:
+                notes.append(f"{ds}: was unpinned -> {newest}")
+                final.append(f'{m.group(1)}nextclade_dataset_tag: "{newest}"')
+    return final, notes
+
+
+def _newest_tag(
+    dataset: str, server: str, cache: dict[str, dict[str, set[str]]], notes: list[str], org_name: str
+) -> str | None:
+    try:
+        available = _dataset_index(server, cache)
+    except Exception as exc:
+        notes.append(f"could not read {server}/index.json ({exc}); tags left as they were")
+        return None
+    if dataset not in available:
+        notes.append(f"{org_name}: {dataset} is not on {server}; tag left as it was")
+        return None
+    return max(available[dataset], default=None)
 
 
 def _global_merge_gap(doc: Doc, org_name: str, org: Organism, item: Item, declared: set[str]) -> list[str]:
@@ -1565,7 +1648,18 @@ def _selected(doc: Doc, arg: str | None) -> list[str]:
     return wanted
 
 
-def _verify(before: Doc, after: Doc, organisms: list[str], cmd: str) -> list[str]:
+def _without_dataset_tags(value):
+    """Strip nextclade_dataset_tag wherever it appears, for comparisons that allow it."""
+    if isinstance(value, dict):
+        return {k: _without_dataset_tags(v) for k, v in value.items() if k != "nextclade_dataset_tag"}
+    if isinstance(value, list):
+        return [_without_dataset_tags(v) for v in value]
+    return value
+
+
+def _verify(
+    before: Doc, after: Doc, organisms: list[str], cmd: str, ignore_dataset_tags: bool = False
+) -> list[str]:
     """Post-condition: the config that survives must be the one that was meant to.
 
     This is what makes the textual splices (and the anchor relocation in particular)
@@ -1589,6 +1683,10 @@ def _verify(before: Doc, after: Doc, organisms: list[str], cmd: str) -> list[str
         elif len(new_entries) > len(old):
             want = _config_signature(max(old, key=lambda e: max(_vlist(e))))
             got = _config_signature(new_entries[-1])
+            if ignore_dataset_tags:
+                # --update-datasets changes them deliberately. Everything else must still
+                # match, which is what this check is really guarding.
+                want, got = _without_dataset_tags(want), _without_dataset_tags(got)
             if want != got:
                 diff = sorted(k for k in set(want) | set(got) if want.get(k) != got.get(k))
                 problems.append(
@@ -1605,7 +1703,13 @@ def _vlist(entry: dict) -> list[int]:
 
 
 def _emit(
-    doc: Doc, new_lines: list[str], notes: list[str], dry_run: bool, organisms: list[str], cmd: str
+    doc: Doc,
+    new_lines: list[str],
+    notes: list[str],
+    dry_run: bool,
+    organisms: list[str],
+    cmd: str,
+    ignore_dataset_tags: bool = False,
 ) -> int:
     if not notes:
         print("nothing to do")
@@ -1630,7 +1734,7 @@ def _emit(
     try:
         scratch.write_text(text)
         after = load(scratch)
-        problems = _verify(doc, after, organisms, cmd)
+        problems = _verify(doc, after, organisms, cmd, ignore_dataset_tags)
     except Problem as exc:
         problems = [str(exc)]
     finally:
@@ -1716,6 +1820,12 @@ def main(argv: list[str] | None = None) -> int:
         help="in expand mode, alias a scalar list rather than duplicating it "
         f"once it spans more than this many lines (default: {DEFAULT_ANCHOR_THRESHOLD})",
     )
+    sp.add_argument(
+        "--update-datasets",
+        action="store_true",
+        help="in expand mode, point the new entry's nextclade_dataset_tag at the newest "
+        "the server publishes. The entry being superseded keeps its tag.",
+    )
     sp.add_argument("--dry-run", action="store_true")
 
     sp = sub.add_parser("prune", help="remove superseded pipeline versions")
@@ -1780,7 +1890,9 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 if args.cmd == "bump":
                     mode = "expand" if name in expand_only else args.mode
-                    edits += plan_bump(doc, name, mode, args.replicas, args.anchor_threshold)
+                    edits += plan_bump(
+                        doc, name, mode, args.replicas, args.anchor_threshold, args.update_datasets
+                    )
                 else:
                     edits += plan_prune(doc, name)
             except Problem as exc:
@@ -1814,7 +1926,15 @@ def main(argv: list[str] | None = None) -> int:
             print("nothing to do")
             return 0
 
-        return _emit(doc, new_lines, notes, args.dry_run, organisms, args.cmd)
+        return _emit(
+            doc,
+            new_lines,
+            notes,
+            args.dry_run,
+            organisms,
+            args.cmd,
+            ignore_dataset_tags=getattr(args, "update_datasets", False),
+        )
 
     except Problem as exc:
         print(f"error: {exc}", file=sys.stderr)

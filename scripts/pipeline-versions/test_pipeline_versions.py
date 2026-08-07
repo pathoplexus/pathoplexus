@@ -682,10 +682,14 @@ organisms:
           segments:
             - name: L
               references:
-                - {name: r, nextclade_dataset_name: ds/L, nextclade_dataset_tag: OLD-L}
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  nextclade_dataset_tag: OLD-L
             - name: M
               references:
-                - {name: r, nextclade_dataset_name: ds/M, nextclade_dataset_tag: SAME-M}
+                - name: r
+                  nextclade_dataset_name: ds/M
+                  nextclade_dataset_tag: SAME-M
       - <<: *preprocessing
         replicas: 3
         version:
@@ -695,10 +699,14 @@ organisms:
           segments:
             - name: L
               references:
-                - {name: r, nextclade_dataset_name: ds/L, nextclade_dataset_tag: NEW-L}
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  nextclade_dataset_tag: NEW-L
             - name: M
               references:
-                - {name: r, nextclade_dataset_name: ds/M, nextclade_dataset_tag: SAME-M}
+                - name: r
+                  nextclade_dataset_name: ds/M
+                  nextclade_dataset_tag: SAME-M
 """
 
 
@@ -830,6 +838,41 @@ def test_quiet_shows_errors_only(tmp_path, fake_server, capsys):
     captured = capsys.readouterr()
     assert "does not exist" in captured.err
     assert captured.out == ""
+
+
+def test_update_datasets_retags_only_the_new_entry(tmp_path, fake_server, capsys):
+    """The reason to bump is usually a new dataset, so offer to pick it up -- but only
+    on the entry being added. The one being superseded keeps the tag it has been
+    processing with, which is the whole point of having two."""
+    path = tmp_path / "retag.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "bump", "--expand-organisms", "seg", "--update-datasets") == 0
+
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    tag = lambda e, i: e["configFile"]["segments"][i]["references"][0]["nextclade_dataset_tag"]  # noqa: E731
+    assert [e["version"] for e in entries] == [[30], [31], [32]]
+    assert tag(entries[0], 0) == "OLD-L"  # untouched
+    assert tag(entries[1], 0) == "NEW-L"  # untouched
+    assert tag(entries[2], 0) == "ZZ-NEWEST"  # the new entry picks up the newest
+    assert "ds/L: NEW-L -> ZZ-NEWEST" in capsys.readouterr().out
+
+
+def test_update_datasets_pins_a_reference_that_had_no_tag(tmp_path, fake_server, capsys):
+    """Picking up the newest is the point; leaving it unpinned would let it move again."""
+    path = tmp_path / "unpinned.yaml"
+    path.write_text(MULTI_SEGMENT.replace("                  nextclade_dataset_tag: SAME-M\n", ""))
+    assert _run(path, "bump", "--expand-organisms", "seg", "--update-datasets") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    assert entries[-1]["configFile"]["segments"][1]["references"][0]["nextclade_dataset_tag"] == "SAME-M"
+    assert "ds/M: was unpinned -> SAME-M" in capsys.readouterr().out
+
+
+def test_bump_leaves_tags_alone_without_the_flag(tmp_path, fake_server):
+    path = tmp_path / "noflag.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "bump", "--expand-organisms", "seg") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    assert entries[-1]["configFile"]["segments"][0]["references"][0]["nextclade_dataset_tag"] == "NEW-L"
 
 
 def test_remote_check_catches_an_unreachable_lineage_url(tmp_path, fake_server, capsys):

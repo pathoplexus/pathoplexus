@@ -75,6 +75,14 @@ Override with `--replicas N`.
 Long scalar lists — mpox's ~175 gene names — are aliased rather than duplicated once they
 exceed `--anchor-threshold` lines (default 5). Short lists are duplicated.
 
+`--update-datasets` (expand mode) points the new entry's `nextclade_dataset_tag` at the newest
+the server publishes, and pins a reference that had none — usually the whole reason for the
+bump. Opt-in, and only ever the new entry; the one being superseded keeps its tag.
+
+```bash
+uv run scripts/pipeline-versions/pipeline_versions.py bump --expand-organisms mpox --update-datasets
+```
+
 ## Pruning
 
 Only once the backend has actually promoted the new version. The tool cannot check that for
@@ -106,6 +114,13 @@ handle. Exclude them with `--organisms` to proceed with the rest.
 ```bash
 uv run scripts/pipeline-versions/pipeline_versions.py check
 ```
+
+`-q` shows errors only, `-v` adds info such as a newer dataset tag being available.
+`--skip-remote-checks` and `--skip-model-check` keep it offline.
+
+It also confirms that every nextclade dataset named actually exists on its server and carries
+the tag pinned, and that every lineage definition URL resolves — neither is knowable from the
+file alone.
 
 Runs on every PR touching `loculus_values/**` via `helm-template-check.yml`. It catches what
 `helm template` cannot: a pipeline entry that silently lost `segments:` to a shallow merge-key

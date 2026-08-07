@@ -127,13 +127,14 @@ The config was valid YAML and rendered cleanly. Only a semantic check catches it
 ## 2. Commands
 
 ```
-status                                          per organism: versions, replicas, entry
-                                                count, nextclade dataset tags, and the
-                                                lineage definition URLs in full
-bump   [--organisms …] [--mode …] [--expand-organisms …]
+status [--columns …]                            per organism: versions, replicas, nextclade
+                                                dataset tags, and the lineage definition URLs
+                                                in full. --columns appends others, or `all`
+bump   [--organisms …] [--mode …] [--expand-organisms …] [--update-datasets]
        [--replicas N] [--anchor-threshold N] [--dry-run]
 prune  [--organisms …] [--dry-run]
-check  [--organisms …] [--allow-empty-segments]
+check  [--organisms …] [-q|-v] [--allow-empty-segments]
+       [--loculus PATH] [--skip-model-check] [--skip-remote-checks]
 ```
 
 `--organisms a,b,c` scopes every command; omitted means all. An unknown name is an error.
@@ -177,6 +178,11 @@ Requirements:
     sibling anchor when they differ.
 - **`append`** adds to the existing entry's version list, converting a scalar or flow list to a
   block list if needed.
+- **`--update-datasets`** (expand only) points the new entry's `nextclade_dataset_tag` at the
+  newest the server publishes, and pins a reference that had none. Opt-in, because it is a
+  behaviour change. Only the new entry: the one being superseded keeps the tag it has been
+  processing with, which is why there are two. A reference it cannot rewrite -- a flow mapping,
+  say -- is reported rather than silently left alone.
 - **All modes** add `lineageSystemDefinitions[system][new] = <URL of the current highest
   version>` for every lineage system the organism references.
 - The new entry is **appended after the current highest**, never inserted (§1.2). `--replicas`
@@ -225,6 +231,17 @@ about three diff lines per organism on the next bump.
 This must run as a second pass over the already-edited text: whether an anchor is still aliased
 depends on what the other edits did.
 
+**Verbosity.** `-q` errors only, default adds warnings, `-v` adds info. Severity carries
+meaning: an error breaks the pipeline, a warning is something to fix, and info is a fact you may
+already have decided about. A tag that is merely no longer newest is info, and only for the
+**latest** version -- a superseded entry pinning an older dataset is exactly what it is for.
+
+**Network.** Assertions 8b--8e reach out: 8b fetches the pinned loculus commit (shallow, cached
+under the temp dir), 8c reads each dataset server's `index.json`, 8d HEADs each URL. A fetch
+that fails is a warning, not an error, so a transient outage is not indistinguishable from a
+broken config. `--skip-model-check` and `--skip-remote-checks` disable them; `bump` and `prune`
+run neither, since they copy config verbatim and should not need the network to write a file.
+
 **A refusal aborts the whole run.** Every organism's problem is collected and reported, then
 nothing is written at all. Applying the rest would leave a half-done state that is easy not to
 notice — and a partial run is what made stale lineage keys linger unexplained. Scope with
@@ -246,6 +263,9 @@ operate on the **resolved** (merge-key-expanded) view.
 | 7 | no commented-out stub naming an already-active version | warning |
 | 8 | every dataset reference pins a `nextclade_dataset_tag` | warning |
 | 8b | `configFile` validates against the preprocessing pipeline's own model | warning |
+| 8c | every nextclade dataset named exists on its server, and carries the tag pinned | error |
+| 8d | every lineage definition URL resolves | error |
+| 8e | the latest version's dataset tag is the newest published | info |
 | 9 | no anchor on a pipeline entry that nothing aliases | warning |
 | 10 | no anchor sharing its line with a key (`- &name key: value`) | error |
 
