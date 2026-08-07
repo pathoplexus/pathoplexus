@@ -72,10 +72,13 @@ prunes left those behind as templates, and every one named an already-active ver
 uncommenting it verbatim aborted the chart render. They were removed in `24b71a8` and the tool
 does not create new ones.
 
-`prune` refuses an organism whose surviving entry inherits from the entry being deleted via a
-merge key (`<<: *anchor`), because that cannot be relocated safely. The fix is to bump it once
-with `--expand-organisms <org>` so the survivor is self-contained. Other organisms in the same
-run are unaffected.
+If the surviving entry inherits from the one being deleted via a merge key
+(`<<: *mpoxPreprocessing`), prune re-points it at the global `*preprocessing` so it becomes
+self-contained — but only after checking the two supply the same thing. If the doomed entry
+provides something global does not, it refuses.
+
+**A refusal aborts the whole run and writes nothing**, listing every organism it could not
+handle. Exclude them with `--organisms` to proceed with the rest.
 
 ## Checking
 

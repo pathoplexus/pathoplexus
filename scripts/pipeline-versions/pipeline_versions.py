@@ -75,6 +75,7 @@ class Item:
     replicas_line: int | None
     anchor: str | None  # "&name" defined on this item
     merge_alias: str | None  # "<<: *name" at the item's top level
+    merge_alias_line: int | None  # line carrying it
     has_own_config_file: bool
     inner_anchors: list[str]  # anchors defined anywhere inside this item
 
@@ -154,6 +155,7 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     replicas_line: int | None = None
     anchor: str | None = None
     merge_alias: str | None = None
+    merge_alias_line: int | None = None
     has_own_config_file = False
     inner_anchors: list[str] = []
 
@@ -162,9 +164,9 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     if m := re.match(r"^&(\w+)\s*$", head):
         anchor = m.group(1)
     elif m := re.match(r"^<<:\s*\*(\w+)\s*$", head):
-        merge_alias = m.group(1)
+        merge_alias, merge_alias_line = m.group(1), start
     elif m := re.match(r"^&(\w+)\s+<<:\s*\*(\w+)\s*$", head):
-        anchor, merge_alias = m.group(1), m.group(2)
+        anchor, merge_alias, merge_alias_line = m.group(1), m.group(2), start
 
     for off, raw in enumerate(body):
         lineno = start + off
@@ -176,8 +178,8 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
         for am in re.finditer(r"(?<![\w*])&(\w+)", text):
             inner_anchors.append(am.group(1))
 
-        if re.match(rf"^ {{{KEY_INDENT}}}<<:\s*\*(\w+)", text) and merge_alias is None:
-            merge_alias = re.match(rf"^ {{{KEY_INDENT}}}<<:\s*\*(\w+)", text).group(1)
+        if (m2 := re.match(rf"^ {{{KEY_INDENT}}}<<:\s*\*(\w+)", text)) and merge_alias is None:
+            merge_alias, merge_alias_line = m2.group(1), lineno
         if re.match(rf"^ {{{KEY_INDENT}}}configFile:", text):
             has_own_config_file = True
         if m := re.match(rf"^ {{{KEY_INDENT}}}replicas:\s*(\d+)\s*$", text):
@@ -216,6 +218,7 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
         replicas_line=replicas_line,
         anchor=anchor,
         merge_alias=merge_alias,
+        merge_alias_line=merge_alias_line,
         has_own_config_file=has_own_config_file,
         inner_anchors=inner_anchors,
     )
@@ -751,10 +754,13 @@ def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
                 f"{org_name}: replicas back to {steady.replicas} now reprocessing is done",
             )]
         note_extra = ""
+        rebase = _rebase_merge_key(doc, org_name, org, keep, doomed)
+        edits += rebase
     edits += replicas_edit
 
+    rewritten = {e.start for e in edits}
     for item in doomed:
-        edits += _relocate_anchors(doc, org_name, item, keep, doomed)
+        edits += _relocate_anchors(doc, org_name, item, keep, doomed, rewritten)
         edits.append(Edit(item.start, item.end, [],
                           f"{org_name}: removed entry for version(s) {item.versions}"))
 
@@ -768,8 +774,54 @@ def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
     return edits + _plan_lineage_prune(doc, org, [keep_version])
 
 
+def _rebase_merge_key(doc: Doc, org_name: str, org: Organism, keep: Item,
+                      doomed: list[Item]) -> list[Edit]:
+    """Point the surviving entry's merge key at the global anchor instead of a sibling.
+
+    An entry written `- <<: *mpoxPreprocessing` inherits from the *entry* prune is about
+    to delete. Unlike a value alias, a merge key cannot be relocated -- there is nowhere
+    to move a whole mapping to. But in practice all it is inheriting is what the global
+    `*preprocessing` also provides (`image`, `args`), everything else being declared by
+    the entry itself, so re-pointing it there makes the survivor self-contained.
+
+    Only done when the two provably agree on every key the survivor does not declare;
+    a per-entry `image`/`args`/`dockerTag` on the doomed entry would make them differ.
+    """
+    if keep.merge_alias is None:
+        return []
+    if not any(keep.merge_alias in d.inner_anchors for d in doomed):
+        return []  # inherits from something that is not going away
+    if keep.merge_alias_line is None:
+        raise Problem(f"{org_name}: cannot locate the '<<: *{keep.merge_alias}' line")
+
+    entries = _resolved_entries(doc, org_name)
+    resolved_keep = entries[org.active.index(keep)]
+    global_base = doc.resolved.get("defaultOrganismConfig", {}).get("preprocessing", [{}])[0]
+    declared = {"version", "replicas"} | ({"configFile"} if keep.has_own_config_file else set())
+
+    def residual(entry: dict) -> dict:
+        return {k: v for k, v in entry.items() if k not in declared}
+
+    if residual(resolved_keep) != residual(global_base):
+        differing = sorted(k for k in set(residual(resolved_keep)) | set(residual(global_base))
+                           if residual(resolved_keep).get(k) != residual(global_base).get(k))
+        raise Problem(
+            f"{org_name}: the surviving entry inherits {differing} from the entry being "
+            f"removed via '<<: *{keep.merge_alias}', which the global *preprocessing does "
+            f"not supply"
+        )
+
+    line = doc.lines[keep.merge_alias_line]
+    return [Edit(
+        keep.merge_alias_line, keep.merge_alias_line + 1,
+        [line.replace(f"*{keep.merge_alias}", "*preprocessing")],
+        f"{org_name}: surviving entry now inherits *preprocessing instead of "
+        f"*{keep.merge_alias}, which is being removed",
+    )]
+
+
 def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
-                      all_doomed: list[Item]) -> list[Edit]:
+                      all_doomed: list[Item], rewritten: set[int] | None = None) -> list[Edit]:
     """Move anchor definitions out of a block being deleted into the surviving entry.
 
     A flattened entry aliases the long lists it did not duplicate (mpox's gene names),
@@ -781,6 +833,9 @@ def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
     """
     lines = doc.lines
     edits: list[Edit] = []
+    # Lines whose alias another edit is already rewriting -- the merge-key rebase. They
+    # are not uses that will survive, so they must not force a relocation.
+    rewritten = rewritten or set()
 
     def doomed_line(i: int) -> bool:
         return any(d.start <= i < d.end for d in all_doomed)
@@ -790,6 +845,7 @@ def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
             i for i, line in enumerate(lines)
             if re.search(rf"(?<!\w)\*{re.escape(anchor)}\b", line)
             and not doomed_line(i)
+            and i not in rewritten
             and not line.lstrip().startswith("#")
         ]
         if not users:
@@ -808,11 +864,14 @@ def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
                 f"{org_name}: anchor &{anchor} is aliased at line {dst + 1} in a form this "
                 f"tool cannot relocate ({lines[dst].strip()!r})"
             )
+        # The value may be inline (`genes: &x [A, B]`), a block below, or both. Carry the
+        # inline remainder verbatim; dropping it would silently null the key.
+        inline = re.search(rf"(?<!\w)&{re.escape(anchor)}\b(.*)$", lines[src]).group(1)
         src_end = _block_end(lines, src)
         shift = len(m.group(1)) - _indent(lines[src])
         body = [(" " * shift + l) if l.strip() else l for l in lines[src + 1 : src_end]]
         edits.append(Edit(
-            dst, dst + 1, [f"{m.group(1)}{m.group(2)}: &{anchor}"] + body,
+            dst, dst + 1, [f"{m.group(1)}{m.group(2)}: &{anchor}{inline}"] + body,
             f"{org_name}: moved the &{anchor} definition into the surviving entry",
         ))
     return edits
@@ -1132,6 +1191,11 @@ def main(argv: list[str] | None = None) -> int:
                     f"--expand-organisms names {outside}, which --organisms does not include"
                 )
 
+        # Collect every organism's problem before reporting, so one run tells you about
+        # all of them -- but if there is any, write nothing at all. Applying the rest
+        # would leave a half-done state that is easy not to notice, and a partial run is
+        # what made stale lineage keys linger unexplained. Scope with --organisms to
+        # proceed with the ones that do work.
         edits: list[Edit] = []
         problems: list[str] = []
         for name in organisms:
@@ -1144,17 +1208,23 @@ def main(argv: list[str] | None = None) -> int:
             except Problem as exc:
                 problems.append(str(exc))
 
-        for msg in problems:
-            print(f"SKIPPED: {msg}\n", file=sys.stderr)
+        if problems:
+            for msg in problems:
+                print(f"error: {msg}", file=sys.stderr)
+            print(
+                f"\nnothing was written. {len(problems)} of {len(organisms)} organism(s) "
+                f"could not be handled; re-run with --organisms to exclude them.",
+                file=sys.stderr,
+            )
+            return 1
 
         if not edits:
             print("nothing to do")
-            return 1 if problems else 0
+            return 0
 
         new_lines = apply_edits(doc.lines, edits)
         notes = [e.note for e in sorted(edits, key=lambda e: e.start)]
-        rc = _emit(doc, new_lines, notes, args.dry_run, organisms, args.cmd)
-        return rc or (1 if problems else 0)
+        return _emit(doc, new_lines, notes, args.dry_run, organisms, args.cmd)
 
     except Problem as exc:
         print(f"error: {exc}", file=sys.stderr)

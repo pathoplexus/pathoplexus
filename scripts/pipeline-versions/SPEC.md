@@ -202,15 +202,23 @@ highest" — a stale key can sit above the current version, and one can be left 
 skipped prune. This sweep must run **even when there are no entry edits to make**, otherwise a
 stale key on a single-version organism can never be removed while `check` goes on reporting it.
 
+**Merge keys.** A surviving entry may inherit from a doomed entry via `<<: *anchor`. Unlike a
+value alias this cannot be relocated — there is nowhere to move a whole mapping to. Instead
+re-point it at the global `*preprocessing`, which makes the survivor self-contained. Valid only
+when the two agree on every key the survivor does not declare itself (`image`, `args`);
+compute it, and refuse if they differ.
+
 **Refusals.** `prune` must decline, with a message naming the organism, rather than guess when:
 
-- a surviving entry inherits from a doomed entry via a **merge key** (`<<: *anchor`) — unlike a
-  value alias this cannot be relocated. The escape is to `bump --expand-organisms <org>` first,
-  making the survivor self-contained;
+- a surviving entry inherits keys from a doomed entry that the global `*preprocessing` does not
+  supply, so the merge key cannot be re-pointed;
 - an anchor is aliased in a form the relocation cannot express;
 - `version:` is not in a form it can edit.
 
-A refusal for one organism must not block the others.
+**A refusal aborts the whole run.** Every organism's problem is collected and reported, then
+nothing is written at all. Applying the rest would leave a half-done state that is easy not to
+notice — and a partial run is what made stale lineage keys linger unexplained. Scope with
+`--organisms` to proceed with the ones that do work.
 
 ### 2.3 `check` — the CI gate
 

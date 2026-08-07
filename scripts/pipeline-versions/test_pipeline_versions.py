@@ -283,16 +283,144 @@ def test_prune_is_a_noop_when_there_is_nothing_to_do(work, capsys):
     assert "nothing to do" in capsys.readouterr().out
 
 
-def test_prune_refuses_when_a_survivor_merges_from_a_doomed_entry(work, capsys):
-    """Today's mpox: entry 28 is `<<: *mpoxPreprocessing`, defined on entry 27.
+def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(legacy):
+    """mpox: entry 28 is `- <<: *mpoxPreprocessing`, an anchor on entry 27.
 
-    Deleting 27 would orphan that merge key, and a merge-key alias cannot be relocated
-    the way a plain value alias can -- so the tool declines rather than guessing.
-    Bumping mpox with --expand-organisms first makes the survivor self-contained and
-    the prune then succeeds (see the expand tests).
+    Deleting 27 would orphan that merge key, and a merge key cannot be relocated the way
+    a value alias can. All it supplies is what the global *preprocessing also supplies,
+    so the survivor is re-pointed there and the collapse proceeds.
     """
-    assert _run(work, "prune", "--organisms", "mpox") != 0
-    assert "cannot relocate" in capsys.readouterr().err
+    before = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    v28 = [e for e in before if e["version"] == [28]][0]
+
+    assert _run(legacy, "prune", "--organisms", "mpox") == 0
+
+    doc = pv.load(legacy)
+    org = doc.organisms["mpox"]
+    assert org.versions == [28]
+    assert org.active[0].merge_alias == "preprocessing"
+    assert org.active[0].replicas == 1  # back to steady state from 3
+
+    after = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    assert len(after) == 1
+    assert pv._config_signature(after[0]) == pv._config_signature(v28)
+    assert len(after[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
+    assert sorted(doc.lineage.entries["mpoxOutbreakLineage"]) == [28]
+    assert "mpoxPreprocessing" not in "\n".join(doc.lines)
+
+
+SYNTHETIC = """\
+lineageSystemDefinitions: {}
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: ghcr.io/loculus-project/preprocessing-nextclade
+      args:
+        - "prepro"
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+        batch_size: 100
+organisms:
+  testv:
+    schema:
+      metadata: []
+    preprocessing:
+      - &testvPreprocessing
+        <<: *preprocessing
+        replicas: 1
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_tag: TAG-ONE
+                genes: &testvGenes [A, B]
+%s"""
+
+NEWER_OVERRIDES_TAG = """\
+      - <<: *testvPreprocessing
+        replicas: 3
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_tag: TAG-TWO
+                genes: *testvGenes
+"""
+
+NEWER_INHERITS_CONFIG = """\
+      - <<: *testvPreprocessing
+        replicas: 3
+        version:
+          - 31
+"""
+
+
+def _synthetic(tmp_path: Path, tail: str, name: str = "s.yaml") -> Path:
+    path = tmp_path / name
+    path.write_text(SYNTHETIC % tail)
+    return path
+
+
+def test_prune_keeps_the_newer_tag_when_the_newer_entry_overrides_it(tmp_path):
+    """v30 sets one dataset tag, v31 overrides it. The survivor must be v31's."""
+    path = _synthetic(tmp_path, NEWER_OVERRIDES_TAG)
+    assert _run(path, "prune") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["testv"]["preprocessing"]
+    ref = entries[0]["configFile"]["segments"][0]["references"][0]
+    assert [e["version"] for e in entries] == [[31]]
+    assert ref["nextclade_dataset_tag"] == "TAG-TWO"
+    assert ref["genes"] == ["A", "B"]  # inline flow-list anchor relocated with its value
+    assert entries[0]["replicas"] == 1
+    assert entries[0]["image"]  # not lost when the merge key was re-pointed
+
+
+def test_prune_keeps_the_inherited_config_when_the_newer_entry_declares_none(tmp_path):
+    """The dangerous direction: v31 inherits configFile wholesale, so segments live only
+    on v30. Collapsing must not drop them."""
+    path = _synthetic(tmp_path, NEWER_INHERITS_CONFIG)
+    assert _run(path, "prune") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["testv"]["preprocessing"]
+    assert [e["version"] for e in entries] == [[31]]
+    assert len(entries[0]["configFile"]["segments"]) == 1
+    assert entries[0]["configFile"]["segments"][0]["references"][0]["nextclade_dataset_tag"] == "TAG-ONE"
+    assert entries[0]["replicas"] == 1
+
+
+def test_a_refusal_aborts_the_whole_run(tmp_path, capsys):
+    """One organism that cannot be handled must not leave the others half-done."""
+    path = _synthetic(tmp_path, NEWER_OVERRIDES_TAG).with_name("multi.yaml")
+    text = (SYNTHETIC % NEWER_OVERRIDES_TAG).replace(
+        "      - &testvPreprocessing\n        <<: *preprocessing\n",
+        "      - &testvPreprocessing\n        <<: *preprocessing\n        dockerTag: \"pinned\"\n")
+    path.write_text(text)
+    before = path.read_text()
+    assert _run(path, "prune") == 1
+    err = capsys.readouterr().err
+    assert "dockerTag" in err
+    assert "nothing was written" in err
+    assert path.read_text() == before
+
+
+def test_prune_refuses_to_rebase_when_the_doomed_entry_supplies_more(legacy, capsys):
+    """If the entry being removed provides something *preprocessing does not, the merge
+    key cannot be re-pointed and the tool must decline rather than silently drop it."""
+    lines = pv.load(legacy).lines
+    anchor_line = next(i for i, l in enumerate(lines) if l.strip() == "- &mpoxPreprocessing")
+    lines.insert(anchor_line + 2, '        dockerTag: "pinned-for-this-organism"')
+    legacy.write_text("\n".join(lines))
+
+    assert _run(legacy, "prune", "--organisms", "mpox") != 0
+    err = capsys.readouterr().err
+    assert "dockerTag" in err and "global *preprocessing does not supply" in err
 
 
 def test_bump_then_prune_returns_to_a_single_entry(work):
