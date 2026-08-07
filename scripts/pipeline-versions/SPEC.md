@@ -128,8 +128,8 @@ The config was valid YAML and rendered cleanly. Only a semantic check catches it
 
 ```
 status                                          per organism: versions, replicas, entry
-                                                count, dataset tags, lineage systems with
-                                                the versions they define
+                                                count, nextclade dataset tags, and the
+                                                lineage definition URLs in full
 bump   [--organisms …] [--mode …] [--expand-organisms …]
        [--replicas N] [--anchor-threshold N] [--dry-run]
 prune  [--organisms …] [--dry-run]

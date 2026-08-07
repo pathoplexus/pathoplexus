@@ -483,14 +483,45 @@ def test_check_covers_every_lineage_system_not_just_the_first(tmp_path, capsys):
 # ------------------------------------------------------------------------ status
 
 
-def test_status_reports_dataset_tags_and_lineage_versions(capsys):
+def test_status_reports_dataset_tags_and_lineage_urls(capsys):
     _run(VALUES, "status")
     out = capsys.readouterr().out
     assert "nextcladeDatasetTag" in out
-    assert "mpoxOutbreakLineage:28" in out  # system with the versions it defines
     assert "2026-07-07--14-07-11Z" in out
+    # The lineage URL in full: it is what SILO loads, and what you want to open.
+    assert "definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml" in out
     # An organism naming a dataset but pinning no tag reads as unpinned, not blank.
     assert "unpinned" in out
+
+
+def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsys):
+    """Segments pin their datasets independently, so a bare list would not say which is
+    which. When they all agree the label is noise, so it is left off."""
+    path = tmp_path / "segs.yaml"
+    path.write_text(
+        MULTI_LINEAGE.replace(
+            """            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds
+                  nextclade_dataset_tag: TAG
+""",
+            """            - name: L
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds/L
+                  nextclade_dataset_tag: TAG-L
+            - name: M
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds/M
+""",
+        )
+    )
+    _run(path, "status")
+    out = capsys.readouterr().out
+    assert "L:TAG-L" in out
+    assert "M:unpinned" in out
 
 
 def test_check_warns_about_an_unpinned_dataset(capsys):

@@ -18,7 +18,7 @@ uv run scripts/pipeline-versions/pipeline_versions.py status
 
 | | |
 |---|---|
-| `status` | versions, replicas, entry count, nextclade dataset tags, lineage systems and the versions they define |
+| `status` | versions, replicas, entry count, nextclade dataset tags, lineage definition URLs |
 | `bump`   | add the next version, leaving the current one running |
 | `prune`  | drop superseded versions once reprocessing is done |
 | `check`  | assert the invariants; exit 1 on failure. Runs in CI |

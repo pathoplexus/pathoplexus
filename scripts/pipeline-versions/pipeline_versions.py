@@ -1151,14 +1151,41 @@ def _dataset_refs(entry: dict) -> list[dict]:
 
 
 def _dataset_tags(entry: dict) -> list[str]:
-    """Distinct dataset tags a pipeline entry pins.
+    """Dataset tags a pipeline entry pins, labelled per segment when they differ.
 
     A reference naming a dataset but pinning no tag reads as "unpinned": nextclade serves
     whatever is current, so the entry's effective config can change without the pipeline
-    version moving.
+    version moving. Segments can legitimately pin different tags -- their datasets are
+    released independently -- so label which is which rather than listing bare values.
     """
-    tags = [ref.get("nextclade_dataset_tag") or "unpinned" for ref in _dataset_refs(entry)]
-    return list(dict.fromkeys(tags))
+    labelled: list[tuple[str, str]] = []
+    segments = entry.get("configFile", {}).get("segments") or []
+    for seg in segments:
+        refs = [r for r in seg.get("references") or [] if r.get("nextclade_dataset_name")]
+        for ref in refs:
+            # Whichever of segment/reference actually distinguishes them: cchf has three
+            # segments each with one reference, dengue one segment with four references.
+            label = seg.get("name") if len(segments) > 1 else ref.get("name")
+            labelled.append((str(label), ref.get("nextclade_dataset_tag") or "unpinned"))
+
+    tags = {t for _, t in labelled}
+    if len(tags) <= 1:
+        return sorted(tags)
+    return [f"{label}:{tag}" for label, tag in labelled]
+
+
+def _lineage_urls(doc: Doc, org: Organism) -> str:
+    """What SILO will actually load, which is the point of the entry -- not its key.
+
+    Every version of a system points at the same URL today, so collapse them; if they
+    ever diverge, show each. Shown in full: it is the thing you want to open or paste.
+    """
+    out = []
+    for system in org.lineage_systems:
+        urls = list(dict.fromkeys(url for _, url in doc.lineage.get(system, {}).values()))
+        joined = ",".join(urls) or "MISSING"
+        out.append(joined if len(org.lineage_systems) == 1 else f"{system}={joined}")
+    return ",".join(out) or "-"
 
 
 def run_status(doc: Doc, organisms: list[str]) -> int:
@@ -1168,12 +1195,6 @@ def run_status(doc: Doc, organisms: list[str]) -> int:
         entries = _resolved_entries(doc, name)
         reps = ",".join(str(i.replicas if i.replicas is not None else 1) for i in org.active)
         tags = list(dict.fromkeys(t for e in entries for t in _dataset_tags(e)))
-        # Show each lineage system with the versions it defines, so a mismatch against the
-        # versions column is visible at a glance. check turns that into a hard error.
-        systems = (
-            ",".join(f"{s}:{','.join(map(str, sorted(doc.lineage.get(s, {}))))}" for s in org.lineage_systems)
-            or "-"
-        )
         rows.append(
             (
                 name,
@@ -1181,11 +1202,11 @@ def run_status(doc: Doc, organisms: list[str]) -> int:
                 reps,
                 str(len(org.active)),
                 ",".join(tags) or "-",
-                systems,
+                _lineage_urls(doc, org),
             )
         )
 
-    headers = ("organism", "versions", "replicas", "entries", "nextcladeDatasetTag", "lineageSystem:versions")
+    headers = ("organism", "versions", "replicas", "entries", "nextcladeDatasetTag", "lineageDefinitions")
     widths = [max(len(str(r[i])) for r in [headers, *rows]) for i in range(len(headers))]
     fmt = "  ".join(f"{{:<{w}}}" for w in widths)
     print(fmt.format(*headers))
