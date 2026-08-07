@@ -492,9 +492,8 @@ def _ensure_anchor(doc: Doc, org_name: str, target: Item) -> tuple[str, list[Edi
     """Give `target` an anchor if it has none, so a sibling entry can inherit from it."""
     if target.anchor:
         return target.anchor, []
-    # Names collide two ways: an earlier entry of this organism took the obvious name
-    # (mpox), or another organism did -- west-nile's anchor is misnamed
-    # &yellowFeverPreprocessing. Qualify by version rather than fail.
+    # An organism whose earlier entry already took the plain name (mpox mid-bump) needs a
+    # distinct one, so qualify by version rather than fail.
     taken = _all_anchors(doc.lines)
     anchor = f"{_camel(org_name)}Preprocessing"
     if anchor in taken:

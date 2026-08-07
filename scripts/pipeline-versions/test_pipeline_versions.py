@@ -36,7 +36,12 @@ PRE_INCIDENT_COMMIT = "1c04032"  # a clean prune, before the two-entry migration
 # is the normal way to edit values.yaml, so the working copy's version numbers and stubs
 # move; tests that assert on them must not depend on that. Version numbers are still
 # derived rather than hardcoded wherever it costs nothing, so re-pinning stays cheap.
-BASE_COMMIT = "f9de729"
+BASE_COMMIT = "24b71a8"
+
+# The last commit that still carried the commented-out stubs left behind by older prunes.
+# `24b71a8` removed them and the tool no longer produces any, but it must keep handling one
+# it finds -- in an old branch, or from a hand edit -- so those tests pin to this instead.
+LEGACY_STUB_COMMIT = "f9de729"
 
 
 def _blob(commit: str) -> str:
@@ -56,6 +61,14 @@ def _at(commit: str, tmp_path: Path) -> Path:
 def work(tmp_path: Path) -> Path:
     path = tmp_path / "values.yaml"
     path.write_text(_blob(BASE_COMMIT))
+    return path
+
+
+@pytest.fixture
+def legacy(tmp_path: Path) -> Path:
+    """A config that still has the old commented-out stubs. See LEGACY_STUB_COMMIT."""
+    path = tmp_path / "legacy.yaml"
+    path.write_text(_blob(LEGACY_STUB_COMMIT))
     return path
 
 
@@ -116,8 +129,8 @@ def test_check_catches_duplicate_versions(work, capsys):
     assert "version 27 declared by entries" in capsys.readouterr().err
 
 
-def test_check_warns_about_stale_stubs(work, capsys):
-    _run(work, "check")
+def test_check_warns_about_stale_stubs(legacy, capsys):
+    _run(legacy, "check")
     out = capsys.readouterr().out
     assert "dengue: commented-out stub declares version [32], which is already active" in out
 
@@ -125,20 +138,20 @@ def test_check_warns_about_stale_stubs(work, capsys):
 # -------------------------------------------------------------------------- bump
 
 
-def test_bump_reuses_the_commented_stub_and_overwrites_its_stale_version(work):
-    before = work.read_text()
-    assert _run(work, "bump", "--organisms", "dengue") == 0
-    assert _versions(work, "dengue") == [32, 33]
+def test_bump_reuses_a_commented_stub_and_overwrites_its_stale_version(legacy):
+    before = legacy.read_text()
+    assert _run(legacy, "bump", "--organisms", "dengue") == 0
+    assert _versions(legacy, "dengue") == [32, 33]
     # The stub was replaced in place, not appended alongside.
     assert before.count("# - <<: *denguePreprocessing") == 1
-    assert "# - <<: *denguePreprocessing" not in work.read_text()
-    assert len(pv.load(work).organisms["dengue"].stubs) == 0
+    assert "# - <<: *denguePreprocessing" not in legacy.read_text()
+    assert len(pv.load(legacy).organisms["dengue"].stubs) == 0
 
 
-def test_bump_keeps_the_stubs_deliberate_replica_count(work):
+def test_bump_keeps_a_stubs_deliberate_replica_count(legacy):
     """west-nile and hmpv chose 2, not the default 3."""
-    assert _run(work, "bump", "--organisms", "west-nile") == 0
-    new = max(pv.load(work).organisms["west-nile"].active, key=lambda i: i.max_version)
+    assert _run(legacy, "bump", "--organisms", "west-nile") == 0
+    new = max(pv.load(legacy).organisms["west-nile"].active, key=lambda i: i.max_version)
     assert new.replicas == 2
 
 
@@ -156,10 +169,17 @@ def test_bump_adds_an_anchor_when_the_entry_has_none(work):
     assert org.versions == [31, 32]
 
 
-def test_bump_avoids_an_anchor_name_collision(work):
-    """yellow-fever's obvious name is taken by west-nile's misnamed anchor."""
+def test_bump_names_a_new_anchor_after_its_organism(work):
     assert _run(work, "bump", "--organisms", "yellow-fever") == 0
-    assert pv.load(work).organisms["yellow-fever"].active[0].anchor == "yellowFeverPreprocessingV31"
+    assert pv.load(work).organisms["yellow-fever"].active[0].anchor == "yellowFeverPreprocessing"
+
+
+def test_bump_qualifies_an_anchor_name_already_taken_within_the_organism(work):
+    """mpox mid-bump: entry 27 already holds `mpoxPreprocessing`, so entry 28 needs
+    a distinct name. The suffix is temporary -- prune removes the entry carrying it."""
+    assert _run(work, "bump", "--organisms", "mpox") == 0
+    anchors = [i.anchor for i in pv.load(work).organisms["mpox"].active]
+    assert anchors[:2] == ["mpoxPreprocessing", "mpoxPreprocessingV28"]
 
 
 def test_bump_adds_the_lineage_version_key(work):
@@ -350,11 +370,10 @@ def test_prune_keep_stubs_leaves_them(work):
     assert pv.load(work).organisms["rsv-b"].versions == [25]
 
 
-def test_prune_clears_a_preexisting_stale_stub(work):
-    """The six stubs in the file today all name an already-active version."""
-    assert len(pv.load(work).organisms["dengue"].stubs) == 1
-    assert _run(work, "prune", "--organisms", "dengue") == 0
-    org = pv.load(work).organisms["dengue"]
+def test_prune_clears_a_preexisting_stale_stub(legacy):
+    assert len(pv.load(legacy).organisms["dengue"].stubs) == 1
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+    org = pv.load(legacy).organisms["dengue"]
     assert org.stubs == [] and org.versions == [32]
 
 

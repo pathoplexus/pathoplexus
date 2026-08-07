@@ -155,9 +155,8 @@ must be within `--organisms` if that is given.
 Requirements:
 
 - **`inherit`** emits `- <<: *anchor` + `replicas` + `version`. If the source entry has no
-  anchor, add one. Derive the name from the organism; on collision, qualify with the source
-  version. Collisions occur both within an organism (mpox) and across them — west-nile's anchor
-  is misnamed `&yellowFeverPreprocessing`, so yellow-fever's obvious name is taken.
+  anchor, add one, named per §3.3; if that name is already taken — an organism mid-bump whose
+  earlier entry holds it — qualify with the source version.
 - **`expand`** copies the source entry's `configFile` in full so every key is present and
   editable in place.
   - A scalar list longer than `--anchor-threshold` lines (default 5) is replaced by an alias,
@@ -265,12 +264,28 @@ their position and replicas, and always overwrites their version.
 commit that first needed it. A reimplementation cannot avoid anchors by always duplicating —
 but it can confine them to flat scalar lists, where relocation is mechanical.
 
-### 3.3 Known oddities
+### 3.3 Anchor naming
 
-- west-nile's anchor is named `&yellowFeverPreprocessing`. Left alone deliberately; matching
-  must be structural (by organism key path), never by anchor name.
-- Anchor naming is inconsistent (`rsvaPreprocessing`, `ebolaBdbvPreprocessing`); several
-  organisms have none.
+Pipeline-entry anchors are `<camelCase organism>Preprocessing` — `westNilePreprocessing`,
+`rsvAPreprocessing`, `ebolaBdbvPreprocessing`. An organism only carries one if something
+aliases it, so several have none, and that is fine.
+
+When an organism is mid-bump and its earlier entry already holds the plain name, the generated
+one is suffixed with the source version (`mpoxPreprocessingV28`). That suffix is expected and
+temporary — `prune` removes the entry carrying it.
+
+**Match organisms structurally, by their key path under `organisms:` — never by anchor name.**
+The convention is not enforced by anything, so it can drift again.
+
+> Until 2026-08-07 west-nile's anchor was named `&yellowFeverPreprocessing`, left over from
+> when West Nile was split out of the Yellow Fever config. It was renamed, along with
+> `rsvaPreprocessing`/`rsvbPreprocessing` → `rsvAPreprocessing`/`rsvBPreprocessing`, in a
+> rename-only change verified to leave the resolved document identical. Beyond being
+> misleading, it made yellow-fever's own generated anchor collide, producing the meaningless
+> name `yellowFeverPreprocessingV31`.
+
+### 3.4 Other
+
 - `values.schema.json` does not require `configFile` or `configFile.segments`.
 
 ---

@@ -66,8 +66,11 @@ you; it edits YAML and nothing else.
 uv run scripts/pipeline-versions/pipeline_versions.py prune --organisms dengue
 ```
 
-Keeps the highest version, deletes the rest, drops stale lineage keys, clears leftover
-commented-out stubs, and returns replicas to their steady-state value.
+Keeps the highest version, deletes the rest, drops stale lineage keys, and returns replicas to
+their steady-state value. It also clears any leftover commented-out entry it finds — older
+prunes left those behind as templates, and every one named an already-active version, so
+uncommenting it verbatim aborted the chart render. They were removed in `24b71a8` and the tool
+does not create new ones.
 
 `prune` refuses an organism whose surviving entry inherits from the entry being deleted via a
 merge key (`<<: *anchor`), because that cannot be relocated safely. The fix is to bump it once
