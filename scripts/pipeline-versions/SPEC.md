@@ -63,6 +63,46 @@ lineageSystemDefinitions:
   `definitions[int(pipeline_version)]` for whatever version the backend has promoted.
   **No CI helm render can catch it** — which is why the tool must.
 
+### 1.3a Where the lineage names actually live
+
+Needed only for assertion 11, but not guessable from `values.yaml` alone.
+
+The lineage values SILO must resolve are whatever nextclade can assign, and nextclade can only
+assign what is on the dataset's **reference tree**: it places a query on the tree and copies an
+attribute from the node it lands on. So the set of possible assignments is the distinct values
+of that attribute over the tree's nodes.
+
+Which attribute, which dataset and which tree file are all determined by config:
+
+- **Which attribute** — the metadata field carrying the `lineageSystem` also carries
+  `preprocessing.inputs.input`, the path the pipeline lifts from
+  (`prepro.py: add_nextclade_metadata`). Two shapes occur:
+  - `nextclade.clade` → the tree's `node_attrs.clade_membership.value`
+  - `nextclade.customNodeAttributes.<name>` → `node_attrs.<name>.value`
+
+  Anything else is not read from a reference tree; do not guess. Both paths reach the stored
+  value untransformed — `add_nextclade_metadata`'s default branch is `str(raw)` and the default
+  `identity` processing function returns its input unchanged unless given a `type` arg.
+
+- **Which dataset** — the segment. The chart passes it as `args.segment`, taken from the
+  field's `relatesToSegment` (`_preprocessingFromValues.tpl`). cchf's `lineage_S` is
+  `relatesToSegment: S`, so the L and M datasets are irrelevant to `cchfS` and including them
+  would produce pure false errors. A `perSegment: true` field is expanded to one field per
+  segment, so it covers all of them. A field with neither, on a multi-segment organism, is not
+  resolvable. A field may also pin `args.reference`; otherwise every reference of the matching
+  segments contributes.
+
+- **Which file** — `pathogen.json`'s `files.treeJson`, at `{server}/{dataset}/{tag}/`. It is
+  **not always `tree.json`**: marburg's is `marburg_tree.json`.
+
+An unpinned reference follows whatever the server currently serves, so resolve it to the newest
+tag in `index.json` — that is what the pipeline would pick up too.
+
+The hierarchy itself is a YAML mapping of lineage name → `{aliases, parents}` at the URL in
+`lineageSystemDefinitions.<system>.<version>`. Accept keys **and** aliases as defined names, and
+stringify keys: mpox's hierarchy has a literal `None:` key, which YAML resolves to null. (No
+hierarchy currently declares any alias, so that branch is untested against production data.)
+
 ### 1.4 The three entry shapes
 
 All three are live in the repo. A reimplementation that handles only one will be wrong.
@@ -268,6 +308,7 @@ operate on the **resolved** (merge-key-expanded) view.
 | 8e | the latest version's dataset tag is the newest published | info |
 | 9 | no anchor on a pipeline entry that nothing aliases | warning |
 | 10 | no anchor sharing its line with a key (`- &name key: value`) | error |
+| 11 | the lineage hierarchy defines every lineage its nextclade dataset can assign | error |
 
 **Assertion 2 is the incident check and its asymmetry is deliberate.** A newer entry *adding* a
 key is an ordinary config change and is exactly what hand-editing a generated draft looks like;
@@ -276,6 +317,30 @@ incident's signature. Assertion 4 guarantees "earlier" means "lower version".
 
 Assertion 5 distinguishes an absent lineage *system* from an absent *version key* — they are
 different mistakes.
+
+**Assertion 11 is the only cross-artifact check.** Everything else asks whether the config is
+internally coherent; this asks whether two independently maintained things agree. A bump moves
+both the nextclade dataset tag and the lineage hierarchy URL, and nothing forces them to move
+together. See §1.3a for how to resolve the two artifacts.
+
+Its **direction** matters: a hierarchy entry no dataset can assign is harmless, so extra
+definitions are not reported. A lineage the dataset assigns but the hierarchy omits is asserted
+to fail the SILO import — that consequence is asserted, not observed, and follows from §1.3.
+
+It is asserted for **every declared version**, not just the newest — deliberately unlike
+assertion 8e, which is a preference. Each version pairs its own dataset tags with its own
+hierarchy URL, and a superseded-but-still-running version whose pairing is broken is a live
+failure.
+
+Anything it cannot resolve — an input not read from a reference tree, a multi-segment organism
+whose lineage field names no segment, an unreachable tree or hierarchy — is a **warning**,
+following the same split as the other remote checks: definite breakage is an error, unknowable
+is a warning. Guessing a segment would invent exactly the false errors scoping exists to avoid.
+
+Assertion 11 is the only expensive one: it downloads a reference tree per dataset per tag, and
+they run to several MB (mpox's is ~5.6 MB, dengue has four). Caching the *extracted value set* —
+not the tree — is safe because a tag is immutable, but it only helps repeated local runs; CI
+starts with an empty cache every time. `--skip-remote-checks` turns it off along with 8c–8e.
 
 ---
 

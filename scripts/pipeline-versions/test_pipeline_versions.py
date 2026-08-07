@@ -263,7 +263,7 @@ def _check_configs(work: Path, configs: list[dict]) -> int:
     doc.resolved["organisms"]["andv"]["preprocessing"] = [
         {"version": [i + 1], "configFile": c} for i, c in enumerate(configs)
     ]
-    doc.organisms["andv"].lineage_systems = []
+    doc.organisms["andv"].lineage_fields = []
     doc.organisms["andv"].items = []
     return pv.run_check(doc, ["andv"], allow_empty_segments=False)
 
@@ -1229,6 +1229,236 @@ def test_version_mismatch_between_scan_and_parser_raises(work, monkeypatch):
     monkeypatch.setattr(pv, "_parse_item", lying)
     with pytest.raises(pv.Problem, match="Refusing to edit"):
         pv.load(work)
+
+
+# ------------------------------------------------------- lineage/dataset coverage
+
+# Two segments, but the lineage system covers only S -- cchf's shape. Both versions
+# carry the same datasets, so the only thing that differs between them is the
+# hierarchy URL, which is what makes the per-version assertion visible.
+COVERAGE = """\
+lineageSystemDefinitions:
+  covS:
+    30: https://example.invalid/S-30.yaml
+    31: https://example.invalid/S-31.yaml
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  cov:
+    schema:
+      metadata:
+        - name: lineage_S
+          relatesToSegment: S
+          lineageSystem: covS
+          preprocessing:
+            inputs: {input: nextclade.clade}
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  nextclade_dataset_tag: T
+            - name: S
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/S
+                  nextclade_dataset_tag: T
+      - <<: *preprocessing
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  nextclade_dataset_tag: T
+            - name: S
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/S
+                  nextclade_dataset_tag: T
+"""
+
+# (dataset, tag) -> (node attribute, values on the reference tree).
+_TREES = {
+    ("ds/L", "T"): ("clade_membership", ["L1", "L2"]),
+    ("ds/S", "T"): ("clade_membership", ["S1", "S2"]),
+    ("ds/S", "ZZ-NEW"): ("clade_membership", ["S1", "S2", "S9"]),
+    ("ds/C", "T"): ("outbreakLineage", ["c/A", "c/B"]),
+}
+# marburg's tree file is `marburg_tree.json`, so the name must come from pathogen.json.
+_TREE_FILES = {"ds/S": "cov_tree.json"}
+_HIERARCHIES = {
+    "https://example.invalid/S-30.yaml": {"S1": {}},  # missing S2
+    "https://example.invalid/S-31.yaml": {"S1": {}, "S2": {}, "S3": {}},  # S3 is spare
+    "https://example.invalid/C.yaml": {"c/A": {}, "c/B": {}},
+}
+
+
+@pytest.fixture
+def fake_datasets(monkeypatch, tmp_path):
+    """A nextclade server serving pathogen.json, reference trees and hierarchy YAML.
+
+    The cache is redirected into the test's tmp_path: `_tree_values` otherwise persists
+    extracted value sets across runs, and a real `check` run would seed them.
+    """
+
+    def cache(*parts):
+        path = tmp_path.joinpath("cache", *parts)
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    monkeypatch.setattr(pv, "_cache_dir", cache)
+
+    index = {
+        "collections": [
+            {
+                "datasets": [
+                    {"path": "ds/L", "versions": [{"tag": "T"}]},
+                    {"path": "ds/S", "versions": [{"tag": "T"}, {"tag": "ZZ-NEW"}]},
+                    {"path": "ds/C", "versions": [{"tag": "T"}]},
+                ]
+            }
+        ]
+    }
+
+    class Resp:
+        def __init__(self, payload=None, text="", status=200):
+            self._payload, self.text, self.status_code = payload, text, status
+
+        @property
+        def ok(self):
+            return self.status_code < 400
+
+        def json(self):
+            return self._payload
+
+        def raise_for_status(self):
+            if not self.ok:
+                raise RuntimeError(self.status_code)
+
+    def get(url, **_kw):
+        if url in _HIERARCHIES:
+            return Resp(text=yaml.safe_dump(_HIERARCHIES[url]))
+        if url.endswith("/index.json"):
+            return Resp(index)
+        # .../<dataset>/<tag>/<file>
+        rest = url.split("/v3/", 1)[-1]
+        *parts, tag, filename = rest.split("/")
+        dataset = "/".join(parts)
+        if filename == "pathogen.json":
+            return Resp({"files": {"treeJson": _TREE_FILES.get(dataset, "tree.json")}})
+        if filename != _TREE_FILES.get(dataset, "tree.json"):
+            return Resp(status=404)
+        attr, values = _TREES[dataset, tag]
+        return Resp({"tree": {"children": [{"node_attrs": {attr: {"value": v}}} for v in values]}})
+
+    monkeypatch.setattr(requests, "get", get)
+    monkeypatch.setattr(requests, "head", lambda url, **kw: Resp(status=200))
+
+
+def _coverage(tmp_path: Path, text: str = COVERAGE, name: str = "cov.yaml") -> Path:
+    path = tmp_path / name
+    path.write_text(text)
+    return path
+
+
+def test_coverage_catches_a_lineage_the_dataset_assigns_but_the_hierarchy_omits(
+    tmp_path, fake_datasets, capsys
+):
+    """The only check that compares two independently maintained artifacts. A bump moves
+    the dataset tag and the hierarchy URL, and nothing forces them to move together."""
+    assert _run(_coverage(tmp_path), "check", "--skip-model-check") == 1
+    err = capsys.readouterr().err
+    assert "cov: version 30 can assign 1 lineage(s)" in err
+    assert "lineageSystemDefinitions.covS.30 does not define: S2" in err
+
+
+def test_coverage_is_asserted_per_version_not_just_the_latest(tmp_path, fake_datasets, capsys):
+    """Unlike the outdated-tag info, which is a preference: a superseded but still
+    running version whose hierarchy omits a lineage is a live SILO import failure."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    err = capsys.readouterr().err
+    assert "version 30" in err
+    assert "version 31" not in err  # its hierarchy defines both S1 and S2
+
+
+def test_coverage_ignores_segments_the_lineage_field_does_not_relate_to(tmp_path, fake_datasets, capsys):
+    """covS relates to segment S, so segment L's clades are irrelevant to it -- exactly
+    cchf, whose S hierarchy knows nothing of the L and M datasets."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    err = capsys.readouterr().err
+    assert "L1" not in err
+    assert "L2" not in err
+
+
+def test_coverage_accepts_a_hierarchy_that_defines_more_than_the_dataset_assigns(
+    tmp_path, fake_datasets, capsys
+):
+    """Direction matters: a spare definition is harmless, a missing one breaks SILO.
+
+    v31's hierarchy defines an S3 no dataset can assign, and v31 must still pass.
+    """
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    captured = capsys.readouterr()
+    assert "S3" not in captured.err + captured.out
+    assert "version 31" not in captured.err
+
+
+def test_coverage_reads_the_tree_file_named_by_pathogen_json(tmp_path, fake_datasets, capsys):
+    """ds/S's tree is `cov_tree.json`, as marburg's is `marburg_tree.json`. Hardcoding
+    `tree.json` would 404 and downgrade the whole check to a warning."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    captured = capsys.readouterr()
+    assert "could not read the reference tree" not in captured.out
+    assert "S2" in captured.err  # it got far enough to compare
+
+
+def test_coverage_reads_a_custom_node_attribute(tmp_path, fake_datasets, capsys):
+    """mpox's lineage is not `clade`; it is a custom node attribute of the same name."""
+    text = (
+        COVERAGE.replace("nextclade.clade", "nextclade.customNodeAttributes.outbreakLineage")
+        .replace("nextclade_dataset_name: ds/S", "nextclade_dataset_name: ds/C")
+        .replace("https://example.invalid/S-30.yaml", "https://example.invalid/C.yaml")
+        .replace("https://example.invalid/S-31.yaml", "https://example.invalid/C.yaml")
+    )
+    assert _run(_coverage(tmp_path, text, "custom.yaml"), "check", "--skip-model-check") == 0
+
+
+def test_coverage_resolves_an_unpinned_dataset_to_the_newest_tag(tmp_path, fake_datasets, capsys):
+    """An unpinned reference follows whatever the server serves, so that is what the
+    hierarchy has to cover -- and ZZ-NEW assigns an S9 that neither hierarchy defines."""
+    text = COVERAGE.replace("                  nextclade_dataset_tag: T\n", "", 4)
+    assert _run(_coverage(tmp_path, text, "unpinned.yaml"), "check", "--skip-model-check") == 1
+    assert "S9" in capsys.readouterr().err
+
+
+def test_coverage_warns_rather_than_guesses_when_it_cannot_pick_a_segment(tmp_path, fake_datasets, capsys):
+    """Unioning both segments would invent exactly the false errors segment scoping
+    exists to avoid, so an unscoped field on a multi-segment organism is unknowable."""
+    text = COVERAGE.replace("          relatesToSegment: S\n", "")
+    assert _run(_coverage(tmp_path, text, "unscoped.yaml"), "check", "--skip-model-check") == 0
+    assert "names no relatesToSegment" in capsys.readouterr().out
+
+
+def test_coverage_warns_on_an_input_that_is_not_read_from_a_reference_tree(tmp_path, fake_datasets, capsys):
+    text = COVERAGE.replace("input: nextclade.clade", "input: someSubmittedField")
+    assert _run(_coverage(tmp_path, text, "other.yaml"), "check", "--skip-model-check") == 0
+    assert "does not come from a nextclade reference tree" in capsys.readouterr().out
 
 
 if __name__ == "__main__":

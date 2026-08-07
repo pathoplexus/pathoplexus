@@ -122,6 +122,27 @@ It also confirms that every nextclade dataset named actually exists on its serve
 the tag pinned, and that every lineage definition URL resolves — neither is knowable from the
 file alone.
 
+And it checks the one thing that spans two artifacts: **the lineage hierarchy SILO loads must
+define every lineage the nextclade dataset can assign.** A bump moves the dataset tag and the
+hierarchy URL, and nothing makes them move together, so they can drift apart silently until an
+import fails.
+
+The names come from the dataset's reference tree — nextclade places a query on it and copies an
+attribute from the node it lands on, so nothing outside that set can come out. Which attribute
+the metadata field's `preprocessing.inputs.input` says: `nextclade.clade` reads
+`clade_membership`, `nextclade.customNodeAttributes.outbreakLineage` reads `outbreakLineage`.
+Which dataset the field's `relatesToSegment` says — cchf's `lineage_S` is checked against the S
+dataset only, never L or M.
+
+Extra hierarchy entries are fine; a missing one is an error. It is checked for every declared
+version, not just the newest, because each version pairs its own tags with its own hierarchy.
+Anything it cannot resolve — an input that is not read from a tree, a multi-segment organism
+whose lineage field names no segment — is a warning rather than a guess.
+
+This is the expensive part of `check`: a reference tree per dataset per tag, several MB each.
+Extracted value sets are cached under the temp dir (a tag is immutable, so they cannot go
+stale), which helps repeated local runs but not CI.
+
 Runs on every PR touching `loculus_values/**` via `helm-template-check.yml`. It catches what
 `helm template` cannot: a pipeline entry that silently lost `segments:` to a shallow merge-key
 override, and a `lineageSystemDefinitions` version key whose absence only surfaces inside the

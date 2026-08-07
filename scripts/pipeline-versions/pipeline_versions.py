@@ -41,6 +41,8 @@ carrying it is deleted, rewriting distant parts of the document.
 
 import argparse
 import difflib
+import hashlib
+import json
 import re
 import shutil
 import subprocess
@@ -100,12 +102,34 @@ class Item:
 
 
 @dataclass
+class LineageField:
+    """A metadata field carrying a lineageSystem, and how the pipeline fills it.
+
+    The lineage values SILO must be able to resolve are whatever nextclade can assign,
+    so the field's own preprocessing spec is what says which artifact to look at:
+    `inputs.input` names the path into the nextclade output, and the segment the chart
+    passes as `args.segment` decides which dataset produced it
+    (`_preprocessingFromValues.tpl`: `$segment = .relatesToSegment`).
+    """
+
+    name: str
+    system: str
+    input: str | None  # preprocessing.inputs.input, e.g. "nextclade.clade"
+    segments: list[str] | None  # None = whichever segments the entry declares
+    reference: str | None  # preprocessing.args.reference, when it pins one
+
+
+@dataclass
 class Organism:
     name: str
     prepro_key_line: int  # line of "preprocessing:"
     prepro_end: int  # exclusive
     items: list[Item]
-    lineage_systems: list[str] = field(default_factory=list)
+    lineage_fields: list[LineageField] = field(default_factory=list)
+
+    @property
+    def lineage_systems(self) -> list[str]:
+        return sorted({f.system for f in self.lineage_fields})
 
     @property
     def active(self) -> list[Item]:
@@ -282,12 +306,25 @@ def _locate_organisms(lines: list[str], resolved: dict) -> dict[str, Organism]:
         # Organisms declare their lineage system on a metadata field, and the field may
         # live in either the inherited `metadata` list or the per-organism `metadataAdd`.
         schema = resolved["organisms"][name].get("schema", {})
-        systems = set()
+        fields: list[LineageField] = []
         for key in ("metadata", "metadataAdd"):
             for fld in schema.get(key) or []:
-                if isinstance(fld, dict) and fld.get("lineageSystem"):
-                    systems.add(fld["lineageSystem"])
-        org.lineage_systems = sorted(systems)
+                if not isinstance(fld, dict) or not fld.get("lineageSystem"):
+                    continue
+                prepro = fld.get("preprocessing") or {}
+                seg = fld.get("relatesToSegment")
+                fields.append(
+                    LineageField(
+                        name=str(fld.get("name")),
+                        system=fld["lineageSystem"],
+                        input=(prepro.get("inputs") or {}).get("input"),
+                        # `perSegment` fields are expanded to one field per segment, so
+                        # like an unscoped field they cover all of them.
+                        segments=[str(seg)] if seg and not fld.get("perSegment") else None,
+                        reference=(prepro.get("args") or {}).get("reference"),
+                    )
+                )
+        org.lineage_fields = fields
     return organisms
 
 
@@ -1248,12 +1285,20 @@ def run_check(
     # 10. Everything above is local. These two are not knowable from the file alone: a
     #     misspelled dataset name, or a tag that was never published, only shows up when
     #     preprocessing tries to fetch it.
+    #
+    # 11. And the only cross-artifact check: the lineage hierarchy SILO loads must define
+    #     every lineage the nextclade dataset can assign. Both move on a bump and nothing
+    #     forces them to move together.
     infos: list[str] = []
     if not skip_remote_checks:
         remote_errors, remote_warnings, remote_infos = _verify_remote(doc, organisms)
         errors += remote_errors
         warnings += remote_warnings
         infos += remote_infos
+
+        coverage_errors, coverage_warnings = _verify_lineage_coverage(doc, organisms)
+        errors += coverage_errors
+        warnings += coverage_warnings
 
     if verbosity >= 2:
         for note in infos:
@@ -1274,15 +1319,6 @@ def run_check(
 
 
 # -------------------------------------------------------------------------- status
-
-
-def _dataset_refs(entry: dict) -> list[dict]:
-    return [
-        ref
-        for seg in entry.get("configFile", {}).get("segments") or []
-        for ref in seg.get("references") or []
-        if ref.get("nextclade_dataset_name")
-    ]
 
 
 @dataclass
@@ -1333,7 +1369,7 @@ def _fetch_loculus(ref: str) -> Path:
     Kept under the temp dir rather than a cache dir: repeated runs reuse it, and the OS
     clears it up eventually without the tool having to own a cache it never invalidates.
     """
-    cache = Path(tempfile.gettempdir()) / "pathoplexus-pipeline-versions" / "loculus.git"
+    cache = _cache_dir() / "loculus.git"
     if not (cache / "HEAD").exists():
         cache.mkdir(parents=True, exist_ok=True)
         subprocess.run(["git", "init", "--bare", "-q", str(cache)], check=True)
@@ -1483,6 +1519,194 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
                         f"{name}: lineageSystemDefinitions.{system}.{version} is {resp.status_code} at {url}"
                     )
     return errors, warnings, infos
+
+
+# --------------------------------------------------------- lineage/dataset coverage
+
+# What a `nextclade.clade` input reads on the reference tree. Nextclade's clade call is
+# the `clade_membership` node attribute; a custom node attribute is stored under its own
+# name. Verified against the rsv-a and mpox datasets.
+CLADE_ATTR = "clade_membership"
+CUSTOM_ATTR_PREFIX = "nextclade.customNodeAttributes."
+
+
+def _tree_attribute(input_path: str) -> str | None:
+    """The reference-tree node attribute a metadata field's input reads, if any."""
+    if input_path == "nextclade.clade":
+        return CLADE_ATTR
+    if input_path.startswith(CUSTOM_ATTR_PREFIX):
+        return input_path[len(CUSTOM_ATTR_PREFIX) :]
+    return None
+
+
+def _cache_dir(*parts: str) -> Path:
+    """A directory under the OS temp dir, reused between runs and cleaned up by the OS."""
+    path = Path(tempfile.gettempdir()).joinpath("pathoplexus-pipeline-versions", *parts)
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def _tree_values(server: str, dataset: str, tag: str, attr: str) -> set[str]:
+    """Every distinct value of `attr` on a nextclade dataset's reference tree.
+
+    That is the set of assignments the dataset can produce: nextclade places a query on
+    the tree and copies the attribute from the node it lands on, so nothing outside this
+    set can ever come out.
+
+    The tree file is named by `pathogen.json`'s `files.treeJson` -- it is not always
+    `tree.json` (marburg's is `marburg_tree.json`).
+
+    Only the extracted value set is cached, not the tree: a tag is immutable, so the
+    result cannot go stale, and the trees themselves run to several MB. This helps
+    repeated local runs only -- CI starts with an empty temp dir every time.
+    """
+    import requests  # noqa: PLC0415  (only this code path needs it)
+
+    key = hashlib.sha256(f"{server}\n{dataset}\n{tag}\n{attr}".encode()).hexdigest()[:16]
+    cached = _cache_dir("trees") / f"{key}.json"
+    if cached.exists():
+        return set(json.loads(cached.read_text()))
+
+    base = f"{server}/{dataset}/{tag}"
+    pathogen = requests.get(f"{base}/pathogen.json", timeout=60)
+    pathogen.raise_for_status()
+    tree_file = (pathogen.json().get("files") or {}).get("treeJson") or "tree.json"
+
+    resp = requests.get(f"{base}/{tree_file}", timeout=120)
+    resp.raise_for_status()
+
+    values: set[str] = set()
+    stack = [resp.json().get("tree") or {}]
+    while stack:
+        node = stack.pop()
+        entry = node.get("node_attrs", {}).get(attr)
+        if isinstance(entry, dict) and entry.get("value") is not None:
+            values.add(str(entry["value"]))
+        stack.extend(node.get("children") or [])
+
+    cached.write_text(json.dumps(sorted(values)))
+    return values
+
+
+def _hierarchy_names(url: str, cache: dict[str, set[str]]) -> set[str]:
+    """Every lineage name the SILO hierarchy defines, including aliases.
+
+    Keys are stringified because YAML resolves some of them to other types -- mpox's
+    hierarchy has a literal `None:` key, which parses to Python None.
+    """
+    import requests  # noqa: PLC0415  (only this code path needs it)
+
+    if url not in cache:
+        resp = requests.get(url, timeout=60)
+        resp.raise_for_status()
+        hierarchy = yaml.safe_load(resp.text) or {}
+        names = {str(k) for k in hierarchy}
+        for value in hierarchy.values():
+            names.update(str(a) for a in (value or {}).get("aliases") or [])
+        cache[url] = names
+    return cache[url]
+
+
+def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]]:
+    """Assert the lineage hierarchy defines every lineage the dataset can assign.
+
+    The only cross-artifact check here: everything else asks whether the config is
+    internally coherent, this asks whether two independently maintained things agree.
+    A bump moves both -- the nextclade dataset tag and the hierarchy URL -- and nothing
+    forces them to move together.
+
+    Direction matters. A hierarchy entry no dataset assigns is harmless; a lineage the
+    dataset assigns but the hierarchy omits fails the SILO import, so it is an error.
+
+    Checked for *every* declared version, not just the newest -- unlike the
+    outdated-tag info, which is a preference. Each version pairs its own dataset tags
+    with its own hierarchy URL, and a superseded-but-still-running version whose pairing
+    is broken is a live failure, not a stale preference.
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+    index_cache: dict[str, dict[str, set[str]]] = {}
+    hierarchy_cache: dict[str, set[str]] = {}
+
+    for name in organisms:
+        org = doc.organisms[name]
+        if not org.lineage_fields:
+            continue
+        entries = _resolved_entries(doc, name)
+
+        for fld in org.lineage_fields:
+            attr = _tree_attribute(fld.input) if fld.input else None
+            if attr is None:
+                warnings.append(
+                    f"{name}: metadata field {fld.name} carries lineageSystem {fld.system} "
+                    f"but its preprocessing input is {fld.input!r}, which does not come "
+                    f"from a nextclade reference tree; coverage not checked."
+                )
+                continue
+
+            for entry in entries:
+                segments = (entry.get("configFile") or {}).get("segments") or []
+                if fld.segments is not None:
+                    scoped = [s for s in segments if str(s.get("name")) in fld.segments]
+                elif len(segments) <= 1:
+                    scoped = segments
+                else:
+                    warnings.append(
+                        f"{name}: metadata field {fld.name} names no relatesToSegment but "
+                        f"the organism has {len(segments)} segments; coverage not checked."
+                    )
+                    continue
+
+                assignable: set[str] = set()
+                unresolved = False
+                for seg in scoped:
+                    for ref in seg.get("references") or []:
+                        dataset = ref.get("nextclade_dataset_name")
+                        if not dataset or (fld.reference and ref.get("name") != fld.reference):
+                            continue
+                        server = (
+                            ref.get("nextclade_dataset_server")
+                            or (entry.get("configFile") or {}).get("nextclade_dataset_server")
+                            or DEFAULT_DATASET_SERVER
+                        )
+                        tag = ref.get("nextclade_dataset_tag")
+                        try:
+                            if not tag:
+                                # Unpinned follows whatever the server currently serves,
+                                # which is what the pipeline would pick up too.
+                                available = _dataset_index(server, index_cache).get(dataset)
+                                if not available:
+                                    continue  # missing dataset: already an error above
+                                tag = max(available)
+                            assignable |= _tree_values(server, dataset, tag, attr)
+                        except Exception as exc:
+                            warnings.append(
+                                f"{name}: could not read the reference tree for {dataset} "
+                                f"at {tag or 'the newest tag'} ({exc}); coverage not checked."
+                            )
+                            unresolved = True
+                if unresolved or not assignable:
+                    continue
+
+                for version in _vlist(entry):
+                    located = doc.lineage.get(fld.system, {}).get(version)
+                    if not located:
+                        continue  # already an error above
+                    url = located[1]
+                    try:
+                        defined = _hierarchy_names(url, hierarchy_cache)
+                    except Exception as exc:
+                        warnings.append(f"{name}: could not read {url} ({exc}); coverage not checked.")
+                        continue
+                    if missing := sorted(assignable - defined):
+                        shown = ", ".join(missing[:8])
+                        more = f" (+{len(missing) - 8} more)" if len(missing) > 8 else ""
+                        errors.append(
+                            f"{name}: version {version} can assign {len(missing)} lineage(s) that "
+                            f"lineageSystemDefinitions.{fld.system}.{version} does not define: "
+                            f"{shown}{more}. Its dataset and its hierarchy are out of step."
+                        )
+    return errors, warnings
 
 
 def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> list[str]:
