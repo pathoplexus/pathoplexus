@@ -2203,10 +2203,6 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *denguePreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 32
     ingest:
       <<: *ingest
       configFile:
@@ -2393,7 +2389,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &yellowFeverPreprocessing
+      - &westNilePreprocessing
         <<: *preprocessing
         version:
           - 29
@@ -2406,10 +2402,6 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *yellowFeverPreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 29
     ingest:
       <<: *ingest
       configFile:
@@ -3456,7 +3448,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &rsvaPreprocessing
+      - &rsvAPreprocessing
         <<: *preprocessing
         version:
           - 23
@@ -3474,10 +3466,6 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvaPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 23
     ingest:
       <<: *ingest
       configFile:
@@ -3584,7 +3572,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &rsvbPreprocessing
+      - &rsvBPreprocessing
         <<: *preprocessing
         version:
           - 24
@@ -3602,10 +3590,6 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvbPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3715,10 +3699,6 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *hmpvPreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3834,10 +3814,6 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      # - <<: *measlesPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
     ingest:
       <<: *ingest
       configFile:
