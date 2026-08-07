@@ -804,12 +804,16 @@ def test_remote_check_catches_a_tag_that_was_never_published(tmp_path, fake_serv
     assert "newest available: ZZ-NEWEST" in err
 
 
-def test_remote_check_reports_a_newer_tag_as_info_not_a_problem(tmp_path, fake_server, capsys):
-    """Staying on a known dataset is usually deliberate, so this is information."""
+def test_remote_check_reports_a_newer_tag_only_for_the_latest_version(tmp_path, fake_server, capsys):
+    """Staying on a known dataset is usually deliberate, so this is information -- and
+    only about the newest entry. A superseded version pinning an older dataset is
+    exactly what that entry is for, so saying so would be noise."""
     path = tmp_path / "older.yaml"
-    path.write_text(MULTI_SEGMENT)
+    path.write_text(MULTI_SEGMENT)  # v30 pins OLD-L, v31 pins NEW-L, newest is ZZ-NEWEST
     assert _run(path, "check", "--skip-model-check", "-v") == 0
-    assert "is pinned to OLD-L; ZZ-NEWEST is available" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "version [31] segment L: ds/L is pinned to NEW-L; ZZ-NEWEST is available" in out
+    assert "OLD-L" not in out
 
 
 def test_info_is_hidden_without_verbose(tmp_path, fake_server, capsys):

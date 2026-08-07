@@ -1357,6 +1357,8 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
     index_cache: dict[str, dict[str, set[str]]] = {}
 
     for name in organisms:
+        declared = doc.organisms[name].versions
+        latest = max(declared) if declared else None
         for ref in _dataset_refs(_resolved_entries(doc, name)):
             server = ref.get("nextclade_dataset_server") or DEFAULT_DATASET_SERVER
             dataset = ref.ref["nextclade_dataset_name"]
@@ -1375,8 +1377,10 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
                         f"{where}: dataset {dataset} has no tag {tag} on {server} "
                         f"(newest available: {newest})"
                     )
-                elif tag != newest:
-                    # Not a problem: staying on a known dataset is usually deliberate.
+                elif tag != newest and max(ref.versions) == latest:
+                    # Only the latest version: a superseded entry pinning an older
+                    # dataset is exactly what it is for. And not a problem even then --
+                    # staying on a known dataset is usually deliberate.
                     infos.append(f"{where}: {dataset} is pinned to {tag}; {newest} is available")
 
     seen: set[str] = set()
