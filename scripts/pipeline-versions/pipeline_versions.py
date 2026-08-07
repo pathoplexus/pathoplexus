@@ -52,6 +52,11 @@ ITEM_INDENT = 6
 KEY_INDENT = 8
 
 
+def _anchor_re(anchor: str) -> str:
+    """Matches an anchor *definition* on a line whose position the scanner supplied."""
+    return rf"(?<![\w*])&{re.escape(anchor)}(?=\s|$)"
+
+
 class Problem(Exception):
     """A condition the tool refuses to guess its way through."""
 
@@ -75,7 +80,6 @@ class Item:
     merge_alias: str | None  # "<<: *name" at the item's top level
     merge_alias_line: int | None  # line carrying it
     has_own_config_file: bool
-    inner_anchors: list[str]  # anchors defined anywhere inside this item
 
     @property
     def max_version(self) -> int:
@@ -108,6 +112,22 @@ class Organism:
 
 
 @dataclass
+class Anchors:
+    """Every anchor and alias in the document, from PyYAML's own scanner.
+
+    Taken from the token stream rather than matched with a regex: the scanner knows an
+    `&` inside a quoted scalar is not an anchor, which matters here because the linkOut
+    URLs are full of `&dataset-name=` query parameters.
+    """
+
+    defs: dict[str, int]  # name -> line it is defined on
+    uses: dict[str, list[int]]  # name -> lines that alias it
+
+    def unused(self) -> list[str]:
+        return sorted(n for n in self.defs if not self.uses.get(n))
+
+
+@dataclass
 class Doc:
     path: Path
     lines: list[str]
@@ -115,9 +135,27 @@ class Doc:
     organisms: dict[str, Organism]
     # lineageSystemDefinitions: system -> version -> (line number, url)
     lineage: dict[str, dict[int, tuple[int, str]]]
+    anchors: Anchors
 
 
 # ------------------------------------------------------------------------ locating
+
+
+def _anchors_in(doc: Doc, start: int, end: int) -> list[str]:
+    """Anchor names defined between lines [start, end)."""
+    return [n for n, line in doc.anchors.defs.items() if start <= line < end]
+
+
+def _scan_anchors(text: str) -> Anchors:
+    """Index anchor definitions and alias uses via PyYAML's scanner."""
+    defs: dict[str, int] = {}
+    uses: dict[str, list[int]] = {}
+    for tok in yaml.scan(text):
+        if isinstance(tok, yaml.tokens.AnchorToken):
+            defs[tok.value] = tok.start_mark.line
+        elif isinstance(tok, yaml.tokens.AliasToken):
+            uses.setdefault(tok.value, []).append(tok.start_mark.line)
+    return Anchors(defs=defs, uses=uses)
 
 
 def _strip_comment(line: str) -> str:
@@ -149,7 +187,6 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     merge_alias: str | None = None
     merge_alias_line: int | None = None
     has_own_config_file = False
-    inner_anchors: list[str] = []
 
     # The anchor and/or merge key may sit on the "- " line itself.
     head = body[0][ITEM_INDENT + 2 :]
@@ -166,9 +203,6 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
         text = raw
         if off == 0:
             text = " " * (ITEM_INDENT + 2) + head
-
-        for am in re.finditer(r"(?<![\w*])&(\w+)", text):
-            inner_anchors.append(am.group(1))
 
         if (m2 := re.match(rf"^ {{{KEY_INDENT}}}<<:\s*\*(\w+)", text)) and merge_alias is None:
             merge_alias, merge_alias_line = m2.group(1), lineno
@@ -209,7 +243,6 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
         merge_alias=merge_alias,
         merge_alias_line=merge_alias_line,
         has_own_config_file=has_own_config_file,
-        inner_anchors=inner_anchors,
     )
 
 
@@ -300,7 +333,15 @@ def _locate_lineage(lines: list[str]) -> dict[str, dict[int, tuple[int, str]]]:
 
 
 def load(path: Path) -> Doc:
-    text = path.read_text()
+    return _parse(path, path.read_text())
+
+
+def _reload(doc: Doc, lines: list[str]) -> Doc:
+    """Re-derive a Doc from edited lines, without touching the filesystem."""
+    return _parse(doc.path, "\n".join(lines))
+
+
+def _parse(path: Path, text: str) -> Doc:
     lines = text.split("\n")
     resolved = yaml.safe_load(text)
     organisms = _locate_organisms(lines, resolved)
@@ -334,6 +375,7 @@ def load(path: Path) -> Doc:
         resolved=resolved,
         organisms=organisms,
         lineage=_locate_lineage(lines),
+        anchors=_scan_anchors(text),
     )
 
 
@@ -485,7 +527,7 @@ def _ensure_anchor(doc: Doc, org_name: str, target: Item) -> tuple[str, list[Edi
         return target.anchor, []
     # An organism whose earlier entry already took the plain name (mpox mid-bump) needs a
     # distinct one, so qualify by version rather than fail.
-    taken = _all_anchors(doc.lines)
+    taken = _all_anchors(doc)
     anchor = f"{_camel(org_name)}Preprocessing"
     if anchor in taken:
         anchor = f"{anchor}V{target.max_version}"
@@ -569,7 +611,7 @@ def _bump_expand(
     cfg_end = _block_end(lines, cfg_line)
 
     edits: list[Edit] = list(base_edits)
-    taken = _all_anchors(lines)
+    taken = _all_anchors(doc)
     # Splice out long scalar lists (mpox's ~175 gene names) behind an alias. Short ones
     # are duplicated -- an alias saves nothing and costs a cross-entry dependency.
     replacements: list[tuple[int, int, str]] = []
@@ -688,8 +730,8 @@ def _plan_lineage_bump(doc: Doc, org: Organism, new_version: int) -> list[Edit]:
     return edits
 
 
-def _all_anchors(lines: list[str]) -> set[str]:
-    return {m.group(1) for line in lines for m in re.finditer(r"(?<![\w*])&(\w+)", line)}
+def _all_anchors(doc: Doc) -> set[str]:
+    return set(doc.anchors.defs)
 
 
 # --------------------------------------------------------------------------- prune
@@ -726,7 +768,7 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
         # Still fall through to the lineage sweep: a stale key can outlive the entry
         # that needed it (a prune that was skipped, or a hand edit), and nothing else
         # ever removes it.
-        return edits + _plan_lineage_prune(doc, org, [keep_version])
+        return _finish_prune(doc, org, edits, keep_version)
 
     if len(org.active) == 1:
         item = org.active[0]
@@ -735,7 +777,7 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
         for version, ln in zip(item.versions, item.version_value_lines, strict=False):
             if version != keep_version:
                 edits.append(Edit(ln, ln + 1, [], f"{org_name}: dropped version {version}"))
-        return edits + _plan_lineage_prune(doc, org, [keep_version])
+        return _finish_prune(doc, org, edits, keep_version)
 
     entries = _resolved_entries(doc, org_name)
     sigs = [_config_signature(e) for e in entries]
@@ -790,7 +832,46 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
             )
         )
 
+    return _finish_prune(doc, org, edits, keep_version)
+
+
+def _finish_prune(doc: Doc, org: Organism, edits: list[Edit], keep_version: int) -> list[Edit]:
+    """Sweeps every prune path ends with, whichever collapse it took."""
     return edits + _plan_lineage_prune(doc, org, [keep_version])
+
+
+def plan_strip_unused_anchors(doc: Doc, organisms: list[str]) -> list[Edit]:
+    """Remove `&name` from an organism's entries when nothing aliases it.
+
+    An anchor exists to be referenced. Prune removes the entries doing the referencing, so
+    without this the file accumulates names with no referent -- and which ones survived was
+    an accident of where the remaining text happened to sit, not a decision. `bump` adds an
+    anchor back the moment one is needed, so keeping a spare buys nothing.
+
+    Runs as a second pass over the already-edited file rather than alongside the other
+    edits: whether an anchor is still aliased depends on what those edits did.
+    """
+    out: list[Edit] = []
+    for name in organisms:
+        org = doc.organisms[name]
+        for item in org.active:
+            for anchor in _anchors_in(doc, item.start, item.end):
+                if doc.anchors.uses.get(anchor):
+                    continue
+                for i in range(item.start, item.end):
+                    if not re.search(_anchor_re(anchor), doc.lines[i]):
+                        continue
+                    stripped = re.sub(_anchor_re(anchor) + r"\s*", "", doc.lines[i]).rstrip()
+                    note = f"{name}: dropped unused anchor &{anchor}"
+                    if stripped.endswith("-"):
+                        # The anchor was alone on a `- ` line (`- &denguePreprocessing`).
+                        # Deleting the line would orphan the mapping beneath it, so pull
+                        # its first key up onto the dash -- the inverse of _ensure_anchor.
+                        pad = stripped[: len(stripped) - len(stripped.lstrip())]
+                        out.append(Edit(i, i + 2, [f"{pad}- {doc.lines[i + 1].lstrip()}"], note))
+                    else:
+                        out.append(Edit(i, i + 1, [stripped] if stripped else [], note))
+    return out
 
 
 def _rebase_merge_key(doc: Doc, org_name: str, org: Organism, keep: Item, doomed: list[Item]) -> list[Edit]:
@@ -807,7 +888,7 @@ def _rebase_merge_key(doc: Doc, org_name: str, org: Organism, keep: Item, doomed
     """
     if keep.merge_alias is None:
         return []
-    if not any(keep.merge_alias in d.inner_anchors for d in doomed):
+    if not any(keep.merge_alias in _anchors_in(doc, d.start, d.end) for d in doomed):
         return []  # inherits from something that is not going away
     if keep.merge_alias_line is None:
         raise Problem(f"{org_name}: cannot locate the '<<: *{keep.merge_alias}' line")
@@ -858,24 +939,13 @@ def _relocate_anchors(
     def doomed_line(i: int) -> bool:
         return any(d.start <= i < d.end for d in all_doomed)
 
-    for anchor in dict.fromkeys(doomed.inner_anchors):
-        users = [
-            i
-            for i, line in enumerate(lines)
-            if re.search(rf"(?<!\w)\*{re.escape(anchor)}\b", line)
-            and not doomed_line(i)
-            and i not in rewritten
-            and not line.lstrip().startswith("#")
-        ]
+    for anchor in _anchors_in(doc, doomed.start, doomed.end):
+        users = [i for i in doc.anchors.uses.get(anchor, []) if not doomed_line(i) and i not in rewritten]
         if not users:
             continue
 
         src = next(
-            (
-                i
-                for i in range(doomed.start, doomed.end)
-                if re.search(rf"(?<!\w)&{re.escape(anchor)}\b", lines[i])
-            ),
+            (i for i in range(doomed.start, doomed.end) if re.search(_anchor_re(anchor), lines[i])),
             None,
         )
         if src is None:
@@ -893,7 +963,7 @@ def _relocate_anchors(
             )
         # The value may be inline (`genes: &x [A, B]`), a block below, or both. Carry the
         # inline remainder verbatim; dropping it would silently null the key.
-        inline_m = re.search(rf"(?<!\w)&{re.escape(anchor)}\b(.*)$", lines[src])
+        inline_m = re.search(_anchor_re(anchor) + r"(.*)$", lines[src])
         inline = inline_m.group(1) if inline_m else ""
         src_end = _block_end(lines, src)
         shift = len(m.group(1)) - _indent(lines[src])
@@ -1021,6 +1091,16 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool) -> int
                     f"{name}: commented-out stub declares version {clash}, which is already "
                     f"active. Run `pipeline_versions.py prune` to remove it."
                 )
+
+        # 7. Anchors with no referent. An anchor exists to be aliased, so one that is not
+        #    is either a leftover or a sign that the alias meant to use it went missing.
+        for item in org.active:
+            for anchor in _anchors_in(doc, item.start, item.end):
+                if not doc.anchors.uses.get(anchor):
+                    warnings.append(
+                        f"{name}: anchor &{anchor} is defined but never aliased. "
+                        f"Run `pipeline_versions.py prune` to remove it."
+                    )
 
     for w in warnings:
         print(f"warning: {w}")
@@ -1261,12 +1341,24 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 1
 
-        if not edits:
+        new_lines = apply_edits(doc.lines, edits)
+        notes = [e.note for e in sorted(edits, key=lambda e: e.start)]
+
+        if args.cmd == "prune":
+            # Whether an anchor is still aliased depends on what the edits above did, so
+            # this has to see the result rather than the original. Re-plan against the
+            # edited text, then apply on top.
+            after, extra_notes = _reload(doc, new_lines), []
+            strip = plan_strip_unused_anchors(after, organisms)
+            if strip:
+                new_lines = apply_edits(after.lines, strip)
+                extra_notes = [e.note for e in sorted(strip, key=lambda e: e.start)]
+            notes += extra_notes
+
+        if not edits and not notes:
             print("nothing to do")
             return 0
 
-        new_lines = apply_edits(doc.lines, edits)
-        notes = [e.note for e in sorted(edits, key=lambda e: e.start)]
         return _emit(doc, new_lines, notes, args.dry_run, organisms, args.cmd)
 
     except Problem as exc:

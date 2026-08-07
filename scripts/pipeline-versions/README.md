@@ -77,6 +77,9 @@ If the surviving entry inherits from the one being deleted via a merge key
 self-contained — but only after checking the two supply the same thing. If the doomed entry
 provides something global does not, it refuses.
 
+It also drops anchors nothing aliases any more. An anchor exists to be referenced, and `bump`
+adds one back the moment it is needed — at a cost of about three diff lines on that bump.
+
 **A refusal aborts the whole run and writes nothing**, listing every organism it could not
 handle. Exclude them with `--organisms` to proceed with the rest.
 

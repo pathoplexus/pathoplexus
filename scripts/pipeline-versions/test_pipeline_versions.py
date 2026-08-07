@@ -411,6 +411,58 @@ def test_a_refusal_aborts_the_whole_run(tmp_path, capsys):
     assert path.read_text() == before
 
 
+# ----------------------------------------------------------------------- anchors
+
+
+def test_anchors_come_from_the_yaml_scanner_not_a_regex(work):
+    """The linkOut URLs are full of `&dataset-name=` query parameters. A regex reads
+    those as anchor definitions; PyYAML's scanner knows they are inside a scalar."""
+    doc = pv.load(work)
+    assert "dataset" not in doc.anchors.defs
+    assert "fastaUrl" not in doc.anchors.defs
+    assert "preprocessing" in doc.anchors.defs
+    assert doc.anchors.uses["preprocessing"]
+
+
+def test_a_commented_out_alias_does_not_count_as_a_use(legacy):
+    """A stub's `<<: *denguePreprocessing` is a comment, so the anchor is unused."""
+    doc = pv.load(legacy)
+    assert "denguePreprocessing" in doc.anchors.defs
+    assert "denguePreprocessing" in doc.anchors.unused()
+
+
+def test_prune_drops_anchors_nothing_aliases(legacy):
+    """The rule: an anchor exists to be referenced, so prune removes any with no referent.
+
+    Which anchors used to survive a prune was an accident of where the remaining text
+    happened to sit; this makes it a decision instead.
+    """
+    before = yaml.safe_load(legacy.read_text())
+    assert "denguePreprocessing" in pv.load(legacy).anchors.unused()
+
+    # dengue has one version, so this prune only clears a stub and an unused anchor.
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+
+    assert "denguePreprocessing" not in pv.load(legacy).anchors.defs
+    # Purely cosmetic: nothing Helm renders may change.
+    assert yaml.safe_load(legacy.read_text()) == before
+
+
+def test_dropping_an_anchor_alone_on_a_dash_line_keeps_the_yaml_valid(legacy):
+    """`- &denguePreprocessing` has the mapping on the following lines. Deleting the line
+    would orphan it, so the next key is pulled up onto the dash."""
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+    doc = pv.load(legacy)
+    item = doc.organisms["dengue"].active[0]
+    assert doc.lines[item.start] == "      - <<: *preprocessing"
+    assert item.merge_alias == "preprocessing"
+
+
+def test_check_warns_about_an_unused_anchor(legacy, capsys):
+    _run(legacy, "check", "--organisms", "dengue")
+    assert "anchor &denguePreprocessing is defined but never aliased" in capsys.readouterr().out
+
+
 def test_prune_refuses_to_rebase_when_the_doomed_entry_supplies_more(legacy, capsys):
     """If the entry being removed provides something *preprocessing does not, the merge
     key cannot be re-pointed and the tool must decline rather than silently drop it."""
@@ -549,9 +601,11 @@ def test_expand_then_prune_relocates_the_gene_anchor(work):
 
     doc = pv.load(work)
     text = "\n".join(doc.lines)
-    assert "genes: &mpoxGenes" in text  # definition survived, relocated
-    assert "*mpoxGenes" not in text  # nothing left aliasing it
-    assert "mpoxPreprocessing" not in text  # the obsolete anchor is gone entirely
+    # The values moved into the survivor; the anchor name went with them and was then
+    # dropped, because after the collapse there is nothing left to alias it.
+    assert "genes:" in text
+    assert "mpoxGenes" not in text
+    assert "mpoxPreprocessing" not in text
     assert _run(work, "check", "--organisms", "mpox") == 0
 
 

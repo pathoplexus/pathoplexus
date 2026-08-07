@@ -213,6 +213,16 @@ compute it, and refuse if they differ.
 - an anchor is aliased in a form the relocation cannot express;
 - `version:` is not in a form it can edit.
 
+**Unused anchors.** After the collapse, remove any anchor on the organism's entries that
+nothing aliases. An anchor exists to be referenced; which ones survived a prune used to be an
+accident of where the remaining text happened to sit rather than a decision, and "always keep"
+is not achievable — `&<org>Preprocessing` lives on the entry being deleted and there is nowhere
+to move it. `bump` re-adds one the moment it is needed, so keeping a spare buys nothing. Costs
+about three diff lines per organism on the next bump.
+
+This must run as a second pass over the already-edited text: whether an anchor is still aliased
+depends on what the other edits did.
+
 **A refusal aborts the whole run.** Every organism's problem is collected and reported, then
 nothing is written at all. Applying the rest would leave a half-done state that is easy not to
 notice — and a partial run is what made stale lineage keys linger unexplained. Scope with
@@ -232,6 +242,7 @@ operate on the **resolved** (merge-key-expanded) view.
 | 5 | every referenced lineage system exists, and every declared version has a key under it | error |
 | 6 | no lineage key for a version no entry uses | warning |
 | 7 | no commented-out stub naming an already-active version | warning |
+| 8 | no anchor on a pipeline entry that nothing aliases | warning |
 
 **Assertion 2 is the incident check and its asymmetry is deliberate.** A newer entry *adding* a
 key is an ordinary config change and is exactly what hand-editing a generated draft looks like;
@@ -270,7 +281,15 @@ their position and replicas, and always overwrites their version.
 commit that first needed it. A reimplementation cannot avoid anchors by always duplicating —
 but it can confine them to flat scalar lists, where relocation is mechanical.
 
-### 3.3 Anchor naming
+### 3.3 Identifying anchors
+
+Take anchors and aliases from **PyYAML's token stream** (`yaml.scan`), not a regex: the scanner
+knows an `&` inside a quoted scalar is not an anchor. The linkOut URLs are full of
+`&dataset-name=` query parameters, and a naive `&(\w+)` reads seven of them as anchor
+definitions. The tokens also carry exact line marks, so the positions come from the parser
+rather than a second guess at the text.
+
+### 3.4 Anchor naming
 
 Pipeline-entry anchors are `<camelCase organism>Preprocessing` — `westNilePreprocessing`,
 `rsvAPreprocessing`, `ebolaBdbvPreprocessing`. An organism only carries one if something
@@ -290,7 +309,7 @@ The convention is not enforced by anything, so it can drift again.
 > misleading, it made yellow-fever's own generated anchor collide, producing the meaningless
 > name `yellowFeverPreprocessingV31`.
 
-### 3.4 Other
+### 3.5 Other
 
 - `values.schema.json` does not require `configFile` or `configFile.segments`.
 
