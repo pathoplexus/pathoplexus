@@ -31,7 +31,7 @@ uv run scripts/pipeline-versions/pipeline_versions.py status
 | `lineageDefinitions` | the URL SILO loads for the organism's lineage system |
 
 `--columns` appends more: `datasetName`, `datasetServer`, `segments`, `minimizerUrl`,
-`batchSize`, `alignmentRequirement`, `image`. Useful for spot-checking what a pipeline
+`batchSize`, `alignmentRequirement`, `image` — or `all` for every one of them. Useful for spot-checking what a pipeline
 actually pulls:
 
 ```bash
@@ -123,17 +123,22 @@ ERROR: mpox: entry 1 (version [27]) has no segments.
 ## Validating configFile
 
 PPX runs exactly one preprocessing pipeline, so the authority on what `configFile` may
-contain is that pipeline's own pydantic model. Give `check` a loculus checkout and it
-imports `Config` at the pinned `loculusVersion`, subclasses it with `extra="forbid"`, and
-runs every organism's `configFile` through it:
+contain is that pipeline's own pydantic model. `check` fetches the loculus commit that
+`pathoplexus_app/values.yaml` pins, imports `Config` from it, forbids extras on it and its
+nested models, and runs every organism's `configFile` through it. No setup and no flags:
 
 ```bash
-uv run scripts/pipeline-versions/pipeline_versions.py check --loculus ../loculus
+uv run scripts/pipeline-versions/pipeline_versions.py check
 ```
 
-That gets unknown keys, misspellings, wrong types, bad enum values and nested-model errors
-in one step, with pydantic's own messages — and it cannot drift, because it *is* the model.
-Without `--loculus` the rest of `check` still runs and this step is skipped with a note.
+That catches unknown keys, misspellings (including inside `segments:` and `references:`),
+wrong types, bad enum values and nested-model errors in one step, with pydantic's own
+messages — and it cannot drift, because it *is* the model, at the version being deployed.
+
+The commit is fetched shallow into `~/.cache/pathoplexus-pipeline-versions` and reused, so
+only the first run touches the network. `--loculus <path>` uses an existing clone instead;
+offline with no cache, the step is skipped with a warning and the rest of `check` still
+runs. `--skip-model-check` turns it off outright.
 
 It matters because an unknown key is **silently dropped**: pydantic ignores extras, and
 `values.schema.json` sets `additionalProperties: false` on `segments` and `references` but
@@ -141,10 +146,10 @@ not on `configFile` itself, so helm renders it happily. andv has two — a
 `nextclade_dataset_tag` in the position it occupied before loculus `d3c43c019` moved it
 onto the reference, and a stray `taxon_id` belonging to the ingest config.
 
-The commit is extracted with `git archive`, so validation is against the pinned version
-even if the checkout is on another branch. If a future `loculusVersion` needs a dependency
-the model imports, the run fails with a message naming it — add it to the script's PEP 723
-header.
+If a future `loculusVersion` needs a dependency the model imports, the run fails with a
+message naming it — add it to the script's PEP 723 header. The preprocessing package
+declares its runtime deps only in a conda `environment.yml`, so they cannot be resolved
+automatically.
 
 ## Tests
 

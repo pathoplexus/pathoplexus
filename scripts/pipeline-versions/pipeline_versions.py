@@ -54,6 +54,7 @@ import yaml
 
 DEFAULT_VALUES = "loculus_values/values.yaml"
 PREPRO_SRC = "preprocessing/nextclade/src"
+LOCULUS_URL = "https://github.com/loculus-project/loculus.git"
 
 # Indentation of the organisms.<org>.preprocessing list items. The file is uniform
 # here; _locate() asserts its textual scan against the parsed document, so a layout
@@ -1013,7 +1014,13 @@ def _plan_lineage_prune(doc: Doc, org: Organism, surviving: list[int]) -> list[E
 # --------------------------------------------------------------------------- check
 
 
-def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool, loculus: Path | None = None) -> int:
+def run_check(
+    doc: Doc,
+    organisms: list[str],
+    allow_empty_segments: bool,
+    loculus: Path | None = None,
+    skip_model_check: bool = False,
+) -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -1140,12 +1147,15 @@ def run_check(doc: Doc, organisms: list[str], allow_empty_segments: bool, loculu
     #     segments and references but not on configFile itself -- so it reads as
     #     configured while doing nothing. Warnings for now: andv is in that state today
     #     and fixing it is a config decision.
-    if loculus is not None:
-        note, *found = _validate_config_files(doc, organisms, loculus)
-        print(note)
-        warnings += found
-    else:
-        print("skipping configFile model validation (pass --loculus <checkout> to enable)")
+    if not skip_model_check:
+        try:
+            note, *found = _validate_config_files(doc, organisms, loculus)
+            print(note)
+            warnings += found
+        except Problem as exc:
+            # Offline, most likely. The rest of check is still worth having, so say what
+            # was skipped rather than failing the whole run over it.
+            print(f"warning: skipped configFile model validation: {exc}")
 
     for w in warnings:
         print(f"warning: {w}")
@@ -1201,7 +1211,50 @@ class Ref:
 CONFIG_FALLBACK_KEYS = frozenset({"nextclade_dataset_server"})
 
 
-def _pipeline_config_model(loculus: Path, repo: Path):
+def pinned_loculus_version(repo: Path) -> str:
+    """The loculus commit this pathoplexus checkout deploys."""
+    m = re.search(r"^loculusVersion:\s*(\S+)", (repo / "pathoplexus_app" / "values.yaml").read_text(), re.M)
+    if not m:
+        raise Problem("could not read loculusVersion from pathoplexus_app/values.yaml")
+    return m.group(1).strip('"')
+
+
+def _fetch_loculus(ref: str) -> Path:
+    """A local git dir containing `ref`, fetched on demand and cached between runs.
+
+    Means `check` needs no setup and cannot be pointed at the wrong version: the commit
+    comes from the pathoplexus checkout in hand. Only that one commit is fetched, into a
+    bare repo -- `git archive` is all that is needed of it. Same approach as sync.sh.
+
+    Kept under the temp dir rather than a cache dir: repeated runs reuse it, and the OS
+    clears it up eventually without the tool having to own a cache it never invalidates.
+    """
+    cache = Path(tempfile.gettempdir()) / "pathoplexus-pipeline-versions" / "loculus.git"
+    if not (cache / "HEAD").exists():
+        cache.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "init", "--bare", "-q", str(cache)], check=True)
+
+    have = subprocess.run(
+        ["git", "-C", str(cache), "cat-file", "-e", f"{ref}^{{commit}}"],
+        capture_output=True,
+        check=False,
+    )
+    if have.returncode:
+        fetched = subprocess.run(
+            ["git", "-C", str(cache), "fetch", "--depth", "1", "-q", LOCULUS_URL, ref],
+            capture_output=True,
+            check=False,
+        )
+        if fetched.returncode:
+            raise Problem(
+                f"could not fetch loculus {ref[:9]} from {LOCULUS_URL}: "
+                f"{fetched.stderr.decode().strip()}. Pass --loculus <checkout> to use a "
+                f"local clone instead."
+            )
+    return cache
+
+
+def _pipeline_config_model(loculus: Path | None, repo: Path):
     """Import the real pydantic Config from the loculus source PPX pins.
 
     PPX runs exactly one preprocessing pipeline, so the authority on what a configFile may
@@ -1213,12 +1266,8 @@ def _pipeline_config_model(loculus: Path, repo: Path):
     The commit is extracted rather than read from the working tree, so validation is
     against the version actually pinned even if the checkout sits elsewhere.
     """
-    version = re.search(
-        r"^loculusVersion:\s*(\S+)", (repo / "pathoplexus_app" / "values.yaml").read_text(), re.M
-    )
-    if not version:
-        raise Problem("could not read loculusVersion from pathoplexus_app/values.yaml")
-    ref = version.group(1).strip('"')
+    ref = pinned_loculus_version(repo)
+    loculus = loculus or _fetch_loculus(ref)
 
     tmp = tempfile.mkdtemp(prefix="prepro-model-")
     try:
@@ -1234,21 +1283,26 @@ def _pipeline_config_model(loculus: Path, repo: Path):
         subprocess.run(["tar", "-x", "-C", tmp], input=archive.stdout, check=True)
         sys.path.insert(0, str(Path(tmp) / PREPRO_SRC))
         try:
-            from loculus_preprocessing.config import Config  # noqa: PLC0415  (needs sys.path above)
+            from loculus_preprocessing.config import Config, Reference, Segment  # noqa: PLC0415
         except ImportError as exc:
             raise Problem(
                 f"could not import the preprocessing config model at {ref}: {exc}. "
                 f"Its dependencies may have changed; add the missing one to this "
                 f"script's PEP 723 header."
             ) from exc
-        from pydantic import ConfigDict  # noqa: PLC0415  (only this code path needs it)
 
-        return type("StrictConfig", (Config,), {"model_config": ConfigDict(extra="forbid")}), ref
+        # Forbid extras on the nested models too, innermost first: a rebuilt outer model
+        # bakes in the inner schema as it stood, so doing Config first would leave a
+        # misspelled key inside `segments:` or `references:` silently ignored.
+        for model in (Reference, Segment, Config):
+            model.model_config["extra"] = "forbid"
+            model.model_rebuild(force=True)
+        return Config, ref
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path) -> list[str]:
+def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> list[str]:
     """Run each organism's configFile through the pipeline's own model."""
     from pydantic import ValidationError  # noqa: PLC0415  (only this code path needs it)
 
@@ -1376,7 +1430,10 @@ DEFAULT_STATUS_COLUMNS = (
 
 def run_status(doc: Doc, organisms: list[str], extra: str | None = None) -> int:
     headers = list(DEFAULT_STATUS_COLUMNS)
-    for col in (c.strip() for c in (extra or "").split(",") if c.strip()):
+    requested = [c.strip() for c in (extra or "").split(",") if c.strip()]
+    if "all" in requested:
+        requested = [c for c in STATUS_COLUMNS if c not in headers]
+    for col in requested:
         if col not in STATUS_COLUMNS:
             raise Problem(f"unknown column {col!r}. Available: {sorted(STATUS_COLUMNS)}")
         if col not in headers:
@@ -1515,8 +1572,8 @@ def main(argv: list[str] | None = None) -> int:
     common(sp)
     sp.add_argument(
         "--columns",
-        help="extra columns to append, comma-separated. Available: "
-        + ", ".join(c for c in sorted(STATUS_COLUMNS) if c not in DEFAULT_STATUS_COLUMNS),
+        help="extra columns to append, comma-separated, or 'all'. Available: "
+        + ", ".join(c for c in STATUS_COLUMNS if c not in DEFAULT_STATUS_COLUMNS),
     )
 
     sp = sub.add_parser("bump", help="add the next pipeline version, keeping the current one")
@@ -1563,8 +1620,13 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument(
         "--loculus",
         type=Path,
-        help="path to a loculus checkout. Enables validating each configFile against the "
-        "preprocessing pipeline's own pydantic model, at the pinned loculusVersion.",
+        help="path to an existing loculus checkout. By default the pinned commit is "
+        "fetched and cached automatically, so this is only needed offline.",
+    )
+    sp.add_argument(
+        "--skip-model-check",
+        action="store_true",
+        help="do not validate configFile against the preprocessing pipeline's model",
     )
 
     args = p.parse_args(argv)
@@ -1576,7 +1638,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd == "status":
             return run_status(doc, organisms, args.columns)
         if args.cmd == "check":
-            return run_check(doc, organisms, args.allow_empty_segments, args.loculus)
+            return run_check(doc, organisms, args.allow_empty_segments, args.loculus, args.skip_model_check)
 
         expand_only: list[str] = []
         if args.cmd == "bump" and args.expand_organisms:
