@@ -5,8 +5,8 @@ on:
     paths:
       - 'loculus_values/**'
       - 'pathoplexus_app/**'
-      - 'scripts/pipeline_versions.py'
-      - 'scripts/test_pipeline_versions.py'
+      - 'scripts/pipeline-versions/pipeline_versions.py'
+      - 'scripts/pipeline-versions/test_pipeline_versions.py'
       - '.github/workflows/helm-template-check.yml'
   push:
     branches:
@@ -14,8 +14,8 @@ on:
     paths:
       - 'loculus_values/**'
       - 'pathoplexus_app/**'
-      - 'scripts/pipeline_versions.py'
-      - 'scripts/test_pipeline_versions.py'
+      - 'scripts/pipeline-versions/pipeline_versions.py'
+      - 'scripts/pipeline-versions/test_pipeline_versions.py'
       - '.github/workflows/helm-template-check.yml'
 env:
   HELM_VERSION: 'v3.17.1' # Should track version used by argocd
@@ -25,7 +25,7 @@ jobs:
   # Semantic checks that `helm template` cannot make: a pipeline entry that silently
   # loses `segments:` to a shallow merge-key override renders perfectly happily, and a
   # missing lineageSystemDefinitions version key only fails later, inside the SILO
-  # importer at runtime. See scripts/pipeline_versions.py.
+  # importer at runtime. See scripts/pipeline-versions/pipeline_versions.py.
   pipeline-versions:
     runs-on: ubuntu-latest
     steps:
@@ -34,10 +34,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Check preprocessing pipeline version config
-        run: uv run scripts/pipeline_versions.py check
+        run: uv run scripts/pipeline-versions/pipeline_versions.py check
 
       - name: Test the checker itself
-        run: uv run scripts/test_pipeline_versions.py
+        run: uv run scripts/pipeline-versions/test_pipeline_versions.py
 
   get-environments:
     runs-on: ubuntu-latest

@@ -26,27 +26,36 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent))
 import pipeline_versions as pv  # noqa: E402
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parents[2]
 VALUES = REPO / "loculus_values" / "values.yaml"
 
 INCIDENT_COMMIT = "9764d15"  # segment-less mpox v27 -- what production was serving
 PRE_INCIDENT_COMMIT = "1c04032"  # a clean prune, before the two-entry migration
 
+# Behavioural tests run against a pinned commit, not the working tree. Running the tool
+# is the normal way to edit values.yaml, so the working copy's version numbers and stubs
+# move; tests that assert on them must not depend on that. Version numbers are still
+# derived rather than hardcoded wherever it costs nothing, so re-pinning stays cheap.
+BASE_COMMIT = "f9de729"
 
-def _at(commit: str, tmp_path: Path) -> Path:
-    blob = subprocess.run(
+
+def _blob(commit: str) -> str:
+    return subprocess.run(
         ["git", "-C", str(REPO), "show", f"{commit}:loculus_values/values.yaml"],
         capture_output=True, text=True, check=True,
     ).stdout
+
+
+def _at(commit: str, tmp_path: Path) -> Path:
     path = tmp_path / f"{commit}.yaml"
-    path.write_text(blob)
+    path.write_text(_blob(commit))
     return path
 
 
 @pytest.fixture
 def work(tmp_path: Path) -> Path:
     path = tmp_path / "values.yaml"
-    path.write_text(VALUES.read_text())
+    path.write_text(_blob(BASE_COMMIT))
     return path
 
 
@@ -58,10 +67,20 @@ def _versions(path: Path, org: str) -> list[int]:
     return pv.load(path).organisms[org].versions
 
 
+def _cur(path: Path, org: str) -> int:
+    """The organism's highest pipeline version right now."""
+    return pv.load(path).organisms[org].max_version
+
+
 # ------------------------------------------------------------------------- check
 
 
-def test_check_passes_on_head():
+def test_check_passes_on_the_working_copy():
+    """The one test that deliberately reads the real file rather than a pinned commit.
+
+    Whatever state values.yaml is in right now, it must satisfy the invariants -- this
+    is the same assertion CI makes on every PR.
+    """
     assert _run(VALUES, "check") == 0
 
 
@@ -97,8 +116,8 @@ def test_check_catches_duplicate_versions(work, capsys):
     assert "version 27 declared by entries" in capsys.readouterr().err
 
 
-def test_check_warns_about_stale_stubs(capsys):
-    _run(VALUES, "check")
+def test_check_warns_about_stale_stubs(work, capsys):
+    _run(work, "check")
     out = capsys.readouterr().out
     assert "dengue: commented-out stub declares version [32], which is already active" in out
 
@@ -155,7 +174,7 @@ def test_bump_append_mode_extends_the_version_list(work):
     assert org.versions == [25, 26]
 
 
-ALL_ORGANISMS = sorted(pv.load(VALUES).organisms)
+ALL_ORGANISMS = sorted(yaml.safe_load(_blob(BASE_COMMIT))["organisms"])
 
 
 @pytest.mark.parametrize("org", ALL_ORGANISMS)
@@ -275,6 +294,41 @@ def test_bump_then_prune_in_append_mode(work):
     assert _versions(work, "andv") == [9]
 
 
+def _add_lineage_key(path: Path, system: str, version: int) -> None:
+    lines = path.read_text().split("\n")
+    i = next(i for i, l in enumerate(lines) if l == f"  {system}:")
+    lines.insert(i + 1, f"    {version}: https://example.invalid/{system}.yaml")
+    path.write_text("\n".join(lines))
+
+
+def test_prune_clears_a_stale_lineage_key_on_a_single_version_organism(work, capsys):
+    """Regression: prune used to bail out before the lineage sweep whenever there was
+    only one version, so a stale key could never be removed -- while `check` went on
+    reporting it. A key can outlive its entry via a skipped prune or a hand edit."""
+    _add_lineage_key(work, "marburg", 25)
+    assert pv.load(work).organisms["marburg"].versions == [26]
+    assert sorted(pv.load(work).lineage.entries["marburg"]) == [25, 26]
+
+    assert _run(work, "prune", "--organisms", "marburg") == 0
+    assert "nothing to do" not in capsys.readouterr().out
+    assert sorted(pv.load(work).lineage.entries["marburg"]) == [26]
+
+
+def test_prune_clears_a_stale_lineage_key_above_the_current_version(work):
+    """`< keep_version` missed these; the rule is "not used by a surviving entry"."""
+    _add_lineage_key(work, "marburg", 99)
+    assert _run(work, "prune", "--organisms", "marburg") == 0
+    assert sorted(pv.load(work).lineage.entries["marburg"]) == [26]
+
+
+def test_prune_keeps_lineage_keys_for_versions_still_deployed(work):
+    """ebola-sudan-style multi-version entries: every live version keeps its key."""
+    assert _run(work, "bump", "--organisms", "hmpv", "--mode", "append") == 0
+    assert pv.load(work).organisms["hmpv"].versions == [25, 26]
+    assert sorted(pv.load(work).lineage.entries["hmpv"]) == [25, 26]
+    assert _run(work, "check", "--organisms", "hmpv") == 0
+
+
 def test_prune_drops_stale_lineage_versions(work):
     assert _run(work, "bump", "--organisms", "hmpv") == 0
     assert sorted(pv.load(work).lineage.entries["hmpv"]) == [25, 26]
@@ -390,7 +444,7 @@ def test_expand_copy_never_redefines_an_anchor(work):
     """
     for org in ALL_ORGANISMS:
         w = work.with_name(f"{org}.yaml")
-        w.write_text(VALUES.read_text())
+        w.write_text(_blob(BASE_COMMIT))
         if pv.main(["--values", str(w), "bump", "--organisms", org,
                     "--expand-organisms", org, "--anchor-threshold", "10000"]) != 0:
             continue

@@ -714,9 +714,10 @@ def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
                               f"{org_name}: removed leftover commented-out stub"))
 
     if len(org.versions) == 1:
-        if not edits:
-            return []
-        return edits + _plan_lineage_prune(doc, org, keep_version)
+        # Still fall through to the lineage sweep: a stale key can outlive the entry
+        # that needed it (a prune that was skipped, or a hand edit), and nothing else
+        # ever removes it.
+        return edits + _plan_lineage_prune(doc, org, [keep_version])
 
     if len(org.active) == 1:
         item = org.active[0]
@@ -725,7 +726,7 @@ def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
         for version, ln in zip(item.versions, item.version_value_lines):
             if version != keep_version:
                 edits.append(Edit(ln, ln + 1, [], f"{org_name}: dropped version {version}"))
-        return edits + _plan_lineage_prune(doc, org, keep_version)
+        return edits + _plan_lineage_prune(doc, org, [keep_version])
 
     entries = _resolved_entries(doc, org_name)
     sigs = [_config_signature(e) for e in entries]
@@ -765,7 +766,7 @@ def plan_prune(doc: Doc, org_name: str, keep_stubs: bool) -> list[Edit]:
         edits.append(Edit(first, last + 1, [f"{' ' * (KEY_INDENT + 2)}- {keep_version}"],
                           f"{org_name}: surviving entry set to version {keep_version}{note_extra}"))
 
-    return edits + _plan_lineage_prune(doc, org, keep_version)
+    return edits + _plan_lineage_prune(doc, org, [keep_version])
 
 
 def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
@@ -819,12 +820,19 @@ def _relocate_anchors(doc: Doc, org_name: str, doomed: Item, keep: Item,
 
 
 
-def _plan_lineage_prune(doc: Doc, org: Organism, keep_version: int) -> list[Edit]:
+def _plan_lineage_prune(doc: Doc, org: Organism, surviving: list[int]) -> list[Edit]:
+    """Drop lineage keys for versions no pipeline entry will use after this prune.
+
+    Keyed on the surviving version set rather than "below the highest": a stale key can
+    sit above the current version, or be left behind by a prune that was skipped, and
+    `< keep_version` misses both.
+    """
+    keep = set(surviving)
     edits: list[Edit] = []
     for system in org.lineage_systems:
         block = doc.lineage.entries.get(system, {})
         for version, (line, _url) in block.items():
-            if version < keep_version:
+            if version not in keep:
                 edits.append(Edit(line, line + 1, [],
                                   f"{org.name}: lineageSystemDefinitions.{system}.{version} removed"))
     return edits
