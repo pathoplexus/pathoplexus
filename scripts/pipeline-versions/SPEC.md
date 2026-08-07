@@ -296,13 +296,14 @@ operate on the **resolved** (merge-key-expanded) view.
 |---|---|---|
 | 1 | no duplicate version within an organism | error |
 | 2 | no entry is missing a `configFile` key that a **lower-version** entry declares | error |
-| 3 | every entry has a non-empty `segments` (unless `--allow-empty-segments`) | error |
+| 3 | every entry has non-empty `segments`, every segment non-empty `references`, and every reference a `nextclade_dataset_name` and non-empty `genes` (unless `--allow-empty-segments`) | error |
 | 4 | an organism's flattened versions are in ascending order | error |
 | 5 | every referenced lineage system exists, and every declared version has a key under it | error |
 | 6 | no lineage key for a version no entry uses | warning |
 | 7 | no commented-out stub naming an already-active version | warning |
 | 8 | every dataset reference pins a `nextclade_dataset_tag` | warning |
-| 8b | `configFile` validates against the preprocessing pipeline's own model | warning |
+| 8a | every preprocessing entry key appears in the chart's `values.schema.json` | error |
+| 8b | `configFile` validates against the preprocessing pipeline's own model, unknown keys included | error |
 | 8c | every nextclade dataset named exists on its server, and carries the tag pinned | error |
 | 8d | every lineage definition URL resolves | error |
 | 8e | the latest version's dataset tag is the newest published | info |
@@ -317,6 +318,37 @@ incident's signature. Assertion 4 guarantees "earlier" means "lower version".
 
 Assertion 5 distinguishes an absent lineage *system* from an absent *version key* — they are
 different mistakes.
+
+**Assertion 3 is broader than the incident.** Every level of the segment tree fails the same
+way: empty means the pipeline quietly does *less*, never that it errors. No segments sets
+`alignment_requirement = NONE` (the incident); a segment with no references names no dataset, so
+it is neither aligned nor annotated; a reference with no genes produces no amino acid sequences.
+None of it can come from the pipeline's model — `references` and `genes` are
+`Field(default_factory=list)` because loculus supports organisms that legitimately have none.
+**Requiring them is PPX policy**, true of all 14 organisms today. If an organism ever
+legitimately has no genes, this is the assertion to revisit, not to work around.
+
+**Everything assertion 8b reports is an error, unknown keys included.** A key the model does not
+declare is not a style question — pydantic drops it, so the config reads as configured while
+doing nothing, which is how andv came to run unpinned for six months. This makes andv's two dead
+keys a CI failure until they are removed.
+
+Forcing `extra="forbid"` from here is the expedient version, not the sustainable one. **The
+sustainable fix is upstream**: `extra="forbid"` on `Config`/`Segment`/`Reference` in loculus
+would fail at pipeline startup for every Loculus instance, with nothing to force from outside.
+Tightening `values.schema.json` instead would not work — `configFile` is deliberately
+pipeline-agnostic there, so the pydantic model is the right layer.
+
+**Assertion 8a reads the chart's schema rather than restating it**, so it cannot drift. `helm
+template` does enforce `additionalProperties: false` on preprocessing entries, but only in the
+per-environment render job and without naming the organism. Note that `dockerTag` is a legal
+per-entry key: an entry may pin its own image tag, defaulting to the chart-wide one.
+
+**Malformed shapes are diagnosed, never crashed on.** A bare scalar where a mapping belongs, an
+empty `configFile:`, an empty `version:` — each parses to something the structural checks would
+trip over. Every reader skips non-mappings and lets the model check report the shape with
+pydantic's own message and location; an entry with no version is reported as exactly that rather
+than as a scan/parser mismatch.
 
 **Assertion 11 is the only cross-artifact check.** Everything else asks whether the config is
 internally coherent; this asks whether two independently maintained things agree. A bump moves

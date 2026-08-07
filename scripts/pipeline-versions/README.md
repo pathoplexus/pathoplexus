@@ -177,6 +177,17 @@ only the first run touches the network. `--loculus <path>` uses an existing clon
 offline with no cache, the step is skipped with a warning and the rest of `check` still
 runs. `--skip-model-check` turns it off outright.
 
+Everything it reports is an **error**, unknown keys included: pydantic drops them, so the config
+reads as configured while doing nothing. It also checks the entry's own keys — `configFiles:` instead of
+`configFile:` reads as a configured pipeline that has no config — against the chart's
+`values.schema.json` at the same commit, so that list cannot drift. (`dockerTag` is legal there:
+an entry may pin its own image tag.)
+
+What the model *cannot* catch is emptiness. `references` and `genes` default to empty lists
+because loculus supports organisms that have none, so `check` asserts separately that every
+segment has references and every reference has a dataset name and genes — PPX policy, true of
+all 14 organisms. A missing `genes:` otherwise means no amino acid sequences, silently.
+
 It matters because an unknown key is **silently dropped**: pydantic ignores extras, and
 `values.schema.json` sets `additionalProperties: false` on `segments` and `references` but
 not on `configFile` itself, so helm renders it happily. andv has two — a

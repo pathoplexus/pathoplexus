@@ -411,6 +411,10 @@ def _parse(path: Path, text: str) -> Doc:
         for item, pitem in zip(org.active, parsed, strict=False):
             pv = pitem.get("version")
             pv = pv if isinstance(pv, list) else [pv]
+            if not [v for v in pv if v is not None]:
+                # Malformed config rather than a layout drift, so say that instead of
+                # reporting a mismatch between two readings that both got it right.
+                raise Problem(f"{name}: a pipeline entry declares no version.")
             if sorted(item.versions) != sorted(pv):
                 raise Problem(
                     f"{name}: textual scan read versions {item.versions} but the "
@@ -1173,7 +1177,8 @@ def run_check(
         #    change (a new alignment_requirement, create_embl_file, ...) and is exactly
         #    what someone hand-editing a generated draft would do, so it must not fail CI.
         #    Entries are in ascending version order; check 4 enforces that.
-        keysets = [frozenset(e.get("configFile", {})) for e in entries]
+        # `or {}`, not a default: `configFile:` with nothing under it parses to None.
+        keysets = [frozenset(e.get("configFile") or {}) for e in entries]
         for idx, (entry, ks) in enumerate(zip(entries, keysets, strict=False)):
             older = frozenset().union(*keysets[:idx]) if idx else frozenset()
             if lost := sorted(older - ks):
@@ -1182,12 +1187,48 @@ def run_check(
                     f"configFile key(s) {lost} that a lower-version entry declares."
                 )
 
-        # 3. No segments means alignment_requirement=NONE: the pipeline aligns nothing,
-        #    annotates nothing, and cannot emit an alignment error.
+        # 3. An empty piece of the segment tree means the pipeline quietly does less,
+        #    never that it fails. No segments sets alignment_requirement=NONE, so it
+        #    aligns nothing, annotates nothing, and cannot emit an alignment error --
+        #    that is the incident. A segment with no references names no dataset, so it
+        #    is not aligned or annotated either. A reference with no genes produces no
+        #    amino acid sequences. Each is silent data loss of the same kind.
+        #
+        #    The pipeline's own model cannot catch any of this: `references` and `genes`
+        #    default to empty lists because loculus supports organisms that legitimately
+        #    have none. Requiring them is PPX policy -- every PPX organism has both --
+        #    so it has to be asserted here.
         if not allow_empty_segments:
             for idx, entry in enumerate(entries):
-                if not entry.get("configFile", {}).get("segments"):
-                    errors.append(f"{name}: entry {idx} (version {entry['version']}) has no segments.")
+                where = f"{name}: entry {idx} (version {entry['version']})"
+                segments = (entry.get("configFile") or {}).get("segments")
+                if not segments:
+                    errors.append(f"{where} has no segments.")
+                    continue
+                for segment in segments:
+                    # Anything that is not a mapping is a shape error, which the model
+                    # check reports with pydantic's own message and location.
+                    if not isinstance(segment, dict):
+                        continue
+                    seg_name = segment.get("name", "?")
+                    references = segment.get("references")
+                    if not references:
+                        errors.append(f"{where} segment {seg_name} has no references.")
+                        continue
+                    for reference in references:
+                        if not isinstance(reference, dict):
+                            continue
+                        ref_name = reference.get("name", "?")
+                        if not reference.get("nextclade_dataset_name"):
+                            errors.append(
+                                f"{where} segment {seg_name} reference {ref_name} names no "
+                                f"nextclade_dataset_name."
+                            )
+                        if not reference.get("genes"):
+                            errors.append(
+                                f"{where} segment {seg_name} reference {ref_name} lists no genes, "
+                                f"so it produces no amino acid sequences."
+                            )
 
         # 4. Deployment and ConfigMap names embed the entry's index in the *flattened*
         #    version list (loculus-preprocessing-<org>-v<version>-<index>), and that
@@ -1266,18 +1307,17 @@ def run_check(
                         f"its own line."
                     )
 
-    # 8b. Validate each configFile against the preprocessing pipeline's own pydantic
-    #     model. A key it does not declare is dropped in silence -- pydantic ignores
-    #     unknown fields, and values.schema.json sets additionalProperties: false on
-    #     segments and references but not on configFile itself -- so it reads as
-    #     configured while doing nothing. Warnings for now: andv is in that state today
-    #     and fixing it is a config decision.
+    # 8a/8b. Validate each entry's own keys against the chart's values.schema.json, and
+    #     its configFile against the preprocessing pipeline's own pydantic model. A key
+    #     neither declares is dropped in silence -- pydantic ignores unknown fields, and
+    #     values.schema.json sets additionalProperties: false on segments and references
+    #     but not on configFile itself -- so it reads as configured while doing nothing.
     if not skip_model_check:
         try:
-            note, *found = _validate_config_files(doc, organisms, loculus)
+            note, model_errors = _validate_config_files(doc, organisms, loculus)
             if verbosity >= 1:
                 print(note)
-            warnings += found
+            errors += model_errors
         except Problem as exc:
             # Offline, most likely. The rest of check is still worth having, so say what
             # was skipped rather than failing the whole run over it.
@@ -1699,7 +1739,7 @@ def _coverage_units(doc: Doc, organisms: list[str]) -> tuple[list[_CoverageUnit]
 
             for entry in entries:
                 config_file = entry.get("configFile") or {}
-                segments = config_file.get("segments") or []
+                segments = _mappings(config_file.get("segments"))
                 if fld.segments is not None:
                     scoped = [s for s in segments if str(s.get("name")) in fld.segments]
                 elif len(segments) <= 1:
@@ -1763,25 +1803,81 @@ def _fetch_parallel(keys, fetch):
         return dict(zip(keys, pool.map(attempt, keys), strict=True))
 
 
-def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> list[str]:
-    """Run each organism's configFile through the pipeline's own model."""
+VALUES_SCHEMA = "kubernetes/loculus/values.schema.json"
+
+
+def _entry_keys(loculus: Path | None, repo: Path) -> set[str]:
+    """The keys a preprocessing entry may carry, from the chart's own values.schema.json.
+
+    Read rather than restated so it cannot drift. `helm template` does enforce this --
+    the schema sets `additionalProperties: false` -- but only in the per-environment
+    render job, and its message does not say which organism. Checking it here names the
+    organism and the key, and does not depend on that job running.
+    """
+    ref = pinned_loculus_version(repo)
+    loculus = loculus or _fetch_loculus(ref)
+    shown = subprocess.run(
+        ["git", "-C", str(loculus), "show", f"{ref}:{VALUES_SCHEMA}"],
+        capture_output=True,
+        check=False,
+    )
+    if shown.returncode:
+        raise Problem(f"could not read {VALUES_SCHEMA} at {ref}: {shown.stderr.decode().strip()}")
+    try:
+        schema = json.loads(shown.stdout)
+        return set(schema["definitions"]["organism"]["properties"]["preprocessing"]["items"]["properties"])
+    except (KeyError, ValueError) as exc:
+        raise Problem(f"could not locate the preprocessing entry schema in {VALUES_SCHEMA}: {exc}") from exc
+
+
+def _validate_config_files(doc: Doc, organisms: list[str], loculus: Path | None) -> tuple[str, list[str]]:
+    """Run each organism's configFile through the pipeline's own model.
+
+    Everything it reports is an error, unknown keys included. A key the model does not
+    declare is not a style question: pydantic drops it, so the config reads as
+    configured while doing nothing -- which is how andv came to run unpinned for six
+    months. The sustainable version of this check lives upstream, as `extra="forbid"`
+    on `Config`/`Segment`/`Reference` in loculus, where it would fail at pipeline
+    startup for every instance instead of being forced on from here.
+    """
     from pydantic import ValidationError  # noqa: PLC0415  (only this code path needs it)
 
     # The pinned loculusVersion belongs to the repo this script ships in, not to
     # whichever values file is being checked -- which may be a fixture in a tmpdir.
-    model, ref = _pipeline_config_model(loculus, Path(__file__).parents[2])
-    out = [f"validated against the preprocessing config model at loculus {ref[:9]}"]
+    repo = Path(__file__).parents[2]
+    model, ref = _pipeline_config_model(loculus, repo)
+    allowed = _entry_keys(loculus, repo)
+    errors: list[str] = []
     for name in organisms:
         for idx, entry in enumerate(_resolved_entries(doc, name)):
+            # A misspelled entry key is dropped in silence and the entry runs on the
+            # inherited defaults -- `configFiles:` reads as a configured pipeline that
+            # has no config.
+            if unknown := sorted(set(entry) - allowed):
+                errors.append(
+                    f"{name}: entry {idx} (version {entry.get('version')}) has unknown "
+                    f"preprocessing key(s) {unknown}; a preprocessing entry may carry "
+                    f"{sorted(allowed)}."
+                )
             try:
                 model(**(entry.get("configFile") or {}))
             except ValidationError as exc:
                 for err in exc.errors():
                     where = ".".join(str(p) for p in err["loc"])
-                    out.append(
+                    errors.append(
                         f"{name}: entry {idx} (version {entry['version']}) configFile.{where}: {err['msg']}"
                     )
-    return out
+    return f"validated against the preprocessing config model at loculus {ref[:9]}", errors
+
+
+def _mappings(value) -> list[dict]:
+    """The mapping items of a YAML list, skipping anything of another shape.
+
+    `segments:` and `references:` are lists of mappings, but a hand edit can leave a
+    bare scalar in one. That is a shape error, reported once by the model check; every
+    other reader must not crash on it before the diagnosis is printed.
+    """
+    return [item for item in (value or []) if isinstance(item, dict)]
 
 
 def _dataset_refs(entries: list[dict]) -> list[Ref]:
@@ -1789,8 +1885,11 @@ def _dataset_refs(entries: list[dict]) -> list[Ref]:
     out = []
     for entry in entries:
         cf = entry.get("configFile") or {}
-        for seg in cf.get("segments") or []:
-            for ref in seg.get("references") or []:
+        # Malformed shapes are reported by the model check; every other reader of the
+        # tree just skips them, so a broken file still gets a diagnosis rather than a
+        # traceback.
+        for seg in _mappings(cf.get("segments")):
+            for ref in _mappings(seg.get("references")):
                 if ref.get("nextclade_dataset_name"):
                     out.append(Ref(_vlist(entry), str(seg.get("name")), str(ref.get("name")), cf, ref))
     return out

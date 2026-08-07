@@ -98,6 +98,20 @@ def _versions(path: Path, org: str) -> list[int]:
     return pv.load(path).organisms[org].versions
 
 
+def _unpinned_organism(doc) -> str | None:
+    """An organism naming a dataset with no tag, if the file still has one.
+
+    Tests that assert on the real values.yaml must derive what they expect from it.
+    Naming an organism -- or a tag, or a URL -- bakes in config that moves on every
+    bump, and turns a legitimate change red on a PR that did nothing wrong.
+    """
+    for name in doc.organisms:
+        refs = pv._dataset_refs(pv._resolved_entries(doc, name))
+        if any(not ref.get("nextclade_dataset_tag") for ref in refs):
+            return name
+    return None
+
+
 def _cur(path: Path, org: str) -> int:
     """The organism's highest pipeline version right now."""
     return pv.load(path).organisms[org].max_version
@@ -241,7 +255,9 @@ def test_bumped_entry_inherits_the_full_config(work, org):
     assert len(entries) == len(before) + 1
     assert entries[-1]["configFile"] == entries[-2]["configFile"]
     assert entries[-1]["configFile"].get("segments")
-    assert _run(work, "check", "--organisms", org) == 0
+    # Structural checks only: this is about what bump generated, and andv carries two
+    # dead configFile keys at BASE_COMMIT that predate it.
+    assert _run(work, "check", "--organisms", org, "--skip-model-check", "--skip-remote-checks") == 0
 
 
 def test_bump_output_is_valid_yaml_and_only_versions_change(work):
@@ -265,7 +281,9 @@ def _check_configs(work: Path, configs: list[dict]) -> int:
     ]
     doc.organisms["andv"].lineage_fields = []
     doc.organisms["andv"].items = []
-    return pv.run_check(doc, ["andv"], allow_empty_segments=False)
+    return pv.run_check(
+        doc, ["andv"], allow_empty_segments=False, skip_model_check=True, skip_remote_checks=True
+    )
 
 
 def test_check_is_directional_newer_may_add_but_not_lose_keys(work, capsys):
@@ -274,7 +292,8 @@ def test_check_is_directional_newer_may_add_but_not_lose_keys(work, capsys):
     Only the reverse -- a newer entry losing a key an older one declares -- is the
     incident's signature, and that is what must be an error.
     """
-    seg = {"segments": [{"name": "main"}]}
+    ref = {"name": "r", "nextclade_dataset_name": "ds", "genes": ["G"]}
+    seg = {"segments": [{"name": "main", "references": [ref]}]}
 
     assert _check_configs(work, [seg, {**seg, "batch_size": 5}]) == 0
 
@@ -367,6 +386,7 @@ organisms:
             - name: main
               references:
               - name: singleReference
+                nextclade_dataset_name: ds
                 nextclade_dataset_tag: TAG-ONE
                 genes: &testvGenes [A, B]
 %s"""
@@ -382,6 +402,7 @@ NEWER_OVERRIDES_TAG = """\
             - name: main
               references:
               - name: singleReference
+                nextclade_dataset_name: ds
                 nextclade_dataset_tag: TAG-TWO
                 genes: *testvGenes
 """
@@ -478,6 +499,7 @@ organisms:
               references:
                 - name: singleReference
                   nextclade_dataset_name: ds
+                  genes: [G]
                   nextclade_dataset_tag: TAG
 """
 
@@ -514,14 +536,25 @@ def test_check_covers_every_lineage_system_not_just_the_first(tmp_path, capsys):
 
 
 def test_status_reports_dataset_tags_and_lineage_urls(capsys):
+    """Expectations are derived from the file, not hardcoded.
+
+    A dataset tag and a lineage URL are exactly the things a bump changes, so asserting
+    literals here means a legitimate bump turns this red on a PR that did nothing wrong.
+    """
+    doc = pv.load(VALUES)
+    version = doc.organisms["mpox"].max_version
+    tag = pv._dataset_refs(pv._resolved_entries(doc, "mpox"))[0].get("nextclade_dataset_tag")
+    url = doc.lineage["mpoxOutbreakLineage"][version][1]
+
     _run(VALUES, "status")
     out = capsys.readouterr().out
     assert "nextcladeDatasetTag" in out
-    assert "2026-07-07--14-07-11Z" in out
+    assert tag in out
     # The lineage URL in full: it is what SILO loads, and what you want to open.
-    assert "definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml" in out
+    assert url in out
     # An organism naming a dataset but pinning no tag reads as unpinned, not blank.
-    assert "unpinned" in out
+    if _unpinned_organism(doc):
+        assert "unpinned" in out
 
 
 def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsys):
@@ -534,17 +567,20 @@ def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsy
               references:
                 - name: singleReference
                   nextclade_dataset_name: ds
+                  genes: [G]
                   nextclade_dataset_tag: TAG
 """,
             """            - name: L
               references:
                 - name: singleReference
                   nextclade_dataset_name: ds/L
+                  genes: [G]
                   nextclade_dataset_tag: TAG-L
             - name: M
               references:
                 - name: singleReference
                   nextclade_dataset_name: ds/M
+                  genes: [G]
 """,
         )
     )
@@ -571,10 +607,9 @@ def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, loculus, ca
             "          segments:\n",
         )
     )
-    # a warning, not an error; see the note in run_check
-    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 0
-    out = capsys.readouterr().out
-    assert "configFile.nextclade_dataset_tag: Extra inputs are not permitted" in out
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    err = capsys.readouterr().err
+    assert "configFile.nextclade_dataset_tag: Extra inputs are not permitted" in err
 
 
 def test_model_rejects_a_key_the_pipeline_does_not_declare(tmp_path, loculus, capsys):
@@ -591,8 +626,8 @@ def test_model_rejects_a_key_the_pipeline_does_not_declare(tmp_path, loculus, ca
         "          <<: *preprocessingConfigFile\n          taxon_id: 12345\n",
     )
     path.write_text(text)
-    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
-    assert "configFile.taxon_id: Extra inputs are not permitted" in capsys.readouterr().out
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "configFile.taxon_id: Extra inputs are not permitted" in capsys.readouterr().err
 
 
 def test_model_rejects_a_misspelled_nested_key(tmp_path, loculus, capsys):
@@ -603,8 +638,8 @@ def test_model_rejects_a_misspelled_nested_key(tmp_path, loculus, capsys):
     """
     path = tmp_path / "nested.yaml"
     path.write_text(MULTI_SEGMENT.replace("              references:\n", "              referneces:\n", 1))
-    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
-    assert "configFile.segments.0.referneces: Extra inputs are not permitted" in capsys.readouterr().out
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "configFile.segments.0.referneces: Extra inputs are not permitted" in capsys.readouterr().err
 
 
 def test_model_rejects_a_bad_enum_value(tmp_path, loculus, capsys):
@@ -615,8 +650,10 @@ def test_model_rejects_a_bad_enum_value(tmp_path, loculus, capsys):
             "          <<: *preprocessingConfigFile\n          alignment_requirement: SOMETIMES\n",
         )
     )
-    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
-    assert "alignment_requirement: Input should be 'ANY', 'ALL' or 'NONE'" in capsys.readouterr().out
+    # A bad enum value is unambiguously broken config, so it fails the run rather than
+    # printing a warning nobody has to act on.
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "alignment_requirement: Input should be 'ANY', 'ALL' or 'NONE'" in capsys.readouterr().err
 
 
 def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
@@ -627,20 +664,23 @@ def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
             '          <<: *preprocessingConfigFile\n          batch_size: "ten"\n',
         )
     )
-    _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks")
-    out = capsys.readouterr().out
-    assert "configFile.batch_size" in out and "valid integer" in out
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    err = capsys.readouterr().err
+    assert "configFile.batch_size" in err and "valid integer" in err
 
 
-def test_model_accepts_every_key_the_real_config_uses(loculus, capsys):
-    """Guards against a schema so strict it fires on legitimate config.
+def test_model_accepts_every_key_the_real_config_uses(work, loculus, capsys):
+    """Guards against a model so strict it fires on legitimate config.
 
-    Only andv's two misplaced keys should be reported -- if this starts failing after a
-    loculusVersion bump, the schema needs regenerating, not loosening.
+    Read from a pinned commit, not the working tree: this asserts something about the
+    *model*, and running it against a file someone is mid-edit on tests their edit
+    instead. If it starts failing after a loculusVersion bump, the config needs fixing
+    or the model has changed -- not this test loosening.
     """
-    _run(VALUES, "check", "--loculus", str(loculus), "--skip-remote-checks")
-    unknown = [ln for ln in capsys.readouterr().out.splitlines() if "Extra inputs are not permitted" in ln]
-    assert unknown, "expected andv's two misplaced keys"
+    _run(work, "check", "--loculus", str(loculus), "--skip-remote-checks")
+    unknown = [ln for ln in capsys.readouterr().err.splitlines() if "Extra inputs are not permitted" in ln]
+    # Not `assert unknown`: andv's two dead keys are the only ones at BASE_COMMIT, and
+    # the commit that removes them must not turn this red.
     assert all("andv" in ln for ln in unknown), unknown
 
 
@@ -684,11 +724,13 @@ organisms:
               references:
                 - name: r
                   nextclade_dataset_name: ds/L
+                  genes: [G]
                   nextclade_dataset_tag: OLD-L
             - name: M
               references:
                 - name: r
                   nextclade_dataset_name: ds/M
+                  genes: [G]
                   nextclade_dataset_tag: SAME-M
       - <<: *preprocessing
         replicas: 3
@@ -701,11 +743,13 @@ organisms:
               references:
                 - name: r
                   nextclade_dataset_name: ds/L
+                  genes: [G]
                   nextclade_dataset_tag: NEW-L
             - name: M
               references:
                 - name: r
                   nextclade_dataset_name: ds/M
+                  genes: [G]
                   nextclade_dataset_tag: SAME-M
 """
 
@@ -748,8 +792,16 @@ def test_status_rejects_an_unknown_column(capsys):
 
 
 def test_check_warns_about_an_unpinned_dataset(capsys):
-    """A version is supposed to identify a config; an unpinned dataset breaks that."""
-    _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "cchf")
+    """A version is supposed to identify a config; an unpinned dataset breaks that.
+
+    Which organism is unpinned is config that can change, so it is looked up rather
+    than named.
+    """
+    doc = pv.load(VALUES)
+    organism = _unpinned_organism(doc)
+    if organism is None:
+        pytest.skip("every dataset reference in values.yaml is pinned")
+    _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", organism)
     assert "no nextclade_dataset_tag" in capsys.readouterr().out
 
 
@@ -1269,11 +1321,13 @@ organisms:
               references:
                 - name: r
                   nextclade_dataset_name: ds/L
+                  genes: [G]
                   nextclade_dataset_tag: T
             - name: S
               references:
                 - name: r
                   nextclade_dataset_name: ds/S
+                  genes: [G]
                   nextclade_dataset_tag: T
       - <<: *preprocessing
         version:
@@ -1285,11 +1339,13 @@ organisms:
               references:
                 - name: r
                   nextclade_dataset_name: ds/L
+                  genes: [G]
                   nextclade_dataset_tag: T
             - name: S
               references:
                 - name: r
                   nextclade_dataset_name: ds/S
+                  genes: [G]
                   nextclade_dataset_tag: T
 """
 
