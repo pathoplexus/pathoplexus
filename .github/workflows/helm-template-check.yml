@@ -86,10 +86,18 @@ jobs:
           ref: ${{ steps.loculus-version.outputs.version }}
           path: loculus
 
+      - uses: astral-sh/setup-uv@v5
+
       - name: Install Helm
         uses: azure/setup-helm@v5
         with:
           version: ${{ env.HELM_VERSION }}
+
+      - name: Preprocessing config schema is current for the pinned loculusVersion
+        run: |
+          uv run pathoplexus/scripts/pipeline-versions/generate_schema.py \
+            --loculus loculus --repo pathoplexus --check
+        working-directory: ${{ github.workspace }}
 
       - name: Template Helm chart for ${{ matrix.environment }}
         run: |

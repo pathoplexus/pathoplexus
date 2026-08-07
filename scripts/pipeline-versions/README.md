@@ -120,6 +120,31 @@ ERROR: mpox: entry 1 (version [27]) is missing configFile key(s) ['segments'] th
 ERROR: mpox: entry 1 (version [27]) has no segments.
 ```
 
+## The configFile schema
+
+PPX runs exactly one preprocessing pipeline, so the shape of `configFile` is known:
+whatever `Config`, `Segment` and `Reference` declare in the loculus source that
+`pathoplexus_app/values.yaml` pins. `check` validates against that and reports any key the
+model does not declare.
+
+This matters because such a key is **silently dropped**. pydantic ignores unknown fields,
+and `values.schema.json` sets `additionalProperties: false` on `segments` and `references`
+but not on `configFile` itself — so helm renders it happily. andv has two: a
+`nextclade_dataset_tag` written in the pre-`d3c43c019` position (where it no longer does
+anything, leaving the dataset unpinned) and a stray `taxon_id` that belongs to the ingest
+config.
+
+`preprocessing-config-schema.json` is generated, not hand-written:
+
+```bash
+uv run scripts/pipeline-versions/generate_schema.py --loculus ../loculus
+```
+
+It records the `loculusVersion` it came from, and CI re-derives it against the loculus
+checkout it already makes for the helm step, failing if the committed copy is stale. So it
+cannot drift from the pipeline actually deployed. Regenerate whenever `loculusVersion`
+moves.
+
 ## Tests
 
 ```bash

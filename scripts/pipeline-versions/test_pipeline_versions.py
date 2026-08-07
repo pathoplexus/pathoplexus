@@ -524,7 +524,7 @@ def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsy
     assert "M:unpinned" in out
 
 
-def test_a_reference_only_key_on_configfile_is_reported(tmp_path, capsys):
+def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, capsys):
     """`nextclade_dataset_tag` on configFile reads as configured and does nothing.
 
     The preprocessing Config model declares no such field and pydantic drops unknown
@@ -542,7 +542,62 @@ def test_a_reference_only_key_on_configfile_is_reported(tmp_path, capsys):
         )
     )
     assert _run(path, "check") == 0  # a warning for now; see the note in run_check
-    assert "sets nextclade_dataset_tag directly on configFile" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "configFile.nextclade_dataset_tag is not a field of the preprocessing config" in out
+
+
+def test_schema_rejects_a_key_the_pipeline_does_not_declare(tmp_path, capsys):
+    """PPX runs only the nextclade pipeline, so the configFile shape is known exactly.
+
+    Anything else is dropped by pydantic, and neither helm nor values.schema.json
+    constrains this object -- values.schema.json sets additionalProperties: false on
+    segments and references but not on configFile itself.
+    """
+    path = tmp_path / "unknown.yaml"
+    path.write_text(MULTI_SEGMENT.replace("        log_level: DEBUG\n", "        log_level: DEBUG\n", 1))
+    text = path.read_text().replace(
+        "          <<: *preprocessingConfigFile\n",
+        "          <<: *preprocessingConfigFile\n          taxon_id: 12345\n",
+    )
+    path.write_text(text)
+    _run(path, "check")
+    assert "configFile.taxon_id is not a field of the preprocessing config" in capsys.readouterr().out
+
+
+def test_schema_rejects_a_wrongly_typed_value(tmp_path, capsys):
+    path = tmp_path / "typed.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n",
+            '          <<: *preprocessingConfigFile\n          batch_size: "ten"\n',
+        )
+    )
+    _run(path, "check")
+    assert "configFile.batch_size should be int, not str" in capsys.readouterr().out
+
+
+def test_schema_accepts_every_key_the_real_config_uses(capsys):
+    """Guards against a schema so strict it fires on legitimate config.
+
+    Only andv's two misplaced keys should be reported -- if this starts failing after a
+    loculusVersion bump, the schema needs regenerating, not loosening.
+    """
+    _run(VALUES, "check")
+    unknown = [
+        ln for ln in capsys.readouterr().out.splitlines() if "is not a field of the preprocessing" in ln
+    ]
+    assert all("andv" in ln for ln in unknown), unknown
+
+
+def test_schema_records_the_pinned_loculus_version():
+    schema = pv.load_schema()
+    pinned = re.search(
+        r"^loculusVersion:\s*(\S+)", (REPO / "pathoplexus_app" / "values.yaml").read_text(), re.M
+    ).group(1)
+    assert schema["loculusVersion"] == pinned.strip('"'), (
+        "schema is stale; regenerate with generate_schema.py"
+    )
+    assert set(schema["models"]) == {"Config", "Segment", "Reference"}
 
 
 def test_a_configfile_level_server_is_inherited(tmp_path, capsys):
