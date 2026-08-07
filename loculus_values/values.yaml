@@ -2818,17 +2818,15 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &mpoxPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         replicas: 1
         version:
           - 28
         configFile:
           <<: *preprocessingConfigFile
-          batch_size: 5
+          batch_size: 10
           segments:
-            - &mpoxDataset
-              name: main
+            - name: main
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
