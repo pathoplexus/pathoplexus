@@ -102,6 +102,16 @@ defaultOrganismConfig: &defaultOrganismConfig
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
       maxSequencesPerEntry: 1
+      files:
+        enabled: true
+        categories:
+          - name: rawReads
+            displayName: Raw reads
+    files:
+      - name: annotations
+        displayName: Annotations
+      - name: rawReads
+        displayName: Raw reads
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -1771,6 +1781,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        create_embl_file: true
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
