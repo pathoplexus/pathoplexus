@@ -11,10 +11,14 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 traefikVersion: 3
 s3:
-  enabled: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
 developmentDatabasePersistence: true
 dataUseTerms:
   agreementHTML: >
