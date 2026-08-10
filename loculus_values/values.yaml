@@ -1,3 +1,4 @@
+createTestAccounts: true
 preprocessingTimeout: 600
 getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
@@ -21,7 +22,7 @@ s3:
   gcFrequencyMinutes: 720
   gcInitialDelayMinutes: 15
   gcOrphanRetentionPeriodMinutes: 1440
-developmentDatabasePersistence: false
+developmentDatabasePersistence: true
 dataUseTerms:
   agreementHTML: >
     I agree to the <a href='/about/terms-of-use/data-use-terms' target='_blank' rel='noopener noreferrer'>data use terms</a>, and I understand <a href='/about/citation' target='_blank' rel='noopener noreferrer'>how to cite</a> data from Pathoplexus.
