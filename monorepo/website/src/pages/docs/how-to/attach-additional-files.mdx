@@ -1,0 +1,59 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Attaching additional files"
+order: 41
+---
+
+When [submitting sequences to Pathoplexus](/about/docs/upload-sequences), you can include the raw reads that were used to generate the sequences. To do this, you will need to upload a folder containing the raw reads files and map them to their respective sequences via the `fileIds` field in your metadata file.
+
+The `fileIds` field should be a space-separated list containing all files associated with the sequence. Each entry in the list consists of a required`name` and optional `path`, separated by a colon: `name` or `name:path`. `name` denotes how the file will be called in Pathoplexus, whereas `path` indicates the location of the file on your local machine, starting at the root of the folder you've uploaded.
+
+### Example 1: single folder
+
+Let's say you're submitting three sequences — `seq1`, `seq2`, and `seq3` —  and their associated raw reads to Pathoplexus, and the folder containing the raw reads is structured like this:
+
+```sh
+uploaded_folder
+│
+├── raw_reads_1_fw.fq.gz
+│
+├── raw_reads_1_rv.fq.gz
+│
+├── raw_reads_2.fq.gz
+│
+└── raw_reads_3.fq.gz
+```
+
+Your metadata file should look like this:
+
+| id   | ... | fileIds                                 |
+| ---- | --- | --------------------------------------- |
+| seq1 | ... | raw_reads1_fw.fq.gz raw_reads1_rv.fq.gz |
+| seq2 | ... | raw_reads_2.fq.gz                       |
+| seq3 | ... | raw_reads_3.fq.gz                       |
+
+### Example 2: nested folder
+
+Let's say you're submitting three sequences — `seq1`, `seq2`, and `seq3` —  and their associated raw reads to Pathoplexus, and the folder containing the raw reads is structured like this:
+
+```sh
+uploaded_folder
+│
+├── raw_reads_fw.fq.gz
+│
+├── raw_reads_rv.fq.gz
+│
+├── subfolder_1
+│   └── raw_reads.fq.gz
+│
+└── subfolder_2
+    └── raw_reads.fq.gz
+```
+
+Your metadata file should look like this:
+
+| id   | ... | fileIds                                     |
+| ---- | --- | ------------------------------------------- |
+| seq1 | ... | raw_reads_fw.fq.gz raw_reads_rv.fq.gz       |
+| seq2 | ... | raw_reads.fq.gz:subfolder_1/raw_reads.fq.gz |
+| seq3 | ... | raw_reads.fq.gz:subfolder_2/raw_reads.fq.gz |
