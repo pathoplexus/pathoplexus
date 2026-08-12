@@ -2669,16 +2669,19 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/L
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [RdRp]
             - name: M
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/M
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [GPC]
             - name: S
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/S
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [NP]
           segment_classification_method: "align"
     ingest:
