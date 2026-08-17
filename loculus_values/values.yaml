@@ -3928,18 +3928,18 @@ organisms:
             columnWidth: 80
             order: 5
             orderOnDetailsPage: 740
-      website:
-        <<: *website
-        tableColumns:
-          - sampleCollectionDate
-          - earliestReleaseDate
-          - authors
-          - authorAffiliations
-          - geoLocCountry
-          - geoLocAdmin1
-          - length
-          - clade
-          - hostNameScientific
+        website:
+          <<: *website
+          tableColumns:
+            - sampleCollectionDate
+            - earliestReleaseDate
+            - authors
+            - authorAffiliations
+            - geoLocCountry
+            - geoLocAdmin1
+            - length
+            - clade
+            - hostNameScientific
       preprocessing:
       - <<: *preprocessing
         version:
