@@ -3909,7 +3909,7 @@ organisms:
           - name: Sealion
             maxNumberOfRecommendedEntries: 3000
             url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
-          - name: "Country map"  
+          - name: "Country map"
             maxNumberOfRecommendedEntries: 45000
             url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
         metadataAdd:
@@ -3927,7 +3927,19 @@ organisms:
               inputs: { input: nextclade.clade }
             columnWidth: 80
             order: 5
-            orderOnDetailsPage: 740  
+            orderOnDetailsPage: 740
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - clade
+          - hostNameScientific
       preprocessing:
       - <<: *preprocessing
         version:
@@ -3949,7 +3961,7 @@ organisms:
       enaDeposition:
         singleReference:
           configFile:
-            taxon_id: 64320   
+            taxon_id: 64320
             scientific_name: "Zika virus"
             molecule_type: "genomic RNA"
       referenceGenomes:
@@ -3982,7 +3994,7 @@ organisms:
               - name: NS4A
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4A.fasta]]"
               - name: 2K
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"  
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"
               - name: NS4B
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
               - name: NS5
