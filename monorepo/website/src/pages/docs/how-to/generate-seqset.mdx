@@ -8,6 +8,7 @@ order: 50
 - [Creating a SeqSet](#creating-a-seqset)
 - [Sharing a SeqSet](#sharing-a-seqset)
 - [Adding a DOI](#adding-a-doi)
+- [Viewing citations](#viewing-citations)
 - [Editing a SeqSet](#editing-a-seqset)
 - [Exporting a SeqSet](#exporting-a-seqset)
 - [Deleting a SeqSet](#deleting-a-seqset)
@@ -52,6 +53,14 @@ If you edit a SeqSet after generating a DOI, you will need to generate a new DOI
 Thus, it's usually better to wait until you are confident that you have pulled together all the sequences you want to reference, before generating a DOI.
 
 Once you have generated a DOI, you can no longer delete a SeqSet, as DOIs are intended to be persistent. 
+
+## Viewing citations
+
+Once a SeqSet has a DOI, Pathoplexus tracks the publications that cite it. When a paper includes the SeqSet's DOI in its reference list, the citation is registered with [Crossref](https://www.crossref.org/), and Pathoplexus periodically imports these citations from Crossref.
+
+Any publications that cite the SeqSet are shown in the 'Citations' section of the SeqSet page, under 'Cited in'. If no citations have been found yet, this reads 'No citations found.'. When there are more than a few, click 'View all citations' to see the full list.
+
+Because citations are discovered through Crossref, they only appear after the citing publication has been indexed there, so it can take some time for a new citation to show up. This is also why the DOI must be cited in the **References** section of a manuscript (not just mentioned in the text) — only references indexed by Crossref can be tracked.
 
 ## Editing a SeqSet
 

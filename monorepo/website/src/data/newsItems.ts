@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-07-22-july-update',
+        title: 'Pathoplexus July Update',
+        date: '22 July 2026',
+        excerpt:
+            'In our previous update we highlighted many new submissions and the addition of two new organisms to Pathoplexus. In this post, we’ll focus on technical improvements and new features that have been introduced over the past months...',
+    },
+    {
         slug: '2026-06-30-june-update',
         title: 'Pathoplexus June Update',
         date: '30 June 2026',
