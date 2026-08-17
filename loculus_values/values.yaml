@@ -3928,6 +3928,7 @@ organisms:
             columnWidth: 80
             order: 5
             orderOnDetailsPage: 740
+          - <<: *gisaidIsolateIdMetadataField
         website:
           <<: *website
           tableColumns:
