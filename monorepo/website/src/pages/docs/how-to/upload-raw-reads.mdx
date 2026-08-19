@@ -4,7 +4,7 @@ title: "Uploading raw reads"
 order: 41
 ---
 
-When [submitting to Pathoplexus](/docs/how-to/upload-sequences), you can include the raw reads that were used to generate your sequences. To do this, you will need to upload the raw reads files and link them to their respective sequences via the `files.rawReads` field in your metadata file.
+When [submitting to Pathoplexus](/docs/how-to/upload-sequences), you can include the raw reads that were used to generate your consensus sequences. To do this, you will need to upload the raw reads files and link them to their respective sequences via the `files.rawReads` field in your metadata file.
 
 The `files.rawReads` field should be a space-separated list containing all files associated with the sequence. Each entry in the list consists of a required `name` and optional `path`, separated by two colons: `name` or `name::path`. `name` denotes how the file will be called in Pathoplexus, whereas `path` indicates the location of the file on your local machine, starting at the root of the folder you've uploaded.
 
