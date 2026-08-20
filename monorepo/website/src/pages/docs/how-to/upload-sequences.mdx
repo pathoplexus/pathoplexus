@@ -42,6 +42,10 @@ You can try out uploading sequences to our [Demo Instance](https://demo.pathople
 
 Multi-segmented pathogens must have one unique `id` per **isolate** (i.e., one per pathogen sample containing all segments). Each segment will be a unique entry in the FASTA file with its own FASTA ID. Metadata is uploaded per isolate, meaning there will be a single metadata row per `id`. This row should include a `fastaIds` field listing all segment fasta IDs, separated by spaces.
 
+### Using your own Bioproject
+
+Sequences uploaded to Patholexus will be submitted to the INSDC under a Bioproject that Pathoplexus creates itself. If you would like your sequences to be attached to another Bioproject, you may provide the accession of that Bioproject (starting with `PRJ`) in the `bioprojectAccession` metadata field when submitting to Pathoplexus. If you do this, please ensure that the Bioproject exists, is public, and is **not** an umbrella Bioproject. Not doing so could cause a delayed or failed propagation of your sequences to the INSDC.
+
 ## Website
 
 Uploading sequences via the website is an easy way to submit sequences without having to worry about any code.
@@ -60,26 +64,6 @@ If you have selected `Restricted` in the terms of use for your sequences, a rest
 
 You can also modify the restriction period after submission. Note you can only shorten the period or make sequences `Open`, you cannot extend the restriction period. You will need to be logged in as a user with the appropriate authorization to make these changes.
 </InfoBox>
-
-## Uploading raw reads
-
-The most convenient way to upload raw reads that are associated with your sequences is to included them directly in your submission using the instructions on this page.
-
-However, it is also possible to upload your raw reads to the INSDC yourself and link them to your consensus sequence on Pathoplexus (if you have a specific Bioproject or Biosample you want to use, for example). In that case, you can submit your raw reads directly through the [INSDC submission portal](https://ena-docs.readthedocs.io/en/latest/submit/reads.html) and link them to sequences in Pathoplexus. 
-
-To ensure your raw reads are properly linked to your consensus sequence in the INSDC, both the consensus sequence and the raw reads should be associated with the same BioSample and BioProject at the time of submission.
-
-
-#### Submission Scenarios:
-- Submitting the Consensus Sequence and Raw Reads Together (via Pathoplexus, following instructions above): This is the recommended way of submitting a consensus sequence with its associated raw reads to Pathoplexus and will ensure your raw reads are immediately linked to your consensus sequence in the INSDC.
-
-- Submitting the Consensus Sequence First (via Pathoplexus):
-After submitting your consensus sequence to Pathoplexus, use the biosample and bioproject accessions we provide (e.g., Bioproject Accession: PRJEB80643, Biosample Accession: SAMEA116354847) when submitting your raw reads to the INSDC.
-
-- Submitting Raw Reads First (via INSDC):
-If you submit raw reads to the INSDC first, create a biosample and bioproject during the upload process. Then, provide the raw reads accession in the metadata.tsv (e.g., insdcRawReadsAccession=SRR27477368) when submitting your consensus sequence to Pathoplexus. This allows us to link your consensus sequence to the raw reads in the INSDC.
-
-Please contact us at `submission@pathoplexus.org` if you have any questions about submitting raw reads. 
 
 
 ## API
