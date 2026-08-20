@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Revising submitted sequences"
-order: 43
+order: 44
 ---
 
 ### Contents:
@@ -38,6 +38,7 @@ On the revision page, you can:
 
 - **Edit metadata fields**: All metadata fields are directly editable in the form
 - **Replace the alignment file**: You can discard the current alignment file and upload a new one
+- **Add or remove raw reads**: You can upload additional raw reads files or discard raw reads files currently associated with the sequence
 - **Undo changes**: As you edit, a curved arrow symbol appears to the right of each field. Click this arrow to revert that field to its current value if you want to undo any changes
 
 ### Submitting your revisions
@@ -105,6 +106,16 @@ The sequence IDs do not need to be changed as long as they still match the corre
 
 You can also revise metadata fields at the same time by editing the metadata file.
 
+
+### Editing the raw reads
+
+By default, revising the metadata or sequence data will **not** affect the raw reads files attached to your submissions. This means that if you don't want to update the raw reads data of your submission you do not need to re-upload the raw reads files and do not need to perform any additional action besides making the metadata or sequence edits you want. Just ensure to leave the `files.rawReads` column exactly as it was when you downloaded the original data.
+
+If you do want to change the raw reads files associated with your submission, you will need to edit the `files.rawReads` column in the metadata file according to the instructions below:
+
+- **Adding additional raw reads files:** in your metadata file, find the entry for which you want to add a raw reads file. Add the name of the file to the `files.rawReads` field (see [here for a detailed description](/docs/how-to/attach-additional-files)), and upload the file via the 'Upload folder' or 'Upload files' functionality during submission.
+- **Discarding previously uploaded raw reads files:** in your metadata file, find the entry for which you want to delete a raw reads file. Go to the `files.rawReads` field and remove the name of the file you wish to delete. The name will be shown as `name:identifier`, where `identifier` is a random string of letters and numbers. The meaning of the `identifier` part is not relevant here, but please ensure to remove to full `name:identifier` entry from your metadata file.
+- **Replacing a previously uploaded raw reads file with another one:** this can be done through a combination of the two approaches outlined above: first, identify the `name:identifier` of the file you want to replace, replace it with the name of the new file, and upload the corresponding file via the 'Upload folder' or 'Upload files' functionality during submission.
 
 
 ### Submitting the revision
