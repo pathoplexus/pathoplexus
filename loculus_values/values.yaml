@@ -1099,6 +1099,16 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Amplicon size
         header: Sequencing
         orderOnDetailsPage: 2060
+      - name: pairedNominalLength
+        definition: The nominal insert size for paired-end sequencing libraries.
+        guidance: Provide the nominal insert size in base pairs (as an integer).
+        example: "500"
+        displayName: Paired nominal length
+        type: int
+        header: Sequencing
+        requiredWhen:
+          - files.rawReads
+        orderOnDetailsPage: 2065
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
         definition: The model of the sequencing instrument used.
@@ -1107,6 +1117,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Sequencing instrument
         header: Sequencing
         desired: true
+        requiredWhen:
+          - files.rawReads
         orderOnDetailsPage: 2080
         generateIndex: true
         autocomplete: true
@@ -1215,8 +1227,88 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: Genomes were generated through amplicon sequencing of 1200 bp amplicons with Freed schema primers. Libraries were created using Illumina DNA Prep kits, and sequence data was produced using Miseq Micro v2 (500 cycles) sequencing kits.
         displayName: Sequencing protocol
         header: Sequencing
-        orderOnDetailsPage: 2100
         desired: true
+        requiredWhen:
+          - files.rawReads
+        orderOnDetailsPage: 2100
+      - name: sequencingLibrarySelection
+        definition: The method used to select or enrich the source material.
+        guidance: 'Example Guidance: Provide the name of the DNA or RNA sequencing library selection technology used in your study. If unsure refer to the protocol documentation, or provide a null value.'
+        desired: true
+        example: PCR
+        displayName: Sequencing library selection
+        header: Sequencing
+        requiredWhen:
+          - files.rawReads
+        orderOnDetailsPage: 2120
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingLibrarySelection
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_SELECTION
+          - name: "RANDOM"
+          - name: "PCR"
+          - name: "RANDOM PCR"
+          - name: "RT-PCR"
+          - name: "HMPR"
+          - name: "MF"
+          - name: "repeat fractionation"
+          - name: "size fractionation"
+          - name: "MSLL"
+          - name: "cDNA"
+          - name: "cDNA_randomPriming"
+          - name: "cDNA_oligo_dT"
+          - name: "PolyA"
+          - name: Oligo-dT
+          - name: Inverse rRNA
+          - name: Inverse rRNA selection
+          - name: "ChIP"
+          - name: "ChIP-Seq"
+          - name: "MNase"
+          - name: "DNase"
+          - name: "Hybrid Selection"
+          - name: "Reduced Representation"
+          - name: "Restriction Digest"
+          - name: "5-methylcytidine antibody"
+          - name: "MBD2 protein methyl-CpG binding domain"
+          - name: "CAGE"
+          - name: "RACE"
+          - name: "MDA"
+          - name: "padlock probes capture method"
+          - name: "other"
+          - name: "unspecified"
+      - name: sequencingLibrarySource
+        definition: The type of biomaterial that was sequenced, also called library source in the INSDC.
+        guidance: 'Example Guidance: Provide the name of the DNA or RNA sequencing library source used in your study. If unsure refer to the protocol documentation, or provide a null value.'
+        desired: true
+        example: VIRAL RNA
+        displayName: Sequencing library source
+        header: Sequencing
+        requiredWhen:
+          - files.rawReads
+        orderOnDetailsPage: 2125
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingLibrarySource
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_SOURCE
+          - name: "GENOMIC"
+          - name: "GENOMIC SINGLE CELL"
+          - name: "TRANSCRIPTOMIC"
+          - name: "TRANSCRIPTOMIC SINGLE CELL"
+          - name: "METAGENOMIC"
+          - name: "METATRANSCRIPTOMIC"
+          - name: "SYNTHETIC"
+          - name: "VIRAL RNA"
+          - name: "OTHER"
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
         definition: The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.
@@ -1225,6 +1317,8 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: WGS
         displayName: Sequencing assay type
         header: Sequencing
+        requiredWhen:
+          - files.rawReads
         orderOnDetailsPage: 2130
         generateIndex: true
         autocomplete: true
