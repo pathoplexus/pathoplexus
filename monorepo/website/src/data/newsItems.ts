@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-08-22-expanding-pathoplexus-zika',
+        title: 'Expanding Pathoplexus: Zika virus added',
+        date: '22 August 2026',
+        excerpt:
+            'Today, Pathoplexus launches an additional viral pathogen: Zika virus (ZIKV), a member of the Flaviviridae family, which includes dengue virus and yellow fever virus. ZIKV is primarily transmitted by Aedes mosquitoes and can cause a range of symptoms, from mild fever to severe neurological complications, particularly in pregnant women. The addition of ZIKV to',
+    },
+    {
         slug: '2026-07-22-july-update',
         title: 'Pathoplexus July Update',
         date: '22 July 2026',
