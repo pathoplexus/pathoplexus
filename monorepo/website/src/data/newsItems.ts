@@ -11,7 +11,7 @@ export const newsItems: NewsItem[] = [
         title: 'Expanding Pathoplexus: Zika virus added',
         date: '22 August 2026',
         excerpt:
-            'Today, Pathoplexus launches an additional viral pathogen: Zika virus (ZIKV), a member of the Flaviviridae family, which includes dengue virus and yellow fever virus. ZIKV is primarily transmitted by Aedes mosquitoes and can cause a range of symptoms, from mild fever to severe neurological complications, particularly in pregnant women. The addition of ZIKV to',
+            'Today, Pathoplexus launches an additional viral pathogen: Zika virus. Zika virus (ZIKV) gets its name from Zika Forest in Uganda, where it was first identified in a Rhesus macaque monkey in 1947. It is an enveloped, positive-sense, single-stranded RNA virus that belongs to the *Flaviviridae* family…',
     },
     {
         slug: '2026-07-22-july-update',
