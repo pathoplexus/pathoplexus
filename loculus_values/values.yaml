@@ -4136,6 +4136,10 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *hostConfig
+          desired: false
+          required: true
       metadataAdd:
         - <<: *hostTaxonIdConfig
           required: true
