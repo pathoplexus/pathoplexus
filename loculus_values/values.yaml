@@ -1780,7 +1780,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Ebola Zaire"
-      image: "/images/organisms/ebolazaire_small.jpg"
+      image: "/images/organisms/ebolazaire.jpg"
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
@@ -1877,7 +1877,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Ebola Sudan"
-      image: "/images/organisms/ebolasudan_small.jpg"
+      image: "/images/organisms/ebolasudan.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
@@ -2363,7 +2363,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "West Nile Virus"
-      image: "/images/organisms/wnv_small.jpg"
+      image: "/images/organisms/wnv.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
@@ -2596,7 +2596,7 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Crimean-Congo Hemorrhagic Fever Virus"
       nucleotideSequences: [L, M, S]
-      image: "/images/organisms/cchf_small.jpg"
+      image: "/images/organisms/cchf.jpg"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
