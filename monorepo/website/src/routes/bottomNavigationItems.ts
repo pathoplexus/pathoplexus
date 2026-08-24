@@ -9,6 +9,14 @@ export const bottomNavigationItems = [
         path: '/about/governance',
     },
     {
+        text: 'Legal notice',
+        path: '/about/governance/legal-notice',
+    },
+    {
+        text: 'Funding',
+        path: '/about/funding',
+    },
+    {
         text: 'Contact',
         path: '/contact',
     },

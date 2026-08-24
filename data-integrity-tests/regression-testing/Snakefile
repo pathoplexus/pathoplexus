@@ -1,0 +1,218 @@
+wildcard_constraints:
+    organism=r"[^_.]+",
+    segment=r"[^_.]+",
+    instance=r"[^_.]+",
+    extension=r"[^_.]+",
+    difftype=r"seq|meta",
+
+
+# The primary key field used to join entries that should be compared.
+# In production and staging this is the accessionVersion, however to compare across previews it should be changed to submissionId.
+# This can be read from the config using `snakemake --config key_field=submissionId`.
+key_field = config.get("key_field", "accessionVersion")
+
+
+rule all:
+    input:
+        expand(
+            "results/{organism}.{difftype}.prod.staging.diff",
+            organism=[
+                "andv",
+                "cchf",
+                "west-nile",
+                "ebola-bdbv",
+                "ebola-zaire",
+                "ebola-sudan",
+                "dengue",
+                "mpox",
+                "marburg",
+                "rsv-a",
+                "rsv-b",
+                "hmpv",
+                "measles",
+                "yellow-fever",
+            ],
+            difftype=["seq", "meta"],
+        ),
+
+
+def segments(w):
+    return ["L", "M", "S"] if w.organism == "cchf" or w.organism == "andv" else ["main"]
+
+
+def url(w):
+    filetype = "sequence" if hasattr(w, "segment") else "metadata"
+    if hasattr(w, "segment"):
+        url_segment = "" if w.segment == "main" else f"/{w.segment}"
+        length_query = "" if w.segment == "main" else f"&length_{w.segment}From=1"
+        filetype = "sequence"
+    else:
+        url_segment = length_query = ""
+        filetype = "metadata"
+    match w.instance:
+        case "prod":
+            subdomain = ""
+        case "staging":
+            subdomain = "-staging"
+        case "demo":
+            subdomain = "-demo"
+        case _:
+            subdomain = "-preview-" + w.instance
+    base = f"https://lapis{subdomain}.pathoplexus.org/{w.organism}/sample/"
+    rest = (
+        url_segment
+        + "?downloadAsFile=true&versionStatus=LATEST_VERSION&compression=zstd"
+        + length_query
+    )
+    match filetype:
+        case "metadata":
+            return base + "details" + rest + "&dataFormat=TSV-ESCAPED"
+        case "sequence":
+            return base + "unalignedNucleotideSequences" + rest + "&fastaHeaderTemplate=%7BaccessionVersion%7D"
+        case _:
+            raise RuntimeError(f"Unreachable code reached: {filetype=}")
+
+
+rule sequence_download:
+    output:
+        "results/{organism}_{segment}_{instance}.fasta",
+    params:
+        url=url,
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
+
+
+rule metadata_download:
+    output:
+        "results/{organism}_{instance}.tsv",
+    params:
+        url=url,
+    shell:
+        """
+        curl "{params.url}" | zstdcat > {output}
+        """
+
+
+rule sequence_tsv:
+    input:
+        "results/{organism}_{segment}_{instance}.fasta",
+    output:
+        "results/{organism}_{segment}_{instance}.seq.tsv",
+    shell:
+        """
+        echo "{key_field}\tsequence" > {output}
+        seqkit fx2tab {input} >> {output}
+        """
+
+
+rule join_tsv:
+    input:
+        seq=expand(
+            "results/{{organism}}_{segment}_{{instance}}.seq.tsv", segment=segments
+        ),
+        details="results/{organism}_{instance}.tsv",
+    output:
+        "results/{organism}_{instance}.joined.tsv",
+    params:
+        tmp_pre="results/{organism}_{instance}.joined.tmp.zst",
+        tmp_post="results/{organism}_{instance}.joined.tmp2.zst",
+    shell:
+        """
+        zstd {input.details} -o {params.tmp_pre}
+        for f in {input.seq}; do
+            export segment=$(basename $f | cut -d_ -f2)
+            zstdcat {params.tmp_pre} \
+            | tsv-join -H \
+                --write-all "''" \
+                --append-fields "sequence" \
+                --filter-file $f \
+                --key-fields {key_field} \
+                --prefix $(echo $segment)_ \
+            | zstd -o {params.tmp_post}
+            mv {params.tmp_post} {params.tmp_pre}
+        done
+        zstdcat {params.tmp_pre} > {output}
+        rm {params.tmp_pre}
+        """
+
+
+def exclude_fields_option():
+    exclude_fields = [
+        # "pipelineVersion",
+        # "releasedDate",
+        # "submittedDate",
+        # "releasedAtTimestamp",
+        # "submittedAtTimestamp",
+        # "displayName",
+        # "versionStatus",
+    ]
+    if exclude_fields:
+        return "--exclude=" + ",".join(exclude_fields)
+    else:
+        return ""
+
+
+rule invariant_subset:
+    input:
+        "results/{organism}_{instance}.joined.tsv",
+    output:
+        "results/{organism}_{instance}.invariant.tsv",
+    params:
+        exclude_fields=exclude_fields_option(),
+    shell:
+        """
+        tsv-select -H \
+            {params.exclude_fields} \
+            -f "{key_field}" \
+            --rest last \
+            {input} \
+        | keep-header - -- ./bin/tsv-sort -k1,1 \
+        > {output}
+        """
+
+
+rule invariant_subsets:
+    input:
+        "results/{organism}_{instance}.invariant.tsv",
+    output:
+        sequences="results/{organism}_{instance}.invariant.seq.tsv",
+        metadata="results/{organism}_{instance}.invariant.meta.tsv",
+    params:
+        segment_names=lambda w: ",".join(map(lambda x: x + "_sequence", segments(w))),
+    shell:
+        """
+        tsv-select -H \
+            -f "{key_field},{params.segment_names}" \
+            {input} \
+        > {output.sequences}
+        tsv-select -H \
+            --exclude "{params.segment_names}" \
+            {input} \
+        > {output.metadata}
+        """
+
+
+rule diff_meta:
+    input:
+        "results/{organism}_{a}.invariant.meta.tsv",
+        "results/{organism}_{b}.invariant.meta.tsv",
+    output:
+        "results/{organism}.meta.{a}.{b}.diff",
+    shell:
+        """
+        csv-diff {input} --key={key_field} --format=tsv > {output} || echo "Differences found"
+        """
+
+
+rule diff_seqs:
+    input:
+        "results/{organism}_{a}.invariant.seq.tsv",
+        "results/{organism}_{b}.invariant.seq.tsv",
+    output:
+        "results/{organism}.seq.{a}.{b}.diff",
+    shell:
+        """
+        diff {input} > {output} || echo "Differences found"
+        """

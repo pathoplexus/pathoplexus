@@ -1,10 +1,21 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Authenticating via API"
-order: 14
+order: 60
 ---
+import InfoBox from '../../../components/asides/InfoBox.astro';
 
-Some of our endpoints require authentication in order to use them. In order to use these endpoints you need to get a JSON web token. Using curl this would look like:
+Some of our endpoints require authentication in order to use them. In order to use these endpoints you need to get a JSON web token. You can obtain the token either by sending a request to our Keycloak authentication server or by retrieving the corresponding cookie from the browser.
+
+The retrieved token expires after 10 hours.
+
+## Send request with cURL
+
+<InfoBox>
+    To use the [demo instance](https://demo.pathoplexus.org) instead of the main instance, please replace `authentication.pathoplexus.org` with `authentication-demo.pathoplexus.org`.
+</InfoBox>
+
+The following script demonstrates how you can retrieve a token with a POST request using cURL. It only works if you use a simple username-password authentication. If you only use ORCiD for authentication and do not have a password, you need to add a password (see how to [edit your account](/docs/how-to/edit-account)). This solution also does not work if you activated two-factor authentication. In these cases, you can retrieve a token from the browser (see section below).
 
 ```bash
 KEYCLOAK_TOKEN_URL="https://authentication.pathoplexus.org/realms/loculus/protocol/openid-connect/token"
@@ -18,3 +29,7 @@ jwt=$(echo "$jwt_keycloak" | jq -r '.access_token')
 
 echo "$jwt"
 ```
+
+## Retrieve token from browser
+
+After you have logged in on [pathoplexus.org](https://pathoplexus.org) (or [demo.pathoplexus.org](https://demo.pathoplexus.org) for the demo instance), an access token is stored in your browser as a cookie. The token is called `access_token` and you can manually retrieve it from the browser. Instructions on how to do it can be found in the documentation of the browsers: [Google Chrome](https://developer.chrome.com/docs/devtools/application/cookies), [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/index.html) and [Safari](https://www.cookieserve.com/knowledge-base/website-cookies/how-do-i-check-cookies-in-safari/).

@@ -1,0 +1,10 @@
+---
+import MdLayout from './MdLayout.astro';
+
+const { frontmatter } = Astro.props;
+const frontmatterWithActive = { ...frontmatter, activeTopNavigationItem: '/news/' };
+---
+
+<MdLayout frontmatter={frontmatterWithActive}>
+    <slot />
+</MdLayout>

@@ -1,7 +1,7 @@
 ---
 layout: ../../../layouts/DocLayout.astro
 title: "Search & download sequences via API"
-order: 14
+order: 61
 ---
 
 ### Contents:
@@ -21,10 +21,10 @@ The instructions below use what are called `GET` requests, but you can also use 
 If you're interested in using the API more completely, you'll need to learn more about these types of requests.
 
 Here we describe how to search and download sequences using our generalized Lightweight API for Sequences ([LAPIS](https://github.com/GenSpectrum/LAPIS)).
-Remember to always specify the organism that you are searching within in the URL. This could be `cchf`, `west-nile`, `ebola-zaire`, or `ebola-sudan`.
-Below, this will always be shown with `[ORG]` in examples - the whole thing (including brackets) should be replaced with one of the above options.
+Remember to always specify the organism that you are searching within in the URL. This could be `cchf`, `west-nile`, `ebola-zaire`, `ebola-sudan`, `mpox`, `hmpv`, `rsv-a` or `rsv-b`.
+Below, this will sometimes be shown with `[ORG]` in examples - the whole thing (including brackets) should be replaced with one of the above options.
 
-Note that for CCHF, as it is a multi-segmented virus, you need to specify the segment (`S`, `M`, `L`) that you want after the main part of the URL in most queries.
+Note that for CCHF, and any other multi-segmented virus, you need to specify the segment (ex: `S`, `M`, `L`) that you want after the main part of the URL in most queries.
 
 # Main Query Types Covered
 
@@ -41,7 +41,7 @@ Combined with a single accession, the resulting count will be one. Combined with
 Example of all Ebola-Zaire sequences from Uganda:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=Uganda
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=Uganda
 ```
 
 ### Metadata
@@ -55,7 +55,7 @@ Note that data is returned in JSON format and will often need to be parsed befor
 Example of all Ebola-Zaire sequences from the USA:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?geoLocCountry=USA
+https://lapis.pathoplexus.org/ebola-zaire/sample/details?geoLocCountry=USA
 ```
 
 ### Sequences
@@ -68,7 +68,7 @@ sequences that meet the specified criteria.
 Example of all Ebola-Zaire sequences from the USA:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=USA
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=USA
 ```
 
 # How to Call Queries via API
@@ -87,7 +87,7 @@ For `aggregated` and `metadata` it's most sensible to save these as `.json` file
 Here's an example of how one might download all Ebola Zaire sequences from Uganda into a `fasta` file:
 
 ```
-curl "https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda" -o uganda_ebola_zaire.fasta
+curl "https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda" -o uganda_ebola_zaire.fasta
 ```
 
 # Download All Sequences of an Organism
@@ -95,48 +95,54 @@ curl "https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequence
 To download all **unaligned** sequences, use the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/unalignedNucleotideSequences
+https://lapis.pathoplexus.org/[ORG]/sample/unalignedNucleotideSequences
 ```
 
 To download all **aligned** sequences, use the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences
 ```
 
 **Note that for CCHF**, you need to specify the segment (`S`, `M`, `L`) that you want after the main part of the URL:
 
 ```
-https://lapis-pathoplexus.org/cchf/sample/alignedNucleotideSequences/L
+https://lapis.pathoplexus.org/cchf/sample/alignedNucleotideSequences/L
 ```
 
 # Download Specific Sequences by Accession
 
 ## With the website
 
-The website provides a simple URL for downloading sequences by accession number: `http://pathoplexus.org/seq/[PP_ACCESS].fa` will provide the sequence in FASTA format. `http://pathoplexus.org/seq/[PP_ACCESS].fa?download` will trigger a download in the browser.
+The website provides a simple URL for downloading sequences by accession number: `https://pathoplexus.org/seq/[PP_ACCESS].fa` will provide the sequence in FASTA format. `https://pathoplexus.org/seq/[PP_ACCESS].fa?download` will trigger a download in the browser.
 
 ## With the LAPIS API
 
 These search terms can also be used with the `details` endpoint to get metadata information.
 
-To download the latest version of a particular accession, use the accession number without the version ending (here `[PP_ACCESS]`).
+To download **all versions** of a particular accession, use the accession number without the version ending (here `[PP_ACCESS]`).
 Use the URL format:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]
 ```
 
-To download a specific version of a particular accession, use the accession number with the version ending, and use `accessionVersion` in the URL:
+To download **only the latest version** of a particular accession, add `versionStatus=LATEST_VERSION` to the URL:
 
 ```
-https://lapis-pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accessionVersion=[PP_ACCESS.1]
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accession=[PP_ACCESS]&versionStatus=LATEST_VERSION
+```
+
+To download a **specific version** of a particular accession, use the accession number with the version ending, and use `accessionVersion` in the URL:
+
+```
+https://lapis.pathoplexus.org/[ORG]/sample/alignedNucleotideSequences?accessionVersion=[PP_ACCESS.1]
 ```
 
 **Note that for CCHF**, you need to specify the segment (`S`, `M`, `L`) that you want after the main part of the URL. For example:
 
 ```
-https://lapis-pathoplexus.org/cchf/sample/alignedNucleotideSequences/L?accession=[PP_ACCESS]
+https://lapis.pathoplexus.org/cchf/sample/alignedNucleotideSequences/L?accession=[PP_ACCESS]
 ```
 
 # Download Sequences by Search
@@ -155,19 +161,19 @@ You can search by sample collection date exactly using `sampleCollectionDate`, o
 Ebola Zaire samples in September 2020:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?sampleCollectionDateFrom=2020-09-01&sampleCollectionDateTo=2020-09-30
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?sampleCollectionDateFrom=2020-09-01&sampleCollectionDateTo=2020-09-30
 ```
 
 You can use `geoLocCountry` to search by country - here's an example with the UK:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=United%20Kingdom
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=United%20Kingdom
 ```
 
 You can use `length`, `lengthFrom`, and `lengthTo` to search for sequences by length:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?lengthFrom=100&lengthTo=500
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?lengthFrom=100&lengthTo=500
 ```
 
 If searching CCHF, you need to specify the length per segment, using terms like `length_L`, `length_LFrom`, and `length_LTo`.
@@ -175,13 +181,13 @@ If searching CCHF, you need to specify the length per segment, using terms like 
 You can also combine search terms together to make a search more specific:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda&geoLocCountry=United%20Kingdom&dataUseTerms=OPEN
+https://lapis.pathoplexus.org/ebola-zaire/sample/alignedNucleotideSequences?geoLocCountry=Uganda&geoLocCountry=United%20Kingdom&dataUseTerms=OPEN
 ```
 
 # Searching by Mutations via API
 
 You can search the API by specific nucleotide and amino-acid mutations as well as metadata.
-As with with other search queries, these can be used with `details`, `aggregated`, `alignedNucleotideSequences` and `unalignedNucleotideSequences`, as well as
+As with other search queries, these can be used with `details`, `aggregated`, `alignedNucleotideSequences` and `unalignedNucleotideSequences`, as well as
 combined with other search queries.
 
 To specify nucleotide mutations, use `nucleotideMutations` as the query type. The format for searching nucleotide mutations is to specify the 'from nucleotide', 'position', and 'to nucleotide' as one string, like: `C180T`.
@@ -191,7 +197,7 @@ that the query should return sequences with any mutation at the given position.
 An example searching for the count of sequences with nucleotide mutations from `C` to `T` at position 180:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?nucleotideMutations=C180T
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?nucleotideMutations=C180T
 ```
 
 Specifying amino-acid mutations is similar, but requires also specifying the gene, and does not require the 'from amino-acid'. (Though providing it is ok.)
@@ -203,5 +209,5 @@ As with the nucleotide mutations, you can also leave out the 'to amino-acid' to 
 An example searching for the count of sequences with amino-acid mutations to `G` in the `GP` gene at position 440:
 
 ```
-https://lapis-pathoplexus.org/ebola-zaire/sample/aggregated?aminoAcidMutations=GP:440G
+https://lapis.pathoplexus.org/ebola-zaire/sample/aggregated?aminoAcidMutations=GP:440G
 ```

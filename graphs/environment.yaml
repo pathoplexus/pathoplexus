@@ -1,0 +1,8 @@
+name: pp-graphs
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - requests
+  - matplotlib

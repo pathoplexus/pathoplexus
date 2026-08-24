@@ -1,0 +1,122 @@
+export type NewsItem = {
+    slug: string;
+    title: string;
+    date: string;
+    excerpt: string;
+};
+
+export const newsItems: NewsItem[] = [
+    {
+        slug: '2026-07-22-july-update',
+        title: 'Pathoplexus July Update',
+        date: '22 July 2026',
+        excerpt:
+            'In our previous update we highlighted many new submissions and the addition of two new organisms to Pathoplexus. In this post, we’ll focus on technical improvements and new features that have been introduced over the past months...',
+    },
+    {
+        slug: '2026-06-30-june-update',
+        title: 'Pathoplexus June Update',
+        date: '30 June 2026',
+        excerpt:
+            'Since our last full update in March, Pathoplexus has continued to grow rapidly - with two new pathogens added in response to active outbreaks, hundreds of new sequences from labs across the globe, and a number of exciting firsts for our community…',
+    },
+    {
+        slug: '2026-06-30-annual-report',
+        title: 'Annual Report 2024-25',
+        date: '30 June 2026',
+        excerpt:
+            'We are happy to publish the first Pathoplexus Annual Report, covering the period since Pathoplexus was founded in August 2024 until end-of-2025 and approved by the General Assembly on 10 June. It summarizes our first year and four months, including…',
+    },
+    {
+        slug: '2026-05-19-ebola-bundibugyo',
+        title: 'Ebola: Rapid response to the Bundibugyo virus outbreak in the DRC and Uganda',
+        date: '19 May 2026',
+        excerpt:
+            'In response to the current Ebola outbreak in the Democratic Republic of the Congo (DRC) and Uganda, Pathoplexus has added support for Bundibugyo virus (BDBV), an orthoebolavirus known to cause severe Ebola disease in humans. This addition…',
+    },
+    {
+        slug: '2026-05-11-andes-virus',
+        title: 'Andes virus: supporting response to the current hantavirus outbreak',
+        date: '11 May 2026',
+        excerpt:
+            'Pathoplexus has launched support for Andes virus (ANDV), the species of hantavirus responsible for the current outbreak linked to the MV Hondius. This launch provides a space for researchers and public health teams to submit, search, download, and analyse Andes virus genomic data. Four teams, from four different countries…',
+    },
+    {
+        slug: '2026-03-12-expanding-pathoplexus-arbos',
+        title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
+        date: '12 March 2026',
+        excerpt:
+           "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
+
+    },
+    {
+        slug: '2025-11-28-expanding-pathoplexus-marburg',
+        title: 'Expanding Pathoplexus: Marburg virus added',
+        date: '28 November 2025',
+        excerpt:
+            "Today, Pathoplexus launches an additional viral pathogen: Marburgvirus (formally the species Orthomarburgvirus marburgense), a member of the Filoviridae family, which includes Ebola viruses. The Marburgvirus species contains both Marburg virus (MARV), and its close relative Ravn virus (RAVV)…"
+    },
+    {
+        slug: '2025-11-18-november-update',
+        title: 'Pathoplexus November Update',
+        date: '18 November 2025',
+        excerpt:
+            "Since our last update in August, Pathoplexus has continued to grow - both in data and in community. Over the past two months, thousands of new sequences have been shared, several new features have gone live, and new members have joined our global community! In addition…",
+    },
+    {
+        slug: '2025-08-27-happy-birthday-world',
+        title: 'Pathoplexus Turns One – and Adds Measles Virus!',
+        date: '27 August 2025',
+        excerpt:
+            "Today we celebrate the first anniversary of Pathoplexus! 🎉🎂 Since launching on 27 August 2024 with four pathogens – Ebolavirus sudan, Ebolavirus zaire, West Nile virus, and Crimean-Congo haemorrhagic fever virus – we've grown further into the truly global, community-driven…",
+    },
+    {
+        slug: '2025-07-14-july-update',
+        title: 'Pathoplexus July Update',
+        date: '14 July 2025',
+        excerpt:
+            'For many at Pathoplexus, summer is now in full swing (and winter well underway for many others) - and we’re happy to bring another news update! The past few months have been particularly exciting as we’ve seen an incredible increase in direct submissions from around the world…',
+    },
+    {
+        slug: '2025-05-22-pathoplexus-rsv-and-hmpv',
+        title: 'Expanding Pathoplexus: RSV and HMPV added',
+        date: '22 May 2025',
+        excerpt:
+            'Today, Pathoplexus launches two additional viral pathogens: RSV and HMPV. RSV, which includes the RSV-A and RSV-B subtypes, and HMPV are two related respiratory viruses which are known to cause severe illness in infants and other vulnerable patient groups, making them…',
+    },
+    {
+        slug: '2025-04-16-spring-update',
+        title: 'Pathoplexus Spring Update',
+        date: '16 April 2025',
+        excerpt:
+            'As we move into another change of the seasons, Pathoplexus continues to grow, with exciting developments across sequence submissions, platform improvements, and community engagement. February and March saw new Ebola and mpox sequence submissions, including our first-ever…',
+    },
+    {
+        slug: '2024-12-09-expanding-pathoplexus-mpox',
+        title: 'Expanding Pathoplexus: mpox added',
+        date: '9 December 2024',
+        excerpt:
+            'Today Pathoplexus launches its first additional viral pathogen: mpox, or MPXV (previously known as monkeypox). In the context of the current mpox outbreaks and ongoing health concerns, Pathoplexus aims to support sequence sharing to improve both understanding and response…',
+    },
+    {
+        slug: '2024-11-01-autumn-update',
+        title: 'Pathoplexus Autumn Update',
+        date: '1 November 2024',
+        excerpt:
+            "Despite only being 2 months old, we at Pathoplexus have been excited to already contribute to discussions on data sharing, and start becoming part of the pathogen sharing community (see 'past events' below). In addition, we've continued to add new features and improvements…",
+    },
+    {
+        slug: '2024-09-13-two-weeks',
+        title: 'Two Weeks of Pathoplexus',
+        date: '13 September 2024',
+        excerpt:
+            "Since Pathoplexus launched on 27 August, we've been humbled by the incredibly positive reaction from the pathogen research, bioinformatics, and public health communities. And it's been a busy two weeks! We're thrilled so many people have taken the time to explore the website…",
+    },
+    {
+        slug: '2024-08-27-hello-world',
+        title: 'Introducing Pathoplexus',
+        date: '27 August 2024',
+        excerpt:
+            'We are announcing <b>Pathoplexus</b>, a specialised genomic database for viruses of public health importance. By combining modern open-source software with transparent governance structures, Pathoplexus fills a niche within the existing genomic sequencing database landscape, aiming to meet requests from both data submitters and users and striving to improve equity…',
+    },
+];

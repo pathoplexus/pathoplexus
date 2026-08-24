@@ -1,0 +1,78 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: "Funding"
+order: 7
+---
+
+import { CryptoDonationWidget } from '../../components/CryptoDonationWidget';
+import CreditCardIcon from '~icons/mdi/credit-card-outline';
+
+To date, Pathoplexus has largely been built with donated resources and time. We are actively seeking funding to drive the platform forward. We are a registered non-profit in Switzerland; if you would like a donation receipt for your taxes, please reach out to donations@pathoplexus.org. Donations do not affect governance or operational decisions.
+
+## Support Pathoplexus
+
+We welcome support from both institutions and individuals. For institutional partnerships and major funding opportunities, please contact us at hello@pathoplexus.org to discuss how you could support Pathoplexus and what we could achieve together.  We also welcome donations from individuals. We can accept donations in a number of ways: 
+
+**Donate via Payrexx** - you can donate via Payrexx using credit/debit cards, Apple Pay or Samsung Pay.
+
+<div class="mt-6 mb-10">
+  <a href="https://pathoplexus.payrexx.com/en/pay?cid=0616f202"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="inline-flex items-center gap-2 px-6 py-2 bg-primary-500 text-white! no-underline! hover:no-underline! font-semibold rounded-lg hover:bg-primary-600 transition-colors shadow-xs">
+    <CreditCardIcon className="w-5 h-5" />
+    Donate with Payrexx
+  </a>
+</div>
+
+**Bank transfer** - Our account is based in Switzerland and in Swiss Francs (CHF). If your account is in a different currency, we recommend using [Wise](https://wise.com/).
+
+  <div class="bank-details bg-gray-50 p-4 rounded-lg">
+      <span class="text-sm font-medium">Bank account details</span><br />
+    <table class="my-3 border-collapse border border-gray-200 rounded-lg">
+      <tbody>
+        <tr class="bg-gray-50">
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">Account holder</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs">Pathoplexus</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">IBAN</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs font-mono">CH18 0023 3233 3422 4101 P</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">BIC</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs font-mono">UBSWCHZH80A</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">Recipient address</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs">Pathoplexus, 4000 Basel, Switzerland</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">Bank name</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs">UBS Switzerland AG</td>
+        </tr>
+        <tr class="bg-gray-50">
+          <td class="border border-gray-200 px-4 py-2 font-medium text-xs">Bank address</td>
+          <td class="border border-gray-200 px-4 py-2 text-xs">Bahnhofstrasse 45, Zurich, Switzerland</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+**Cryptocurrency** - We accept donations in Bitcoin and Ethereum:
+
+<CryptoDonationWidget 
+  addresses={{
+    btc: "bc1qlh9escc7600jw4z06mmrp6wmus3gy2h5q84ltu",
+    eth: "0x353F356bc3885b3D29750708c47dcF9277549cbD"
+  }}
+  client:load
+/>
+
+## Acknowledgments
+
+### Kanro
+
+Pathoplexus is grateful to have received a $500,000 grant in February 2026 from Kanro, the philanthropic initiative supported by Vitalik Buterin. This contribution will help sustain and expand our open infrastructure that enables transparent and equitable sharing of pathogen genomic data. We are deeply thankful for the trust placed in our mission.
