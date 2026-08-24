@@ -4143,10 +4143,10 @@ organisms:
           required: true
           initiallyVisible: true
         - name: clade
-          displayName: clade
+          displayName: Clade
           definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/itps/zikav/2026-04-14--11-55-23Z/tree.json for a view of the Nextclade dataset."
           isSequenceFilter: true
-          header: "clade"
+          header: "Clade"
           generateIndex: true
           autocomplete: true
           initiallyVisible: true
