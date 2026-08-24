@@ -4126,7 +4126,7 @@ organisms:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
-      organismName: "Zika virus"
+      organismName: "Zika Virus"
       image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
