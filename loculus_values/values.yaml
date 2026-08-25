@@ -642,14 +642,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: Geo-coordinate longitude in decimal degree (WGS84) format.
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
         example: -58.381592
-      - name: specimenCollectorSampleId
+      - &specimenCollectorSampleIdConfig
+        name: specimenCollectorSampleId
         displayName: Isolate name
         header: Sample details
         orderOnDetailsPage: 600
         ingest: ncbiIsolateName
         includeInDownloadsByDefault: true
         enableSubstringSearch: true
-        definition: "A de-identified ID for the sample the sequence was obtained from."
+        definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
         example: "Isolate 1"
         desired: true
       - name: authors
@@ -3814,6 +3815,8 @@ organisms:
             args:
               order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
               type: [string, ACCESSION_VERSION, dateRangeString]
+        - <<: *specimenCollectorSampleIdConfig
+          definition: "A de-identified ID for the sample the sequence was obtained from."
       website: 
         <<: *website
         tableColumns:
