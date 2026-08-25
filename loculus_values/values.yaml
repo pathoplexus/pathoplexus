@@ -3780,7 +3780,7 @@ organisms:
           maxNumberOfRecommendedEntries: 1000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Measles morbillivirus}}"
       extraInputFields:
-        # omitting config for `id` on purpose: it will get dropped and re-added in the _inputFieldsFromValues.tpl template
+        # omitting config for `id` on purpose: it will get dropped here, then _inputFieldsFromValues.tpl will add in the default config
         - <<: *hostConfig
       metadataAdd:
         - name: genotype
