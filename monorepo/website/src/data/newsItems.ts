@@ -7,11 +7,11 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
-        slug: '2026-08-22-expanding-pathoplexus-zika',
+        slug: '2026-08-26-expanding-pathoplexus-zika',
         title: 'Expanding Pathoplexus: Zika virus added',
-        date: '22 August 2026',
+        date: '26 August 2026',
         excerpt:
-            'Today, Pathoplexus launches an additional viral pathogen: Zika virus. Zika virus (ZIKV) gets its name from Zika Forest in Uganda, where it was first identified in a Rhesus macaque monkey in 1947. It is an enveloped, positive-sense, single-stranded RNA virus that belongs to the *Flaviviridae* family…',
+            'Today, Pathoplexus launches an additional viral pathogen: Zika virus. Zika virus (ZIKV) gets its name from Zika Forest in Uganda, where it was first identified in a Rhesus macaque monkey in 1947. It is an enveloped, positive-sense, single-stranded RNA virus that belongs to the...',
     },
     {
         slug: '2026-07-22-july-update',
@@ -53,7 +53,7 @@ export const newsItems: NewsItem[] = [
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '12 March 2026',
         excerpt:
-           "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
+            "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
 
     },
     {
