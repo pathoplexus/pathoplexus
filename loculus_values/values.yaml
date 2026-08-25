@@ -4130,7 +4130,7 @@ organisms:
       image: "/images/organisms/zika_virus.jpg"
       linkOuts:
         - name: Nextclade
-          maxNumberOfRecommendedEntries: 3000
+          maxNumberOfRecommendedEntries: 3000 # Zika is 11kb
           url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/zikav"
         - name: Sealion
           maxNumberOfRecommendedEntries: 3000
