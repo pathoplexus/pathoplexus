@@ -2223,6 +2223,7 @@ organisms:
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052464
     enaDeposition:
       DENV-1:
@@ -3941,6 +3942,7 @@ organisms:
     ingest:
       image: ghcr.io/loculus-project/ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052505
         subsample_fraction: 1
     enaDeposition:
