@@ -1772,6 +1772,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
       muted_hashes_url: "https://pathoplexus.github.io/curation_data/muted_hashes/muted_hashes.tsv"
+      batch_chunk_size: 1000
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
