@@ -29,7 +29,7 @@ The metadata and sequence data files can be compressed: accepted formats here ar
 
 Metadata and sequences will be matched using the `id` column in the metadata (i.e., the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g., `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
 
-Similarly, raw reads files will be associated to their corresponding consensus sequence via the `files.rawReads` metadata field. This field should contain a space-separated list of file names indicating which raw reads files belong to which sequence. Raw reads for the full submission should be uploaded as a single folder containing raw reads files for all sequences (see [here](/docs/how-to/attach-additional-files) for a detailed description of how to attach raw reads files).
+Similarly, raw reads files will be associated to their corresponding consensus sequence via the `files.rawReads` metadata field. This field should contain a space-separated list of file names indicating which raw reads files belong to which sequence. Raw reads for the full submission should be uploaded as a single folder containing raw reads files for all sequences (see [here](/docs/how-to/upload-raw-reads) for a detailed description of how to attach raw reads files).
 
 ![Metadata template.](../../../images/MetadataTemplate.png)
 
