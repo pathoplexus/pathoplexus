@@ -70,7 +70,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
-disableRawReadsProcessingService: true
+disableRawReadsProcessingService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
