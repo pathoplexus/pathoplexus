@@ -3943,7 +3943,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052505
-        subsample_fraction: 1
     enaDeposition:
       singleReference:
         configFile:
