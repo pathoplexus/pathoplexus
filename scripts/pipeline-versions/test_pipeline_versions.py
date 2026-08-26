@@ -1,0 +1,1523 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.14"
+# dependencies = ["PyYAML>=6.0", "pytest>=8", "pytest-xdist>=3", "pydantic>=2",
+#                 "requests", "unidecode", "pyjwt", "python-dateutil", "pytz", "pandas",
+#                 "biopython"]
+# ///
+"""Tests for pipeline_versions.py.
+
+Run with:  uv run scripts/test_pipeline_versions.py
+
+Fixtures come from the repo's own git history, so the tests assert against real
+configurations rather than invented ones. The most important case is
+``test_check_catches_the_mpox_incident``: commit 9764d15 is the config that was live
+in production during the 2026-08-05 mpox incident.
+"""
+
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+import requests
+import yaml
+
+sys.path.insert(0, str(Path(__file__).parent))
+import pipeline_versions as pv
+
+REPO = Path(__file__).resolve().parents[2]
+VALUES = REPO / "loculus_values" / "values.yaml"
+
+INCIDENT_COMMIT = "9764d15"  # segment-less mpox v27 -- what production was serving
+PRE_INCIDENT_COMMIT = "1c04032"  # a clean prune, before the two-entry migration
+
+# Behavioural tests run against a pinned commit, not the working tree. Running the tool
+# is the normal way to edit values.yaml, so the working copy's version numbers and stubs
+# move; tests that assert on them must not depend on that. Version numbers are still
+# derived rather than hardcoded wherever it costs nothing, so re-pinning stays cheap.
+BASE_COMMIT = "24b71a8"
+
+# The last commit that still carried the commented-out stubs left behind by older prunes.
+# `24b71a8` removed them and the tool no longer produces any, but it must keep handling one
+# it finds -- in an old branch, or from a hand edit -- so those tests pin to this instead.
+LEGACY_STUB_COMMIT = "f9de729"
+
+# A loculus checkout, needed to validate a configFile against the preprocessing
+# pipeline's own pydantic model. Sibling of the pathoplexus clone; skipped when absent.
+LOCULUS = REPO.parent / "loculus"
+
+
+def _blob(commit: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(REPO), "show", f"{commit}:loculus_values/values.yaml"],
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+
+def _at(commit: str, tmp_path: Path) -> Path:
+    path = tmp_path / f"{commit}.yaml"
+    path.write_text(_blob(commit))
+    return path
+
+
+@pytest.fixture
+def work(tmp_path: Path) -> Path:
+    path = tmp_path / "values.yaml"
+    path.write_text(_blob(BASE_COMMIT))
+    return path
+
+
+@pytest.fixture
+def loculus() -> Path:
+    """Use the sibling clone so tests never depend on the network.
+
+    `check` fetches the pinned commit itself when this is not passed.
+    """
+    if not (LOCULUS / ".git").exists():
+        pytest.skip(f"no loculus checkout at {LOCULUS}")
+    return LOCULUS
+
+
+@pytest.fixture
+def legacy(tmp_path: Path) -> Path:
+    """A config that still has the old commented-out stubs. See LEGACY_STUB_COMMIT."""
+    path = tmp_path / "legacy.yaml"
+    path.write_text(_blob(LEGACY_STUB_COMMIT))
+    return path
+
+
+def _run(path: Path, *args: str) -> int:
+    return pv.main(["--values", str(path), *args])
+
+
+def _versions(path: Path, org: str) -> list[int]:
+    return pv.load(path).organisms[org].versions
+
+
+def _unpinned_organism(doc) -> str | None:
+    """An organism naming a dataset with no tag, if the file still has one.
+
+    Tests that assert on the real values.yaml must derive what they expect from it.
+    Naming an organism -- or a tag, or a URL -- bakes in config that moves on every
+    bump, and turns a legitimate change red on a PR that did nothing wrong.
+    """
+    for name in doc.organisms:
+        refs = pv._dataset_refs(pv._resolved_entries(doc, name))
+        if any(not ref.get("nextclade_dataset_tag") for ref in refs):
+            return name
+    return None
+
+
+def _cur(path: Path, org: str) -> int:
+    """The organism's highest pipeline version right now."""
+    return pv.load(path).organisms[org].max_version
+
+
+# ------------------------------------------------------------------------- check
+
+
+def test_check_passes_on_the_working_copy():
+    """The one test that deliberately reads the real file rather than a pinned commit.
+
+    Whatever state values.yaml is in right now, it must satisfy the invariants -- this
+    is the same assertion CI makes on every PR.
+    """
+    assert _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks") == 0
+
+
+def test_check_catches_the_mpox_incident(tmp_path, capsys):
+    """The whole point. A segment-less pipeline entry must not pass."""
+    assert (
+        _run(
+            _at(INCIDENT_COMMIT, tmp_path),
+            "check",
+            "--skip-model-check",
+            "--skip-remote-checks",
+            "--organisms",
+            "mpox",
+        )
+        == 1
+    )
+    err = capsys.readouterr().err
+    assert "missing configFile key(s) ['segments']" in err
+    assert "has no segments" in err
+
+
+def test_check_passes_on_a_clean_historical_config(tmp_path):
+    assert (
+        _run(_at(PRE_INCIDENT_COMMIT, tmp_path), "check", "--skip-model-check", "--skip-remote-checks") == 0
+    )
+
+
+def test_check_catches_a_missing_lineage_version(work, capsys):
+    """SILO looks this up at import time; helm renders it happily."""
+    text = work.read_text().replace(
+        "    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/"
+        "definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml\n",
+        "",
+        1,
+    )
+    work.write_text(text)
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 1
+    assert "lineageSystemDefinitions.mpoxOutbreakLineage has no entry" in capsys.readouterr().err
+
+
+def test_check_catches_duplicate_versions(work, capsys):
+    doc = pv.load(work)
+    item = doc.organisms["mpox"].active[-1]
+    lines = list(doc.lines)
+    lines[max(item.version_value_lines)] = "          - 27"  # collide with entry 0
+    work.write_text("\n".join(lines))
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 1
+    assert "version 27 declared by entries" in capsys.readouterr().err
+
+
+def test_check_warns_about_stale_stubs(legacy, capsys):
+    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks")
+    out = capsys.readouterr().out
+    assert "dengue: commented-out stub declares version [32], which is already active" in out
+
+
+# -------------------------------------------------------------------------- bump
+
+
+def test_bump_ignores_a_leftover_stub_rather_than_reusing_it(legacy):
+    """Stubs are a dead idiom: bump appends, and prune is what clears them.
+
+    Reusing one meant inheriting a version that is stale by construction. The entry is
+    appended after the current highest instead, which is also the only position that
+    keeps existing Deployment indices stable.
+    """
+    assert _run(legacy, "bump", "--organisms", "dengue") == 0
+    org = pv.load(legacy).organisms["dengue"]
+    assert org.versions == [32, 33]
+    assert org.active[-1].start > org.active[0].end - 1  # appended after the current entry
+    assert len(org.stubs) == 1  # untouched; prune removes it
+
+
+def test_bump_replicas_override_wins(work):
+    assert _run(work, "bump", "--organisms", "west-nile", "--replicas", "5") == 0
+    new = max(pv.load(work).organisms["west-nile"].active, key=lambda i: i.max_version)
+    assert new.replicas == 5
+
+
+def test_bump_adds_an_anchor_when_the_entry_has_none(work):
+    assert _run(work, "bump", "--organisms", "ebola-zaire") == 0
+    org = pv.load(work).organisms["ebola-zaire"]
+    assert org.active[0].anchor == "ebolaZairePreprocessing"
+    assert org.active[1].merge_alias == "ebolaZairePreprocessing"
+    assert org.versions == [31, 32]
+
+
+def test_bump_names_a_new_anchor_after_its_organism(work):
+    assert _run(work, "bump", "--organisms", "yellow-fever") == 0
+    assert pv.load(work).organisms["yellow-fever"].active[0].anchor == "yellowFeverPreprocessing"
+
+
+def test_bump_qualifies_an_anchor_name_already_taken_within_the_organism(work):
+    """mpox mid-bump: entry 27 already holds `mpoxPreprocessing`, so entry 28 needs
+    a distinct name. The suffix is temporary -- prune removes the entry carrying it."""
+    assert _run(work, "bump", "--organisms", "mpox") == 0
+    anchors = [i.anchor for i in pv.load(work).organisms["mpox"].active]
+    assert anchors[:2] == ["mpoxPreprocessing", "mpoxPreprocessingV28"]
+
+
+def test_bump_adds_the_lineage_version_key(work):
+    assert _run(work, "bump", "--organisms", "mpox") == 0
+    assert 29 in pv.load(work).lineage["mpoxOutbreakLineage"]
+
+
+def test_bump_append_mode_extends_the_version_list(work):
+    assert _run(work, "bump", "--organisms", "cchf", "--mode", "append") == 0
+    org = pv.load(work).organisms["cchf"]
+    assert len(org.active) == 1
+    assert org.versions == [25, 26]
+
+
+ALL_ORGANISMS = sorted(yaml.safe_load(_blob(BASE_COMMIT))["organisms"])
+
+
+@pytest.mark.parametrize("org", ALL_ORGANISMS)
+def test_bumped_entry_inherits_the_full_config(work, org):
+    """The single most important property of generated output.
+
+    This resolved-config equality is the closest available stand-in for diffing the
+    rendered chart, which needs helm. It is precisely what the incident violated.
+    """
+    before = yaml.safe_load(work.read_text())["organisms"][org]["preprocessing"]
+    if pv.main(["--values", str(work), "bump", "--organisms", org]) != 0:
+        pytest.skip(f"{org}: bump not applicable")
+    entries = yaml.safe_load(work.read_text())["organisms"][org]["preprocessing"]
+    assert len(entries) == len(before) + 1
+    assert entries[-1]["configFile"] == entries[-2]["configFile"]
+    assert entries[-1]["configFile"].get("segments")
+    # Structural checks only: this is about what bump generated, and andv carries two
+    # dead configFile keys at BASE_COMMIT that predate it.
+    assert _run(work, "check", "--organisms", org, "--skip-model-check", "--skip-remote-checks") == 0
+
+
+def test_bump_output_is_valid_yaml_and_only_versions_change(work):
+    before = yaml.safe_load(work.read_text())
+    assert _run(work, "bump", "--organisms", "measles") == 0
+    after = yaml.safe_load(work.read_text())
+    for org in before["organisms"]:
+        if org != "measles":
+            assert before["organisms"][org] == after["organisms"][org], org
+    entries = after["organisms"]["measles"]["preprocessing"]
+    assert [e["version"] for e in entries] == [[28], [29]]
+    # The new entry must inherit the full config, not a shallow-merged fragment.
+    assert entries[0]["configFile"] == entries[1]["configFile"]
+
+
+def _check_configs(work: Path, configs: list[dict]) -> int:
+    """Run the real run_check over a synthetic preprocessing list for one organism."""
+    doc = pv.load(work)
+    doc.resolved["organisms"]["andv"]["preprocessing"] = [
+        {"version": [i + 1], "configFile": c} for i, c in enumerate(configs)
+    ]
+    doc.organisms["andv"].lineage_fields = []
+    doc.organisms["andv"].items = []
+    return pv.run_check(
+        doc, ["andv"], allow_empty_segments=False, skip_model_check=True, skip_remote_checks=True
+    )
+
+
+def test_check_is_directional_newer_may_add_but_not_lose_keys(work, capsys):
+    """Hand-editing a generated draft to *add* config is normal and must not fail CI.
+
+    Only the reverse -- a newer entry losing a key an older one declares -- is the
+    incident's signature, and that is what must be an error.
+    """
+    ref = {"name": "r", "nextclade_dataset_name": "ds", "genes": ["G"]}
+    seg = {"segments": [{"name": "main", "references": [ref]}]}
+
+    assert _check_configs(work, [seg, {**seg, "batch_size": 5}]) == 0
+
+    assert _check_configs(work, [{**seg, "batch_size": 5}, {"batch_size": 5}]) == 1
+    err = capsys.readouterr().err
+    assert "missing configFile key(s) ['segments']" in err
+    assert "lower-version entry" in err
+
+
+def test_bump_leaves_untouched_organisms_byte_identical(work):
+    original = work.read_text().split("\n")
+    doc_before = pv.load(work)
+    assert _run(work, "bump", "--organisms", "andv") == 0
+    after = work.read_text().split("\n")
+    # Every line outside andv's block and the lineage block must be unchanged.
+    org = doc_before.organisms["andv"]
+    untouched_before = original[: org.prepro_key_line] + original[org.prepro_end :]
+    doc_after = pv.load(work)
+    o2 = doc_after.organisms["andv"]
+    untouched_after = after[: o2.prepro_key_line] + after[o2.prepro_end :]
+    assert untouched_before == untouched_after
+
+
+def test_bump_dry_run_writes_nothing(work):
+    before = work.read_text()
+    assert _run(work, "bump", "--organisms", "dengue", "--dry-run") == 0
+    assert work.read_text() == before
+
+
+# ------------------------------------------------------------------------- prune
+
+
+def test_prune_is_a_noop_when_there_is_nothing_to_do(work, capsys):
+    """andv has one version and no stub, so prune has nothing to change."""
+    assert _run(work, "prune", "--organisms", "andv") == 0
+    assert "nothing to do" in capsys.readouterr().out
+
+
+def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(legacy):
+    """mpox: entry 28 is `- <<: *mpoxPreprocessing`, an anchor on entry 27.
+
+    Deleting 27 would orphan that merge key, and a merge key cannot be relocated the way
+    a value alias can. All it supplies is what the global *preprocessing also supplies,
+    so the survivor is re-pointed there and the collapse proceeds.
+    """
+    before = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    v28 = next(e for e in before if e["version"] == [28])
+
+    assert _run(legacy, "prune", "--organisms", "mpox") == 0
+
+    doc = pv.load(legacy)
+    org = doc.organisms["mpox"]
+    assert org.versions == [28]
+    assert org.active[0].merge_alias == "preprocessing"
+    assert org.active[0].replicas == 1  # back to steady state from 3
+
+    after = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    assert len(after) == 1
+    assert pv._config_signature(after[0]) == pv._config_signature(v28)
+    assert len(after[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
+    assert sorted(doc.lineage["mpoxOutbreakLineage"]) == [28]
+    assert "mpoxPreprocessing" not in "\n".join(doc.lines)
+
+
+SYNTHETIC = """\
+lineageSystemDefinitions: {}
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: ghcr.io/loculus-project/preprocessing-nextclade
+      args:
+        - "prepro"
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+        batch_size: 100
+organisms:
+  testv:
+    schema:
+      metadata: []
+    preprocessing:
+      - &testvPreprocessing
+        <<: *preprocessing
+        replicas: 1
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: ds
+                nextclade_dataset_tag: TAG-ONE
+                genes: &testvGenes [A, B]
+%s"""
+
+NEWER_OVERRIDES_TAG = """\
+      - <<: *testvPreprocessing
+        replicas: 3
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+              - name: singleReference
+                nextclade_dataset_name: ds
+                nextclade_dataset_tag: TAG-TWO
+                genes: *testvGenes
+"""
+
+NEWER_INHERITS_CONFIG = """\
+      - <<: *testvPreprocessing
+        replicas: 3
+        version:
+          - 31
+"""
+
+
+def _synthetic(tmp_path: Path, tail: str, name: str = "s.yaml") -> Path:
+    path = tmp_path / name
+    path.write_text(SYNTHETIC % tail)
+    return path
+
+
+def test_prune_keeps_the_newer_tag_when_the_newer_entry_overrides_it(tmp_path):
+    """v30 sets one dataset tag, v31 overrides it. The survivor must be v31's."""
+    path = _synthetic(tmp_path, NEWER_OVERRIDES_TAG)
+    assert _run(path, "prune") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["testv"]["preprocessing"]
+    ref = entries[0]["configFile"]["segments"][0]["references"][0]
+    assert [e["version"] for e in entries] == [[31]]
+    assert ref["nextclade_dataset_tag"] == "TAG-TWO"
+    assert ref["genes"] == ["A", "B"]  # inline flow-list anchor relocated with its value
+    assert entries[0]["replicas"] == 1
+    assert entries[0]["image"]  # not lost when the merge key was re-pointed
+
+
+def test_prune_keeps_the_inherited_config_when_the_newer_entry_declares_none(tmp_path):
+    """The dangerous direction: v31 inherits configFile wholesale, so segments live only
+    on v30. Collapsing must not drop them."""
+    path = _synthetic(tmp_path, NEWER_INHERITS_CONFIG)
+    assert _run(path, "prune") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["testv"]["preprocessing"]
+    assert [e["version"] for e in entries] == [[31]]
+    assert len(entries[0]["configFile"]["segments"]) == 1
+    assert entries[0]["configFile"]["segments"][0]["references"][0]["nextclade_dataset_tag"] == "TAG-ONE"
+    assert entries[0]["replicas"] == 1
+
+
+def test_a_refusal_aborts_the_whole_run(tmp_path, capsys):
+    """One organism that cannot be handled must not leave the others half-done."""
+    path = _synthetic(tmp_path, NEWER_OVERRIDES_TAG).with_name("multi.yaml")
+    text = (SYNTHETIC % NEWER_OVERRIDES_TAG).replace(
+        "      - &testvPreprocessing\n        <<: *preprocessing\n",
+        '      - &testvPreprocessing\n        <<: *preprocessing\n        dockerTag: "pinned"\n',
+    )
+    path.write_text(text)
+    before = path.read_text()
+    assert _run(path, "prune") == 1
+    err = capsys.readouterr().err
+    assert "dockerTag" in err
+    assert "nothing was written" in err
+    assert path.read_text() == before
+
+
+# ---------------------------------------------------------------- lineage systems
+
+
+MULTI_LINEAGE = """\
+lineageSystemDefinitions:
+  testvL:
+    30: https://example.invalid/L.yaml
+  testvM:
+    30: https://example.invalid/M.yaml
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  testv:
+    schema:
+      metadata:
+        - name: lineageL
+          lineageSystem: testvL
+      metadataAdd:
+        - name: lineageM
+          lineageSystem: testvM
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds
+                  genes: [G]
+                  nextclade_dataset_tag: TAG
+"""
+
+
+def test_an_organism_may_have_several_lineage_systems(tmp_path):
+    """cchf already declares one system for one of three segments, so a second is
+    plausible. Every lineage system must be kept in step, not just the first."""
+    path = tmp_path / "multi.yaml"
+    path.write_text(MULTI_LINEAGE)
+    assert pv.load(path).organisms["testv"].lineage_systems == ["testvL", "testvM"]
+
+    assert _run(path, "bump") == 0
+    assert {k: sorted(v) for k, v in pv.load(path).lineage.items()} == {
+        "testvL": [30, 31],
+        "testvM": [30, 31],
+    }
+
+    assert _run(path, "prune") == 0
+    assert {k: sorted(v) for k, v in pv.load(path).lineage.items()} == {
+        "testvL": [31],
+        "testvM": [31],
+    }
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 0
+
+
+def test_check_covers_every_lineage_system_not_just_the_first(tmp_path, capsys):
+    path = tmp_path / "multi.yaml"
+    path.write_text(MULTI_LINEAGE.replace("  testvM:\n    30: https://example.invalid/M.yaml\n", ""))
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 1
+    assert "lineageSystemDefinitions has no 'testvM' key" in capsys.readouterr().err
+
+
+# ------------------------------------------------------------------------ status
+
+
+def test_status_reports_dataset_tags_and_lineage_urls(capsys):
+    """Expectations are derived from the file, not hardcoded.
+
+    A dataset tag and a lineage URL are exactly the things a bump changes, so asserting
+    literals here means a legitimate bump turns this red on a PR that did nothing wrong.
+    """
+    doc = pv.load(VALUES)
+    version = doc.organisms["mpox"].max_version
+    tag = pv._dataset_refs(pv._resolved_entries(doc, "mpox"))[0].get("nextclade_dataset_tag")
+    url = doc.lineage["mpoxOutbreakLineage"][version][1]
+
+    _run(VALUES, "status")
+    out = capsys.readouterr().out
+    assert "nextcladeDatasetTag" in out
+    assert tag in out
+    # The lineage URL in full: it is what SILO loads, and what you want to open.
+    assert url in out
+    # An organism naming a dataset but pinning no tag reads as unpinned, not blank.
+    if _unpinned_organism(doc):
+        assert "unpinned" in out
+
+
+def test_status_labels_dataset_tags_per_segment_when_they_differ(tmp_path, capsys):
+    """Segments pin their datasets independently, so a bare list would not say which is
+    which. When they all agree the label is noise, so it is left off."""
+    path = tmp_path / "segs.yaml"
+    path.write_text(
+        MULTI_LINEAGE.replace(
+            """            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds
+                  genes: [G]
+                  nextclade_dataset_tag: TAG
+""",
+            """            - name: L
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds/L
+                  genes: [G]
+                  nextclade_dataset_tag: TAG-L
+            - name: M
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: ds/M
+                  genes: [G]
+""",
+        )
+    )
+    _run(path, "status")
+    out = capsys.readouterr().out
+    assert "L:TAG-L" in out
+    assert "M:unpinned" in out
+
+
+def test_the_tag_that_moved_onto_the_reference_is_reported(tmp_path, loculus, capsys):
+    """`nextclade_dataset_tag` on configFile reads as configured and does nothing.
+
+    The preprocessing Config model declares no such field and pydantic drops unknown
+    keys, so the dataset stays unpinned while looking pinned. Only
+    `nextclade_dataset_server` has a real configFile-level fallback, applied explicitly in
+    config.py.
+    """
+    path = tmp_path / "seg.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n          segments:\n",
+            "          <<: *preprocessingConfigFile\n"
+            "          nextclade_dataset_tag: IGNORED\n"
+            "          segments:\n",
+        )
+    )
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    err = capsys.readouterr().err
+    assert "configFile.nextclade_dataset_tag: Extra inputs are not permitted" in err
+
+
+def test_model_rejects_a_key_the_pipeline_does_not_declare(tmp_path, loculus, capsys):
+    """PPX runs only the nextclade pipeline, so the configFile shape is known exactly.
+
+    Anything else is dropped by pydantic, and neither helm nor values.schema.json
+    constrains this object -- values.schema.json sets additionalProperties: false on
+    segments and references but not on configFile itself.
+    """
+    path = tmp_path / "unknown.yaml"
+    path.write_text(MULTI_SEGMENT.replace("        log_level: DEBUG\n", "        log_level: DEBUG\n", 1))
+    text = path.read_text().replace(
+        "          <<: *preprocessingConfigFile\n",
+        "          <<: *preprocessingConfigFile\n          taxon_id: 12345\n",
+    )
+    path.write_text(text)
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "configFile.taxon_id: Extra inputs are not permitted" in capsys.readouterr().err
+
+
+def test_model_rejects_a_misspelled_nested_key(tmp_path, loculus, capsys):
+    """Nested models must be strict too.
+
+    pydantic bakes the inner schema into the outer one at build time, so forbidding
+    extras on Config alone leaves a typo inside `segments:` or `references:` ignored.
+    """
+    path = tmp_path / "nested.yaml"
+    path.write_text(MULTI_SEGMENT.replace("              references:\n", "              referneces:\n", 1))
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "configFile.segments.0.referneces: Extra inputs are not permitted" in capsys.readouterr().err
+
+
+def test_model_rejects_a_bad_enum_value(tmp_path, loculus, capsys):
+    path = tmp_path / "enum.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n",
+            "          <<: *preprocessingConfigFile\n          alignment_requirement: SOMETIMES\n",
+        )
+    )
+    # A bad enum value is unambiguously broken config, so it fails the run rather than
+    # printing a warning nobody has to act on.
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    assert "alignment_requirement: Input should be 'ANY', 'ALL' or 'NONE'" in capsys.readouterr().err
+
+
+def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
+    path = tmp_path / "typed.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n",
+            '          <<: *preprocessingConfigFile\n          batch_size: "ten"\n',
+        )
+    )
+    assert _run(path, "check", "--loculus", str(loculus), "--skip-remote-checks") == 1
+    err = capsys.readouterr().err
+    assert "configFile.batch_size" in err and "valid integer" in err
+
+
+def test_model_accepts_every_key_the_real_config_uses(work, loculus, capsys):
+    """Guards against a model so strict it fires on legitimate config.
+
+    Read from a pinned commit, not the working tree: this asserts something about the
+    *model*, and running it against a file someone is mid-edit on tests their edit
+    instead. If it starts failing after a loculusVersion bump, the config needs fixing
+    or the model has changed -- not this test loosening.
+    """
+    _run(work, "check", "--loculus", str(loculus), "--skip-remote-checks")
+    unknown = [ln for ln in capsys.readouterr().err.splitlines() if "Extra inputs are not permitted" in ln]
+    # Not `assert unknown`: andv's two dead keys are the only ones at BASE_COMMIT, and
+    # the commit that removes them must not turn this red.
+    assert all("andv" in ln for ln in unknown), unknown
+
+
+def test_a_configfile_level_server_is_inherited(tmp_path, capsys):
+    """The one key that does fall back, because config.py applies it explicitly."""
+    path = tmp_path / "srv.yaml"
+    path.write_text(
+        MULTI_SEGMENT.replace(
+            "          <<: *preprocessingConfigFile\n          segments:\n",
+            "          <<: *preprocessingConfigFile\n"
+            "          nextclade_dataset_server: https://example.invalid/data\n"
+            "          segments:\n",
+            1,
+        )
+    )
+    assert _run(path, "status", "--columns", "datasetServer") == 0
+    assert "https://example.invalid/data" in capsys.readouterr().out
+
+
+MULTI_SEGMENT = """\
+lineageSystemDefinitions: {}
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  seg:
+    schema: {metadata: []}
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  genes: [G]
+                  nextclade_dataset_tag: OLD-L
+            - name: M
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/M
+                  genes: [G]
+                  nextclade_dataset_tag: SAME-M
+      - <<: *preprocessing
+        replicas: 3
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  genes: [G]
+                  nextclade_dataset_tag: NEW-L
+            - name: M
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/M
+                  genes: [G]
+                  nextclade_dataset_tag: SAME-M
+"""
+
+
+def test_status_labels_across_both_versions_and_segments(tmp_path, capsys):
+    """Two entries times two segments, where only segment L differs between versions.
+
+    The version prefix belongs only where the version is what differs; M is identical in
+    both, so it collapses. And a dataset *name* that never varies by version gets no
+    version prefix at all.
+    """
+    path = tmp_path / "seg.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "status", "--columns", "datasetName") == 0
+    out = capsys.readouterr().out
+    assert "v30/L:OLD-L,v31/L:NEW-L,M:SAME-M" in out
+    assert "L:ds/L,M:ds/M" in out
+
+
+def test_status_all_columns(capsys):
+    assert _run(VALUES, "status", "--columns", "all") == 0
+    header = capsys.readouterr().out.splitlines()[0]
+    for col in pv.STATUS_COLUMNS:
+        assert col in header
+
+
+def test_status_extra_columns(capsys):
+    """Asserted structurally: which organism uses which server is config that moves."""
+    assert _run(VALUES, "status", "--columns", "datasetServer,datasetName") == 0
+    lines = capsys.readouterr().out.splitlines()
+    assert "datasetServer" in lines[0]
+    assert "datasetName" in lines[0]
+    assert lines[0].index("datasetServer") < lines[0].index("datasetName")  # order given
+    assert any("nextstrain/" in ln for ln in lines[2:])  # dataset names are rendered
+
+
+def test_status_rejects_an_unknown_column(capsys):
+    assert _run(VALUES, "status", "--columns", "nosuchcolumn") == 2
+    assert "unknown column 'nosuchcolumn'" in capsys.readouterr().err
+
+
+def test_check_warns_about_an_unpinned_dataset(capsys):
+    """A version is supposed to identify a config; an unpinned dataset breaks that.
+
+    Which organism is unpinned is config that can change, so it is looked up rather
+    than named.
+    """
+    doc = pv.load(VALUES)
+    organism = _unpinned_organism(doc)
+    if organism is None:
+        pytest.skip("every dataset reference in values.yaml is pinned")
+    _run(VALUES, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", organism)
+    assert "no nextclade_dataset_tag" in capsys.readouterr().out
+
+
+# ----------------------------------------------------------------- remote existence
+
+
+@pytest.fixture
+def fake_server(monkeypatch):
+    """Stand in for the nextclade dataset server and the lineage definition hosts.
+
+    Mocked rather than live: these assertions are about the tool's logic, and pinning
+    them to whatever nextstrain currently publishes would make the suite fail for
+    reasons that have nothing to do with this code.
+    """
+    # Tags sort lexicographically, as the real ones do, so "newest" is well defined.
+    index = {
+        "collections": [
+            {
+                "datasets": [
+                    {"path": "ds/L", "versions": [{"tag": t} for t in ("OLD-L", "NEW-L", "ZZ-NEWEST")]},
+                    {"path": "ds/M", "versions": [{"tag": "SAME-M"}]},
+                ]
+            }
+        ]
+    }
+
+    class Resp:
+        def __init__(self, payload=None, status=200):
+            self._payload, self.status_code = payload, status
+
+        @property
+        def ok(self):
+            return self.status_code < 400
+
+        def json(self):
+            return self._payload
+
+        def raise_for_status(self):
+            if not self.ok:
+                raise RuntimeError(self.status_code)
+
+    monkeypatch.setattr(requests, "get", lambda url, **kw: Resp(index))
+    monkeypatch.setattr(requests, "head", lambda url, **kw: Resp(status=404 if "missing" in url else 200))
+
+
+def test_remote_check_catches_a_dataset_that_does_not_exist(tmp_path, fake_server, capsys):
+    """A misspelled dataset name cannot be caught locally -- only the server knows."""
+    path = tmp_path / "badname.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_name: ds/L", "nextclade_dataset_name: ds/typo"))
+    assert _run(path, "check", "--skip-model-check") == 1
+    assert "dataset ds/typo does not exist" in capsys.readouterr().err
+
+
+def test_remote_check_catches_a_tag_that_was_never_published(tmp_path, fake_server, capsys):
+    path = tmp_path / "badtag.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_tag: OLD-L", "nextclade_dataset_tag: NOPE"))
+    assert _run(path, "check", "--skip-model-check") == 1
+    err = capsys.readouterr().err
+    assert "has no tag NOPE" in err
+    assert "newest available: ZZ-NEWEST" in err
+
+
+def test_remote_check_reports_a_newer_tag_only_for_the_latest_version(tmp_path, fake_server, capsys):
+    """Staying on a known dataset is usually deliberate, so this is information -- and
+    only about the newest entry. A superseded version pinning an older dataset is
+    exactly what that entry is for, so saying so would be noise."""
+    path = tmp_path / "older.yaml"
+    path.write_text(MULTI_SEGMENT)  # v30 pins OLD-L, v31 pins NEW-L, newest is ZZ-NEWEST
+    assert _run(path, "check", "--skip-model-check", "-v") == 0
+    out = capsys.readouterr().out
+    assert "version [31] segment L: ds/L is pinned to NEW-L; ZZ-NEWEST is available" in out
+    assert "OLD-L" not in out
+
+
+def test_info_is_hidden_without_verbose(tmp_path, fake_server, capsys):
+    path = tmp_path / "older.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "check", "--skip-model-check") == 0
+    assert "is available" not in capsys.readouterr().out
+
+
+def test_quiet_shows_errors_only(tmp_path, fake_server, capsys):
+    path = tmp_path / "badname.yaml"
+    path.write_text(MULTI_SEGMENT.replace("nextclade_dataset_name: ds/L", "nextclade_dataset_name: ds/typo"))
+    assert _run(path, "check", "--skip-model-check", "-q") == 1
+    captured = capsys.readouterr()
+    assert "does not exist" in captured.err
+    assert captured.out == ""
+
+
+def test_update_datasets_retags_only_the_new_entry(tmp_path, fake_server, capsys):
+    """The reason to bump is usually a new dataset, so offer to pick it up -- but only
+    on the entry being added. The one being superseded keeps the tag it has been
+    processing with, which is the whole point of having two."""
+    path = tmp_path / "retag.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "bump", "--expand-organisms", "seg", "--update-datasets") == 0
+
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    tag = lambda e, i: e["configFile"]["segments"][i]["references"][0]["nextclade_dataset_tag"]  # noqa: E731
+    assert [e["version"] for e in entries] == [[30], [31], [32]]
+    assert tag(entries[0], 0) == "OLD-L"  # untouched
+    assert tag(entries[1], 0) == "NEW-L"  # untouched
+    assert tag(entries[2], 0) == "ZZ-NEWEST"  # the new entry picks up the newest
+    assert "ds/L: NEW-L -> ZZ-NEWEST" in capsys.readouterr().out
+
+
+def test_update_datasets_pins_a_reference_that_had_no_tag(tmp_path, fake_server, capsys):
+    """Picking up the newest is the point; leaving it unpinned would let it move again."""
+    path = tmp_path / "unpinned.yaml"
+    path.write_text(MULTI_SEGMENT.replace("                  nextclade_dataset_tag: SAME-M\n", ""))
+    assert _run(path, "bump", "--expand-organisms", "seg", "--update-datasets") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    assert entries[-1]["configFile"]["segments"][1]["references"][0]["nextclade_dataset_tag"] == "SAME-M"
+    assert "ds/M: was unpinned -> SAME-M" in capsys.readouterr().out
+
+
+def test_bump_leaves_tags_alone_without_the_flag(tmp_path, fake_server):
+    path = tmp_path / "noflag.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "bump", "--expand-organisms", "seg") == 0
+    entries = yaml.safe_load(path.read_text())["organisms"]["seg"]["preprocessing"]
+    assert entries[-1]["configFile"]["segments"][0]["references"][0]["nextclade_dataset_tag"] == "NEW-L"
+
+
+def test_remote_check_catches_an_unreachable_lineage_url(tmp_path, fake_server, capsys):
+    path = tmp_path / "badurl.yaml"
+    path.write_text(
+        MULTI_LINEAGE.replace("https://example.invalid/L.yaml", "https://example.invalid/missing.yaml")
+    )
+    assert _run(path, "check", "--skip-model-check") == 1
+    assert "is 404 at" in capsys.readouterr().err
+
+
+# ----------------------------------------------------------------------- anchors
+
+
+def test_anchors_come_from_the_yaml_scanner_not_a_regex(work):
+    """The linkOut URLs are full of `&dataset-name=` query parameters. A regex reads
+    those as anchor definitions; PyYAML's scanner knows they are inside a scalar."""
+    doc = pv.load(work)
+    assert "dataset" not in doc.anchors.defs
+    assert "fastaUrl" not in doc.anchors.defs
+    assert "preprocessing" in doc.anchors.defs
+    assert doc.anchors.uses["preprocessing"]
+
+
+def test_a_commented_out_alias_does_not_count_as_a_use(legacy):
+    """A stub's `<<: *denguePreprocessing` is a comment, so the anchor is unused."""
+    doc = pv.load(legacy)
+    assert "denguePreprocessing" in doc.anchors.defs
+    assert "denguePreprocessing" in doc.anchors.unused()
+
+
+def test_prune_drops_anchors_nothing_aliases(legacy):
+    """The rule: an anchor exists to be referenced, so prune removes any with no referent.
+
+    Which anchors used to survive a prune was an accident of where the remaining text
+    happened to sit; this makes it a decision instead.
+    """
+    before = yaml.safe_load(legacy.read_text())
+    assert "denguePreprocessing" in pv.load(legacy).anchors.unused()
+
+    # dengue has one version, so this prune only clears a stub and an unused anchor.
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+
+    assert "denguePreprocessing" not in pv.load(legacy).anchors.defs
+    # Purely cosmetic: nothing Helm renders may change.
+    assert yaml.safe_load(legacy.read_text()) == before
+
+
+def test_dropping_an_anchor_alone_on_a_dash_line_keeps_the_yaml_valid(legacy):
+    """`- &denguePreprocessing` has the mapping on the following lines. Deleting the line
+    would orphan it, so the next key is pulled up onto the dash."""
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+    doc = pv.load(legacy)
+    item = doc.organisms["dengue"].active[0]
+    assert doc.lines[item.start] == "      - <<: *preprocessing"
+    assert item.merge_alias == "preprocessing"
+
+
+def test_an_anchor_may_not_share_the_dash_line_with_a_key(tmp_path, capsys):
+    """`- &name key: value` looks like a tidy one-line form, but YAML binds the anchor to
+    the key *scalar*: `*name` then resolves to the string "key". It parses without
+    complaint, which is exactly why check has to catch it."""
+    path = _synthetic(tmp_path, "")
+    text = path.read_text().replace(
+        "      - &testvPreprocessing\n        <<: *preprocessing\n",
+        "      - &testvPreprocessing replicas: 1\n        <<: *preprocessing\n",
+    )
+    path.write_text(text)
+    assert yaml.safe_load(text)  # parses happily -- that is the danger
+
+    assert _run(path, "check", "--skip-model-check", "--skip-remote-checks") == 1
+    assert "it binds the key, not the entry" in capsys.readouterr().err
+
+
+def test_check_warns_about_an_unused_anchor(legacy, capsys):
+    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "dengue")
+    assert "anchor &denguePreprocessing is defined but never aliased" in capsys.readouterr().out
+
+
+def test_prune_refuses_to_rebase_when_the_doomed_entry_supplies_more(legacy, capsys):
+    """If the entry being removed provides something *preprocessing does not, the merge
+    key cannot be re-pointed and the tool must decline rather than silently drop it."""
+    lines = pv.load(legacy).lines
+    anchor_line = next(i for i, l in enumerate(lines) if l.strip() == "- &mpoxPreprocessing")
+    lines.insert(anchor_line + 2, '        dockerTag: "pinned-for-this-organism"')
+    legacy.write_text("\n".join(lines))
+
+    assert _run(legacy, "prune", "--organisms", "mpox") != 0
+    err = capsys.readouterr().err
+    assert "dockerTag" in err and "global *preprocessing does not supply" in err
+
+
+def test_bump_then_prune_returns_to_a_single_entry(work):
+    assert _run(work, "bump", "--organisms", "measles") == 0
+    assert _versions(work, "measles") == [28, 29]
+    assert _run(work, "prune", "--organisms", "measles") == 0
+    org = pv.load(work).organisms["measles"]
+    assert org.versions == [29]
+    assert len(org.active) == 1
+    assert org.active[0].replicas == 1  # back down from the bump's 3
+    assert org.stubs == []  # clean add/remove, no commented-out leftovers
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "measles") == 0
+
+
+def test_bump_then_prune_in_append_mode(work):
+    assert _run(work, "bump", "--organisms", "andv", "--mode", "append") == 0
+    assert _versions(work, "andv") == [8, 9]
+    assert _run(work, "prune", "--organisms", "andv") == 0
+    assert _versions(work, "andv") == [9]
+
+
+def _add_lineage_key(path: Path, system: str, version: int) -> None:
+    lines = path.read_text().split("\n")
+    i = next(i for i, l in enumerate(lines) if l == f"  {system}:")
+    lines.insert(i + 1, f"    {version}: https://example.invalid/{system}.yaml")
+    path.write_text("\n".join(lines))
+
+
+def test_prune_clears_a_stale_lineage_key_on_a_single_version_organism(work, capsys):
+    """Regression: prune used to bail out before the lineage sweep whenever there was
+    only one version, so a stale key could never be removed -- while `check` went on
+    reporting it. A key can outlive its entry via a skipped prune or a hand edit."""
+    _add_lineage_key(work, "marburg", 25)
+    assert pv.load(work).organisms["marburg"].versions == [26]
+    assert sorted(pv.load(work).lineage["marburg"]) == [25, 26]
+
+    assert _run(work, "prune", "--organisms", "marburg") == 0
+    assert "nothing to do" not in capsys.readouterr().out
+    assert sorted(pv.load(work).lineage["marburg"]) == [26]
+
+
+def test_prune_clears_a_stale_lineage_key_above_the_current_version(work):
+    """`< keep_version` missed these; the rule is "not used by a surviving entry"."""
+    _add_lineage_key(work, "marburg", 99)
+    assert _run(work, "prune", "--organisms", "marburg") == 0
+    assert sorted(pv.load(work).lineage["marburg"]) == [26]
+
+
+def test_prune_keeps_lineage_keys_for_versions_still_deployed(work):
+    """ebola-sudan-style multi-version entries: every live version keeps its key."""
+    assert _run(work, "bump", "--organisms", "hmpv", "--mode", "append") == 0
+    assert pv.load(work).organisms["hmpv"].versions == [25, 26]
+    assert sorted(pv.load(work).lineage["hmpv"]) == [25, 26]
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "hmpv") == 0
+
+
+def test_prune_drops_stale_lineage_versions(work):
+    assert _run(work, "bump", "--organisms", "hmpv") == 0
+    assert sorted(pv.load(work).lineage["hmpv"]) == [25, 26]
+    assert _run(work, "prune", "--organisms", "hmpv") == 0
+    assert sorted(pv.load(work).lineage["hmpv"]) == [26]
+
+
+def test_prune_removes_stubs_by_default(work):
+    assert _run(work, "bump", "--organisms", "rsv-a") == 0
+    assert _run(work, "prune", "--organisms", "rsv-a") == 0
+    org = pv.load(work).organisms["rsv-a"]
+    assert org.versions == [24]
+    assert len(org.stubs) == 0
+
+
+def test_prune_clears_a_preexisting_stale_stub(legacy):
+    assert len(pv.load(legacy).organisms["dengue"].stubs) == 1
+    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+    org = pv.load(legacy).organisms["dengue"]
+    assert org.stubs == [] and org.versions == [32]
+
+
+# ------------------------------------------------------------- expand (flattened)
+
+
+def test_expand_bump_spells_out_the_config_for_hand_editing(work):
+    """The reason to bump is usually a new nextclade dataset tag, which means the new
+    entry needs its own full configFile -- a merge key would replace, not deep-merge."""
+    assert _run(work, "bump", "--organisms", "measles", "--expand-organisms", "measles") == 0
+    entries = yaml.safe_load(work.read_text())["organisms"]["measles"]["preprocessing"]
+    assert [e["version"] for e in entries] == [[28], [29]]
+    assert entries[0]["configFile"] == entries[1]["configFile"]
+    doc = pv.load(work)
+    new = doc.organisms["measles"].active[-1]
+    body = "\n".join(doc.lines[new.start : new.end])
+    assert "nextclade_dataset_tag" in body  # editable in place, not hidden behind a merge
+    assert new.merge_alias == "preprocessing"  # independent of its sibling
+
+
+def test_expand_duplicates_short_lists_but_anchors_long_ones(work):
+    assert _run(work, "bump", "--organisms", "measles,mpox", "--expand-organisms", "measles,mpox") == 0
+    doc = pv.load(work)
+    measles = doc.organisms["measles"].active[-1]
+    mpox = doc.organisms["mpox"].active[-1]
+    # measles: 8 genes on one line -> duplicated inline.
+    assert "genes: [" in "\n".join(doc.lines[measles.start : measles.end])
+    # mpox: 175 genes -> aliased rather than copied, so the entry stays small.
+    assert "genes: *mpoxGenes" in "\n".join(doc.lines[mpox.start : mpox.end])
+    assert mpox.end - mpox.start < 30
+
+
+def test_expand_then_prune_relocates_the_gene_anchor(work):
+    """The case the whole anchor-relocation path exists for.
+
+    mpox's ~175-name gene list is anchored on an entry prune deletes, so the definition
+    has to move into the survivor -- and the survivor must resolve identically.
+    """
+    before = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
+    keep_cfg = next(e for e in before if e["version"] == [28])["configFile"]
+
+    assert _run(work, "bump", "--organisms", "mpox", "--expand-organisms", "mpox") == 0
+    assert _run(work, "prune", "--organisms", "mpox") == 0
+
+    entries = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
+    assert len(entries) == 1
+    assert entries[0]["version"] == [29]
+    assert entries[0]["configFile"] == keep_cfg
+    assert len(entries[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
+
+    doc = pv.load(work)
+    text = "\n".join(doc.lines)
+    # The values moved into the survivor; the anchor name went with them and was then
+    # dropped, because after the collapse there is nothing left to alias it.
+    assert "genes:" in text
+    assert "mpoxGenes" not in text
+    assert "mpoxPreprocessing" not in text
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "mpox") == 0
+
+
+def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):
+    assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a", "--replicas", "4") == 0
+    assert pv.load(work).organisms["rsv-a"].active[-1].replicas == 4
+    assert _run(work, "prune", "--organisms", "rsv-a") == 0
+    org = pv.load(work).organisms["rsv-a"]
+    assert org.versions == [24]
+    assert org.active[0].replicas == 1
+
+
+def test_anchor_threshold_is_configurable(work):
+    """Raising the threshold above a list's length duplicates it instead of aliasing.
+
+    Uses ebola-bdbv, whose highest entry *defines* its gene list rather than inheriting
+    an alias, so both branches are reachable.
+    """
+    assert (
+        _run(
+            work,
+            "bump",
+            "--organisms",
+            "ebola-bdbv",
+            "--expand-organisms",
+            "ebola-bdbv",
+            "--anchor-threshold",
+            "1",
+        )
+        == 0
+    )
+    entries = yaml.safe_load(work.read_text())["organisms"]["ebola-bdbv"]["preprocessing"]
+    assert entries[-1]["configFile"] == entries[-2]["configFile"]
+
+
+def test_expand_copy_never_redefines_an_anchor(work):
+    """YAML lets an anchor be redefined, and later aliases bind to the newer node.
+
+    A duplicated block must therefore drop the source's `&name`, or an alias sitting
+    between the two would silently start pointing somewhere else.
+    """
+    for org in ALL_ORGANISMS:
+        w = work.with_name(f"{org}.yaml")
+        w.write_text(_blob(BASE_COMMIT))
+        if (
+            pv.main(
+                [
+                    "--values",
+                    str(w),
+                    "bump",
+                    "--organisms",
+                    org,
+                    "--expand-organisms",
+                    org,
+                    "--anchor-threshold",
+                    "10000",
+                ]
+            )
+            != 0
+        ):
+            continue
+        doc = pv.load(w)
+        new = doc.organisms[org].active[-1]
+        defined = re.findall(r"(?<![\w*])&(\w+)", "\n".join(doc.lines[new.start : new.end]))
+        assert defined == [], f"{org}: generated entry redefines {defined}"
+
+
+def test_prune_keeps_versions_ascending_so_deployment_indices_are_stable(work):
+    """Deployment names embed the flattened index; out-of-order versions renumber them."""
+    assert _run(work, "bump", "--organisms", "rsv-b") == 0
+    assert _run(work, "prune", "--organisms", "rsv-b") == 0
+    entries = yaml.safe_load(work.read_text())["organisms"]["rsv-b"]["preprocessing"]
+    flat = [v for e in entries for v in (e["version"] if isinstance(e["version"], list) else [e["version"]])]
+    assert flat == sorted(flat)
+
+
+# -------------------------------------------------------------------------- misc
+
+
+def test_unknown_organism_is_rejected(work):
+    assert _run(work, "bump", "--organisms", "nosuchvirus") == 2
+
+
+def test_scoping_leaves_other_organisms_alone(work):
+    before = yaml.safe_load(work.read_text())
+    assert _run(work, "bump", "--organisms", "dengue,rsv-a") == 0
+    after = yaml.safe_load(work.read_text())
+    changed = {o for o in before["organisms"] if before["organisms"][o] != after["organisms"][o]}
+    assert changed == {"dengue", "rsv-a"}
+
+
+def test_benign_formatting_does_not_trip_the_cross_check(work):
+    text = work.read_text().replace(
+        "    preprocessing:\n      - &denguePreprocessing",
+        "    preprocessing:\n\n      - &denguePreprocessing",
+        1,
+    )
+    work.write_text(text)
+    pv.load(work)  # a blank line is fine
+    text = work.read_text().replace("      - &denguePreprocessing\n", "      - &denguePreprocessing  \n", 1)
+    work.write_text(text)
+    pv.load(work)  # trailing whitespace is fine
+
+
+def test_layout_drift_raises_rather_than_mis_editing(work):
+    """The guard that justifies editing this file textually at all.
+
+    If the indentation the line scanner assumes ever changes, every edit below it
+    would be unsafe -- so load() cross-checks its textual scan against the parsed
+    document and refuses rather than proceeding on a partial view.
+    """
+    lines = work.read_text().split("\n")
+    org = pv.load(work).organisms["dengue"]
+    for i in range(org.prepro_key_line + 1, org.prepro_end):
+        if lines[i].strip():
+            lines[i] = "  " + lines[i]  # re-indent the whole list by 2
+    lines[org.prepro_key_line] = "    preprocessing:"
+    work.write_text("\n".join(lines))
+    with pytest.raises(pv.Problem, match="textual scan"):
+        pv.load(work)
+
+
+def test_version_mismatch_between_scan_and_parser_raises(work, monkeypatch):
+    real = pv._parse_item
+
+    def lying(lines, start, end, commented):
+        item = real(lines, start, end, commented)
+        if item.versions == [32]:
+            item.versions = [99]
+        return item
+
+    monkeypatch.setattr(pv, "_parse_item", lying)
+    with pytest.raises(pv.Problem, match="Refusing to edit"):
+        pv.load(work)
+
+
+# ------------------------------------------------------- lineage/dataset coverage
+
+# Two segments, but the lineage system covers only S -- cchf's shape. Both versions
+# carry the same datasets, so the only thing that differs between them is the
+# hierarchy URL, which is what makes the per-version assertion visible.
+COVERAGE = """\
+lineageSystemDefinitions:
+  covS:
+    30: https://example.invalid/S-30.yaml
+    31: https://example.invalid/S-31.yaml
+defaultOrganismConfig: &defaultOrganismConfig
+  preprocessing:
+    - &preprocessing
+      replicas: 1
+      image: img
+      args: ["prepro"]
+      configFile: &preprocessingConfigFile
+        log_level: DEBUG
+organisms:
+  cov:
+    schema:
+      metadata:
+        - name: lineage_S
+          relatesToSegment: S
+          lineageSystem: covS
+          preprocessing:
+            inputs: {input: nextclade.clade}
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 30
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  genes: [G]
+                  nextclade_dataset_tag: T
+            - name: S
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/S
+                  genes: [G]
+                  nextclade_dataset_tag: T
+      - <<: *preprocessing
+        version:
+          - 31
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/L
+                  genes: [G]
+                  nextclade_dataset_tag: T
+            - name: S
+              references:
+                - name: r
+                  nextclade_dataset_name: ds/S
+                  genes: [G]
+                  nextclade_dataset_tag: T
+"""
+
+# (dataset, tag) -> (node attribute, values on the reference tree).
+_TREES = {
+    ("ds/L", "T"): ("clade_membership", ["L1", "L2"]),
+    ("ds/S", "T"): ("clade_membership", ["S1", "S2"]),
+    ("ds/S", "ZZ-NEW"): ("clade_membership", ["S1", "S2", "S9"]),
+    ("ds/C", "T"): ("outbreakLineage", ["c/A", "c/B"]),
+}
+# marburg's tree file is `marburg_tree.json`, so the name must come from pathogen.json.
+_TREE_FILES = {"ds/S": "cov_tree.json"}
+_HIERARCHIES = {
+    "https://example.invalid/S-30.yaml": {"S1": {}},  # missing S2
+    "https://example.invalid/S-31.yaml": {"S1": {}, "S2": {}, "S3": {}},  # S3 is spare
+    "https://example.invalid/C.yaml": {"c/A": {}, "c/B": {}},
+}
+
+
+@pytest.fixture
+def fake_datasets(monkeypatch, tmp_path):
+    """A nextclade server serving pathogen.json, reference trees and hierarchy YAML.
+
+    The cache is redirected into the test's tmp_path: `_tree_values` otherwise persists
+    extracted value sets across runs, and a real `check` run would seed them.
+    """
+
+    def cache(*parts):
+        path = tmp_path.joinpath("cache", *parts)
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+
+    monkeypatch.setattr(pv, "_cache_dir", cache)
+
+    index = {
+        "collections": [
+            {
+                "datasets": [
+                    {"path": "ds/L", "versions": [{"tag": "T"}]},
+                    {"path": "ds/S", "versions": [{"tag": "T"}, {"tag": "ZZ-NEW"}]},
+                    {"path": "ds/C", "versions": [{"tag": "T"}]},
+                ]
+            }
+        ]
+    }
+
+    class Resp:
+        def __init__(self, payload=None, text="", status=200):
+            self._payload, self.text, self.status_code = payload, text, status
+
+        @property
+        def ok(self):
+            return self.status_code < 400
+
+        def json(self):
+            return self._payload
+
+        def raise_for_status(self):
+            if not self.ok:
+                raise RuntimeError(self.status_code)
+
+    def get(url, **_kw):
+        if url in _HIERARCHIES:
+            return Resp(text=yaml.safe_dump(_HIERARCHIES[url]))
+        if url.endswith("/index.json"):
+            return Resp(index)
+        # .../<dataset>/<tag>/<file>
+        rest = url.split("/v3/", 1)[-1]
+        *parts, tag, filename = rest.split("/")
+        dataset = "/".join(parts)
+        if filename == "pathogen.json":
+            return Resp({"files": {"treeJson": _TREE_FILES.get(dataset, "tree.json")}})
+        if filename != _TREE_FILES.get(dataset, "tree.json"):
+            return Resp(status=404)
+        attr, values = _TREES[dataset, tag]
+        return Resp({"tree": {"children": [{"node_attrs": {attr: {"value": v}}} for v in values]}})
+
+    monkeypatch.setattr(requests, "get", get)
+    monkeypatch.setattr(requests, "head", lambda url, **kw: Resp(status=200))
+
+
+def _coverage(tmp_path: Path, text: str = COVERAGE, name: str = "cov.yaml") -> Path:
+    path = tmp_path / name
+    path.write_text(text)
+    return path
+
+
+def test_coverage_catches_a_lineage_the_dataset_assigns_but_the_hierarchy_omits(
+    tmp_path, fake_datasets, capsys
+):
+    """The only check that compares two independently maintained artifacts. A bump moves
+    the dataset tag and the hierarchy URL, and nothing forces them to move together."""
+    assert _run(_coverage(tmp_path), "check", "--skip-model-check") == 1
+    err = capsys.readouterr().err
+    assert "cov: version 30 can assign 1 lineage(s)" in err
+    assert "lineageSystemDefinitions.covS.30 does not define: S2" in err
+
+
+def test_coverage_is_asserted_per_version_not_just_the_latest(tmp_path, fake_datasets, capsys):
+    """Unlike the outdated-tag info, which is a preference: a superseded but still
+    running version whose hierarchy omits a lineage is a live SILO import failure."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    err = capsys.readouterr().err
+    assert "version 30" in err
+    assert "version 31" not in err  # its hierarchy defines both S1 and S2
+
+
+def test_coverage_ignores_segments_the_lineage_field_does_not_relate_to(tmp_path, fake_datasets, capsys):
+    """covS relates to segment S, so segment L's clades are irrelevant to it -- exactly
+    cchf, whose S hierarchy knows nothing of the L and M datasets."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    err = capsys.readouterr().err
+    assert "L1" not in err
+    assert "L2" not in err
+
+
+def test_coverage_accepts_a_hierarchy_that_defines_more_than_the_dataset_assigns(
+    tmp_path, fake_datasets, capsys
+):
+    """Direction matters: a spare definition is harmless, a missing one breaks SILO.
+
+    v31's hierarchy defines an S3 no dataset can assign, and v31 must still pass.
+    """
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    captured = capsys.readouterr()
+    assert "S3" not in captured.err + captured.out
+    assert "version 31" not in captured.err
+
+
+def test_coverage_reads_the_tree_file_named_by_pathogen_json(tmp_path, fake_datasets, capsys):
+    """ds/S's tree is `cov_tree.json`, as marburg's is `marburg_tree.json`. Hardcoding
+    `tree.json` would 404 and downgrade the whole check to a warning."""
+    _run(_coverage(tmp_path), "check", "--skip-model-check")
+    captured = capsys.readouterr()
+    assert "could not read the reference tree" not in captured.out
+    assert "S2" in captured.err  # it got far enough to compare
+
+
+def test_coverage_reads_a_custom_node_attribute(tmp_path, fake_datasets, capsys):
+    """mpox's lineage is not `clade`; it is a custom node attribute of the same name."""
+    text = (
+        COVERAGE.replace("nextclade.clade", "nextclade.customNodeAttributes.outbreakLineage")
+        .replace("nextclade_dataset_name: ds/S", "nextclade_dataset_name: ds/C")
+        .replace("https://example.invalid/S-30.yaml", "https://example.invalid/C.yaml")
+        .replace("https://example.invalid/S-31.yaml", "https://example.invalid/C.yaml")
+    )
+    assert _run(_coverage(tmp_path, text, "custom.yaml"), "check", "--skip-model-check") == 0
+
+
+def test_coverage_resolves_an_unpinned_dataset_to_the_newest_tag(tmp_path, fake_datasets, capsys):
+    """An unpinned reference follows whatever the server serves, so that is what the
+    hierarchy has to cover -- and ZZ-NEW assigns an S9 that neither hierarchy defines."""
+    text = COVERAGE.replace("                  nextclade_dataset_tag: T\n", "", 4)
+    assert _run(_coverage(tmp_path, text, "unpinned.yaml"), "check", "--skip-model-check") == 1
+    assert "S9" in capsys.readouterr().err
+
+
+def test_coverage_warns_rather_than_guesses_when_it_cannot_pick_a_segment(tmp_path, fake_datasets, capsys):
+    """Unioning both segments would invent exactly the false errors segment scoping
+    exists to avoid, so an unscoped field on a multi-segment organism is unknowable."""
+    text = COVERAGE.replace("          relatesToSegment: S\n", "")
+    assert _run(_coverage(tmp_path, text, "unscoped.yaml"), "check", "--skip-model-check") == 0
+    assert "names no relatesToSegment" in capsys.readouterr().out
+
+
+def test_coverage_warns_on_an_input_that_is_not_read_from_a_reference_tree(tmp_path, fake_datasets, capsys):
+    text = COVERAGE.replace("input: nextclade.clade", "input: someSubmittedField")
+    assert _run(_coverage(tmp_path, text, "other.yaml"), "check", "--skip-model-check") == 0
+    assert "does not come from a nextclade reference tree" in capsys.readouterr().out
+
+
+if __name__ == "__main__":
+    # Each test re-parses a 4000-line file, so this is embarrassingly parallel.
+    extra = sys.argv[1:] or ["-n", "auto"]
+    sys.exit(pytest.main([__file__, "-q", *extra]))
