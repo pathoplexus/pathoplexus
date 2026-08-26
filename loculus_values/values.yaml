@@ -4365,3 +4365,9 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
+  raw-reads-processing:
+    requests:
+      memory: "8Gi" # deacon loads the whole panhuman index into memory (~3.3Gi on disk, ~4.8Gi peak while loading)
+      cpu: "50m"
+    limits:
+      memory: "8Gi"
