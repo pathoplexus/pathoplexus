@@ -2483,6 +2483,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for ANDV to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set. (If no fastaIds column is provided, this sample ID will be used to associate the metadata with the sequence.)"
+        - <<: *hostConfig
       website:
         <<: *website
         tableColumns:
@@ -2616,6 +2621,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for CCHF to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set. (If no fastaIds column is provided, this sample ID will be used to associate the metadata with the sequence.)"
+        - <<: *hostConfig
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
