@@ -1233,7 +1233,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2100
       - name: sequencingLibrarySelection
         definition: The method used to select or enrich the source material.
-        guidance: 'Example Guidance: Provide the name of the DNA or RNA sequencing library selection technology used in your study. If unsure refer to the protocol documentation, or provide a null value.'
+        guidance: 'Provide the name of the DNA or RNA sequencing library selection technology used in your study, please select an option from the pick list.'
         desired: true
         example: PCR
         displayName: Sequencing library selection
@@ -1283,7 +1283,7 @@ defaultOrganismConfig: &defaultOrganismConfig
           - name: "unspecified"
       - name: sequencingLibrarySource
         definition: The type of biomaterial that was sequenced, also called library source in the INSDC.
-        guidance: 'Example Guidance: Provide the name of the DNA or RNA sequencing library source used in your study. If unsure refer to the protocol documentation, or provide a null value.'
+        guidance: 'Provide the name of the DNA or RNA sequencing library source used in your study, please select an option from the pick list.'
         desired: true
         example: VIRAL RNA
         displayName: Sequencing library source
