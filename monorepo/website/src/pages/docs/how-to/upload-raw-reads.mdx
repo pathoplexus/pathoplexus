@@ -6,7 +6,7 @@ order: 41
 import InfoBox from '../../../components/asides/InfoBox.astro';
 import RawReadsMetadataTable from "../../../components/RawReadsMetadataTable.astro"
 
-While it is not possible to submit raw reads files independently to Pathoplexus, you can include them when you are submitting consensus sequences [(see here for our general submission documentation)](/docs/how-to/upload-sequences). To do include your raw reads files, you will need to upload them and link them to their respective sequences via the `files.rawReads` field in your metadata file. The `files.rawReads` field should be a space-separated list containing all files associated with the sequence.
+While it is not possible to submit raw reads files independently to Pathoplexus, you can include them when you are submitting consensus sequences [(see here for our general submission documentation)](/docs/how-to/upload-sequences). To include your raw reads files, you will need to upload them and link them to their respective sequences via the `files.rawReads` field in your metadata file. The `files.rawReads` field should be a space-separated list containing all files associated with the sequence.
 
 When on the submission page, you can either click on 'Upload folder' to upload an entire folder containing raw reads files, or 'Upload files' to select individual files to upload. Once you've selected files to upload, the webpage will let you know if there are files listed in the `files.rawReads` metadata column that are missing or if you've uploaded files that are not listed in `files.rawReads`. Once all the files included in `files.rawReads` have been uploaded and linked and no unexpected files are present, you can proceed with submission.
 
@@ -16,7 +16,7 @@ Raw reads files must be submitted in `fastq` format, optionally compressed using
 
 ## Raw reads specific metadata
 
-When including raw reads files in your submission you will also need to provide additional metadata fields in your metadata file. Please refer to the table below to see which fields are required and desired when submitting raw reads and include them in your metadata file.
+When including raw reads files in your submission you will also need to provide additional metadata fields in your metadata file. Please refer to the table below to see which fields are required and desired when submitting raw reads and include them in your metadata file. For further details on the metadata required in your submission see our [metadata docs](/docs/concepts/metadataformat).
 
 <RawReadsMetadataTable/>
 
@@ -30,7 +30,7 @@ To upload the raw reads files, you can click 'Upload files' and select the raw r
 
 **Metadata file**
 
-You must then configure your `files.rawReads` metadata to link each of these files to its respective sequence:
+You must then configure your `files.rawReads` metadata column to link each of these files to its respective sequence:
 
 | id   | ... | files.rawReads                          |
 | ---- | --- | --------------------------------------- |
@@ -63,7 +63,7 @@ uploaded_folder
 
 **Metadata file**
 
-You must then configure your files.rawReads metadata to link each of these files to its respective sequence:
+You must then configure your `files.rawReads` metadata column to link each of these files to its respective sequence:
 
 | id   | ... | files.rawReads                          |
 | ---- | --- | --------------------------------------- |
@@ -104,7 +104,7 @@ uploaded_folder
 
 **Metadata file**
 
-You must now configure your `files.rawReads` metadata to link each of these files to its respective sequence and provide a new name (note the `name::path` syntax):
+You must now configure your `files.rawReads` metadata column to link each of these files to its respective sequence and provide a new name (note the `name::path` syntax):
 
 | id   | ... | files.rawReads                                                                  |
 | ---- | --- | ------------------------------------------------------------------------------- |
@@ -141,7 +141,7 @@ uploaded_folder
 
 **Metadata file**
 
-You configure your `files.rawReads` metadata to link each of these files to its respective sequence, note the `name::path` syntax:
+You can configure your `files.rawReads` metadata column to link each of these files to its respective sequence, note the `name::path` syntax:
 
 | id   | ... | files.rawReads                                                                                       |
 | ---- | --- | ---------------------------------------------------------------------------------------------------- |
