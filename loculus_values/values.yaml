@@ -1110,7 +1110,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2065
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
-        definition: The model of the sequencing instrument used.
+        definition: The model of the sequencing instrument used. This field is required when raw reads are supplied.
         guidance: Select the sequencing instrument from the pick list.
         example: MinION
         displayName: Sequencing instrument
