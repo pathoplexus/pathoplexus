@@ -2285,7 +2285,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/E.fasta]]"
               - name: NS1
@@ -2311,7 +2311,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/E.fasta]]"
               - name: NS1
@@ -2337,7 +2337,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/E.fasta]]"
               - name: NS1
