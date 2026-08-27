@@ -6,66 +6,89 @@ order: 40
 import InfoBox from '../../../components/asides/InfoBox.astro';
 
 The process of submitting sequences to Pathoplexus consists of three sequential steps; sequence upload, review/editing, and approval.
-The first step is sequence upload and requires you to have [created an account](create-account) and to be part of a [group](create-group).
+Submitting sequences to Pathoplexus requires you to have [created an account](create-account) and to be part of a [group](create-group).
 If you already have an account and belong to more than one group, make sure that the appropriate group you are currently submitting sequences for is selected from the drop-down menu in the top left before proceeding with the submission process.
 
 Before starting the upload process, ensure that your data is correctly formatted. Every sequence must have a unique ID that can be used to link it with its metadata entry. 
-_Please, note that **terminal Ns will be automatically removed** during sequence preprocessing and will not be included in the submitted sequences._
 
-The expected data format is as follows:
+<InfoBox>
+**Terminal Ns will be automatically removed** during sequence preprocessing and will not be included in the submitted sequences.
+</InfoBox>
 
-- Sequence data in `fasta` format with a unique fasta ID per sequence. The fasta ID is the start of the header up to and excluding the first white space character. For example the fasta header `>seq_12` has fasta ID `seq_12`.
-- Metadata for each sample with a unique `id`.
-  - When uploading through the API, only `tsv` is supported.
-  - When uploading through the website, `xlsx` files are also accepted.
-  - Each organism has its own metadata template available on the submission page.
-  - On the website, you can map columns from your file to the expected metadata fields using the **Add column mapping** option.
+## Single sequence submission
 
-Metadata and sequences will be matched using the `id` column in the metadata (i.e. the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g. `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
-![Metadata template.](../../../images/MetadataTemplate.png)
+If you just have one or a few sequences to submit, it may be most convenient to do so via the web form as follows (if you have more sequences, see the 'Bulk submission' section below):
 
-The files can also be compressed: accepted formats are .zst, .gz, .zip and .xz.
-
-
-_You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance._
-
-
-### Multi-segmented Pathogens
-
-Multi-segmented pathogens must have one unique `id` per **isolate** (i.e. one per pathogen sample containing all segments). Each segment will be a unique entry in the FASTA file with its own FASTA ID. Metadata is uploaded per isolate, meaning there will be a single metadata row per `id`. This row should include a `fastaIds` field listing all segment fasta IDs, separated by spaces.
-
-## Website
-
-Uploading sequences via the website is an easy way to submit sequences without having to worry about any code.
-
-1. Log into your account, and then click 'Submit' in the top-right corner of the website
-2. Select the organism that you'd like to submit sequences for
-3. Drag-and-drop a `fasta` file with the sequences and a metadata file with the associated metadata into the box on the website, or click the 'Upload a file' link within the boxes to open a file-selection box
-4. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year.
-5. Select 'Upload and proceed to Approval' at the bottom of the page
+1. Log into your account, and then click 'Submit sequences' on the landing page.
+2. Select the organism that you'd like to submit sequences for.
+3. Click 'Submit individual sequence entry using a form' at the top of the screen.
+4. Fill out the form with metadata that describes the sequence you're submitting.
+5. Continue down the page to the 'Nucleotide sequences' section. Drag-and-drop a `fasta` file with the sequence into the box, or click the 'Upload' link within the box to open a file-selection box.
+6. Optional: upload the raw reads that were used to derive the consensus sequence. This is done by clicking the 'Upload folder' or the 'Upload files' box in the 'Extra files' section, which will ask you to select a folder or file(s) containing the raw reads files, respectively. [See here for a detailed description of how to include raw reads in your submission.](/docs/how-to/upload-raw-reads)
+7. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year.
+8. Select 'Upload and proceed to Approval' at the bottom of the page.
 
 The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
+
 <InfoBox>
 If you have selected `Restricted` in the terms of use for your sequences, a restriction period of up to one year from the date of submission will be set automatically. You can customize this to an earlier date of your choice by using the `Change Date` button before proceeding with submission.
 
 You can also modify the restriction period after submission. Note you can only shorten the period or make sequences `Open`, you cannot extend the restriction period. You will need to be logged in as a user with the appropriate authorization to make these changes.
 </InfoBox>
 
-## Uploading raw reads
+## Bulk submission
 
-Pathoplexus currently only accepts consensus sequence submissions. If you wish to upload raw reads, you can do so directly through the [INSDC submission portal](https://ena-docs.readthedocs.io/en/latest/submit/reads.html).
+This section describes how to perform Bulk submissions, where you can submit multiple sequences at the same time.
 
-To ensure your raw reads are linked to your consensus sequence in the INSDC, both should be associated with the same BioSample and BioProject at the time of submission. We suggest you submit consensus sequences first to ensure metadata consistency.
+### Expected data format
+
+- Sequence data in `fasta` format with a unique fasta ID per sequence. The fasta ID is the start of the header up to and excluding the first white space character. For example the fasta header `>seq_12` has fasta ID `seq_12`.
+- Raw reads files in `fastq` format (optional).
+- Metadata for each sample with a unique `id`.
+  - When uploading through the API, only `tsv` is supported.
+  - When uploading through the website, `xlsx` files are also accepted.
+  - Each organism has its own metadata template available on the submission page.
+  - On the website, you can map columns from your file to the expected metadata fields using the **Add column mapping** option.
+
+The metadata and sequence data files can be compressed: accepted formats here are .zst, .gz, .zip and .xz. Raw reads files may also be compressed, but only using the .gz format (to facilitate submission to INSDC).
+
+Metadata and sequences will be matched using the `id` column in the metadata (i.e., the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g., `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
+
+Similarly, raw reads files will be associated to their corresponding consensus sequence via the `files.rawReads` metadata field. This field should contain a space-separated list of file names indicating which raw reads files belong to which sequence. Raw reads for the full submission should be uploaded as a single folder containing raw reads files for all sequences (see [here](/docs/how-to/upload-raw-reads) for a detailed description of how to attach raw reads files).
+
+![Metadata template.](../../../images/MetadataTemplate.png)
+
+<InfoBox>
+You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance.
+</InfoBox>
 
 
-#### Submission Scenarios:
-- Submitting the Consensus Sequence First (via Pathoplexus):
-After submitting your consensus sequence to Pathoplexus, use the biosample and bioproject accessions we provide (e.g., Bioproject Accession: PRJEB80643, Biosample Accession: SAMEA116354847) when submitting your raw reads to the INSDC.
+### Multi-segmented Pathogens
 
-- Submitting Raw Reads First (via INSDC):
-If you submit raw reads to the INSDC first, create a biosample and bioproject during the upload process. Then, provide the raw reads accession in the metadata.tsv (e.g., insdcRawReadsAccession=SRR27477368) when submitting your consensus sequence to Pathoplexus. This allows us to link your consensus sequence to the raw reads in the INSDC.
+Multi-segmented pathogens must have one unique `id` per **isolate** (i.e., one per pathogen sample containing all segments). Each segment will be a unique entry in the FASTA file with its own FASTA ID. Metadata is uploaded per isolate, meaning there will be a single metadata row per `id`. This row should include a `fastaIds` field listing all segment fasta IDs, separated by spaces.
 
-Please contact us at `submission@pathoplexus.org` if you have any questions about submitting raw reads. 
+### Using your own Bioproject
+
+Sequences uploaded to Patholexus will be submitted to the INSDC under a Bioproject that Pathoplexus creates itself. If you would like your sequences to be attached to another Bioproject, you may provide the accession of that Bioproject (starting with `PRJ`) in the `bioprojectAccession` metadata field when submitting to Pathoplexus. If you do this, please ensure that the Bioproject exists, is public, and is **not** an umbrella Bioproject. Not doing so could cause a delayed or failed propagation of your sequences to the INSDC.
+
+## Website
+
+Uploading sequences via the website is an easy way to submit sequences without having to worry about any code.
+
+1. Log into your account, and then click 'Submit sequences' on the landing page.
+2. Select the organism that you'd like to submit sequences for.
+3. Drag-and-drop a `fasta` file with the sequences and a metadata file with the associated metadata into the box on the website, or click the 'Upload a file' link within the boxes to open a file-selection box.
+4. Optional: upload the raw reads that were used to derive the consensus sequence. This is done by clicking the 'Upload folder' or the 'Upload files' box on the submission page, which will ask you to select a folder or file(s) containing the raw reads files, respectively. [See here for a detailed description of how to include raw reads in your submission.](/docs/how-to/upload-raw-reads)
+5. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year.
+6. Select 'Upload and proceed to Approval' at the bottom of the page.
+
+The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
+
+<InfoBox>
+If you have selected `Restricted` in the terms of use for your sequences, a restriction period of up to one year from the date of submission will be set automatically. You can customize this to an earlier date of your choice by using the `Change Date` button before proceeding with submission.
+
+You can also modify the restriction period after submission. Note you can only shorten the period or make sequences `Open`, you cannot extend the restriction period. You will need to be logged in as a user with the appropriate authorization to make these changes.
+</InfoBox>
 
 
 ## API

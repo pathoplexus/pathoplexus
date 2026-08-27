@@ -1,0 +1,163 @@
+---
+layout: ../../../layouts/DocLayout.astro
+title: "Uploading raw reads"
+order: 41
+---
+import InfoBox from '../../../components/asides/InfoBox.astro';
+import RawReadsMetadataTable from "../../../components/RawReadsMetadataTable.astro"
+
+While it is not possible to submit raw reads files independently to Pathoplexus, you can include them when you are submitting consensus sequences [(see here for our general submission documentation)](/docs/how-to/upload-sequences). To include your raw reads files, you will need to upload them and link them to their respective sequences via the `files.rawReads` field in your metadata file. The `files.rawReads` field should be a space-separated list containing all files associated with the sequence.
+
+When on the submission page, you can either click on 'Upload folder' to upload an entire folder containing raw reads files, or 'Upload files' to select individual files to upload. Once you've selected files to upload, the webpage will let you know if there are files listed in the `files.rawReads` metadata column that are missing or if you've uploaded files that are not listed in `files.rawReads`. Once all the files included in `files.rawReads` have been uploaded and linked and no unexpected files are present, you can proceed with submission.
+
+<InfoBox>
+Raw reads files must be submitted in `fastq` format, optionally compressed using `gzip`. You can provide either a single `fastq` file or a pair of `fastq` files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
+</InfoBox>
+
+## Raw reads specific metadata
+
+When including raw reads files in your submission you will also need to provide additional metadata fields in your metadata file. Please refer to the table below to see which fields are required and desired when submitting raw reads and include them in your metadata file. For further details on the metadata required in your submission see our [metadata docs](/docs/concepts/metadataformat).
+
+<RawReadsMetadataTable/>
+
+## Examples
+
+This section shows some examples of how to include raw reads in your submission to Pathoplexus. Each example shows the submission of three sequences — `seq1`, `seq2`, and `seq3` — with associated raw reads. The raw reads for `seq1` were generated using paired-end sequencing and are uploaded as a forward and reverse fastq file. Raw reads for `seq2` and `seq3` are single-ended.
+
+### Example 1: uploading individual files
+
+To upload the raw reads files, you can click 'Upload files' and select the raw reads files from your local filesystem: `raw_reads1_fw.fq.gz`, `raw_reads1_rv.fq.gz`, `raw_reads_2.fq.gz`, and `raw_reads_3.fq.gz` 
+
+**Metadata file**
+
+You must then configure your `files.rawReads` metadata column to link each of these files to its respective sequence:
+
+| id   | ... | files.rawReads                          |
+| ---- | --- | --------------------------------------- |
+| seq1 | ... | raw_reads1_fw.fq.gz raw_reads1_rv.fq.gz |
+| seq2 | ... | raw_reads_2.fq.gz                       |
+| seq3 | ... | raw_reads_3.fq.gz                       |
+
+
+**End result**
+
+After sequence processing and approval, the files will be shown as follows when viewing the sequences on Pathoplexus:
+
+- `seq1`: `raw_reads1_fw.fq.gz` `raw_reads1_rv.fq.gz` 
+- `seq2`: `raw_reads_2.fq.gz`
+- `seq3`: `raw_reads_3.fq.gz`
+
+### Example 2: uploading a single folder
+
+Instead of uploading files individually, you can click 'Upload folder' and upload a folder that contains all four raw reads files at once.
+
+**Folder structure on your machine**
+
+```
+uploaded_folder
+├── raw_reads_1_fw.fq.gz
+├── raw_reads_1_rv.fq.gz
+├── raw_reads_2.fq.gz
+└── raw_reads_3.fq.gz
+```
+
+**Metadata file**
+
+You must then configure your `files.rawReads` metadata column to link each of these files to its respective sequence:
+
+| id   | ... | files.rawReads                          |
+| ---- | --- | --------------------------------------- |
+| seq1 | ... | raw_reads1_fw.fq.gz raw_reads1_rv.fq.gz |
+| seq2 | ... | raw_reads_2.fq.gz                       |
+| seq3 | ... | raw_reads_3.fq.gz                       |
+
+
+**End result**
+
+After sequence processing and approval, the files will be shown as follows when viewing the sequences on Pathoplexus:
+
+- `seq1`: `raw_reads1_fw.fq.gz` `raw_reads1_rv.fq.gz` 
+- `seq2`: `raw_reads_2.fq.gz`
+- `seq3`: `raw_reads_3.fq.gz`
+
+
+<details>
+<summary>**Advanced usage: `name::path` syntax**</summary>
+
+So far, we've shown examples where the `files.rawReads` field contained a list of filenames, resulting in the file that's attached to the sequence in Pathoplexus having the same name as it does on your local filesystem. However, it is also possible to use the optional `name::path` syntax, where `name` denotes how the file will be called in Pathoplexus, and `path` indicates the location of the file on your local machine, starting at the root of the folder you've uploaded.
+
+The examples below show some of the usecases of the `name::path` syntax.
+
+### Advanced example 1: uploading a single folder and updating file names
+
+If you wish to use different names for your uploaded raw reads files on Pathoplexus then how they're called on your local file system, you can use the `name::path` syntax in the `files.rawReads` metadata field:
+
+**Folder structure on your machine**
+
+```
+uploaded_folder
+├── raw_reads_1_fw.fq.gz
+├── raw_reads_1_rv.fq.gz
+├── raw_reads_2.fq.gz
+└── raw_reads_3.fq.gz
+```
+
+**Metadata file**
+
+You must now configure your `files.rawReads` metadata column to link each of these files to its respective sequence and provide a new name (note the `name::path` syntax):
+
+| id   | ... | files.rawReads                                                                  |
+| ---- | --- | ------------------------------------------------------------------------------- |
+| seq1 | ... | raw_reads_fw.fq.gz::raw_reads1_fw.fq.gz raw_reads_rv.fq.gz::raw_reads1_rv.fq.gz |
+| seq2 | ... | raw_reads.fq.gz::raw_reads_2.fq.gz                                              |
+| seq3 | ... | raw_reads.fq.gz::raw_reads_3.fq.gz                                              |
+
+**End result**
+
+After sequence processing and approval, the files will be shown as follows when viewing the sequences on Pathoplexus:
+
+- `seq1`: `raw_reads_fw.fq.gz` `raw_reads_rv.fq.gz` 
+- `seq2`: `raw_reads.fq.gz`
+- `seq3`: `raw_reads.fq.gz`
+
+### Advanced example 2: uploading a nested folder
+
+If you already have your files organised into subfolders on your local file system (with a subfolder per sequence, for example) you can still upload the complete folder that contains these subfolders and use the `name::path` syntax to link raw reads files to sequences:
+
+**Folder structure on your machine**
+
+```
+uploaded_folder
+├── subfolder_1
+│   └── raw_reads_fw.fq.gz
+│   └── raw_reads_rv.fq.gz
+│
+├── subfolder_2
+│   └── raw_reads.fq.gz
+│
+└── subfolder_3
+    └── raw_reads.fq.gz
+```
+
+**Metadata file**
+
+You can configure your `files.rawReads` metadata column to link each of these files to its respective sequence, note the `name::path` syntax:
+
+| id   | ... | files.rawReads                                                                                       |
+| ---- | --- | ---------------------------------------------------------------------------------------------------- |
+| seq1 | ... | raw_reads_fw.fq.gz::subfolder_1/raw_reads_fw.fq.gz raw_reads_rv.fq.gz/subfolder_1/raw_reads_rv.fq.gz |
+| seq2 | ... | raw_reads.fq.gz:subfolder_2/raw_reads.fq.gz                                                          |
+| seq3 | ... | raw_reads.fq.gz:subfolder_3/raw_reads.fq.gz                                                          |
+
+
+**End result**
+
+After sequence processing and approval, the files will be shown as follows when viewing the sequences on Pathoplexus:
+
+- `seq1`: `raw_reads_fw.fq.gz` `raw_reads_rv.fq.gz` 
+- `seq2`: `raw_reads.fq.gz`
+- `seq3`: `raw_reads.fq.gz`
+</details>
+
+
+

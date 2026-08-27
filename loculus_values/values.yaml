@@ -1,3 +1,4 @@
+createTestAccounts: true
 preprocessingTimeout: 600
 getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
@@ -10,11 +11,15 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 traefikVersion: 3
 s3:
-  enabled: false
-developmentDatabasePersistence: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
+developmentDatabasePersistence: true
 dataUseTerms:
   agreementHTML: >
     I agree to the <a href='/about/terms-of-use/data-use-terms' target='_blank' rel='noopener noreferrer'>data use terms</a>, and I understand <a href='/about/citation' target='_blank' rel='noopener noreferrer'>how to cite</a> data from Pathoplexus.
@@ -62,6 +67,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
+disableRawReadsProcessingService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -98,6 +104,16 @@ defaultOrganismConfig: &defaultOrganismConfig
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
       maxSequencesPerEntry: 1
+      files:
+        enabled: true
+        categories:
+          - name: rawReads
+            displayName: Raw reads
+    files:
+      - name: annotations
+        displayName: Annotations
+      - name: rawReads
+        displayName: Raw reads
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -1086,14 +1102,24 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Amplicon size
         header: Sequencing
         orderOnDetailsPage: 2060
+      - name: pairedEndInsertSize
+        definition: The insert size for paired-end sequencing libraries.
+        guidance: Provide the insert size in base pairs (as an integer).
+        example: "500"
+        displayName: Paired end insert size
+        type: int
+        header: Sequencing
+        orderOnDetailsPage: 2065
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
-        definition: The model of the sequencing instrument used.
+        definition: The model of the sequencing instrument used. This field is required when raw reads are supplied.
         guidance: Select the sequencing instrument from the pick list.
         example: MinION
         displayName: Sequencing instrument
         header: Sequencing
         desired: true
+        requiredWhen:
+          - files.rawReads
         orderOnDetailsPage: 2080
         generateIndex: true
         autocomplete: true
@@ -1202,8 +1228,82 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: Genomes were generated through amplicon sequencing of 1200 bp amplicons with Freed schema primers. Libraries were created using Illumina DNA Prep kits, and sequence data was produced using Miseq Micro v2 (500 cycles) sequencing kits.
         displayName: Sequencing protocol
         header: Sequencing
-        orderOnDetailsPage: 2100
         desired: true
+        orderOnDetailsPage: 2100
+      - name: sequencingLibrarySelection
+        definition: The method used to select or enrich the source material.
+        guidance: 'Provide the name of the DNA or RNA sequencing library selection technology used in your study, please select an option from the pick list.'
+        desired: true
+        example: PCR
+        displayName: Sequencing library selection
+        header: Sequencing
+        orderOnDetailsPage: 2120
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingLibrarySelection
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_SELECTION
+          - name: "RANDOM"
+          - name: "PCR"
+          - name: "RANDOM PCR"
+          - name: "RT-PCR"
+          - name: "HMPR"
+          - name: "MF"
+          - name: "repeat fractionation"
+          - name: "size fractionation"
+          - name: "MSLL"
+          - name: "cDNA"
+          - name: "cDNA_randomPriming"
+          - name: "cDNA_oligo_dT"
+          - name: "PolyA"
+          - name: Oligo-dT
+          - name: Inverse rRNA
+          - name: Inverse rRNA selection
+          - name: "ChIP"
+          - name: "ChIP-Seq"
+          - name: "MNase"
+          - name: "DNase"
+          - name: "Hybrid Selection"
+          - name: "Reduced Representation"
+          - name: "Restriction Digest"
+          - name: "5-methylcytidine antibody"
+          - name: "MBD2 protein methyl-CpG binding domain"
+          - name: "CAGE"
+          - name: "RACE"
+          - name: "MDA"
+          - name: "padlock probes capture method"
+          - name: "other"
+          - name: "unspecified"
+      - name: sequencingLibrarySource
+        definition: The type of biomaterial that was sequenced, also called library source in the INSDC.
+        guidance: 'Provide the name of the DNA or RNA sequencing library source used in your study, please select an option from the pick list.'
+        desired: true
+        example: VIRAL RNA
+        displayName: Sequencing library source
+        header: Sequencing
+        orderOnDetailsPage: 2125
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingLibrarySource
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_SOURCE
+          - name: "GENOMIC"
+          - name: "GENOMIC SINGLE CELL"
+          - name: "TRANSCRIPTOMIC"
+          - name: "TRANSCRIPTOMIC SINGLE CELL"
+          - name: "METAGENOMIC"
+          - name: "METATRANSCRIPTOMIC"
+          - name: "SYNTHETIC"
+          - name: "VIRAL RNA"
+          - name: "OTHER"
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
         definition: The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.
@@ -1776,6 +1876,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        create_embl_file: true
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
@@ -4249,3 +4350,9 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
+  raw-reads-processing:
+    requests:
+      memory: "8Gi" # deacon loads the whole panhuman index into memory (~3.3Gi on disk, ~4.8Gi peak while loading)
+      cpu: "50m"
+    limits:
+      memory: "8Gi"
