@@ -15,6 +15,31 @@ Before starting the upload process, ensure that your data is correctly formatted
 **Terminal Ns will be automatically removed** during sequence preprocessing and will not be included in the submitted sequences.
 </InfoBox>
 
+## Single sequence submission
+
+Most of the documentation on this page is about submitting multiple sequences at the same time (see the 'Bulk submission' section below). However, if you just have one or a few sequences to submit, you may also use the web form:
+
+1. Log into your account, and then click 'Submit sequences' on the landing page.
+2. Select the organism that you'd like to submit sequences for.
+3. Click 'Submit individual sequence entry using a form' at the top of the screen.
+4. Fill out the form with metadata that describes the sequence you're submitting.
+5. Continue down the page to the 'Nucleotide sequences' section. Drag-and-drop a `fasta` file with the sequence into the box, or click the 'Upload' link within the box to open a file-selection box.
+6. Optional: upload the raw reads that were used to derive the consensus sequence. This is done by clicking the 'Upload folder' or the 'Upload files' box in the 'Extra files' section, which will ask you to select a folder or file(s) containing the raw reads files, respectively.
+6. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year.
+7. Select 'Upload and proceed to Approval' at the bottom of the page.
+
+The data will now be processed, and you will have to approve your submission before it is finalized. You can see how to do this [here](approve-submissions).
+
+<InfoBox>
+If you have selected `Restricted` in the terms of use for your sequences, a restriction period of up to one year from the date of submission will be set automatically. You can customize this to an earlier date of your choice by using the `Change Date` button before proceeding with submission.
+
+You can also modify the restriction period after submission. Note you can only shorten the period or make sequences `Open`, you cannot extend the restriction period. You will need to be logged in as a user with the appropriate authorization to make these changes.
+</InfoBox>
+
+## Bulk submission
+
+The rest of this page will describe how to perform Bulk submissions, where you can submit multiple sequences at the same time.
+
 ### Expected data format
 
 - Sequence data in `fasta` format with a unique fasta ID per sequence. The fasta ID is the start of the header up to and excluding the first white space character. For example the fasta header `>seq_12` has fasta ID `seq_12`.
@@ -53,7 +78,7 @@ Uploading sequences via the website is an easy way to submit sequences without h
 1. Log into your account, and then click 'Submit sequences' on the landing page.
 2. Select the organism that you'd like to submit sequences for.
 3. Drag-and-drop a `fasta` file with the sequences and a metadata file with the associated metadata into the box on the website, or click the 'Upload a file' link within the boxes to open a file-selection box.
-4. Optional: upload the raw reads that were used to derive the consensus sequence. This is done by clicking the 'Upload folder: Raw reads' or the 'Upload files' box on the submission page, which will ask you to select a folder or file(s) containing the raw reads files, respectively.
+4. Optional: upload the raw reads that were used to derive the consensus sequence. This is done by clicking the 'Upload folder' or the 'Upload files' box on the submission page, which will ask you to select a folder or file(s) containing the raw reads files, respectively.
 5. Select the Terms of Use that you would like for your data. You can read more about the **Terms of Use** [here](/about/terms-of-use/data-use-terms). If you choose 'Restricted' - set the time limit for the restriction, up to 1 year.
 6. Select 'Upload and proceed to Approval' at the bottom of the page.
 
