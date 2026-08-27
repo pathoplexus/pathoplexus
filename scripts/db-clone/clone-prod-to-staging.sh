@@ -32,10 +32,20 @@ perform_sed_replacements() {
         exit 1
     fi
 
+    # Do not perform replacements on lines that contain the protected URL
+    # see https://github.com/pathoplexus/pathoplexus/issues/1127
+    local protected_url='"https://pathoplexus.org/about/governance/minutes/2026-06-01_EB_Resolutions.pdf"'
+    local placeholder='__PROTECTED_PATHOPLEXUS_URL__'
+    sed -i "s#${protected_url}#${placeholder}#g" "$file"
+
     sed -i 's/prod_loculus_user/staging_loculus_user/g' "$file"
     sed -i 's/prod_keycloak_user/staging_keycloak_user/g' "$file"
     sed -i 's#//pathoplexus.org#//staging.pathoplexus.org#g' "$file"
     sed -i 's#authentication.pathoplexus.org#authentication-staging.pathoplexus.org#g' "$file"
+
+    # Restore the protected string
+    sed -i "s#${placeholder}#${protected_url}#g" "$file"
+
     check_command "Failed to perform sed replacements on $file"
 }
 
