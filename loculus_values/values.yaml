@@ -79,7 +79,6 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
-    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
     28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
@@ -1779,7 +1778,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Ebola Zaire"
-      image: "/images/organisms/ebolazaire_small.jpg"
+      image: "/images/organisms/ebolazaire.jpg"
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
@@ -1876,7 +1875,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Ebola Sudan"
-      image: "/images/organisms/ebolasudan_small.jpg"
+      image: "/images/organisms/ebolasudan.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
@@ -2160,6 +2159,20 @@ organisms:
           autocomplete: true
           preprocessing:
             inputs: { input: ASSIGNED_REFERENCE }
+        - &gisaidIsolateIdMetadataField
+          name: gisaidIsolateId
+          displayName: GISAID Isolate ID
+          header: "Sample details"
+          orderOnDetailsPage: 640
+          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
+          example: "EPI_ISL_123456"
+          preprocessing:
+            function: check_regex
+            inputs:
+              regex_field: gisaidIsolateId
+            args:
+              pattern: "^EPI_ISL_[0-9]+$"
       website:
         <<: *website
         tableColumns:
@@ -2348,7 +2361,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "West Nile Virus"
-      image: "/images/organisms/wnv_small.jpg"
+      image: "/images/organisms/wnv.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
@@ -2500,28 +2513,29 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
-          taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
           segment_classification_method: minimizer
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
-          nextclade_dataset_tag: "2026-05-29--13-46-38Z"
           segments:
             - name: L
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/l
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: [RdRp]
             - name: M
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: [GPC, Gn, Gc]
             - name: S
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/s
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: ["N", NSs]
     ingest:
       <<: *ingest
@@ -2580,7 +2594,7 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Crimean-Congo Hemorrhagic Fever Virus"
       nucleotideSequences: [L, M, S]
-      image: "/images/organisms/cchf_small.jpg"
+      image: "/images/organisms/cchf.jpg"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
@@ -2656,16 +2670,19 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/L
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [RdRp]
             - name: M
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/M
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [GPC]
             - name: S
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/S
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [NP]
           segment_classification_method: "align"
     ingest:
@@ -2792,20 +2809,7 @@ organisms:
           orderOnDetailsPage: 760
           hideOnSequenceDetailsPage: true
           lineageSystem: mpoxOutbreakLineage
-        - &gisaidIsolateIdMetadataField
-          name: gisaidIsolateId
-          displayName: GISAID Isolate ID
-          header: "Sample details"
-          orderOnDetailsPage: 640
-          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
-          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
-          example: "EPI_ISL_123456"
-          preprocessing:
-            function: check_regex
-            inputs:
-              regex_field: gisaidIsolateId
-            args:
-              pattern: "^EPI_ISL_[0-9]+$"
+        - <<: *gisaidIsolateIdMetadataField
       website:
         <<: *website
         tableColumns:
@@ -2826,7 +2830,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -3013,20 +3017,20 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 28
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: nextstrain/mpox/all-clades
-                nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: *mpoxGenes
+      # - <<: *mpoxPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 28
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     batch_size: 10
+      #     segments:
+      #       - name: main
+      #         references:
+      #         - name: singleReference
+      #           nextclade_dataset_name: nextstrain/mpox/all-clades
+      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
+      #           genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
@@ -3975,7 +3979,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://maverbiest.github.io/nextclade_data/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
@@ -4013,6 +4017,7 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           order: 5
+          columnWidth: 76
           orderOnDetailsPage: 740
         - name: specimenCollectorSampleId
           displayName: Isolate name
@@ -4070,8 +4075,8 @@ organisms:
               references:
               - name: singleReference 
                 nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                nextclade_dataset_tag: "2026-08-12--14-03-43Z"
                 genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://maverbiest.github.io/nextclade_data/data_output
     ingest:
       <<: *ingest
       configFile:
@@ -4115,6 +4120,117 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
+  zika:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Zika Virus"
+      image: "/images/organisms/zika_virus.jpg"
+      linkOuts:
+        - name: Nextclade
+          maxNumberOfRecommendedEntries: 3000 # Zika is 11kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/zikav"
+        - name: Sealion
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *hostConfig
+          desired: false
+          required: true
+      metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
+          initiallyVisible: true
+        - name: clade
+          displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/itps/zikav/2026-04-14--11-55-23Z/tree.json for a view of the Nextclade dataset."
+          isSequenceFilter: true
+          header: "Clade"
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          noInput: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
+          orderOnDetailsPage: 740
+        - <<: *gisaidIsolateIdMetadataField
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - clade
+          - hostNameScientific
+    preprocessing:
+    - <<: *preprocessing
+      version:
+        - 1
+      configFile:
+        <<: *preprocessingConfigFile
+        segments:
+          - name: main
+            references:
+            - name: "singleReference"
+              nextclade_dataset_name: community/itps/zikav
+              nextclade_dataset_tag: 2026-04-14--11-55-23Z
+              genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3048459 #Orthoflavivirus zikaense
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 64320
+          scientific_name: "Zika virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/reference.fasta]]"
+          insdcAccessionFull: NC_035889.1
+          genes:
+            - name: ancC
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/ancC.fasta]]"
+            - name: C
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/C.fasta]]"
+            - name: prM
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/prM.fasta]]"
+            - name: pr
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/pr.fasta]]"
+            - name: E
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/E.fasta]]"
+            - name: M
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/M.fasta]]"
+            - name: NS1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS1.fasta]]"
+            - name: NS2A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2A.fasta]]"
+            - name: NS2B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2B.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS3.fasta]]"
+            - name: NS4A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4A.fasta]]"
+            - name: 2K
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"
+            - name: NS4B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
+            - name: NS5
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS5.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
