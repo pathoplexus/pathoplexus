@@ -1107,8 +1107,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Paired end insert size
         type: int
         header: Sequencing
-        requiredWhen:
-          - files.rawReads
         orderOnDetailsPage: 2065
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
@@ -1229,8 +1227,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Sequencing protocol
         header: Sequencing
         desired: true
-        requiredWhen:
-          - files.rawReads
         orderOnDetailsPage: 2100
       - name: sequencingLibrarySelection
         definition: The method used to select or enrich the source material.
@@ -1239,8 +1235,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: PCR
         displayName: Sequencing library selection
         header: Sequencing
-        requiredWhen:
-          - files.rawReads
         orderOnDetailsPage: 2120
         preprocessing:
           function: process_options
@@ -1289,8 +1283,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: VIRAL RNA
         displayName: Sequencing library source
         header: Sequencing
-        requiredWhen:
-          - files.rawReads
         orderOnDetailsPage: 2125
         preprocessing:
           function: process_options
@@ -1318,8 +1310,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: WGS
         displayName: Sequencing assay type
         header: Sequencing
-        requiredWhen:
-          - files.rawReads
         orderOnDetailsPage: 2130
         generateIndex: true
         autocomplete: true
