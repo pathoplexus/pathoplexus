@@ -24,8 +24,7 @@ The expected data format is as follows:
 Metadata and sequences will be matched using the `id` column in the metadata (i.e. the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g. `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
 ![Metadata template.](../../../images/MetadataTemplate.png)
 
-The files can also be compressed: accepted formats are .zst, .gz, .zip and .xz.
-
+Files can also be compressed: accepted formats are .zst, .gz, .zip and .xz. Note that .xz metadata files can only be submitted through the API, not the website.
 
 _You can try out uploading sequences to our [Demo Instance](https://demo.pathoplexus.org/) - it works just like the 'real' Pathoplexus, but is wiped regularly and **no data is sent onward to INSDC**. We also have some [example data](https://pathoplexus.github.io/example_data/) you can upload to the Demo Instance._
 
