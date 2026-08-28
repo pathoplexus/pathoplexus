@@ -16,3 +16,6 @@ monorepo/**/GEMINI.md
 !monorepo/website/src/pages/docs/GEMINI.md
 
 /tmp/
+
+# Local DB connection settings for scripts/db-clone (created on the bastion)
+scripts/db-clone/env.sh
