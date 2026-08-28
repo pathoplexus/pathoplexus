@@ -4131,6 +4131,9 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zika_virus_Natal_RGN/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zika_virus_Natal_RGN/outgroup_rerooted_NC_035889.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zika_virus_Natal_RGN/outgroup_rerooted_NC_035889.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Zika_virus_Natal_RGN/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Zika virus}}"
       extraInputFields:
         - <<: *hostConfig
           desired: false
