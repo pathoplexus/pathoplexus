@@ -10,6 +10,21 @@ The script roughly follows these steps:
 
 The script needs to be run on a server with access to the database (e.g. a bastion host on AWS).
 
+## Connection settings (`PGHOST`)
+
+The database host is **not** stored in the repo. Before running the scripts you
+must provide `PGHOST` on the bastion/server, in one of two ways:
+
+- Create `scripts/db-clone/env.sh` by copying the template and filling in the
+  real host. This file is gitignored and stays on the server only:
+
+  ```sh
+  cp env.sh.example env.sh
+  # then edit env.sh and set PGHOST to the RDS cluster endpoint
+  ```
+
+## Passwords
+
 Passwords for the following users need to be set in the environment variables:
 
 - `prod_loculus_user`

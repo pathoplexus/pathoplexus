@@ -91,7 +91,7 @@ lineageSystemDefinitions:
   marburg:
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-    32: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -642,14 +642,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: Geo-coordinate longitude in decimal degree (WGS84) format.
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
         example: -58.381592
-      - name: specimenCollectorSampleId
+      - &specimenCollectorSampleIdConfig
+        name: specimenCollectorSampleId
         displayName: Isolate name
         header: Sample details
         orderOnDetailsPage: 600
         ingest: ncbiIsolateName
         includeInDownloadsByDefault: true
         enableSubstringSearch: true
-        definition: "A de-identified ID for the sample the sequence was obtained from."
+        definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
         example: "Isolate 1"
         desired: true
       - name: authors
@@ -1727,6 +1728,14 @@ defaultOrganismConfig: &defaultOrganismConfig
             - biosampleAccession
             - insdcRawReadsAccession
     extraInputFields:
+      - &idConfig
+        name: id
+        displayName: Sample ID
+        definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        example: "SAMPLE-001"
+        required: true
+        noEdit: true
+        position: first
       - &hostConfig
         name: host
         type: string
@@ -1772,6 +1781,7 @@ defaultOrganismConfig: &defaultOrganismConfig
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
       muted_hashes_url: "https://pathoplexus.github.io/curation_data/muted_hashes/muted_hashes.tsv"
+      batch_chunk_size: 1000
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
@@ -2087,15 +2097,8 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      # adding custom description of submissionId to show on website
       extraInputFields:
-        - name: id
-          displayName: Sample ID
-          definition: "Unique identifier for your sample. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
-          example: "SAMPLE-001"
-          required: true
-          noEdit: true
-          position: first
+        - <<: *idConfig
         - <<: *hostConfig
           desired: false
           required: true
@@ -2119,16 +2122,6 @@ organisms:
           order: 5
           columnWidth: 80
           orderOnDetailsPage: 740
-        - name: specimenCollectorSampleId
-          displayName: Isolate name
-          header: Sample details
-          orderOnDetailsPage: 600
-          ingest: ncbiIsolateName
-          includeInDownloadsByDefault: true
-          enableSubstringSearch: true
-          definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
-          example: "Isolate 1"
-          desired: true
         # custom displayName construction for Dengue
         - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
@@ -2190,7 +2183,7 @@ organisms:
       - &denguePreprocessing
         <<: *preprocessing
         version:
-          - 32
+          - 33
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2219,10 +2212,11 @@ organisms:
       # - <<: *denguePreprocessing
       #   replicas: 3
       #   version:
-      #     - 32
+      #     - 33
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052464
     enaDeposition:
       DENV-1:
@@ -2285,7 +2279,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/E.fasta]]"
               - name: NS1
@@ -2311,7 +2305,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/E.fasta]]"
               - name: NS1
@@ -2337,7 +2331,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/E.fasta]]"
               - name: NS1
@@ -2491,6 +2485,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for ANDV to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier (if no `fastaIds` column is provided, this sample ID will be used to associate the metadata with the sequence). This ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        - <<: *hostConfig
       website:
         <<: *website
         tableColumns:
@@ -2624,6 +2623,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for CCHF to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier (if no `fastaIds` column is provided, this sample ID will be used to associate the metadata with the sequence). This ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        - <<: *hostConfig
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
@@ -3778,6 +3782,11 @@ organisms:
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 1000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Measles morbillivirus}}"
+      extraInputFields:
+        # Overriding id definition for measles since it doesn't try to use the id in the displayName 
+        - <<: *idConfig
+          definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence."
+        - <<: *hostConfig
       metadataAdd:
         - name: genotype
           displayName: Genotype
@@ -3810,6 +3819,9 @@ organisms:
             args:
               order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
               type: [string, ACCESSION_VERSION, dateRangeString]
+        # Overriding specimenCollectorSampleId definition for measles since it doesn't try to use the specimenCollectorSampleId in the displayName 
+        - <<: *specimenCollectorSampleIdConfig
+          definition: "A de-identified ID for the sample the sequence was obtained from."
       website: 
         <<: *website
         tableColumns:
@@ -3939,10 +3951,10 @@ organisms:
                 nextclade_dataset_tag: "2025-09-09--12-13-13Z"
                 genes: [GP, L, NP, VP24, VP30, VP35, VP40]
     ingest:
-      image: ghcr.io/loculus-project/ingest
+      <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052505
-        subsample_fraction: 1
     enaDeposition:
       singleReference:
         configFile:
@@ -3989,15 +4001,8 @@ organisms:
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Yellow fever virus}}"
-      # adding custom description of submissionId to show on website
       extraInputFields:
-        - name: id
-          displayName: Sample ID
-          definition: "Unique identifier for your sample. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
-          example: "SAMPLE-001"
-          required: true
-          noEdit: true
-          position: first
+        - <<: *idConfig
         - <<: *hostConfig
           desired: false
           required: true
@@ -4019,16 +4024,6 @@ organisms:
           order: 5
           columnWidth: 76
           orderOnDetailsPage: 740
-        - name: specimenCollectorSampleId
-          displayName: Isolate name
-          header: Sample details
-          orderOnDetailsPage: 600
-          ingest: ncbiIsolateName
-          includeInDownloadsByDefault: true
-          enableSubstringSearch: true
-          definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
-          example: "Isolate 1"
-          desired: true
         # custom displayName construction for YFV
         - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
@@ -4120,6 +4115,117 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
+  zika:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Zika Virus"
+      image: "/images/organisms/zika_virus.jpg"
+      linkOuts:
+        - name: Nextclade
+          maxNumberOfRecommendedEntries: 3000 # Zika is 11kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/zikav"
+        - name: Sealion
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *hostConfig
+          desired: false
+          required: true
+      metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
+          initiallyVisible: true
+        - name: clade
+          displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/itps/zikav/2026-04-14--11-55-23Z/tree.json for a view of the Nextclade dataset."
+          isSequenceFilter: true
+          header: "Clade"
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          noInput: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
+          orderOnDetailsPage: 740
+        - <<: *gisaidIsolateIdMetadataField
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - clade
+          - hostNameScientific
+    preprocessing:
+    - <<: *preprocessing
+      version:
+        - 1
+      configFile:
+        <<: *preprocessingConfigFile
+        segments:
+          - name: main
+            references:
+            - name: "singleReference"
+              nextclade_dataset_name: community/itps/zikav
+              nextclade_dataset_tag: 2026-04-14--11-55-23Z
+              genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3048459 #Orthoflavivirus zikaense
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 64320
+          scientific_name: "Zika virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/reference.fasta]]"
+          insdcAccessionFull: NC_035889.1
+          genes:
+            - name: ancC
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/ancC.fasta]]"
+            - name: C
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/C.fasta]]"
+            - name: prM
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/prM.fasta]]"
+            - name: pr
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/pr.fasta]]"
+            - name: E
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/E.fasta]]"
+            - name: M
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/M.fasta]]"
+            - name: NS1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS1.fasta]]"
+            - name: NS2A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2A.fasta]]"
+            - name: NS2B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2B.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS3.fasta]]"
+            - name: NS4A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4A.fasta]]"
+            - name: 2K
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"
+            - name: NS4B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
+            - name: NS5
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS5.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:

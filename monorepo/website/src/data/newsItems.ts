@@ -7,11 +7,25 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-08-27-pathoplexus-turns-two',
+        title: 'Pathoplexus Turns Two',
+        date: '27 August 2026',
+        excerpt:
+            'Two years ago today, Pathoplexus was launched - with an idea about what pathogen genomic data sharing could look like if we put open access, speed, ease of use, and credit for the people generating the data at its center…',
+    },
+    {
+        slug: '2026-08-26-expanding-pathoplexus-zika',
+        title: 'Expanding Pathoplexus: Zika virus added',
+        date: '26 August 2026',
+        excerpt:
+            'Today, Pathoplexus launches an additional viral pathogen: Zika virus. Zika virus (ZIKV) gets its name from Zika Forest in Uganda, where it was first identified in a Rhesus macaque monkey in 1947. It is an enveloped, positive-sense, single-stranded RNA virus that belongs to the...',
+    },
+    {
         slug: '2026-07-22-july-update',
         title: 'Pathoplexus July Update',
         date: '22 July 2026',
         excerpt:
-            'In our previous update we highlighted many new submissions and the addition of two new organisms to Pathoplexus. In this post, we’ll focus on technical improvements and new features that have been introduced over the past months...',
+            'In our previous update we highlighted many new submissions and the addition of two new organisms to Pathoplexus. In this post, we’ll focus on technical improvements and new features that have been introduced over the past months…',
     },
     {
         slug: '2026-06-30-june-update',
@@ -46,7 +60,7 @@ export const newsItems: NewsItem[] = [
         title: 'Expanding Pathoplexus: Dengue and Yellow Fever Virus added',
         date: '12 March 2026',
         excerpt:
-           "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
+            "Today Pathoplexus is launching support for yellow fever virus and dengue virus sequence sharing. Yellow fever virus and dengue virus (formally Orthoflavivirus flavi and Orthoflavivirus denguei, respectively) are both arboviruses transmitted by..."
 
     },
     {
