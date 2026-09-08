@@ -51,9 +51,9 @@ jobs:
             ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
             > $RUNNER_TEMP/commits.tsv
 
-          cut -f2- $RUNNER_TEMP/commits.tsv > $RUNNER_TEMP/all.txt
-          awk -F'\t' '$1 == "dependabot[bot]"' $RUNNER_TEMP/commits.tsv | cut -f2- > $RUNNER_TEMP/bot.txt
-          awk -F'\t' '$1 != "dependabot[bot]"' $RUNNER_TEMP/commits.tsv | cut -f2- > $RUNNER_TEMP/human.txt
+          cut -f2- "$RUNNER_TEMP/commits.tsv" > "$RUNNER_TEMP/all.txt"
+          awk -F'\t' -v bot="$BOT_AUTHOR" '$1 == bot' "$RUNNER_TEMP/commits.tsv" | cut -f2- > "$RUNNER_TEMP/bot.txt"
+          awk -F'\t' -v bot="$BOT_AUTHOR" '$1 != bot' "$RUNNER_TEMP/commits.tsv" | cut -f2- > "$RUNNER_TEMP/human.txt"
 
           # Mutually exclusive buckets, precedence: breaking > dependabot > other.
           grep -iE "$BREAKING_PATTERN" $RUNNER_TEMP/all.txt > $RUNNER_TEMP/breaking.txt || true
