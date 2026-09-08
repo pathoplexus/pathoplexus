@@ -44,9 +44,9 @@ jobs:
 
           # A "!" anywhere in the subject, or the word "breaking", marks a breaking change.
           BREAKING_PATTERN='^- (.*!.*|.*breaking.*)'
+          BOT_AUTHOR='dependabot[bot]'
 
-          # "<author>\t- <subject>" for every commit in the range. Scratch files go to
-          # $RUNNER_TEMP: anything left in the workspace would end up in the PR.
+          # "<author>\t- <subject>" for every commit in the range. Scratch files go to $RUNNER_TEMP
           git log --format="%an%x09- %s" \
             ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
             > $RUNNER_TEMP/commits.tsv
@@ -79,7 +79,7 @@ jobs:
             echo "SECTIONS<<EOF"
             render_section "🚨 Breaking changes" $RUNNER_TEMP/breaking.txt
             render_section "Changes" $RUNNER_TEMP/other.txt
-            render_section "Dependabots" $RUNNER_TEMP/dependabot.txt
+            render_section "Dependabot dependency updates" $RUNNER_TEMP/dependabot.txt
             echo "EOF"
 
             echo "CHANGELOG<<EOF"
