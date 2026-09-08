@@ -41,25 +41,54 @@ jobs:
         id: changelog
         run: |
           cd loculus_repo
-          CHANGELOG=$( \
-            git log --pretty=format:"- %s" \
-            ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} 
-           
-          )
-          BREAKING_CHANGES=$( \
-            echo "$CHANGELOG" \
-            | grep -iE '^- (.*!.*|.*breaking.*)' \
-            || true
-          )
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" |  sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/' >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          if [ ! -z "$BREAKING_CHANGES" ]; then
+
+          # A "!" anywhere in the subject, or the word "breaking", marks a breaking change.
+          BREAKING_PATTERN='^- (.*!.*|.*breaking.*)'
+
+          # "<author>\t- <subject>" for every commit in the range. Scratch files go to
+          # $RUNNER_TEMP: anything left in the workspace would end up in the PR.
+          git log --format="%an%x09- %s" \
+            ${{ steps.get_current_version.outputs.CURRENT_VERSION }}..${{ steps.get_loculus_commit.outputs.LATEST_SHA }} \
+            > $RUNNER_TEMP/commits.tsv
+
+          cut -f2- $RUNNER_TEMP/commits.tsv > $RUNNER_TEMP/all.txt
+          awk -F'\t' '$1 == "dependabot[bot]"' $RUNNER_TEMP/commits.tsv | cut -f2- > $RUNNER_TEMP/bot.txt
+          awk -F'\t' '$1 != "dependabot[bot]"' $RUNNER_TEMP/commits.tsv | cut -f2- > $RUNNER_TEMP/human.txt
+
+          # Mutually exclusive buckets, precedence: breaking > dependabot > other.
+          grep -iE "$BREAKING_PATTERN" $RUNNER_TEMP/all.txt > $RUNNER_TEMP/breaking.txt || true
+          grep -ivE "$BREAKING_PATTERN" $RUNNER_TEMP/bot.txt > $RUNNER_TEMP/dependabot.txt || true
+          grep -ivE "$BREAKING_PATTERN" $RUNNER_TEMP/human.txt > $RUNNER_TEMP/other.txt || true
+
+          # One Loculus PR reference per line. The subject is replaced by the reference so
+          # that the trailing "(#123)" does not auto-link to the pathoplexus PR of the
+          # same number.
+          pr_refs() {
+            sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/' "$1"
+          }
+
+          # A section renders its heading only when it has entries.
+          render_section() {
+            [ -s "$2" ] || return 0
+            echo "### $1"
+            pr_refs "$2"
+            echo
+          }
+
+          {
+            echo "SECTIONS<<EOF"
+            render_section "🚨 Breaking changes" $RUNNER_TEMP/breaking.txt
+            render_section "Changes" $RUNNER_TEMP/other.txt
+            render_section "Dependabots" $RUNNER_TEMP/dependabot.txt
+            echo "EOF"
+
+            echo "CHANGELOG<<EOF"
+            pr_refs $RUNNER_TEMP/all.txt
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          if [ -s $RUNNER_TEMP/breaking.txt ]; then
             echo "HAS_BREAKING_CHANGES=true" >> $GITHUB_OUTPUT
-            echo "BREAKING_CHANGES<<EOF" >> $GITHUB_OUTPUT
-            echo "### 🚨 Breaking Changes" >> $GITHUB_OUTPUT
-            echo "$BREAKING_CHANGES" | sed 's/.*#\([0-9]\+\)[^#]*$/- loculus-project\/loculus#\1/' >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "HAS_BREAKING_CHANGES=false" >> $GITHUB_OUTPUT
           fi
@@ -72,13 +101,18 @@ jobs:
           commit-message: "Update Loculus version to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}"
           title: "Update Loculus version to ${{ steps.get_loculus_commit.outputs.LATEST_SHA_SHORT }}${{ steps.get_loculus_commit.outputs.IS_CUSTOM_TARGET == 'true' && format(' (non-main: {0})', steps.get_loculus_commit.outputs.TARGET_BRANCH) || '' }}"
           # Warning: The PR self approval workflow depends on the exact format
-          # of the author name (github.actor) here
+          # of the author name (github.actor) here, and on it being the first
+          # "@" token in the body
           body: |
             @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
-            ${{ steps.changelog.outputs.BREAKING_CHANGES }}
 
-            ### Changelog
+            ${{ steps.changelog.outputs.SECTIONS }}
+            <details>
+            <summary>Full changelog</summary>
+
             ${{ steps.changelog.outputs.CHANGELOG }}
+
+            </details>
 
             ### Comparison
             https://github.com/loculus-project/loculus/compare/${{ steps.get_current_version.outputs.CURRENT_VERSION }}...${{ steps.get_loculus_commit.outputs.LATEST_SHA }}
