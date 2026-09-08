@@ -71,30 +71,27 @@ siloImport:
   siloTimeoutSeconds: 3600
   hardRefreshIntervalSeconds: 100_000 # ~27 hours
   pollIntervalSeconds: 120
+taxonomyService:
+  dbVersion: "ncbi_taxonomy_2026-06-01"
+  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
+  taxonomy_service_url: &taxonomy_service_url http://loculus-taxonomy-service:5000
 pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
-    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
-    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
-    21: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    22: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
-    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
-    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
-    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-    30: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
-    31: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -645,14 +642,15 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: Geo-coordinate longitude in decimal degree (WGS84) format.
         guidance: Provide values in range -180 to 180, where positive values are east of the Prime Meridian.
         example: -58.381592
-      - name: specimenCollectorSampleId
+      - &specimenCollectorSampleIdConfig
+        name: specimenCollectorSampleId
         displayName: Isolate name
         header: Sample details
         orderOnDetailsPage: 600
         ingest: ncbiIsolateName
         includeInDownloadsByDefault: true
         enableSubstringSearch: true
-        definition: "A de-identified ID for the sample the sequence was obtained from."
+        definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
         example: "Isolate 1"
         desired: true
       - name: authors
@@ -1090,12 +1088,112 @@ defaultOrganismConfig: &defaultOrganismConfig
       - name: sequencingInstrument
         ontology_id: GENEPIO:0001452
         definition: The model of the sequencing instrument used.
-        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your model, if not add your model in free text."
-        example: Oxford Nanopore MinION [GENEPIO:0100142]
+        guidance: Select the sequencing instrument from the pick list.
+        example: MinION
         displayName: Sequencing instrument
         header: Sequencing
-        orderOnDetailsPage: 2080
         desired: true
+        orderOnDetailsPage: 2080
+        generateIndex: true
+        autocomplete: true
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingInstrument
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in INSTRUMENT (excluding `unspecified`)
+          - name: "454 GS"
+          - name: "454 GS 20"
+          - name: "454 GS FLX"
+          - name: "454 GS FLX Titanium"
+          - name: "454 GS FLX+"
+          - name: "454 GS Junior"
+          - name: "AB 310 Genetic Analyzer"
+          - name: "AB 3130 Genetic Analyzer"
+          - name: "AB 3130xL Genetic Analyzer"
+          - name: "AB 3500 Genetic Analyzer"
+          - name: "AB 3500xL Genetic Analyzer"
+          - name: "AB 3730 Genetic Analyzer"
+          - name: "AB 3730xL Genetic Analyzer"
+          - name: "AB 5500 Genetic Analyzer"
+          - name: "AB 5500xl Genetic Analyzer"
+          - name: "AB 5500xl-W Genetic Analysis System"
+          - name: "BGISEQ-50"
+          - name: "BGISEQ-500"
+          - name: "DNBSEQ-G400"
+          - name: "DNBSEQ-G400 FAST"
+          - name: "DNBSEQ-G50"
+          - name: "DNBSEQ-T7"
+          - name: "Element AVITI"
+          - name: "FASTASeq 300"
+          - name: "GENIUS"
+          - name: "GS111"
+          - name: "Genapsys Sequencer"
+          - name: "GenoCare 1600"
+          - name: "GenoLab M"
+          - name: "GridION"
+          - name: "Helicos HeliScope"
+          - name: "HiSeq X Five"
+          - name: "HiSeq X Ten"
+          - name: "Illumina Genome Analyzer"
+          - name: "Illumina Genome Analyzer II"
+          - name: "Illumina Genome Analyzer IIx"
+          - name: "Illumina HiScanSQ"
+          - name: "Illumina HiSeq 1000"
+          - name: "Illumina HiSeq 1500"
+          - name: "Illumina HiSeq 2000"
+          - name: "Illumina HiSeq 2500"
+          - name: "Illumina HiSeq 3000"
+          - name: "Illumina HiSeq 4000"
+          - name: "Illumina HiSeq X"
+          - name: "Illumina MiSeq"
+          - name: "Illumina MiniSeq"
+          - name: "Illumina NovaSeq 6000"
+          - name: "Illumina NovaSeq X"
+          - name: "Illumina iSeq 100"
+          - name: "Ion GeneStudio S5"
+          - name: "Ion GeneStudio S5 Plus"
+          - name: "Ion GeneStudio S5 Prime"
+          - name: "Ion Torrent Genexus"
+          - name: "Ion Torrent PGM"
+          - name: "Ion Torrent Proton"
+          - name: "Ion Torrent S5"
+          - name: "Ion Torrent S5 XL"
+          - name: "MGISEQ-2000RS"
+          - name: "MinION"
+          - name: "NextSeq 1000"
+          - name: "NextSeq 2000"
+          - name: "NextSeq 500"
+          - name: "NextSeq 550"
+          - name: "Onso"
+          - name: "PacBio RS"
+          - name: "PacBio RS II"
+          - name: "PromethION"
+          - name: "Revio"
+          - name: "Sentosa SQ301"
+          - name: "Sequel"
+          - name: "Sequel II"
+          - name: "Sequel IIe"
+          - name: "UG 100"
+          # Fields listed in PLATFORM
+          - name: "ILLUMINA"
+          - name: "PACBIO_SMRT"
+          - name: "OXFORD_NANOPORE"
+          - name: "BGISEQ"
+          - name: "LS454"
+          - name: "ION_TORRENT"
+          - name: "CAPILLARY"
+          - name: "DNBSEQ"
+          - name: "ELEMENT"
+          - name: "ULTIMA"
+          - name: "VELA_DIAGNOSTICS"
+          - name: "GENAPSYS"
+          - name: "GENEMIND"
+          - name: "TAPESTRI"
+          - name: "AVITI"
       - name: sequencingProtocol
         ontology_id: GENEPIO:0001454
         definition: The protocol used to generate the sequence.
@@ -1107,12 +1205,65 @@ defaultOrganismConfig: &defaultOrganismConfig
         desired: true
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
-        definition: The overarching DNA or RNA sequencing methodology that was used to determine the sequence of a biomaterial.
-        guidance: "First check if there exists a standardized term: https://www.ebi.ac.uk/ols4/ontologies/obi for your assay, if not add your methodology in free text."
-        example: whole genome sequencing assay [OBI:0002117]
+        definition: The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.
+        guidance: Select the sequencing technology from the pick list.
+        desired: true
+        example: WGS
         displayName: Sequencing assay type
         header: Sequencing
-        orderOnDetailsPage: 2120
+        orderOnDetailsPage: 2130
+        generateIndex: true
+        autocomplete: true
+        preprocessing:
+          function: process_options
+          inputs:
+            input: sequencingAssayType
+        options:
+          # ena-webin-cli -context reads -fields
+          # ena-webin-cli=9.0.3
+          # Last checked: 09.06.2026
+          # Fields listed in LIBRARY_STRATEGY
+          - name: "WGS"
+          - name: "WGA"
+          - name: "WXS"
+          - name: "RNA-Seq"
+          - name: "ssRNA-seq"
+          - name: "snRNA-seq"
+          - name: "miRNA-Seq"
+          - name: "ncRNA-Seq"
+          - name: "FL-cDNA"
+          - name: "EST"
+          - name: "Hi-C"
+          - name: "ATAC-seq"
+          - name: "WCS"
+          - name: "RAD-Seq"
+          - name: "CLONE"
+          - name: "POOLCLONE"
+          - name: "AMPLICON"
+          - name: "CLONEEND"
+          - name: "FINISHING"
+          - name: "ChIP-Seq"
+          - name: "MNase-Seq"
+          - name: "DNase-Hypersensitivity"
+          - name: "Bisulfite-Seq"
+          - name: "CTS"
+          - name: "MRE-Seq"
+          - name: "MeDIP-Seq"
+          - name: "MBD-Seq"
+          - name: "Tn-Seq"
+          - name: "VALIDATION"
+          - name: "FAIRE-seq"
+          - name: "SELEX"
+          - name: "RIP-Seq"
+          - name: "ChIA-PET"
+          - name: "Synthetic-Long-Read"
+          - name: "Targeted-Capture"
+          - name: "Tethered Chromatin Conformation Capture"
+          - name: "NOMe-seq"
+          - name: "ChM-Seq"
+          - name: "GBS"
+          - name: "Ribo-seq"
+          - name: "OTHER"
       - name: sequencedByOrganization
         ontology_id: GENEPIO:0100416
         definition: The name of the agency, organization or institution responsible for sequencing the isolate's genome.
@@ -1303,8 +1454,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: scientific_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-          args:
-            taxonomy_service_url: &taxonomy_service_url "http://loculus-taxonomy-service:5000"
       - name: hostNameCommon
         displayName: Host name - common
         generateIndex: true
@@ -1323,8 +1472,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: common_name_from_id
           inputs:
             hostTaxonId: processed.hostTaxonId
-          args:
-            taxonomy_service_url: *taxonomy_service_url
       - &hostTaxonIdConfig
         name: hostTaxonId
         displayName: "Host species"
@@ -1347,8 +1494,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           function: resolve_host_taxon_id
           inputs:
             host: host
-          args:
-            taxonomy_service_url: *taxonomy_service_url
       - name: isLabHost
         displayName: Is lab host
         autocomplete: true
@@ -1583,6 +1728,14 @@ defaultOrganismConfig: &defaultOrganismConfig
             - biosampleAccession
             - insdcRawReadsAccession
     extraInputFields:
+      - &idConfig
+        name: id
+        displayName: Sample ID
+        definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        example: "SAMPLE-001"
+        required: true
+        noEdit: true
+        position: first
       - &hostConfig
         name: host
         type: string
@@ -1628,13 +1781,14 @@ defaultOrganismConfig: &defaultOrganismConfig
     configFile: &defaultIngestConfigFile
       time_between_approve_requests_seconds: 600
       muted_hashes_url: "https://pathoplexus.github.io/curation_data/muted_hashes/muted_hashes.tsv"
+      batch_chunk_size: 1000
 organisms:
   ebola-zaire:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
       organismName: "Ebola Zaire"
-      image: "/images/organisms/ebolazaire_small.jpg"
+      image: "/images/organisms/ebolazaire.jpg"
       metadataAdd:
         - name: outbreak
           displayName: Outbreak
@@ -1685,8 +1839,7 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 29
-          - 30
+          - 31
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1732,7 +1885,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "Ebola Sudan"
-      image: "/images/organisms/ebolasudan_small.jpg"
+      image: "/images/organisms/ebolasudan.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 3000 # ebola is ~18.5kb
@@ -1749,8 +1902,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
-          - 27
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -1856,8 +2008,7 @@ organisms:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
         version:
-          - 5
-          - 6
+          - 7
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           segments:
@@ -1946,15 +2097,8 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      # adding custom description of submissionId to show on website
       extraInputFields:
-        - name: id
-          displayName: Sample ID
-          definition: "Unique identifier for your sample. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
-          example: "SAMPLE-001"
-          required: true
-          noEdit: true
-          position: first
+        - <<: *idConfig
         - <<: *hostConfig
           desired: false
           required: true
@@ -1978,16 +2122,6 @@ organisms:
           order: 5
           columnWidth: 80
           orderOnDetailsPage: 740
-        - name: specimenCollectorSampleId
-          displayName: Isolate name
-          header: Sample details
-          orderOnDetailsPage: 600
-          ingest: ncbiIsolateName
-          includeInDownloadsByDefault: true
-          enableSubstringSearch: true
-          definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
-          example: "Isolate 1"
-          desired: true
         # custom displayName construction for Dengue
         - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `{serotype}/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
@@ -2018,6 +2152,20 @@ organisms:
           autocomplete: true
           preprocessing:
             inputs: { input: ASSIGNED_REFERENCE }
+        - &gisaidIsolateIdMetadataField
+          name: gisaidIsolateId
+          displayName: GISAID Isolate ID
+          header: "Sample details"
+          orderOnDetailsPage: 640
+          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
+          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
+          example: "EPI_ISL_123456"
+          preprocessing:
+            function: check_regex
+            inputs:
+              regex_field: gisaidIsolateId
+            args:
+              pattern: "^EPI_ISL_[0-9]+$"
       website:
         <<: *website
         tableColumns:
@@ -2035,8 +2183,7 @@ organisms:
       - &denguePreprocessing
         <<: *preprocessing
         version:
-          - 30
-          - 31
+          - 33
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2062,9 +2209,14 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      # - <<: *denguePreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 33
     ingest:
       <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052464
     enaDeposition:
       DENV-1:
@@ -2127,7 +2279,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv2/E.fasta]]"
               - name: NS1
@@ -2153,7 +2305,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv3/E.fasta]]"
               - name: NS1
@@ -2179,7 +2331,7 @@ organisms:
               - name: C
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/C.fasta]]"
               - name: prM
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv1/prM.fasta]]"
+                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/prM.fasta]]"
               - name: E
                 sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/denv4/E.fasta]]"
               - name: NS1
@@ -2203,7 +2355,7 @@ organisms:
     schema:
       <<: *schema
       organismName: "West Nile Virus"
-      image: "/images/organisms/wnv_small.jpg"
+      image: "/images/organisms/wnv.jpg"
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # west nile is ~11kb
@@ -2248,10 +2400,10 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &yellowFeverPreprocessing
+        <<: *preprocessing
         version:
-          - 27
-          - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -2261,6 +2413,10 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
+      # - <<: *yellowFeverPreprocessing
+      #   replicas: 2
+      #   version:
+      #     - 29
     ingest:
       <<: *ingest
       configFile:
@@ -2329,6 +2485,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for ANDV to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier (if no `fastaIds` column is provided, this sample ID will be used to associate the metadata with the sequence). This ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        - <<: *hostConfig
       website:
         <<: *website
         tableColumns:
@@ -2347,33 +2508,33 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 6
-          - 7
+          - 8
         configFile:
           <<: *preprocessingConfigFile
           create_embl_file: false
-          taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
           segment_classification_method: minimizer
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
-          nextclade_dataset_tag: "2026-05-29--13-46-38Z"
           segments:
             - name: L
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/l
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: [RdRp]
             - name: M
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/m
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: [GPC, Gn, Gc]
             - name: S
               references:
                 - name: singleReference
                   nextclade_dataset_name: nextstrain/orthohantavirus/andv/s
+                  nextclade_dataset_tag: "2026-05-29--13-46-38Z"
                   genes: ["N", NSs]
     ingest:
       <<: *ingest
@@ -2432,7 +2593,7 @@ organisms:
         maxSequencesPerEntry: 3
       organismName: "Crimean-Congo Hemorrhagic Fever Virus"
       nucleotideSequences: [L, M, S]
-      image: "/images/organisms/cchf_small.jpg"
+      image: "/images/organisms/cchf.jpg"
       linkOuts:
         - name: "Nextclade (L)"
           category: "Nextclade"
@@ -2462,6 +2623,11 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        # Extending id definition for CCHF to include info specific to multi-segmented organisms
+        - <<: *idConfig
+          definition: "Your sequence identifier (if no `fastaIds` column is provided, this sample ID will be used to associate the metadata with the sequence). This ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
+        - <<: *hostConfig
       metadataAdd:
         - name: lineage_S
           displayName: "Segment S Lineage"
@@ -2499,8 +2665,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 23
-          - 24
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2509,16 +2674,19 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/L
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [RdRp]
             - name: M
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/M
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [GPC]
             - name: S
               references:
               - name: singleReference
                 nextclade_dataset_name: community/pathoplexus/cchfv/S
+                nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                 genes: [NP]
           segment_classification_method: "align"
     ingest:
@@ -2613,6 +2781,21 @@ organisms:
           columnWidth: 74
           order: 6
           orderOnDetailsPage: 720
+        - name: lineage
+          displayName: Lineage
+          definition: Lineage assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/mpox/all-clades/2026-07-07--14-07-11Z/tree.json?c=lineage for a view of the Nextclade reference tree.
+          isSequenceFilter: true
+          header: "Clade & Lineage"
+          includeInDownloadsByDefault: true
+          noInput: true
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: false
+          preprocessing:
+            inputs: {input: nextclade.customNodeAttributes.lineage}
+          columnWidth: 64
+          order: 7
+          orderOnDetailsPage: 740
         - name: outbreakLineage
           displayName: Outbreak & Lineage
           definition: Outbreak & Lineage assigned by Nextclade
@@ -2630,20 +2813,7 @@ organisms:
           orderOnDetailsPage: 760
           hideOnSequenceDetailsPage: true
           lineageSystem: mpoxOutbreakLineage
-        - &gisaidIsolateIdMetadataField
-          name: gisaidIsolateId
-          displayName: GISAID Isolate ID
-          header: "Sample details"
-          orderOnDetailsPage: 640
-          definition: "GISAID EPI isolate ID (also known as EPI_ISL ID)."
-          guidance: "Add the GISAID isolate ID if sequence has also been uploaded to GISAID."
-          example: "EPI_ISL_123456"
-          preprocessing:
-            function: check_regex
-            inputs:
-              regex_field: gisaidIsolateId
-            args:
-              pattern: "^EPI_ISL_[0-9]+$"
+        - <<: *gisaidIsolateIdMetadataField
       website:
         <<: *website
         tableColumns:
@@ -2664,7 +2834,7 @@ organisms:
         <<: *preprocessing
         replicas: 1
         version:
-          - 25
+          - 28
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
@@ -2674,7 +2844,7 @@ organisms:
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
-                nextclade_dataset_tag: 2025-12-16--20-07-31Z
+                nextclade_dataset_tag: 2026-07-07--14-07-11Z
                 genes: &mpoxGenes
                   - OPG001
                   - OPG002
@@ -2851,20 +3021,20 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 26
-        configFile:
-          <<: *preprocessingConfigFile
-          batch_size: 10
-          segments:
-            - name: main
-              references:
-              - name: singleReference
-                nextclade_dataset_name: nextstrain/mpox/all-clades
-                nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: *mpoxGenes
+      # - <<: *mpoxPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 28
+      #   configFile:
+      #     <<: *preprocessingConfigFile
+      #     batch_size: 10
+      #     segments:
+      #       - name: main
+      #         references:
+      #         - name: singleReference
+      #           nextclade_dataset_name: nextstrain/mpox/all-clades
+      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
+      #           genes: *mpoxGenes
     ingest:
       <<: *ingest
       configFile:
@@ -3294,10 +3464,10 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvaPreprocessing
+        <<: *preprocessing
         version:
-          - 21
-          - 22
+          - 23
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3312,6 +3482,10 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      # - <<: *rsvaPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 23
     ingest:
       <<: *ingest
       configFile:
@@ -3418,10 +3592,10 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &rsvbPreprocessing
+        <<: *preprocessing
         version:
-          - 22
-          - 23
+          - 24
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3436,6 +3610,10 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
+      # - <<: *rsvbPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3531,11 +3709,11 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &hmpvPreprocessing
+        <<: *preprocessing
         replicas: 1
         version:
-          - 23
-          - 24
+          - 25
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3545,6 +3723,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
+      # - <<: *hmpvPreprocessing
+      #   replicas: 2
+      #   version:
+      #     - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3600,6 +3782,11 @@ organisms:
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 1000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/treetime_rerooted_NC_001498.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Measles_morbillivirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Measles morbillivirus}}"
+      extraInputFields:
+        # Overriding id definition for measles since it doesn't try to use the id in the displayName 
+        - <<: *idConfig
+          definition: "Your sequence identifier; should match the sequence's id in the FASTA file - this is used to link the metadata to the FASTA sequence."
+        - <<: *hostConfig
       metadataAdd:
         - name: genotype
           displayName: Genotype
@@ -3632,6 +3819,9 @@ organisms:
             args:
               order: [geoLocCountry, ACCESSION_VERSION, sampleCollectionDate]
               type: [string, ACCESSION_VERSION, dateRangeString]
+        # Overriding specimenCollectorSampleId definition for measles since it doesn't try to use the specimenCollectorSampleId in the displayName 
+        - <<: *specimenCollectorSampleIdConfig
+          definition: "A de-identified ID for the sample the sequence was obtained from."
       website: 
         <<: *website
         tableColumns:
@@ -3646,9 +3836,10 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - <<: *preprocessing
+      - &measlesPreprocessing
+        <<: *preprocessing
         version:
-          - 27
+          - 28
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3659,6 +3850,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
+      # - <<: *measlesPreprocessing
+      #   replicas: 3
+      #   version:
+      #     - 28
     ingest:
       <<: *ingest
       configFile:
@@ -3744,8 +3939,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 24
-          - 25
+          - 26
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -3757,10 +3951,10 @@ organisms:
                 nextclade_dataset_tag: "2025-09-09--12-13-13Z"
                 genes: [GP, L, NP, VP24, VP30, VP35, VP40]
     ingest:
-      image: ghcr.io/loculus-project/ingest
+      <<: *ingest
       configFile:
+        <<: *defaultIngestConfigFile
         taxon_id: 3052505
-        subsample_fraction: 1
     enaDeposition:
       singleReference:
         configFile:
@@ -3797,7 +3991,7 @@ organisms:
       linkOuts:
         - name: "Nextclade"
           maxNumberOfRecommendedEntries: 2500 # yellow fever is ~11kb
-          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus&dataset-server=https://maverbiest.github.io/nextclade_data/data_output"
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/pathoplexus/yellow-fever-virus"
         - name: "Sealion"
           maxNumberOfRecommendedEntries: 2500
           url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
@@ -3807,15 +4001,8 @@ organisms:
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 2500
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/treetime_rerooted_NC_002031.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Yellow_fever_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Yellow fever virus}}"
-      # adding custom description of submissionId to show on website
       extraInputFields:
-        - name: id
-          displayName: Sample ID
-          definition: "Unique identifier for your sample. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
-          example: "SAMPLE-001"
-          required: true
-          noEdit: true
-          position: first
+        - <<: *idConfig
         - <<: *hostConfig
           desired: false
           required: true
@@ -3835,17 +4022,8 @@ organisms:
           preprocessing:
             inputs: {input: nextclade.clade}
           order: 5
+          columnWidth: 76
           orderOnDetailsPage: 740
-        - name: specimenCollectorSampleId
-          displayName: Isolate name
-          header: Sample details
-          orderOnDetailsPage: 600
-          ingest: ncbiIsolateName
-          includeInDownloadsByDefault: true
-          enableSubstringSearch: true
-          definition: "A de-identified ID for the sample the sequence was obtained from. Depending on its format, this ID may be parsed and incorporated in the display name of this sequence on the website."
-          example: "Isolate 1"
-          desired: true
         # custom displayName construction for YFV
         - <<: *displayNameConfig
           definition: A human-readable label for the sequence record, with the format `YFV/{geoLocCountry}/{identifier}/{sampleCollectionDate}`. The identifier is provided from `specimenCollectorSampleId` if set, otherwise `submissionId`. For sequences ingested from the INSDC, the identifier is taken directly as the provided field, assuming it contains no slashes or spaces, otherwise the `accessionVersion` is used. For other sequences, if the provided field has a display-name format itself (four items, separated by three slashes), then the identifier is extracted as the second to last item within this. If the identifier cannot be extracted (due to invalid format of the provided field), the `accessionVersion` is used. Missing `geoLocCountry`/`sampleCollectionDate` default to `unknown`.
@@ -3884,8 +4062,7 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 29
-          - 30
+          - 31
         configFile:
           <<: *preprocessingConfigFile
           segments:
@@ -3893,8 +4070,8 @@ organisms:
               references:
               - name: singleReference 
                 nextclade_dataset_name: community/pathoplexus/yellow-fever-virus
+                nextclade_dataset_tag: "2026-08-12--14-03-43Z"
                 genes: ["C", "prM", "M", "E", "NS1", "NS2a", "NS2b", "NS3", "NS4a", "2K", "NS4b", "RdRPol"]
-          nextclade_dataset_server: https://maverbiest.github.io/nextclade_data/data_output
     ingest:
       <<: *ingest
       configFile:
@@ -3938,6 +4115,117 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/NS4b.fasta]]"
             - name: RdRPol
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/yellow-fever-virus/RdRPol.fasta]]"
+  zika:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Zika Virus"
+      image: "/images/organisms/zika_virus.jpg"
+      linkOuts:
+        - name: Nextclade
+          maxNumberOfRecommendedEntries: 3000 # Zika is 11kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/zikav"
+        - name: Sealion
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *hostConfig
+          desired: false
+          required: true
+      metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
+          initiallyVisible: true
+        - name: clade
+          displayName: Clade
+          definition: "Clade label assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/community/itps/zikav/2026-04-14--11-55-23Z/tree.json for a view of the Nextclade dataset."
+          isSequenceFilter: true
+          header: "Clade"
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          noInput: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
+          orderOnDetailsPage: 740
+        - <<: *gisaidIsolateIdMetadataField
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - clade
+          - hostNameScientific
+    preprocessing:
+    - <<: *preprocessing
+      version:
+        - 1
+      configFile:
+        <<: *preprocessingConfigFile
+        segments:
+          - name: main
+            references:
+            - name: "singleReference"
+              nextclade_dataset_name: community/itps/zikav
+              nextclade_dataset_tag: 2026-04-14--11-55-23Z
+              genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3048459 #Orthoflavivirus zikaense
+    enaDeposition:
+      singleReference:
+        configFile:
+          taxon_id: 64320
+          scientific_name: "Zika virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/reference.fasta]]"
+          insdcAccessionFull: NC_035889.1
+          genes:
+            - name: ancC
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/ancC.fasta]]"
+            - name: C
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/C.fasta]]"
+            - name: prM
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/prM.fasta]]"
+            - name: pr
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/pr.fasta]]"
+            - name: E
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/E.fasta]]"
+            - name: M
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/M.fasta]]"
+            - name: NS1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS1.fasta]]"
+            - name: NS2A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2A.fasta]]"
+            - name: NS2B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS2B.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS3.fasta]]"
+            - name: NS4A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4A.fasta]]"
+            - name: 2K
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/2K.fasta]]"
+            - name: NS4B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
+            - name: NS5
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS5.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
@@ -3947,10 +4235,6 @@ defaultResources:
   limits:
     memory: "1Gi"
     cpu: "1000m"
-
-taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-06-01"
-  taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
 
 resources:
   ingest:

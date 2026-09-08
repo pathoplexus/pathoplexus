@@ -31,6 +31,7 @@ rule all:
                 "hmpv",
                 "measles",
                 "yellow-fever",
+                "zika",
             ],
             difftype=["seq", "meta"],
         ),
