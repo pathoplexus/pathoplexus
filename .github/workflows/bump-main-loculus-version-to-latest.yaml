@@ -107,8 +107,10 @@ jobs:
             @${{ github.actor }} wants to update the Loculus version from https://github.com/loculus-project/loculus/commit/${{ steps.get_current_version.outputs.CURRENT_VERSION }} to https://github.com/loculus-project/loculus/commit/${{ steps.get_loculus_commit.outputs.LATEST_SHA }}.
 
             ${{ steps.changelog.outputs.SECTIONS }}
+
+            ### Full changelog
             <details>
-            <summary>Full changelog</summary>
+            <summary>Show all commits</summary>
 
             ${{ steps.changelog.outputs.CHANGELOG }}
 
