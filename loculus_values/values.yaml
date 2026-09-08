@@ -10,10 +10,14 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 traefikVersion: 3
 s3:
-  enabled: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
@@ -97,6 +101,11 @@ defaultOrganismConfig: &defaultOrganismConfig
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
       maxSequencesPerEntry: 1
+      files:
+        enabled: true
+    files:
+      - name: annotations
+        displayName: Annotations
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -1773,6 +1782,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        create_embl_file: true
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
@@ -1840,6 +1850,9 @@ organisms:
           - 31
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 186538
+          scientific_name: "Zaire ebolavirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -1903,6 +1916,9 @@ organisms:
           - 28
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 186540
+          scientific_name: "Sudan ebolavirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -2009,6 +2025,9 @@ organisms:
           - 7
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
+          taxon_id: 565995
+          scientific_name: "Bundibugyo virus"
+          molecule_type: "genomic RNA"
           segments:
             - &ebolaBdbvPreprocessingSegment
               name: main
@@ -2186,6 +2205,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
+          # TODO(https://github.com/loculus-project/loculus/issues/5673)
           create_embl_file: false
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
@@ -2404,6 +2424,9 @@ organisms:
           - 29
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11082
+          scientific_name: "West Nile virus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -2509,7 +2532,7 @@ organisms:
           - 8
         configFile:
           <<: *preprocessingConfigFile
-          create_embl_file: false
+          taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
@@ -2667,6 +2690,9 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
+          taxon_id: 3052518
+          scientific_name: "Orthonairovirus haemorrhagiae"
+          molecule_type: "genomic RNA"
           segments:
             - name: L
               references:
@@ -2836,6 +2862,9 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
+          taxon_id: 10244
+          scientific_name: "Monkeypox virus"
+          molecule_type: "genomic DNA"
           segments:
             - &mpoxDataset
               name: main
@@ -3469,6 +3498,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 208893
+          scientific_name: "Human respiratory syncytial virus A"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3597,6 +3629,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 208895
+          scientific_name: "Human respiratory syncytial virus B"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3714,6 +3749,9 @@ organisms:
           - 25
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 162145
+          scientific_name: "Human Metapneumovirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3841,6 +3879,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11234
+          scientific_name: "Measles morbillivirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3941,6 +3982,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 3052505
+          scientific_name: "Orthomarburgvirus marburgense"
+          molecule_type: "viral cRNA"
           segments:
             - name: main
               references:
@@ -4063,6 +4107,9 @@ organisms:
           - 31
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11089
+          scientific_name: "Yellow Fever Virus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -4174,6 +4221,9 @@ organisms:
         - 1
       configFile:
         <<: *preprocessingConfigFile
+        taxon_id: 64320
+        scientific_name: "Zika virus"
+        molecule_type: "genomic RNA"
         segments:
           - name: main
             references:
