@@ -4291,42 +4291,42 @@ organisms:
               nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
               nextclade_dataset_tag: 2026-08-19--11-35-25Z
               genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
-      ingest:
-        <<: *ingest
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3426298 #Alphavirus chikungunya
+    enaDeposition:
+      singleReference:
         configFile:
-          <<: *defaultIngestConfigFile
-          taxon_id: 3426298 #Alphavirus chikungunya
-      enaDeposition:
-        singleReference:
-          configFile:
-            taxon_id: 37124
-            scientific_name: "Chikungunya virus"
-            molecule_type: "genomic RNA"
-      referenceGenomes:
-        - name: "main"
-          references:
-          - name: singleReference
-            sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/reference.fasta]]"
-            insdcAccessionFull: NC_004162.2
-            genes:
-              - name: nsP1
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP1.fasta]]"
-              - name: nsP2
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP2.fasta]]"
-              - name: nsP3
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP3.fasta]]"
-              - name: nsP4
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP4.fasta]]"
-              - name: C
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/C.fasta]]"
-              - name: E3
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E3.fasta]]"
-              - name: E2
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E2.fasta]]"
-              - name: 6K
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/6K.fasta]]"
-              - name: E1
-                sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"        
+          taxon_id: 37124
+          scientific_name: "Chikungunya virus"
+          molecule_type: "genomic RNA"
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/reference.fasta]]"
+          insdcAccessionFull: NC_004162.2
+          genes:
+            - name: nsP1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP1.fasta]]"
+            - name: nsP2
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP2.fasta]]"
+            - name: nsP3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP3.fasta]]"
+            - name: nsP4
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/nsP4.fasta]]"
+            - name: C
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/C.fasta]]"
+            - name: E3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E3.fasta]]"
+            - name: E2
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E2.fasta]]"
+            - name: 6K
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/6K.fasta]]"
+            - name: E1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"        
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
