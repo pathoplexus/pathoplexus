@@ -4226,7 +4226,7 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS4B.fasta]]"
             - name: NS5
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/zikav/NS5.fasta]]"
-  Chikungunya:
+  chikungunya:
     <<: *defaultOrganismConfig
     schema:
       <<: *schema
