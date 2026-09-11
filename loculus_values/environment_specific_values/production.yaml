@@ -73,6 +73,7 @@ seqSets:
     writeEnabled: true
 podScheduling:
   podPriorityValue: 2000
+runDevelopmentS3: false
 disableEnaSubmission: false
 enaDeposition: 
   submitToEnaProduction: true

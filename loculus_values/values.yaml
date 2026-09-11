@@ -11,9 +11,18 @@ gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
+createTestAccounts: true
 traefikVersion: 3
 s3:
-  enabled: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
+  bucket:
+    bucket: ppx-staging-s3-bucket
+    region: eu-central-1
+    endpoint: https://s3.eu-central-1.amazonaws.com
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
@@ -23,6 +32,12 @@ dataUseTerms:
     open: https://pathoplexus.org/about/terms-of-use/open-data
     restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
 secrets:
+  s3-bucket:
+    type: sealedsecret
+    clusterWide: "true"
+    encryptedData:
+      accessKey: AgCggjK5w1ZSBfh1SW0lG6uUmEqp+4sAQe9iQF6/ykbeHIPo01LJedDpd6l4ZsKg8cJn2zJXKhjoua3l4N6XNMzMTKgHnlfZ/vVKJ9hQqefxgkAI3di36HbHpRA2IJlRaQRa1XjnwYlo32zKMNXyNP0Ea/uUTrsk6i6PhlLIE8uEzdKYSebhVPs9ipO6vPpTUbP2DG0rr2o5TYMr7OTEh0bZVrSMzlh7bHVeBBgG2Ze3aiRHTzokNtA7CJD1UeBayz+fmB7kSrDDAQ05o0NTmzNA85Xh3HqE/fLGgGhDgvu9YLLqw2ybMdTtWzjeQLDfRMMWLwCp3woSfxqJSw3qU2KcsZipBLCXMBNGohNgyP/s7tE7WrO8YGzyfZ+QEnX+INY8AsH/Sr2/pC+GKl7mBUp2C/5tGOwLwdWD4igrGRKDfgnFuil2JcO36aKEWbmrwNSFm5gaQUzBK1pWtegzTTmP4kqyc+ve1JB3c/UBbwMfRDb0M7sMmMo63kKDjWAggE8cBj44JRr5BUDyeWKiFWrkwlhTqRGzhxXdYSKT2KMWk0JlJ3hohvQpA9w8jcuC9IKKoA1ICDuEz2mcwzUoTRnY09AXMMRWcCDN9Tk+GpDJQ+0TzoFxVu4NAmb60dwfae1F4s2utt/UcB7Yuy0urbwLf3/4VcUUMzD9qSf0vJzyJwS9pPq619YO+noCY0wyesy8yeejNsz1LR6sgyWoKN8G2oWvkA==
+      secretKey: AgB8b135FsMHqko+wQuD2lWUtuaRuG42n/AgtSU7vJbAvoner02QG3vxm4TQVuxrNjmN2oRCj8Go9+Wai9eL5brde69m/O2zGpJpQik1YKmdpQKiLEcOALY4u5C7iN072en8R7hjYqC0HOYH5pek8sO8OnZtCGbhCiEg6UpbetS8uEoLWRVcLwcBlGN+sxypl0R6uuL9ZOkv6+WD5ZauDoI9lag4NItW8YwQZdOumUn5yfJNc3vuhJaE6qHuw0ufUn9isvwjBd12rfqiFTKOzdWbwesFqxONTyY8Fe7G4A+PIFbJEkP0pIVeJijvkfz5g3rI4vCJwBFT1AXVGllZVZDfoI2cii0K1zyhKTcvV6V6RqjUa2SRAMc5pW98fcYw2wqDpsWR5QpC4LPwlo0npMfriBWbURHTf3hs9c1Q38D9CEZYdDSJ7pvSfwikZUuJ3781+0rBXQP2IU5ozyAbRcI5S9niy9elIbyaXQTMripVrNNmzWLt4rIuhZnjqZeEskAwxkk5+jlYW9PvMfyTsfbkoUcmtyHVheF0VFr1VnMKKXe5P8QfVKwUAWLXHImPoGc4cApvmGmgs345X+dt5au8Zli4+09hKnTz/u1t+pUuh5RIf7i41xkpHWg8PSpYm4YKVBBxZywFFz8s/nzQSkJCCgO+I5rxRWK9MoCC65h6I9vXdbtDjrikFCAGFLozADM39kwrg0HQjrPfXY8WY4eMFX0TcDgRuIUP/4t5faemxyawkOzH3DFL
   smtp-password:
     type: sealedsecret
     clusterWide: "true"
@@ -62,6 +77,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
+disableRawReadsProcessingService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -97,6 +113,16 @@ defaultOrganismConfig: &defaultOrganismConfig
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
       maxSequencesPerEntry: 1
+      files:
+        enabled: true
+        categories:
+          - name: rawReads
+            displayName: Raw reads
+    files:
+      - name: annotations
+        displayName: Annotations
+      - name: rawReads
+        displayName: Raw reads
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -1773,6 +1799,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        create_embl_file: true
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
@@ -1840,6 +1867,9 @@ organisms:
           - 31
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 186538
+          scientific_name: "Zaire ebolavirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -1903,6 +1933,9 @@ organisms:
           - 28
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 186540
+          scientific_name: "Sudan ebolavirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -2009,6 +2042,9 @@ organisms:
           - 7
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
+          taxon_id: 565995
+          scientific_name: "Bundibugyo virus"
+          molecule_type: "genomic RNA"
           segments:
             - &ebolaBdbvPreprocessingSegment
               name: main
@@ -2186,6 +2222,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
+          # TODO(https://github.com/loculus-project/loculus/issues/5673)
           create_embl_file: false
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
@@ -2404,6 +2441,9 @@ organisms:
           - 29
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11082
+          scientific_name: "West Nile virus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -2509,7 +2549,7 @@ organisms:
           - 8
         configFile:
           <<: *preprocessingConfigFile
-          create_embl_file: false
+          taxon_id: 1980456
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
@@ -2667,6 +2707,9 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
+          taxon_id: 3052518
+          scientific_name: "Orthonairovirus haemorrhagiae"
+          molecule_type: "genomic RNA"
           segments:
             - name: L
               references:
@@ -2836,6 +2879,9 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           batch_size: 5
+          taxon_id: 10244
+          scientific_name: "Monkeypox virus"
+          molecule_type: "genomic DNA"
           segments:
             - &mpoxDataset
               name: main
@@ -3469,6 +3515,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 208893
+          scientific_name: "Human respiratory syncytial virus A"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3597,6 +3646,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 208895
+          scientific_name: "Human respiratory syncytial virus B"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3714,6 +3766,9 @@ organisms:
           - 25
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 162145
+          scientific_name: "Human Metapneumovirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3841,6 +3896,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11234
+          scientific_name: "Measles morbillivirus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -3941,6 +3999,9 @@ organisms:
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 3052505
+          scientific_name: "Orthomarburgvirus marburgense"
+          molecule_type: "viral cRNA"
           segments:
             - name: main
               references:
@@ -4063,6 +4124,9 @@ organisms:
           - 31
         configFile:
           <<: *preprocessingConfigFile
+          taxon_id: 11089
+          scientific_name: "Yellow Fever Virus"
+          molecule_type: "genomic RNA"
           segments:
             - name: main
               references:
@@ -4174,6 +4238,9 @@ organisms:
         - 1
       configFile:
         <<: *preprocessingConfigFile
+        taxon_id: 64320
+        scientific_name: "Zika virus"
+        molecule_type: "genomic RNA"
         segments:
           - name: main
             references:
@@ -4251,3 +4318,9 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
+  raw-reads-processing:
+    requests:
+      memory: "8Gi" # deacon loads the whole panhuman index into memory (~3.3Gi on disk, ~4.8Gi peak while loading)
+      cpu: "50m"
+    limits:
+      memory: "8Gi"
