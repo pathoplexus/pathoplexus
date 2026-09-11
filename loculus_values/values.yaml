@@ -66,6 +66,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
+disableRawReadsProcessingService: false
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -103,9 +104,14 @@ defaultOrganismConfig: &defaultOrganismConfig
       maxSequencesPerEntry: 1
       files:
         enabled: true
+        categories:
+          - name: rawReads
+            displayName: Raw reads
     files:
       - name: annotations
         displayName: Annotations
+      - name: rawReads
+        displayName: Raw reads
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -4301,3 +4307,9 @@ resources:
       cpu: "100m"
     limits:
       memory: "3Gi" # Backend requires at least 635741K of memory
+  raw-reads-processing:
+    requests:
+      memory: "8Gi" # deacon loads the whole panhuman index into memory (~3.3Gi on disk, ~4.8Gi peak while loading)
+      cpu: "50m"
+    limits:
+      memory: "8Gi"
