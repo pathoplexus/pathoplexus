@@ -10,7 +10,7 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: true
+runDevelopmentS3: false
 traefikVersion: 3
 s3:
   enabled: true
@@ -18,6 +18,10 @@ s3:
   gcFrequencyMinutes: 720
   gcInitialDelayMinutes: 15
   gcOrphanRetentionPeriodMinutes: 1440
+  bucket:
+    bucket: ppx-staging-s3-bucket
+    region: eu-central-1
+    endpoint: ppx-staging-s3-bucket.s3.eu-central-1.amazonaws.com
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
@@ -27,6 +31,12 @@ dataUseTerms:
     open: https://pathoplexus.org/about/terms-of-use/open-data
     restricted: https://pathoplexus.org/about/terms-of-use/restricted-data
 secrets:
+  s3-bucket:
+    type: sealedsecret
+    clusterWide: "true"
+    encryptedData:
+      accessKey: AgCggjK5w1ZSBfh1SW0lG6uUmEqp+4sAQe9iQF6/ykbeHIPo01LJedDpd6l4ZsKg8cJn2zJXKhjoua3l4N6XNMzMTKgHnlfZ/vVKJ9hQqefxgkAI3di36HbHpRA2IJlRaQRa1XjnwYlo32zKMNXyNP0Ea/uUTrsk6i6PhlLIE8uEzdKYSebhVPs9ipO6vPpTUbP2DG0rr2o5TYMr7OTEh0bZVrSMzlh7bHVeBBgG2Ze3aiRHTzokNtA7CJD1UeBayz+fmB7kSrDDAQ05o0NTmzNA85Xh3HqE/fLGgGhDgvu9YLLqw2ybMdTtWzjeQLDfRMMWLwCp3woSfxqJSw3qU2KcsZipBLCXMBNGohNgyP/s7tE7WrO8YGzyfZ+QEnX+INY8AsH/Sr2/pC+GKl7mBUp2C/5tGOwLwdWD4igrGRKDfgnFuil2JcO36aKEWbmrwNSFm5gaQUzBK1pWtegzTTmP4kqyc+ve1JB3c/UBbwMfRDb0M7sMmMo63kKDjWAggE8cBj44JRr5BUDyeWKiFWrkwlhTqRGzhxXdYSKT2KMWk0JlJ3hohvQpA9w8jcuC9IKKoA1ICDuEz2mcwzUoTRnY09AXMMRWcCDN9Tk+GpDJQ+0TzoFxVu4NAmb60dwfae1F4s2utt/UcB7Yuy0urbwLf3/4VcUUMzD9qSf0vJzyJwS9pPq619YO+noCY0wyesy8yeejNsz1LR6sgyWoKN8G2oWvkA==
+      secretKey: AgB8b135FsMHqko+wQuD2lWUtuaRuG42n/AgtSU7vJbAvoner02QG3vxm4TQVuxrNjmN2oRCj8Go9+Wai9eL5brde69m/O2zGpJpQik1YKmdpQKiLEcOALY4u5C7iN072en8R7hjYqC0HOYH5pek8sO8OnZtCGbhCiEg6UpbetS8uEoLWRVcLwcBlGN+sxypl0R6uuL9ZOkv6+WD5ZauDoI9lag4NItW8YwQZdOumUn5yfJNc3vuhJaE6qHuw0ufUn9isvwjBd12rfqiFTKOzdWbwesFqxONTyY8Fe7G4A+PIFbJEkP0pIVeJijvkfz5g3rI4vCJwBFT1AXVGllZVZDfoI2cii0K1zyhKTcvV6V6RqjUa2SRAMc5pW98fcYw2wqDpsWR5QpC4LPwlo0npMfriBWbURHTf3hs9c1Q38D9CEZYdDSJ7pvSfwikZUuJ3781+0rBXQP2IU5ozyAbRcI5S9niy9elIbyaXQTMripVrNNmzWLt4rIuhZnjqZeEskAwxkk5+jlYW9PvMfyTsfbkoUcmtyHVheF0VFr1VnMKKXe5P8QfVKwUAWLXHImPoGc4cApvmGmgs345X+dt5au8Zli4+09hKnTz/u1t+pUuh5RIf7i41xkpHWg8PSpYm4YKVBBxZywFFz8s/nzQSkJCCgO+I5rxRWK9MoCC65h6I9vXdbtDjrikFCAGFLozADM39kwrg0HQjrPfXY8WY4eMFX0TcDgRuIUP/4t5faemxyawkOzH3DFL
   smtp-password:
     type: sealedsecret
     clusterWide: "true"
