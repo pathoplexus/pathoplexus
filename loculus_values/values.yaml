@@ -22,7 +22,7 @@ s3:
   bucket:
     bucket: ppx-staging-s3-bucket
     region: eu-central-1
-    endpoint: ppx-staging-s3-bucket.s3.eu-central-1.amazonaws.com
+    endpoint: https://s3.eu-central-1.amazonaws.com
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
