@@ -13,6 +13,8 @@ runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: false
 createTestAccounts: true
 traefikVersion: 3
+fileSharing:
+  outputFileUrlType: website
 s3:
   enabled: true
   gcEnabled: true
