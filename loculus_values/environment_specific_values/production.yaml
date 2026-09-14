@@ -74,6 +74,16 @@ seqSets:
 podScheduling:
   podPriorityValue: 2000
 runDevelopmentS3: false
+s3:
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
+  bucket:
+    bucket: ppx-s3-bucket
+    region: eu-central-1
+    endpoint: https://s3.eu-central-1.amazonaws.com
 disableEnaSubmission: false
 enaDeposition: 
   submitToEnaProduction: true

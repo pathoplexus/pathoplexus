@@ -2223,6 +2223,9 @@ organisms:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
           # TODO(https://github.com/loculus-project/loculus/issues/5673)
+          taxon_id: 12637
+          scientific_name: "Dengue virus"
+          molecule_type: "genomic RNA"
           create_embl_file: false
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
