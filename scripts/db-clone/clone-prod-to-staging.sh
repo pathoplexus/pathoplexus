@@ -16,6 +16,13 @@ STAGING_LOC_DB="pathoplexus_staging_loculus"
 STAGING_KC_USER="staging_keycloak_user"
 STAGING_LOC_USER="staging_loculus_user"
 
+check_command() {
+    if [ $? -ne 0 ]; then
+        echo "Error: $1"
+        exit 1
+    fi
+}
+
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
 perform_sed_replacements() {
@@ -42,12 +49,25 @@ perform_sed_replacements() {
     sed -i "s#${placeholder}#${protected_url}#g" "$file"
 }
 
+sync_s3_buckets() {
+    echo "Syncing S3 buckets from production to staging..."
+    aws s3 sync s3://ppx-s3-bucket s3://ppx-staging-s3-bucket --delete --profile db-clone
+    check_command "Failed to sync S3 buckets"
+    echo "S3 bucket sync completed successfully!"
+}
+
 echo "Dumping production Loculus database..."
 $CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP
 
 echo "Dumping production Keycloak database..."
 $CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
 perform_sed_replacements $PROD_KC_DUMP
+
+# Sync files after the clone so no files referenced by the db can be missing (there might be
+# additional unreferenced files in the bucket but that is ok, to prevent additional files we
+# could enable s3 versioning and pick whichever version has LastModified <= T
+echo "Syncing S3 buckets..."
+sync_s3_buckets
 
 perform_sed_replacements $PROD_LOC_DUMP
 

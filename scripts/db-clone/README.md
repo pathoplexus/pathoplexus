@@ -33,6 +33,14 @@ Passwords for the following users need to be set in the environment variables:
 - `staging_keycloak_user`
 - `postgres`
 
+You will need to configure the `db-clone` AWS IAM user profile on the bastion, this can be done with:
+
+```
+aws configure --profile db-clone
+```
+
+The user profile needs write access to the staging s3 bucket and read access to the production s3 bucket.
+
 Run the script as follows:
 
 ```sh
