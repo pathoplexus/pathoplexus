@@ -15,13 +15,8 @@ STAGING_KC_DB="pathoplexus_staging_keycloak"
 STAGING_LOC_DB="pathoplexus_staging_loculus"
 STAGING_KC_USER="staging_keycloak_user"
 STAGING_LOC_USER="staging_loculus_user"
-
-check_command() {
-    if [ $? -ne 0 ]; then
-        echo "Error: $1"
-        exit 1
-    fi
-}
+PROD_S3_BUCKET="ppx-s3-bucket"
+STAGING_S3_BUCKET="ppx-staging-s3-bucket"
 
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
@@ -51,8 +46,7 @@ perform_sed_replacements() {
 
 sync_s3_buckets() {
     echo "Syncing S3 buckets from production to staging..."
-    aws s3 sync s3://ppx-s3-bucket s3://ppx-staging-s3-bucket --delete --profile db-clone
-    check_command "Failed to sync S3 buckets"
+    aws s3 sync s3://$PROD_S3_BUCKET s3://$STAGING_S3_BUCKET --delete --profile db-clone || { echo "Error: Failed to sync S3 buckets"; exit 1; }
     echo "S3 bucket sync completed successfully!"
 }
 
