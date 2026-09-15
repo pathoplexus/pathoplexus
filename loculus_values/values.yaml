@@ -2433,12 +2433,12 @@ organisms:
             molecule_type: "genomic RNA"
     preprocessing:
       - &westNilePreprocessing
-        <<: [*preprocessing, *westNileTaxon]
+        <<: *preprocessing
         version:
           - 29
           - 30
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *westNileTaxon]
           segments:
             - name: main
               references:
