@@ -2539,7 +2539,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 1980456
-          scientific_name: "Andes Virus"
+          scientific_name: "Orthohantavirus andesense"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
           segment_classification_method: minimizer
@@ -2578,7 +2578,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 1980456
-          scientific_name: "Andes Virus"
+          scientific_name: "Orthohantavirus andesense"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: L
@@ -4114,7 +4114,7 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 11089
-          scientific_name: "Yellow Fever Virus"
+          scientific_name: "Yellow fever virus"
           molecule_type: "genomic RNA"
           segments:
             - name: main
@@ -4133,7 +4133,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 11089
-          scientific_name: "Yellow Fever Virus"
+          scientific_name: "Yellow fever virus"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
