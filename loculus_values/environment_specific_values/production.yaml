@@ -82,7 +82,7 @@ podScheduling:
 runDevelopmentS3: false
 s3:
   enabled: true
-  gcEnabled: true
+  gcEnabled: false
   gcFrequencyMinutes: 720
   gcInitialDelayMinutes: 15
   gcOrphanRetentionPeriodMinutes: 1440
