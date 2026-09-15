@@ -10,10 +10,16 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 traefikVersion: 3
+fileSharing:
+  outputFileUrlType: website
 s3:
-  enabled: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
@@ -62,6 +68,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
+disableRawReadsProcessingService: true
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -80,23 +87,33 @@ zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
     28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    34: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
       consensusSequences: true
       maxSequencesPerEntry: 1
+    files:
+      - name: annotations
+        displayName: Annotations
     loadSequencesAutomatically: true
     richFastaHeaderFields: ["displayName"]
     earliestReleaseDate:
@@ -1773,6 +1790,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
+        create_embl_file: true
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
@@ -1833,13 +1851,21 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052462
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &ebolaZaireTaxon
+            taxon_id: 186538
+            scientific_name: "Zaire ebolavirus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - <<: *preprocessing
         replicas: 1
         version:
           - 31
+          - 32
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *ebolaZaireTaxon]
           segments:
             - name: main
               references:
@@ -1847,12 +1873,6 @@ organisms:
                   nextclade_dataset_name: nextstrain/orthoebolavirus/ebov
                   nextclade_dataset_tag: "2025-09-24--07-29-03Z"
                   genes: [NP, VP35, VP40, GP, sGP, ssGP, VP30, VP24, L]
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 186538
-          scientific_name: "Zaire ebolavirus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -1897,12 +1917,20 @@ organisms:
         - name: "Place on viral UShER tree"
           maxNumberOfRecommendedEntries: 3000
           url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/treetime_rerooted_NC_006432.1.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Sudan_ebolavirus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Sudan ebolavirus}}"
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &ebolaSudanTaxon
+            taxon_id: 186540
+            scientific_name: "Sudan ebolavirus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - <<: *preprocessing
         version:
           - 28
+          - 29
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *ebolaSudanTaxon]
           segments:
             - name: main
               references:
@@ -1915,12 +1943,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052460
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 186540
-          scientific_name: "Sudan ebolavirus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -2002,13 +2024,21 @@ organisms:
           - geoLocAdmin1
           - length
           - outbreak
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &ebolaBdbvTaxon
+            taxon_id: 565995
+            scientific_name: "Bundibugyo virus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
         version:
           - 7
+          - 8
         configFile: &ebolaBdbvPreprocessingConfigFile
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *ebolaBdbvTaxon]
           segments:
             - &ebolaBdbvPreprocessingSegment
               name: main
@@ -2023,12 +2053,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052458
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 565995
-          scientific_name: "Bundibugyo virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -2186,7 +2210,10 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
-          create_embl_file: false
+          # TODO(https://github.com/loculus-project/loculus/issues/5673)
+          taxon_id: 12637
+          scientific_name: "Dengue virus"
+          molecule_type: "genomic RNA"
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
             - name: main
@@ -2207,10 +2234,10 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *denguePreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 33
+      - <<: *denguePreprocessing
+        replicas: 3
+        version:
+          - 34
     ingest:
       <<: *ingest
       configFile:
@@ -2397,13 +2424,21 @@ organisms:
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &westNileTaxon
+            taxon_id: 11082
+            scientific_name: "West Nile virus"
+            molecule_type: "genomic RNA"
     preprocessing:
-      - &yellowFeverPreprocessing
+      - &westNilePreprocessing
         <<: *preprocessing
         version:
           - 29
+          - 30
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *westNileTaxon]
           segments:
             - name: main
               references:
@@ -2411,22 +2446,16 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *yellowFeverPreprocessing
+      # - <<: *westNilePreprocessing
       #   replicas: 2
       #   version:
-      #     - 29
+      #     - 30
     ingest:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3048448
         log_level: DEBUG
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 11082
-          scientific_name: "West Nile virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -2503,15 +2532,20 @@ organisms:
           - length_L
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &andvTaxon
+            taxon_id: 1980456
+            scientific_name: "Orthohantavirus andesense"
+            molecule_type: "genomic RNA"
     preprocessing:
       - <<: *preprocessing
         version:
           - 8
+          - 9
         configFile:
-          <<: *preprocessingConfigFile
-          create_embl_file: false
-          scientific_name: "Andes Virus"
-          molecule_type: "genomic RNA"
+          <<: [*preprocessingConfigFile, *andvTaxon]
           alignment_requirement: ANY
           segment_classification_method: minimizer
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
@@ -2545,12 +2579,6 @@ organisms:
           method: "minimizer"
           minimizer_url: "https://pathoplexus.github.io/reference_store/andv/segment-minimizer.json"
           minimizer_parser: ["segment"]
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 1980456
-          scientific_name: "Andes Virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: L
         references:
@@ -2660,12 +2688,20 @@ organisms:
           - length_L
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &cchfTaxon
+            taxon_id: 3052518
+            scientific_name: "Orthonairovirus haemorrhagiae"
+            molecule_type: "genomic RNA"
     preprocessing:
       - <<: *preprocessing
         version:
           - 25
+          - 26
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *cchfTaxon]
           log_level: DEBUG
           segments:
             - name: L
@@ -2696,12 +2732,6 @@ organisms:
           method: "align"
           nextclade_dataset_name: community/pathoplexus/cchfv
         grouping_override_url: "https://pathoplexus.github.io/curation_data/grouping_override/cchf/curated_group_02-03-2026.json"
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 3052518
-          scientific_name: "Orthonairovirus haemorrhagiae"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: L
         references:
@@ -2827,14 +2857,21 @@ organisms:
           - length
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &mpoxTaxon
+            taxon_id: 10244
+            scientific_name: "Monkeypox virus"
+            molecule_type: "genomic DNA"
     preprocessing:
       - &mpoxPreprocessing
         <<: *preprocessing
         replicas: 1
         version:
           - 28
-        configFile:
-          <<: *preprocessingConfigFile
+        configFile: &mpoxPreprocessingConfigFile
+          <<: [*preprocessingConfigFile, *mpoxTaxon]
           batch_size: 5
           segments:
             - &mpoxDataset
@@ -3019,31 +3056,15 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - name: main
-      #         references:
-      #         - name: singleReference
-      #           nextclade_dataset_name: nextstrain/mpox/all-clades
-      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
-      #           genes: *mpoxGenes
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 29
     ingest:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3431483
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 10244
-          scientific_name: "Monkeypox virus"
-          molecule_type: "genomic DNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -3461,6 +3482,13 @@ organisms:
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &rsvATaxon
+            taxon_id: 208893
+            scientific_name: "Human respiratory syncytial virus A"
+            molecule_type: "genomic RNA"
     preprocessing:
       - &rsvaPreprocessing
         <<: *preprocessing
@@ -3468,7 +3496,7 @@ organisms:
           - 23
         replicas: 1
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *rsvATaxon]
           segments:
             - name: main
               references:
@@ -3480,10 +3508,10 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvaPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 23
+      - <<: *rsvaPreprocessing
+        replicas: 3
+        version:
+          - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3494,12 +3522,6 @@ organisms:
           - subtype
         metadata_filter:
           subtype: rsv-a
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 208893
-          scientific_name: "Human respiratory syncytial virus A"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -3589,6 +3611,13 @@ organisms:
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &rsvBTaxon
+            taxon_id: 208895
+            scientific_name: "Human respiratory syncytial virus B"
+            molecule_type: "genomic RNA"
     preprocessing:
       - &rsvbPreprocessing
         <<: *preprocessing
@@ -3596,7 +3625,7 @@ organisms:
           - 24
         replicas: 1
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *rsvBTaxon]
           segments:
             - name: main
               references:
@@ -3608,10 +3637,10 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvbPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 24
+      - <<: *rsvbPreprocessing
+        replicas: 3
+        version:
+          - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3622,12 +3651,6 @@ organisms:
           - subtype
         metadata_filter:
           subtype: rsv-b
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 208895
-          scientific_name: "Human respiratory syncytial virus B"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -3706,6 +3729,13 @@ organisms:
           - lineage
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &hmpvTaxon
+            taxon_id: 162145
+            scientific_name: "Human metapneumovirus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - &hmpvPreprocessing
         <<: *preprocessing
@@ -3713,7 +3743,7 @@ organisms:
         version:
           - 25
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *hmpvTaxon]
           segments:
             - name: main
               references:
@@ -3721,21 +3751,15 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *hmpvPreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 25
+      - <<: *hmpvPreprocessing
+        replicas: 2
+        version:
+          - 26
     ingest:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3048148
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 162145
-          scientific_name: "Human Metapneumovirus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -3833,6 +3857,13 @@ organisms:
           - length
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &measlesTaxon
+            taxon_id: 11234
+            scientific_name: "Measles morbillivirus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - &measlesPreprocessing
         <<: *preprocessing
@@ -3840,7 +3871,7 @@ organisms:
           - 28
         replicas: 1
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *measlesTaxon]
           segments:
             - name: main
               references:
@@ -3848,21 +3879,15 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      # - <<: *measlesPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
+      - <<: *measlesPreprocessing
+        replicas: 3
+        version:
+          - 29
     ingest:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052345
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 11234
-          scientific_name: "Measles morbillivirus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -3934,13 +3959,21 @@ organisms:
           - length
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &marburgTaxon
+            taxon_id: 3052505
+            scientific_name: "Orthomarburgvirus marburgense"
+            molecule_type: "viral cRNA"
     preprocessing:
       - <<: *preprocessing
         version:
           - 26
+          - 27
         replicas: 1
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *marburgTaxon]
           segments:
             - name: main
               references:
@@ -3953,12 +3986,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3052505
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 3052505
-          scientific_name: "Orthomarburgvirus marburgense"
-          molecule_type: "viral cRNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -4057,12 +4084,20 @@ organisms:
           - clade
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &yellowFeverTaxon
+            taxon_id: 11089
+            scientific_name: "Yellow fever virus"
+            molecule_type: "genomic RNA"
     preprocessing:
       - <<: *preprocessing
         version:
           - 31
+          - 32
         configFile:
-          <<: *preprocessingConfigFile
+          <<: [*preprocessingConfigFile, *yellowFeverTaxon]
           segments:
             - name: main
               references:
@@ -4076,12 +4111,6 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 3046277
         log_level: DEBUG
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 11089
-          scientific_name: "Yellow Fever Virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
@@ -4168,12 +4197,20 @@ organisms:
           - length
           - clade
           - hostNameScientific
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &zikaTaxon
+            taxon_id: 64320
+            scientific_name: "Zika virus"
+          molecule_type: "genomic RNA"
     preprocessing:
     - <<: *preprocessing
       version:
         - 1
+        - 2
       configFile:
-        <<: *preprocessingConfigFile
+        <<: [*preprocessingConfigFile, *zikaTaxon]
         segments:
           - name: main
             references:
@@ -4186,12 +4223,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3048459 #Orthoflavivirus zikaense
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 64320
-          scientific_name: "Zika virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
