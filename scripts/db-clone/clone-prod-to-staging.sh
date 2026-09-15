@@ -57,8 +57,8 @@ echo "Dumping production Keycloak database..."
 $CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
 perform_sed_replacements $PROD_KC_DUMP
 
-# Sync files after the clone so no files referenced by the db can be missing (there might be
-# additional unreferenced files in the bucket but that is ok, to prevent additional files we
+# Sync files after the dump so no files referenced by the dumped db can be missing (there might
+# be additional unreferenced files in the bucket but that is ok, to prevent additional files we
 # could enable s3 versioning and pick whichever version has LastModified <= T
 echo "Syncing S3 buckets..."
 sync_s3_buckets
