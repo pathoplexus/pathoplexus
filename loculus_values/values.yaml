@@ -87,18 +87,25 @@ zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
     28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
+    29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
     23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
+    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
+    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
+    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
+    27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
     33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    34: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -1851,6 +1858,7 @@ organisms:
         replicas: 1
         version:
           - 31
+          - 32
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 186538
@@ -1917,6 +1925,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 28
+          - 29
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 186540
@@ -2026,6 +2035,7 @@ organisms:
         <<: *preprocessing
         version:
           - 7
+          - 8
         configFile: &ebolaBdbvPreprocessingConfigFile
           <<: *preprocessingConfigFile
           taxon_id: 565995
@@ -2212,7 +2222,6 @@ organisms:
           taxon_id: 12637
           scientific_name: "Dengue virus"
           molecule_type: "genomic RNA"
-          create_embl_file: false
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
             - name: main
@@ -2233,10 +2242,10 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *denguePreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 33
+      - <<: *denguePreprocessing
+        replicas: 3
+        version:
+          - 34
     ingest:
       <<: *ingest
       configFile:
@@ -2424,10 +2433,11 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &yellowFeverPreprocessing
+      - &westNilePreprocessing
         <<: *preprocessing
         version:
           - 29
+          - 30
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 11082
@@ -2440,7 +2450,7 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *yellowFeverPreprocessing
+      # - <<: *westNilePreprocessing
       #   replicas: 2
       #   version:
       #     - 29
@@ -2536,6 +2546,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 8
+          - 9
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 1980456
@@ -2693,6 +2704,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 25
+          - 26
         configFile:
           <<: *preprocessingConfigFile
           log_level: DEBUG
@@ -2865,7 +2877,7 @@ organisms:
         replicas: 1
         version:
           - 28
-        configFile:
+        configFile: &mpoxPreprocessingConfigFile
           <<: *preprocessingConfigFile
           batch_size: 5
           taxon_id: 10244
@@ -3054,20 +3066,10 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      # - <<: *mpoxPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
-      #   configFile:
-      #     <<: *preprocessingConfigFile
-      #     batch_size: 10
-      #     segments:
-      #       - name: main
-      #         references:
-      #         - name: singleReference
-      #           nextclade_dataset_name: nextstrain/mpox/all-clades
-      #           nextclade_dataset_tag: 2026-07-07--14-07-11Z
-      #           genes: *mpoxGenes
+      - <<: *mpoxPreprocessing
+        replicas: 3
+        version:
+          - 29
     ingest:
       <<: *ingest
       configFile:
@@ -3518,10 +3520,10 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvaPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 23
+      - <<: *rsvaPreprocessing
+        replicas: 3
+        version:
+          - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3649,10 +3651,10 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      # - <<: *rsvbPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 24
+      - <<: *rsvbPreprocessing
+        replicas: 3
+        version:
+          - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3765,10 +3767,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      # - <<: *hmpvPreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 25
+      - <<: *hmpvPreprocessing
+        replicas: 2
+        version:
+          - 26
     ingest:
       <<: *ingest
       configFile:
@@ -3895,10 +3897,10 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      # - <<: *measlesPreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 28
+      - <<: *measlesPreprocessing
+        replicas: 3
+        version:
+          - 29
     ingest:
       <<: *ingest
       configFile:
@@ -3985,6 +3987,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 26
+          - 27
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -4111,6 +4114,7 @@ organisms:
       - <<: *preprocessing
         version:
           - 31
+          - 32
         configFile:
           <<: *preprocessingConfigFile
           taxon_id: 11089
@@ -4225,6 +4229,7 @@ organisms:
     - <<: *preprocessing
       version:
         - 1
+        - 2
       configFile:
         <<: *preprocessingConfigFile
         taxon_id: 64320
