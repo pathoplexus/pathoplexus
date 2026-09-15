@@ -46,6 +46,7 @@ perform_sed_replacements() {
 
 sync_s3_buckets() {
     echo "Syncing S3 buckets from production to staging..."
+    aws configure set default.s3.max_concurrent_requests 50
     aws s3 sync s3://$PROD_S3_BUCKET s3://$STAGING_S3_BUCKET --delete --profile db-clone || { echo "Error: Failed to sync S3 buckets"; exit 1; }
     echo "S3 bucket sync completed successfully!"
 }
