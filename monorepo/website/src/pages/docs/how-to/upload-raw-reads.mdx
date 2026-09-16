@@ -17,7 +17,7 @@ While it is not possible to submit raw reads files independently to Pathoplexus,
 When on the submission page, you can either click on 'Upload folder' to upload an entire folder containing raw reads files, or 'Upload files' to select individual files to upload. Once you've selected files to upload, the webpage will let you know if there are files listed in the `files.rawReads` metadata column that are missing or if you've uploaded files that are not listed in `files.rawReads`. Once all the files included in `files.rawReads` have been uploaded and linked and no unexpected files are present, you can proceed with submission.
 
 <InfoBox>
-Raw reads files must be submitted in `fastq` format, optionally compressed using `gzip`. You can provide either a single `fastq` file or a pair of `fastq` files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
+Raw reads files must be submitted as gzip-compressed FASTQ, named `.fastq.gz` or `.fq.gz`. Uncompressed FASTQ and other compression formats such as `.bz2` or `.zst` are rejected. You can provide either a single file or a pair of files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
 </InfoBox>
 
 ## Raw reads specific metadata
