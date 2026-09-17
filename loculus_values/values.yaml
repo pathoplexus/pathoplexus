@@ -1876,7 +1876,7 @@ defaultOrganismConfig: &defaultOrganismConfig
       configFile: &preprocessingConfigFile
         log_level: DEBUG
         batch_size: 100
-        create_embl_file: true
+        create_embl_file: false
         backend_request_timeout_seconds: 600
   ingest: &ingest
     image: ghcr.io/loculus-project/ingest
@@ -2290,7 +2290,6 @@ organisms:
         configFile:
           <<: *preprocessingConfigFile
           segment_classification_method: "minimizer"
-          create_embl_file: false
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           segments:
             - name: main
@@ -2613,7 +2612,6 @@ organisms:
           - 8
         configFile:
           <<: *preprocessingConfigFile
-          create_embl_file: false
           scientific_name: "Andes Virus"
           molecule_type: "genomic RNA"
           alignment_requirement: ANY
