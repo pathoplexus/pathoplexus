@@ -1,3 +1,5 @@
+## TO REVERT: create testuser and superuser on preview
+createTestAccounts: true
 preprocessingTimeout: 600
 getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
