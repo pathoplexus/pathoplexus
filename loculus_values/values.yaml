@@ -4347,6 +4347,9 @@ organisms:
         - name: "Country map"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+        - name: "Place on viral UShER tree"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://www.taxonium.org/build?mode=no_genbank&startingTreeUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Chikungunya_virus/optimized.pb.gz}}&refGbffUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Chikungunya_virus/treetime_rerooted_NC_004162.2.gbff}}&refFastaUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Chikungunya_virus/treetime_rerooted_NC_004162.2.fa}}&originalMetadataUrl={{https://angiehinrichs.github.io/viral_usher_trees/trees/Chikungunya_virus/metadata.tsv.gz}}&fastaUrl={{[unalignedNucleotideSequences|fasta]}}&metadataUrl={{[metadata]}}&organism={{Chikungunya virus}}"
       extraInputFields:
         - <<: *idConfig
         - <<: *hostConfig
