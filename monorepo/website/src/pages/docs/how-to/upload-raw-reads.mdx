@@ -9,6 +9,7 @@ import RawReadsMetadataTable from "../../../components/RawReadsMetadataTable.ast
 ### Contents:
 
 - [Raw reads specific metadata](#raw-reads-specific-metadata)
+- [Compressing your files](#compressing-your-files)
 - [Dehosting (host read removal)](#dehosting-host-read-removal)
 - [Preparing your metadata: examples](#preparing-your-metadata-examples)
 
@@ -17,7 +18,7 @@ While it is not possible to submit raw reads files independently to Pathoplexus,
 When on the submission page, you can either click on 'Upload folder' to upload an entire folder containing raw reads files, or 'Upload files' to select individual files to upload. Once you've selected files to upload, the webpage will let you know if there are files listed in the `files.rawReads` metadata column that are missing or if you've uploaded files that are not listed in `files.rawReads`. Once all the files included in `files.rawReads` have been uploaded and linked and no unexpected files are present, you can proceed with submission.
 
 <InfoBox>
-Raw reads files must be submitted in `fastq` format, optionally compressed using `gzip`. You can provide either a single `fastq` file or a pair of `fastq` files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
+Raw reads files must be submitted in `fastq` format, compressed using `gzip` ([see below](#compressing-your-files)). You can provide either a single `fastq` file or a pair of `fastq` files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
 </InfoBox>
 
 ## Raw reads specific metadata
@@ -25,6 +26,38 @@ Raw reads files must be submitted in `fastq` format, optionally compressed using
 When including raw reads files in your submission you will also need to provide additional metadata fields in your metadata file. Please refer to the table below to see which fields are required and desired when submitting raw reads and include them in your metadata file. For further details on the metadata required in your submission see our [metadata docs](/docs/concepts/metadataformat).
 
 <RawReadsMetadataTable/>
+
+## Compressing your files
+
+Raw reads files must be compressed with `gzip` before you upload them. Compressed files have the extension `.gz` (for example `raw_reads_1.fastq.gz`, or `raw_reads_1.fq.gz`). Most sequencing platforms and analysis pipelines already produce gzipped `fastq` files, so in many cases there is nothing to do. If your files are not yet compressed, you can use the instructions below.
+
+**macOS and Linux**
+
+Open a terminal, navigate to the folder containing your files, and run:
+
+```bash
+gzip raw_reads_1.fastq
+```
+
+This replaces `raw_reads_1.fastq` with `raw_reads_1.fastq.gz`. To compress all `fastq` files in the current folder at once:
+
+```bash
+gzip *.fastq
+```
+
+**Windows**
+
+Windows does not include `gzip` by default, but you can use [7-Zip](https://www.7-zip.org/) to compress your files (free and open source):
+
+1. Install 7-Zip.
+2. In File Explorer, right-click your `fastq` file (or select several files at once).
+3. Choose **7-Zip** → **Add to archive...**
+4. Set **Archive format** to `gzip` and click **OK**.
+
+This creates a `.gz` file next to your original file. When you select several files, 7-Zip creates one `.gz` file per input file, which is what we need. Please do not put multiple raw reads files into a single archive.
+
+Alternatively, if you use the Windows Subsystem for Linux (WSL), you can follow the macOS and Linux instructions above.
+
 
 ## Dehosting (host read removal)
 
