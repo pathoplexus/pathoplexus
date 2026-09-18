@@ -12,6 +12,9 @@ issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
 runDevelopmentS3: true
 traefikVersion: 3
+images:
+  deaconIndex:
+    tag: "2026-08-28-13-33@sha256:13cbc6bf729136973ed744616522598b658351a27086b0797218090cd2197637"
 fileSharing:
   outputFileUrlType: website
   maxFileSizeBytes: 2147483648 # 2 GiB
