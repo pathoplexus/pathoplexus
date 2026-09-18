@@ -73,7 +73,7 @@ podScheduling:
 runDevelopmentS3: false
 s3:
   enabled: true
-  gcEnabled: false # turn on when versioning is enabled in the bucket
+  gcEnabled: true
   gcFrequencyMinutes: 720
   gcInitialDelayMinutes: 15
   gcOrphanRetentionPeriodMinutes: 1440

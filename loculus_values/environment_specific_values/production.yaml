@@ -82,10 +82,10 @@ podScheduling:
 runDevelopmentS3: false
 s3:
   enabled: true
-  gcEnabled: false # turn on when versioning is enabled in the bucket
+  gcEnabled: true
   gcFrequencyMinutes: 720
   gcInitialDelayMinutes: 15
-  gcOrphanRetentionPeriodMinutes: 1440
+  gcOrphanRetentionPeriodMinutes: 2880 # 48h
   bucket:
     bucket: ppx-s3-bucket
     region: eu-central-1
