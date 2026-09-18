@@ -50,7 +50,7 @@ gzip *.fastq
 Windows does not include `gzip` by default, but you can use [7-Zip](https://www.7-zip.org/) to compress your files (free and open source):
 
 1. Install 7-Zip.
-2. In File Explorer, right-click your `fastq` file (or select several files at once).
+2. In File Explorer, right-click your `fastq` file.
 3. Choose **7-Zip** → **Add to archive...**
 4. Set **Archive format** to `gzip` and click **OK**.
 
@@ -136,7 +136,7 @@ You must then configure your `files.rawReads` metadata column to link each of th
 
 | id   | ... | files.rawReads                          |
 | ---- | --- | --------------------------------------- |
-| seq1 | ... | raw_reads1_fw.fq.gz raw_reads1_rv.fq.gz |
+| seq1 | ... | raw_reads_1_fw.fq.gz raw_reads_1_rv.fq.gz |
 | seq2 | ... | raw_reads_2.fq.gz                       |
 | seq3 | ... | raw_reads_3.fq.gz                       |
 
@@ -145,7 +145,7 @@ You must then configure your `files.rawReads` metadata column to link each of th
 
 After sequence processing and approval, the files will be shown as follows when viewing the sequences on Pathoplexus:
 
-- `seq1`: `raw_reads1_fw.fq.gz` `raw_reads1_rv.fq.gz` 
+- `seq1`: `raw_reads_1_fw.fq.gz` `raw_reads_1_rv.fq.gz` 
 - `seq2`: `raw_reads_2.fq.gz`
 - `seq3`: `raw_reads_3.fq.gz`
 
@@ -214,9 +214,9 @@ You can configure your `files.rawReads` metadata column to link each of these fi
 
 | id   | ... | files.rawReads                                                                                       |
 | ---- | --- | ---------------------------------------------------------------------------------------------------- |
-| seq1 | ... | raw_reads_fw.fq.gz::subfolder_1/raw_reads_fw.fq.gz raw_reads_rv.fq.gz/subfolder_1/raw_reads_rv.fq.gz |
-| seq2 | ... | raw_reads.fq.gz:subfolder_2/raw_reads.fq.gz                                                          |
-| seq3 | ... | raw_reads.fq.gz:subfolder_3/raw_reads.fq.gz                                                          |
+| seq1 | ... | raw_reads_fw.fq.gz::subfolder_1/raw_reads_fw.fq.gz raw_reads_rv.fq.gz::subfolder_1/raw_reads_rv.fq.gz |
+| seq2 | ... | raw_reads.fq.gz::subfolder_2/raw_reads.fq.gz                                                          |
+| seq3 | ... | raw_reads.fq.gz::subfolder_3/raw_reads.fq.gz                                                          |
 
 
 **End result**
