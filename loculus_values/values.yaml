@@ -10,10 +10,17 @@ gitHubMainUrl: https://github.com/pathoplexus/pathoplexus
 gitHubIssuesUrl: https://github.com/pathoplexus/pathoplexus/issues
 issuesEmail: bug@pathoplexus.org
 runDevelopmentKeycloakDatabase: true
-runDevelopmentS3: false
+runDevelopmentS3: true
 traefikVersion: 3
+fileSharing:
+  outputFileUrlType: website
+  maxFileSizeBytes: 2147483648 # 2 GiB
 s3:
-  enabled: false
+  enabled: true
+  gcEnabled: true
+  gcFrequencyMinutes: 720
+  gcInitialDelayMinutes: 15
+  gcOrphanRetentionPeriodMinutes: 1440
 developmentDatabasePersistence: false
 dataUseTerms:
   agreementHTML: >
@@ -62,6 +69,7 @@ auth:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
 disableEnaSubmission: true
 disableTaxonomyService: false
+disableRawReadsProcessingService: true
 sequenceFlagging:
   github:
     organization: pathoplexus
@@ -2398,7 +2406,7 @@ organisms:
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
     preprocessing:
-      - &yellowFeverPreprocessing
+      - &westNilePreprocessing
         <<: *preprocessing
         version:
           - 29
@@ -2411,7 +2419,7 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *yellowFeverPreprocessing
+      # - <<: *westNilePreprocessing
       #   replicas: 2
       #   version:
       #     - 29
@@ -2549,7 +2557,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 1980456
-          scientific_name: "Andes Virus"
+          scientific_name: "Orthohantavirus andesense"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: L
@@ -3734,7 +3742,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 162145
-          scientific_name: "Human Metapneumovirus"
+          scientific_name: "Human metapneumovirus"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
@@ -4080,7 +4088,7 @@ organisms:
       singleReference:
         configFile:
           taxon_id: 11089
-          scientific_name: "Yellow Fever Virus"
+          scientific_name: "Yellow fever virus"
           molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
