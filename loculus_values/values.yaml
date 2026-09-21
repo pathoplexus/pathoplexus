@@ -1669,7 +1669,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1120
         includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
-        guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
+        guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-raw-reads."
         definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368."
         preprocessing:
           function: check_regex

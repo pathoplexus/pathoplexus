@@ -11,13 +11,13 @@ We urge users to not upload their sequences independently to INSDC to prevent da
 
 ## ENA Submission
 
-In order to submit your sequences to ENA we need to create a Project, Sample and Assembly on your behalf, see [ENA's metadata model](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/metadata.html) for more information.
+In order to submit your sequences to ENA we need to create a Project, Sample and Assembly on your behalf, plus an Experiment and Run for any raw reads you submitted, see [ENA's metadata model](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/metadata.html) for more information.
 
-In ENA, Projects contain general information on your group and the organism being sequenced. We create one Project per each group and organism. In ENA Samples contain metadata information and Assemblies contain the actual sequences. We create one sample and one assembly object per sequence.
+In ENA, Projects contain general information on your group and the organism being sequenced. We create one Project per each group and organism. In ENA Samples contain metadata information and Assemblies contain the actual sequences. We create one sample and one assembly object per sequence, and one experiment and one run object per sequence that has raw reads attached.
 
 ## Citing your Sequences
 
-If you would like to cite your sequences in a publication you can use your Bioproject accession (this will start with `PRJ`), Biosample accession (this will start with `SAM`) and Genome Assembly accession (starting with `GCA`).
+If you would like to cite your sequences in a publication you can use your Bioproject accession (this will start with `PRJ`), Biosample accession (this will start with `SAM`), Genome Assembly accession (starting with `GCA`) and, for raw reads, the Run accession (starting with `ERR`).
 
 ## Mapping of Pathoplexus Metadata Fields to ENA Metadata Fields
 

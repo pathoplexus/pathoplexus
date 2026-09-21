@@ -40,14 +40,14 @@ This section describes how to perform Bulk submissions, where you can submit mul
 ### Expected data format
 
 - Sequence data in `fasta` format with a unique fasta ID per sequence. The fasta ID is the start of the header up to and excluding the first white space character. For example the fasta header `>seq_12` has fasta ID `seq_12`.
-- Raw reads files in `fastq` format (optional).
+- Raw reads files in `fastq.gz` format (optional).
 - Metadata for each sample with a unique `id`.
   - When uploading through the API, only `tsv` is supported.
   - When uploading through the website, `xlsx` files are also accepted.
   - Each organism has its own metadata template available on the submission page.
   - On the website, you can map columns from your file to the expected metadata fields using the **Add column mapping** option.
 
-The metadata and sequence data files can be compressed: accepted formats here are .zst, .gz, .zip and .xz. Raw reads files may also be compressed, but only using the .gz format (to facilitate submission to INSDC).
+The metadata and sequence data files can be compressed: accepted formats here are .zst, .gz, .zip and .xz. Raw reads files must be compressed, and only the .gz format is accepted (to facilitate submission to INSDC).
 
 Metadata and sequences will be matched using the `id` column in the metadata (i.e., the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g., `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
 

@@ -142,7 +142,7 @@ The current Pathoplexus <i>Restricted Use</i> terms do not address commercial PA
 
 We’ve tried to make sharing your data as easy and flexible as possible! 
 
-You can upload data to any of our supported pathogens by first [creating an account](/docs/how-to/create-account) and then [submitting your sequences](/docs/how-to/upload-sequences) on the website or via the API (useful for computational pipelines).
+You can upload data to any of our supported pathogens by first [creating an account](/docs/how-to/create-account) and then [submitting your sequences](/docs/how-to/upload-sequences), optionally together with the [raw reads](/docs/how-to/upload-raw-reads) they were generated from, on the website or via the API (useful for computational pipelines).
 At submission, you can choose whether you’d like your data to be [protected for up to one year](/about/terms-of-use/restricted-data), or [open immediately](/about/terms-of-use/open-data).
 Once the data is open, it also appears on INSDC-member databases.
 
@@ -175,7 +175,7 @@ If you've selected the _Restricted-Use_ data terms, your data will not be submit
 <summary> <span class="faq">Should I submit my data to both INSDC-member databases (Genbank, ENA, etc) and Pathoplexus?</span> </summary>
 
 No, you should _not_ submit your data to both INSDC and Pathoplexus, as it may result in your data being duplicated in both places.
-If you submit to INSDC, we will pull your data into Pathoplexus, so there's no need to submit it here!
+If you submit to INSDC, we will pull your data into Pathoplexus, so there's no need to submit it here! Note that we ingest consensus sequences from the INSDC but not raw reads, so if your reads are already there, give their accession in the `Raw reads accession` metadata field when you submit.
 If you submit to Pathoplexus, the data will go to INSDC when you specify (and immediately, if you select the data is open), so there's no need to upload it to INSDC yourself - we'll take care of that!
 
 Since we keep a record of all the data we pass onto INSDC, we ensure we don't duplicate it - but we can't do this if users upload to both places separately!
