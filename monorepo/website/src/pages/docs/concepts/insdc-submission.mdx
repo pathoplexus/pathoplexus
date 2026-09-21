@@ -1,6 +1,6 @@
 ---
 layout: ../../../layouts/DocLayout.astro
-title: "INSDC Submission"
+title: 'INSDC Submission'
 ---
 
 [Open](/about/terms-of-use/data-use-terms#41-open-data) sequences will be made publicly available through the [INSDC databases (ENA, DDBJ, NCBI)](https://www.insdc.org/). To accomplish this, we will upload sequences on your behalf to [ENA](https://www.ebi.ac.uk/ena/browser/about). After successful submission to ENA (this can take up to 48 hours) we will return the accessions of your sequences in ENA.
@@ -52,4 +52,14 @@ To facilitate data standardization we map our metadata to ENA's [ENA virus patho
 | PROGRAM                     | sequencingInstrument, default=Unknown |
 | PLATFORM                    | sequencingProtocol, default=Unknown   |
 | COVERAGE                    | depthOfCoverage, default=1            |
-| MOLECULETYPE                | NaN                                   |
+| MOLECULETYPE                | NaN (set based on organism)           |
+| RUN_REF                     | insdcRawReadsAccession                |
+
+| ENA Run-related Fields | Loculus Fields                                        |
+| ---------------------- | ----------------------------------------------------- |
+| INSTRUMENT             | sequencingInstrument                                  |
+| PLATFORM               | sequencingInstrument                                  |
+| LIBRARY_SOURCE         | sequencingLibrarySource, default=OTHER                |
+| LIBRARY_SELECTION      | sequencingLibrarySelection, default=unspecified       |
+| LIBRARY_STRATEGY       | sequencingLibrarySelection, default=OTHER             |
+| INSERT_SIZE            | sequencingLibrarySelection (only if reads are paired) |
