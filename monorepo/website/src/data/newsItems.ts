@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-09-22-announcing-raw-reads',
+        title: 'Pathoplexus announces support for raw reads',
+        date: '22 September 2026',
+        excerpt:
+            'Pathoplexus is excited to announce that, as of today, you can optionally include raw sequencing reads in your submissions. By hosting raw reads data alongside the consensus sequences that were generated from them, we seek to...',
+    },
+    {
         slug: '2026-08-27-pathoplexus-turns-two',
         title: 'Pathoplexus Turns Two',
         date: '27 August 2026',
