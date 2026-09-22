@@ -21,6 +21,8 @@ When on the submission page, you can either click on 'Upload folder' to upload a
 Raw reads files must be submitted in `fastq.gz` format, `fastq` files should be compressed using `gzip` ([see below](#compressing-your-files)). You can provide either a single `fastq.gz` file or a pair of `fastq.gz` files for consensus sequences generated from single-end or paired-end reads, respectively. Note that if you are submitting paired-end reads, they **must** be provided as two separate files: one with the forward reads and the other with the reverse. Interleaved files are not supported.
 </InfoBox>
 
+If the raw reads for a sequence are already available in the INSDC, do not upload them again. Instead, supply their run, BioSample, and BioProject accessions in the INSDC-linking metadata fields `insdcRawReadsAccession`, `biosampleAccession`, and `bioprojectAccession`, and we will link to them rather than submitting a second copy.
+
 ## Raw reads specific metadata
 
 When including raw reads files in your submission you will also need to provide additional metadata fields in your metadata file. Please refer to the table below to see which fields are required and desired when submitting raw reads and include them in your metadata file. For further details on the metadata required in your submission see our [metadata docs](/docs/concepts/metadataformat).
@@ -227,6 +229,5 @@ After sequence processing and approval, the files will be shown as follows when 
 - `seq2`: `raw_reads.fq.gz`
 - `seq3`: `raw_reads.fq.gz`
 </details>
-
 
 

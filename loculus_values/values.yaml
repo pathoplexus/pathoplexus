@@ -788,7 +788,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         header: "INSDC"
         orderOnDetailsPage: 935
         includeInDownloadsByDefault: true
-        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. If you add this field, you should also add the corresponding BioProject."
+        guidance: "Only add this field if you have already submitted raw reads for this sequence to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-raw-reads. If you add this field we will not create a new BioSample for you and assume you have submitted all required metadata in the linked BioSample. If you add this field, you should also add the corresponding BioProject."
         definition: "Accession of corresponding public BioSample of the raw reads in the INSDC."
         example: "SAMN12345678"
         oneHeader: true
@@ -1667,7 +1667,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 1120
         includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
-        guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-sequences."
+        guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-raw-reads."
         definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368."
         preprocessing:
           function: check_regex
