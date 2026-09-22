@@ -47,7 +47,7 @@ This section describes how to perform Bulk submissions, where you can submit mul
   - Each organism has its own metadata template available on the submission page.
   - On the website, you can map columns from your file to the expected metadata fields using the **Add column mapping** option.
 
-The metadata and sequence data files can be compressed: accepted formats here are .zst, .gz, .zip and .xz.
+The metadata and sequence data files can be compressed: accepted formats here are .zst, .gz, .zip and .xz. Raw read files must be gzip compressed.
 
 Metadata and sequences will be matched using the `id` column in the metadata (i.e., the sequence with fasta ID `seq_12` will be joined with the metadata entry with `id` of `seq_12`). You can also provide an additional metadata field called `fastaIds` containing a space-separated list of fasta IDs to link multiple sequences to a single submission, e.g., `seq_12_A seq_12_B`. This can for example be used when submitting multi-segmented pathogens.
 
