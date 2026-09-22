@@ -114,8 +114,6 @@ defaultOrganismConfig: &defaultOrganismConfig
           - name: rawReads
             displayName: Raw reads
     files:
-      - name: annotations
-        displayName: Annotations
       - name: rawReads
         displayName: Raw reads
     loadSequencesAutomatically: true
