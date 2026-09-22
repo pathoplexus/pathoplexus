@@ -1,6 +1,6 @@
 ---
 layout: ../../../layouts/DocLayout.astro
-title: 'INSDC Submission'
+title: "INSDC Submission"
 ---
 
 [Open](/about/terms-of-use/data-use-terms#41-open-data) sequences will be made publicly available through the [INSDC databases (ENA, DDBJ, NCBI)](https://www.insdc.org/). To accomplish this, we will upload sequences on your behalf to [ENA](https://www.ebi.ac.uk/ena/browser/about). After successful submission to ENA (this can take up to 48 hours) we will return the accessions of your sequences in ENA.
@@ -13,11 +13,11 @@ We urge users to not upload their sequences independently to INSDC to prevent da
 
 In order to submit your sequences to ENA we need to create a Project, Sample and Assembly on your behalf, plus an Experiment and Run for any raw reads you submitted, see [ENA's metadata model](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/metadata.html) for more information.
 
-In ENA, Projects contain general information on your group and the organism being sequenced. We create one Project per each group and organism. In ENA Samples contain metadata information and Assemblies contain the actual sequences. We create one sample and one assembly object per sequence, and one experiment and one run object per sequence that has raw reads attached.
+In ENA, Projects contain general information on your group and the organism being sequenced. We create one Project per each group and organism. In ENA Samples contain metadata information and Assemblies contain the actual sequences. We create one sample and one assembly object per consensus sequence, and additionally one experiment and one run object if you also submitted raw reads.
 
 ## Citing your Sequences
 
-If you would like to cite your sequences in a publication you can use your Bioproject accession (this will start with `PRJ`), Biosample accession (this will start with `SAM`), Genome Assembly accession (starting with `GCA`) and, for raw reads, the Run accession (starting with `ERR`).
+If you would like to cite your sequences in a publication you can use your Bioproject accession (this will start with `PRJ`), Biosample accession (this will start with `SAM`), INSDC accession(s) (varying prefix) and, for raw reads, the Run accession (starting with `ERR`). For segmented viruses, the assembly accession (starts with `GCA`) is ideal as it refers to all segments, however NCBI does not currently index GCA accessions, only ENA does.
 
 ## Mapping of Pathoplexus Metadata Fields to ENA Metadata Fields
 
@@ -52,8 +52,7 @@ To facilitate data standardization we map our metadata to ENA's [ENA virus patho
 | PROGRAM                     | sequencingInstrument, default=Unknown |
 | PLATFORM                    | sequencingProtocol, default=Unknown   |
 | COVERAGE                    | depthOfCoverage, default=1            |
-| MOLECULETYPE                | NaN (set based on organism)           |
-| RUN_REF                     | insdcRawReadsAccession                |
+| MOLECULETYPE                | (automatically set based on organism)           |
 
 | ENA Run-related Fields | Loculus Fields                                        |
 | ---------------------- | ----------------------------------------------------- |
@@ -62,4 +61,4 @@ To facilitate data standardization we map our metadata to ENA's [ENA virus patho
 | LIBRARY_SOURCE         | sequencingLibrarySource, default=OTHER                |
 | LIBRARY_SELECTION      | sequencingLibrarySelection, default=unspecified       |
 | LIBRARY_STRATEGY       | sequencingLibrarySelection, default=OTHER             |
-| INSERT_SIZE            | sequencingLibrarySelection (only if reads are paired) |
+| INSERT_SIZE            | pairedEndInsertSize (only if reads are paired) |
