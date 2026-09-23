@@ -4372,6 +4372,7 @@ organisms:
           preprocessing:
             inputs: { input: nextclade.clade }
           columnWidth: 80
+          order: 5
           orderOnDetailsPage: 740
         - <<: *gisaidIsolateIdMetadataField
       website:
@@ -4385,7 +4386,7 @@ organisms:
           - geoLocAdmin1
           - length
           - clade
-          - hostNameScientific  
+          - hostNameScientific
     preprocessing:
     - <<: *preprocessing
       version:
@@ -4395,7 +4396,7 @@ organisms:
         segments:
           - name: main
             references:
-            - name: singleReference 
+            - name: singleReference
               nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
               nextclade_dataset_tag: 2026-04-14--11-55-23Z
               genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
@@ -4434,7 +4435,7 @@ organisms:
             - name: 6K
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/6K.fasta]]"
             - name: E1
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"        
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
