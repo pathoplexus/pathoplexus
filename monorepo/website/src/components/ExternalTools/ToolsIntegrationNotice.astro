@@ -2,20 +2,21 @@
 import DashiconsExternal from '~icons/dashicons/external';
 ---
 
-<div class="mt-12 8 border-t border-gray-200">
-    <h3 class="text-base font-semibold text-main my-3 mt-4">
-        Want to integrate your resource?
-    </h3>
-    <p>
-        We welcome integrations with external resources. Our API provides programmatic access to sequence data and metadata. If you wish to add your resource to the list, please send us a request through GitHub.
+<div class='mt-12 border-t border-gray-200 pt-2'>
+    <h3 class='text-base font-semibold text-main my-3 mt-4'>Want to integrate your resource?</h3>
+    <p class='text-gray-700'>
+        We welcome integrations with external resources. Our API provides programmatic access to sequence data and
+        metadata. If you wish to add your resource to the list, please send us a request through GitHub.
     </p>
-    <div class="mt-4 flex items-center gap-6">
-        <a href="https://github.com/pathoplexus/pathoplexus/issues" class="outlineButton flex">
+    <div class='mt-4 flex items-center gap-6'>
+        <a
+            href='https://github.com/pathoplexus/pathoplexus/issues'
+            class='inline-flex items-center gap-1 rounded-md border border-primary-600/60 px-4 py-1.5 text-sm font-medium text-primary-700 no-underline transition-colors hover:bg-primary-50 hover:no-underline'
+        >
             Submit request
             <DashiconsExternal className='ml-1' />
         </a>
-        <a href="/api-documentation"
-           class="underline">
+        <a href='/api-documentation' class='text-sm text-primary-700 underline hover:text-primary-800'>
             View API documentation
         </a>
     </div>

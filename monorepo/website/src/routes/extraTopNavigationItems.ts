@@ -2,7 +2,7 @@
 import type { TopNavigationItems } from './navigationItems.ts';
 import PresentationIcon from '~icons/tabler/presentation';
 
-export const extraStaticTopNavigationItems = [
+export const extraStaticTopNavigationItems: TopNavigationItems = [
     {
         text: 'News',
         path: '/news/',
@@ -22,6 +22,6 @@ export const extraSequenceRelatedTopNavigationItems = (organism: string | undefi
         text: 'Resources',
         path: `/${organism}/external-resources`,
         icon: PresentationIcon,
-    }
+    };
     return [resources];
-}
+};
