@@ -1233,7 +1233,7 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2100
       - name: sequencingApproach
         definition: The overall approach used to generate the sequencing library.
-        guidance: 'Select the approach from the pick list. When raw reads are submitted to the INSDC, it is used to derive the library strategy, source and selection, so you only need to provide `sequencingAssayType`, `sequencingLibrarySource` and `sequencingLibrarySelection` if the values derived from the approach do not describe your library. `Tiled amplicon`: overlapping PCR amplicons covering the genome (e.g. ARTIC-style primer schemes). `Targeted PCR`: one or a few PCR products (including Sanger sequencing of a gene). `Hybrid capture`: enrichment with hybridisation probes/baits. `Molecular inversion probe capture`: enrichment with molecular inversion (padlock) probes. `Shotgun metagenomic`: random priming or fragmentation of total nucleic acid, without targeted enrichment. `Other`: none of the above; please provide the three library fields if you are submitting raw reads.'
+        guidance: 'Select the approach from the pick list. When raw reads are submitted to the INSDC, it is used to derive the library strategy, source and selection. `Tiled amplicon`: overlapping PCR amplicons covering the genome (e.g. ARTIC-style primer schemes). `Targeted PCR`: one or a few PCR products (including Sanger sequencing of a gene). `Hybrid capture`: enrichment with hybridisation probes/baits. `Molecular inversion probe capture`: enrichment with molecular inversion (padlock) probes. `Shotgun metagenomic`: random priming or fragmentation of total nucleic acid, without targeted enrichment. `Other`: none of the above.'
         desired: true
         example: Tiled amplicon
         displayName: Sequencing approach
@@ -1250,85 +1250,10 @@ defaultOrganismConfig: &defaultOrganismConfig
           - name: "Molecular inversion probe capture"
           - name: "Shotgun metagenomic"
           - name: "Other"
-      - name: sequencingLibrarySelection
-        definition: The method used to select or enrich the source material.
-        guidance: 'Provide the name of the DNA or RNA sequencing library selection technology used in your study, please select an option from the pick list.'
-        desired: true
-        example: PCR
-        displayName: Sequencing library selection
-        header: Sequencing
-        orderOnDetailsPage: 2120
-        preprocessing:
-          function: process_options
-          inputs:
-            input: sequencingLibrarySelection
-        options:
-          # ena-webin-cli -context reads -fields
-          # ena-webin-cli=9.0.3
-          # Last checked: 09.06.2026
-          # Fields listed in LIBRARY_SELECTION
-          - name: "RANDOM"
-          - name: "PCR"
-          - name: "RANDOM PCR"
-          - name: "RT-PCR"
-          - name: "HMPR"
-          - name: "MF"
-          - name: "repeat fractionation"
-          - name: "size fractionation"
-          - name: "MSLL"
-          - name: "cDNA"
-          - name: "cDNA_randomPriming"
-          - name: "cDNA_oligo_dT"
-          - name: "PolyA"
-          - name: Oligo-dT
-          - name: Inverse rRNA
-          - name: Inverse rRNA selection
-          - name: "ChIP"
-          - name: "ChIP-Seq"
-          - name: "MNase"
-          - name: "DNase"
-          - name: "Hybrid Selection"
-          - name: "Reduced Representation"
-          - name: "Restriction Digest"
-          - name: "5-methylcytidine antibody"
-          - name: "MBD2 protein methyl-CpG binding domain"
-          - name: "CAGE"
-          - name: "RACE"
-          - name: "MDA"
-          - name: "padlock probes capture method"
-          - name: "other"
-          - name: "unspecified"
-      - name: sequencingLibrarySource
-        definition: The type of biomaterial that was sequenced, also called library source in the INSDC.
-        guidance: 'Provide the name of the DNA or RNA sequencing library source used in your study, please select an option from the pick list.'
-        desired: true
-        example: VIRAL RNA
-        displayName: Sequencing library source
-        header: Sequencing
-        orderOnDetailsPage: 2125
-        preprocessing:
-          function: process_options
-          inputs:
-            input: sequencingLibrarySource
-        options:
-          # ena-webin-cli -context reads -fields
-          # ena-webin-cli=9.0.3
-          # Last checked: 09.06.2026
-          # Fields listed in LIBRARY_SOURCE
-          - name: "GENOMIC"
-          - name: "GENOMIC SINGLE CELL"
-          - name: "TRANSCRIPTOMIC"
-          - name: "TRANSCRIPTOMIC SINGLE CELL"
-          - name: "METAGENOMIC"
-          - name: "METATRANSCRIPTOMIC"
-          - name: "SYNTHETIC"
-          - name: "VIRAL RNA"
-          - name: "OTHER"
       - name: sequencingAssayType
         ontology_id: GENEPIO:0100997
-        definition: The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.
+        definition: 'Deprecated, please use `sequencingApproach` instead. The overarching sequencing technique that was used to determine the sequence of a biomaterial, also called library strategy in the INSDC.'
         guidance: Select the sequencing technology from the pick list.
-        desired: true
         example: WGS
         displayName: Sequencing assay type
         header: Sequencing
