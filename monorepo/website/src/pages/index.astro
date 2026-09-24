@@ -1,7 +1,7 @@
 ---
 import CallToActionButton from '../components/IndexPage/CallToActionButton.astro';
 import Faq from '../components/IndexPage/FAQ.mdx';
-import OrganismCard from '../components/IndexPage/OrganismCard.astro';
+import OrganismCardGrid from '../components/IndexPage/OrganismCardGrid.astro';
 import WelcomeMessage from '../components/IndexPage/WelcomeMessage.astro';
 import { getOrganismStatisticsMap } from '../components/IndexPage/getOrganismStatistics';
 import { getConfiguredOrganisms, getWebsiteConfig } from '../config';
@@ -54,13 +54,13 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
                             <ul class='mt-3 space-y-2 text-sm text-slate-700'>
                                 <li class='flex items-start gap-2'>
                                     <span
-                                        class='mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70'
+                                        class='mt-1.75 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70'
                                         aria-hidden='true'></span>
                                     Submit data through a simple web interface or programmatically via our API.
                                 </li>
                                 <li class='flex items-start gap-2'>
                                     <span
-                                        class='mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70'
+                                        class='mt-1.75 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70'
                                         aria-hidden='true'></span>
                                     Browse sequences with powerful search and filtering options.
                                 </li>
@@ -131,22 +131,12 @@ const hasAggregateStats = aggregateSubmissionStats.total > 0;
 
         <section>
             <h2 class='text-center text-2xl font-semibold text-slate-900'>Explore the data</h2>
-            <div class='mt-8 flex justify-center'>
-                <div
-                    class=`flex flex-wrap justify-center gap-x-5 gap-y-4 ${configuredOrganisms.length === 5 ? 'max-w-4xl' : ''}`
-                >
-                    {
-                        configuredOrganisms.map(({ key, displayName, image }) => (
-                            <OrganismCard
-                                key={key}
-                                image={image}
-                                displayName={displayName}
-                                organismStatistics={organismStatisticsMap.get(key)!}
-                                numberDaysAgoStatistics={numberDaysAgoStatistics}
-                            />
-                        ))
-                    }
-                </div>
+            <div class='mt-8'>
+                <OrganismCardGrid
+                    organisms={configuredOrganisms}
+                    organismStatisticsMap={organismStatisticsMap}
+                    numberDaysAgoStatistics={numberDaysAgoStatistics}
+                />
             </div>
         </section>
 
