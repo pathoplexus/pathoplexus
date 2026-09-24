@@ -4300,7 +4300,7 @@ organisms:
           <<: &zikaTaxon
             taxon_id: 64320
             scientific_name: "Zika virus"
-          molecule_type: "genomic RNA"
+            molecule_type: "genomic RNA"
     preprocessing:
     - <<: *preprocessing
       version:
@@ -4411,12 +4411,19 @@ organisms:
           - length
           - clade
           - hostNameScientific
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &chikungunyaTaxon
+            taxon_id: 37124
+            scientific_name: "Chikungunya virus"
+            molecule_type: "genomic RNA"
     preprocessing:
     - <<: *preprocessing
       version:
         - 1
       configFile:
-        <<: *preprocessingConfigFile
+        <<: [*preprocessingConfigFile, *chikungunyaTaxon]
         segments:
           - name: main
             references:
@@ -4429,12 +4436,6 @@ organisms:
       configFile:
         <<: *defaultIngestConfigFile
         taxon_id: 3426298 #Alphavirus chikungunya
-    enaDeposition:
-      singleReference:
-        configFile:
-          taxon_id: 37124
-          scientific_name: "Chikungunya virus"
-          molecule_type: "genomic RNA"
     referenceGenomes:
       - name: "main"
         references:
