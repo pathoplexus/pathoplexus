@@ -7,11 +7,11 @@ interface Props {
 const { href, primary = false } = Astro.props;
 
 const baseClasses =
-    'inline-flex items-center justify-center rounded-md px-3 md:px-5 py-2 text-sm sm:text-base font-semibold shadow-xs transition-colors duration-150 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40 no-underline hover:no-underline!';
+    'inline-flex items-center justify-center rounded-md px-3 md:px-5 py-2 text-base font-semibold text-primary shadow-xs transition-colors duration-150 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/40 no-underline hover:no-underline';
 
 const variantClasses = primary
-    ? 'border border-primary-600/70 bg-primary-100 text-primary-800 hover:bg-primary-200 hover:text-primary-900'
-    : 'border border-primary/40 bg-white text-primary-700 hover:bg-primary-50 hover:text-primary-800';
+    ? 'border border-primary/60 bg-primary-50 hover:bg-primary-200'
+    : 'border border-primary/40 bg-white hover:bg-primary/10';
 ---
 
 <a class={`${baseClasses} ${variantClasses}`} href={href}>
