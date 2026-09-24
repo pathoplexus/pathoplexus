@@ -1,3 +1,5 @@
+createTestAccounts: true
+disableIngest: true
 preprocessingTimeout: 600
 getSubmissionListLimitSeconds: 3600
 robotsNoindexHeader: true
