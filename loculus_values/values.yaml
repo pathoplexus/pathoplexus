@@ -828,7 +828,6 @@ defaultOrganismConfig: &defaultOrganismConfig
             date: sampleReceivedDate
         header: Sample details
         orderOnDetailsPage: 260
-        desired: true
       - name: sampleType
         displayName: Sample type
         header: Sampling
@@ -897,7 +896,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Collection device
         header: Sampling
         orderOnDetailsPage: 1360
-        desired: true
       - name: collectionMethod
         ontology_id: GENEPIO:0001241
         definition: The process used to collect the sample e.g. phlebotomy, necropsy.
@@ -906,7 +904,6 @@ defaultOrganismConfig: &defaultOrganismConfig
         displayName: Collection method
         header: Sampling
         orderOnDetailsPage: 1380
-        desired: true
       - name: foodProduct
         ontology_id: GENEPIO:0100444
         definition: A material consumed and digested for nutritional value or enjoyment, including animal feed.
@@ -1089,7 +1086,6 @@ defaultOrganismConfig: &defaultOrganismConfig
             date: sequencingDate
         header: Sequencing
         orderOnDetailsPage: 2020
-        desired: true
       - name: ampliconPcrPrimerScheme
         ontology_id: GENEPIO:0001456
         definition: The specifications of the primers (primer sequences, binding positions, fragment size generated etc) used to generate the amplicons to be sequenced.
