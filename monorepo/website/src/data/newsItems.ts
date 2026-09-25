@@ -7,6 +7,13 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
     {
+        slug: '2026-09-29-expanding-pathoplexus-chikungunya',
+        title: 'Expanding Pathoplexus: Chikungunya virus added',
+        date: '29 September 2026',
+        excerpt:
+            'Today, Pathoplexus launches an additional viral pathogen: Chikungunya virus. Chikungunya virus (CHIKV) derives its name from a word in the “Kimakonde” language of southern Tanzania, meaning “that which bends up” and describes…',
+    },
+    {
         slug: '2026-09-22-announcing-raw-reads',
         title: 'Pathoplexus announces support for raw reads',
         date: '22 September 2026',
