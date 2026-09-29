@@ -83,7 +83,7 @@ siloImport:
   hardRefreshIntervalSeconds: 100_000 # ~27 hours
   pollIntervalSeconds: 120
 taxonomyService:
-  dbVersion: "ncbi_taxonomy_2026-06-01"
+  dbVersion: "ncbi_taxonomy_2026-09-01"
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
   taxonomy_service_url: &taxonomy_service_url http://loculus-taxonomy-service:5000
 pipelineVersionUpgradeCheckIntervalSeconds: 300
