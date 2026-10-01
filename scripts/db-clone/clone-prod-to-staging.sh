@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-# This script orchestrates the cloning of Keycloak and Loculus databases from production to staging
-# Keycloak is dumped second and loaded first to prevent potential race conditions
+# Orchestrates cloning Keycloak and Loculus databases from production to staging.
+# Keycloak is dumped second and loaded first to prevent race conditions.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CHILD_SCRIPT="$SCRIPT_DIR/clone.sh"
@@ -17,6 +17,7 @@ STAGING_KC_USER="staging_keycloak_user"
 STAGING_LOC_USER="staging_loculus_user"
 PROD_S3_BUCKET="ppx-s3-bucket"
 STAGING_S3_BUCKET="ppx-staging-s3-bucket"
+RESTART_CMD="kubectl rollout restart deployment/loculus-backend -n staging"
 S3_SYNC_LOG=""
 S3_SYNC_PID=""
 LOC_SED_PID=""
@@ -24,25 +25,14 @@ KC_SED_PID=""
 
 cleanup() {
     for pid in "${S3_SYNC_PID:-}" "${LOC_SED_PID:-}" "${KC_SED_PID:-}"; do
-        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
-            kill "$pid" 2>/dev/null || true
-        fi
+        [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null && kill "$pid" 2>/dev/null || true
     done
-    if [ -n "${S3_SYNC_LOG:-}" ] && [ -f "$S3_SYNC_LOG" ]; then
-        rm -f "$S3_SYNC_LOG"
-    fi
+    [ -n "${S3_SYNC_LOG:-}" ] && rm -f "$S3_SYNC_LOG"
 }
 trap cleanup EXIT
 
-ensure_s5cmd() {
-    if ! command -v s5cmd >/dev/null 2>&1; then
-        "$SCRIPT_DIR/install-s5cmd.sh"
-        export PATH="$HOME/.local/bin:$PATH"
-    fi
-}
-
 start_s3_sync_background() {
-    ensure_s5cmd
+    command -v s5cmd >/dev/null 2>&1 || "$SCRIPT_DIR/install-s5cmd.sh"
 
     echo "Verifying S3 bucket credentials and access..."
     s5cmd --profile db-clone ls "s3://$PROD_S3_BUCKET" >/dev/null
@@ -56,10 +46,7 @@ start_s3_sync_background() {
 }
 
 wait_for_s3_sync() {
-    if [ -z "${S3_SYNC_PID:-}" ]; then
-        return 0
-    fi
-
+    [ -z "${S3_SYNC_PID:-}" ] && return 0
     echo "Waiting for background S3 sync to complete..."
     local pid="$S3_SYNC_PID"
     S3_SYNC_PID=""
@@ -68,7 +55,6 @@ wait_for_s3_sync() {
         cat "$S3_SYNC_LOG" >&2
         exit 1
     fi
-
     echo "S3 bucket sync completed successfully!"
     grep -A 20 -E "^Operation[[:space:]]+Total" "$S3_SYNC_LOG" || true
 }
@@ -78,14 +64,12 @@ wait_for_s3_sync() {
 perform_sed_replacements() {
     local file="$1"
     echo "Performing sed replacements on $file..."
-    # Abort the script if a line with `@` contains the word "prod" to prevent altering sensitive data
+    # Abort if a line with `@` contains "prod" to prevent altering sensitive data
     if awk '/@/ && /prod_/ { found=1; exit } END { exit !found }' "$file"; then
-        echo "Error: Found 'prod' in line with '@' in $file. Aborting to prevent changing sensitive data." >&2
+        echo "Error: Found 'prod' in line with '@' in $file. Aborting." >&2
         exit 1
     fi
 
-    # Do not perform replacements on lines that contain the protected URL
-    # see https://github.com/pathoplexus/pathoplexus/issues/1127
     local protected_url='https://pathoplexus.org/about/governance/minutes/2026-06-01_EB_Resolutions.pdf'
     local placeholder='__PROTECTED_PATHOPLEXUS_URL__'
 
@@ -101,7 +85,6 @@ perform_sed_replacements() {
 
 echo "Dumping production Loculus database..."
 $CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP
-# Perform sed replacements on Loculus dump in the background while Keycloak is dumped
 perform_sed_replacements "$PROD_LOC_DUMP" &
 LOC_SED_PID=$!
 
@@ -110,15 +93,13 @@ $CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
 perform_sed_replacements "$PROD_KC_DUMP" &
 KC_SED_PID=$!
 
-# Start S3 sync immediately after DB dumps finish so it runs concurrently with DB loading.
-# Syncing files after the dump guarantees no files referenced by the dumped db can be missing.
+# Start S3 sync immediately after DB dumps finish (runs concurrently with DB loading)
 start_s3_sync_background
 
-# Ensure sed replacements succeeded BEFORE loading into staging databases
+# Ensure sed modifications succeed before touching staging databases
 echo "Validating database dump replacements..."
-wait "$KC_SED_PID"
+wait "$KC_SED_PID" && wait "$LOC_SED_PID"
 KC_SED_PID=""
-wait "$LOC_SED_PID"
 LOC_SED_PID=""
 
 echo "Loading Keycloak dump to staging..."
@@ -127,17 +108,13 @@ $CHILD_SCRIPT load $STAGING_KC_DB $PROD_KC_DUMP $STAGING_KC_USER
 echo "Loading Loculus dump to staging..."
 $CHILD_SCRIPT load $STAGING_LOC_DB $PROD_LOC_DUMP $STAGING_LOC_USER
 
-# Ensure S3 sync has finished before completing the clone
 wait_for_s3_sync
 
 echo "Cloning process completed successfully!"
 if command -v kubectl >/dev/null 2>&1 && kubectl --request-timeout=5s get deployment/loculus-backend -n staging >/dev/null 2>&1; then
     echo "Restarting staging backend deployment..."
-    if ! kubectl rollout restart deployment/loculus-backend -n staging; then
-        echo "Warning: Backend rollout restart failed. Please restart manually:" >&2
-        echo "  kubectl rollout restart deployment/loculus-backend -n staging" >&2
-    fi
+    $RESTART_CMD || echo "Warning: Backend restart failed. Please run manually: $RESTART_CMD" >&2
 else
     echo "Please restart the backend to apply changes:"
-    echo "  kubectl rollout restart deployment/loculus-backend -n staging"
+    echo "  $RESTART_CMD"
 fi
