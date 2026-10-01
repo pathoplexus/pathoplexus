@@ -138,5 +138,10 @@ $CHILD_SCRIPT load $STAGING_LOC_DB $PROD_LOC_DUMP $STAGING_LOC_USER
 wait_for_s3_sync
 
 echo "Cloning process completed successfully!"
-echo "Please restart the backend to apply changes:"
-echo "  kubectl rollout restart deployment/loculus-backend -n staging"
+if command -v kubectl >/dev/null 2>&1 && kubectl get deployment/loculus-backend -n staging >/dev/null 2>&1; then
+    echo "Restarting staging backend deployment..."
+    kubectl rollout restart deployment/loculus-backend -n staging
+else
+    echo "Please restart the backend to apply changes:"
+    echo "  kubectl rollout restart deployment/loculus-backend -n staging"
+fi
