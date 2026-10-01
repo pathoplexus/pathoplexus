@@ -50,7 +50,7 @@ start_s3_sync_background() {
 
     echo "Starting S3 bucket sync in the background..."
     S3_SYNC_LOG=$(mktemp -t s3_sync_XXXXXX.log)
-    s5cmd --profile db-clone --numworkers 256 --stat sync --delete \
+    s5cmd --profile db-clone --stat sync --delete \
         "s3://$PROD_S3_BUCKET/*" "s3://$STAGING_S3_BUCKET/" > "$S3_SYNC_LOG" 2>&1 &
     S3_SYNC_PID=$!
 }
