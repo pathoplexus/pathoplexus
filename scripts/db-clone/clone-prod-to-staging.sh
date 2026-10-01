@@ -17,6 +17,73 @@ STAGING_KC_USER="staging_keycloak_user"
 STAGING_LOC_USER="staging_loculus_user"
 PROD_S3_BUCKET="ppx-s3-bucket"
 STAGING_S3_BUCKET="ppx-staging-s3-bucket"
+S3_SYNC_LOG=""
+S3_SYNC_PID=""
+LOC_SED_PID=""
+KC_SED_PID=""
+
+cleanup() {
+    for pid in "${S3_SYNC_PID:-}" "${LOC_SED_PID:-}" "${KC_SED_PID:-}"; do
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+            kill "$pid" 2>/dev/null || true
+        fi
+    done
+    if [ -n "${S3_SYNC_LOG:-}" ] && [ -f "$S3_SYNC_LOG" ]; then
+        rm -f "$S3_SYNC_LOG"
+    fi
+}
+trap cleanup EXIT INT TERM
+
+ensure_s5cmd() {
+    if command -v s5cmd >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo "s5cmd not found. Installing s5cmd..."
+    local arch
+    arch=$(uname -m | sed -e 's/x86_64/64bit/' -e 's/aarch64/arm64/')
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    curl -sSL "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-${arch}.tar.gz" | tar -xz -C "$tmp_dir" s5cmd
+    if [ -w /usr/local/bin ]; then
+        mv "$tmp_dir/s5cmd" /usr/local/bin/
+    elif sudo -n true 2>/dev/null; then
+        sudo mv "$tmp_dir/s5cmd" /usr/local/bin/
+    else
+        mkdir -p "$HOME/.local/bin"
+        mv "$tmp_dir/s5cmd" "$HOME/.local/bin/"
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
+    rm -rf "$tmp_dir"
+    echo "s5cmd installed successfully."
+}
+
+start_s3_sync_background() {
+    ensure_s5cmd
+    echo "Starting S3 bucket sync in the background..."
+    S3_SYNC_LOG=$(mktemp -t s3_sync_XXXXXX.log)
+    (
+        s5cmd --profile db-clone --stat sync --delete \
+            "s3://$PROD_S3_BUCKET/*" "s3://$STAGING_S3_BUCKET/"
+    ) > "$S3_SYNC_LOG" 2>&1 &
+    S3_SYNC_PID=$!
+}
+
+wait_for_s3_sync() {
+    if [ -z "${S3_SYNC_PID:-}" ]; then
+        return 0
+    fi
+
+    echo "Waiting for background S3 sync to complete..."
+    if ! wait "$S3_SYNC_PID"; then
+        echo "Error: S3 bucket sync failed. Output:" >&2
+        cat "$S3_SYNC_LOG" >&2
+        exit 1
+    fi
+
+    echo "S3 bucket sync completed successfully!"
+    grep -A 20 -E "^Operation[[:space:]]+Total" "$S3_SYNC_LOG" || true
+}
 
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
@@ -44,33 +111,31 @@ perform_sed_replacements() {
     sed -i "s#${placeholder}#${protected_url}#g" "$file"
 }
 
-sync_s3_buckets() {
-    echo "Syncing S3 buckets from production to staging..."
-    aws configure set s3.max_concurrent_requests 50 --profile db-clone
-    aws s3 sync s3://$PROD_S3_BUCKET s3://$STAGING_S3_BUCKET --delete --profile db-clone || { echo "Error: Failed to sync S3 buckets"; exit 1; }
-    echo "S3 bucket sync completed successfully!"
-}
-
 echo "Dumping production Loculus database..."
 $CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP
+# Perform sed replacements on Loculus dump in the background while Keycloak is dumped
+perform_sed_replacements "$PROD_LOC_DUMP" &
+LOC_SED_PID=$!
 
 echo "Dumping production Keycloak database..."
 $CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
+perform_sed_replacements "$PROD_KC_DUMP" &
+KC_SED_PID=$!
 
-# Sync files after the dump so no files referenced by the dumped db can be missing (there might
-# be additional unreferenced files in the bucket but that is ok, to prevent additional files we
-# could enable s3 versioning and pick whichever version has LastModified <= T
-echo "Syncing S3 buckets..."
-sync_s3_buckets
-
-perform_sed_replacements $PROD_KC_DUMP
-perform_sed_replacements $PROD_LOC_DUMP
+# Start S3 sync immediately after DB dumps finish so it runs concurrently with DB loading.
+# Syncing files after the dump guarantees no files referenced by the dumped db can be missing.
+start_s3_sync_background
 
 echo "Loading Keycloak dump to staging..."
+wait "$KC_SED_PID"
 $CHILD_SCRIPT load $STAGING_KC_DB $PROD_KC_DUMP $STAGING_KC_USER
 
 echo "Loading Loculus dump to staging..."
+wait "$LOC_SED_PID"
 $CHILD_SCRIPT load $STAGING_LOC_DB $PROD_LOC_DUMP $STAGING_LOC_USER
+
+# Ensure S3 sync has finished before completing the clone
+wait_for_s3_sync
 
 echo "Cloning process completed successfully!"
 echo "Please restart the backend to apply changes."
