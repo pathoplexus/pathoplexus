@@ -59,6 +59,7 @@ Run the script as follows:
 
 ```sh
 ./clone-prod-to-staging.sh
+kubectl rollout restart deployment/loculus-backend -n staging
 ```
 
 It can happen that part of the clone fails. You can check the logs if things don't work as expected.
