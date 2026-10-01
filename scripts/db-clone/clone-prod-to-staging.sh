@@ -35,37 +35,10 @@ cleanup() {
 trap cleanup EXIT
 
 ensure_s5cmd() {
-    if command -v s5cmd >/dev/null 2>&1; then
-        return 0
-    fi
-
-    echo "s5cmd not found. Installing s5cmd..." >&2
-    local arch
-    case "$(uname -m)" in
-        x86_64)  arch="64bit" ;;
-        aarch64) arch="arm64" ;;
-        *) echo "Error: Unsupported architecture $(uname -m)" >&2; return 1 ;;
-    esac
-
-    local tmp_dir
-    tmp_dir=$(mktemp -d)
-    if ! curl -fsSL "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-${arch}.tar.gz" | tar -xz -C "$tmp_dir" s5cmd; then
-        echo "Error: Failed to download s5cmd. Check network connectivity." >&2
-        rm -rf "$tmp_dir"
-        return 1
-    fi
-
-    if [ -w /usr/local/bin ]; then
-        mv "$tmp_dir/s5cmd" /usr/local/bin/
-    elif sudo -n true 2>/dev/null; then
-        sudo mv "$tmp_dir/s5cmd" /usr/local/bin/
-    else
-        mkdir -p "$HOME/.local/bin"
-        mv "$tmp_dir/s5cmd" "$HOME/.local/bin/"
+    if ! command -v s5cmd >/dev/null 2>&1; then
+        "$SCRIPT_DIR/install-s5cmd.sh"
         export PATH="$HOME/.local/bin:$PATH"
     fi
-    rm -rf "$tmp_dir"
-    echo "s5cmd installed successfully."
 }
 
 start_s3_sync_background() {

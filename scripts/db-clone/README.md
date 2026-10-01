@@ -46,13 +46,12 @@ The user profile needs write access to the staging s3 bucket and ONLY read acces
 
 ## S3 Synchronization (`s5cmd`)
  
-The clone script uses [`s5cmd`](https://github.com/peak/s5cmd) for high-speed parallel S3 synchronization. If `s5cmd` is not found on the system, the script will automatically download the standalone static binary (into `/usr/local/bin` if permitted, or `~/.local/bin`).
+The clone script uses [`s5cmd`](https://github.com/peak/s5cmd) for high-speed parallel S3 synchronization. If `s5cmd` is not found on the system, the script will automatically invoke `./install-s5cmd.sh` to download the standalone static binary (into `/usr/local/bin` if permitted, otherwise `~/.local/bin`).
  
-To install it manually beforehand on Debian / Ubuntu (EC2 bastion):
+To install it beforehand:
  
 ```sh
-ARCH=$(uname -m | sed -e 's/x86_64/64bit/' -e 's/aarch64/arm64/')
-curl -sSL "https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-${ARCH}.tar.gz" | sudo tar -xz -C /usr/local/bin s5cmd
+./install-s5cmd.sh
 ```
 
 Run the script as follows:
