@@ -7,6 +7,12 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CHILD_SCRIPT="$SCRIPT_DIR/clone.sh"
+
+# Load local connection settings if present
+if [ -f "$SCRIPT_DIR/env.sh" ]; then
+    # shellcheck disable=SC1091
+    source "$SCRIPT_DIR/env.sh"
+fi
 PROD_KC_DUMP="production_keycloak_dump.sql"
 PROD_LOC_DUMP="production_loculus_dump.sql"
 PROD_KC_DB="pathoplexus_prod_keycloak"
@@ -77,7 +83,7 @@ start_s3_sync_background() {
 
     echo "Starting S3 bucket sync in the background..."
     S3_SYNC_LOG=$(mktemp -t s3_sync_XXXXXX.log)
-    s5cmd --profile db-clone --stat sync --delete \
+    s5cmd --profile db-clone --numworkers 256 --stat sync --delete \
         "s3://$PROD_S3_BUCKET/*" "s3://$STAGING_S3_BUCKET/" > "$S3_SYNC_LOG" 2>&1 &
     S3_SYNC_PID=$!
 }
