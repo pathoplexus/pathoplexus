@@ -4515,6 +4515,29 @@ organisms:
         defaultOrder: descending
     preprocessing:
       - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+              - name: singleReferenceL
+                nextclade_dataset_name: community/itps/orov/L/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [L]
+            - name: M
+              references:
+              - name: singleReferenceM
+                nextclade_dataset_name: community/itps/orov/M/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [M]
+            - name: S
+              references:
+              - name: singleReferenceS
+                nextclade_dataset_name: community/itps/orov/S/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [S]
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
