@@ -4513,6 +4513,13 @@ organisms:
           - hostNameScientific
         defaultOrderBy: sampleCollectionDate
         defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &oropoucheTaxon
+            taxon_id: 3052429
+            scientific_name: "orthobunyavirus oropoucheense"
+            molecule_type: "genomic RNA"    
     preprocessing:
       - <<: *preprocessing
         version:
