@@ -4532,19 +4532,19 @@ organisms:
               - name: singleReferenceL
                 nextclade_dataset_name: community/itps/orov/L/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
-                genes: [L]
+                genes: [RdRp]
             - name: M
               references:
               - name: singleReferenceM
                 nextclade_dataset_name: community/itps/orov/M/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
-                genes: [M]
+                genes: [Gn, NSm, Gc]
             - name: S
               references:
               - name: singleReferenceS
                 nextclade_dataset_name: community/itps/orov/S/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
-                genes: [S]
+                genes: [N, NSs]
           segement_classification_method: "align"      
     ingest:
       <<: *ingest
