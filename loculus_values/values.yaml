@@ -4545,6 +4545,14 @@ organisms:
                 nextclade_dataset_name: community/itps/orov/S/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
                 genes: [S]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 118655
+        segment_identification:
+          method: "align"
+          nextclade_dataset_name: community/itps/orov
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
