@@ -4532,13 +4532,13 @@ organisms:
               - name: singleReferenceL
                 nextclade_dataset_name: community/itps/orov/L/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
-                genes: [RdRp]
+                genes: [L]
             - name: M
               references:
               - name: singleReferenceM
                 nextclade_dataset_name: community/itps/orov/M/refseq
                 nextclade_dataset_tag: 2026-05-12--16-39-06Z
-                genes: [Gn, NSm, Gc]
+                genes: [M]
             - name: S
               references:
               - name: singleReferenceS
@@ -4558,23 +4558,25 @@ organisms:
       - name: "main"
         references:
         - name: singleReferenceL
-          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/L/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/L.fasta]]"
           insdcAccessionFull: NC_005776.1
           genes:
             - name: L
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/L/L.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/L.fasta]]"
         - name: singleReferenceM
-          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/M/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/M.fasta]]"
           insdcAccessionFull: NC_005775.1
           genes:
             - name: M
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/M/M.fasta]]"
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/M.fasta]]"
         - name: singleReferenceS
-          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/S/reference.fasta]]"
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/S.fasta]]"
           insdcAccessionFull: NC_005777.1
           genes:
-            - name: S
-              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/orov/S/S.fasta]]"      
+            - name: N
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/N.fasta]]"
+            - name: NSs
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/NSs.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
