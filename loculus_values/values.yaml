@@ -4292,19 +4292,19 @@ organisms:
             scientific_name: "Zika virus"
             molecule_type: "genomic RNA"
     preprocessing:
-    - <<: *preprocessing
-      version:
-        - 1
-        - 2
-      configFile:
-        <<: [*preprocessingConfigFile, *zikaTaxon]
-        segments:
-          - name: main
-            references:
-            - name: "singleReference"
-              nextclade_dataset_name: community/itps/zikav
-              nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+      - <<: *preprocessing
+        version:
+          - 1
+          - 2
+        configFile:
+          <<: [*preprocessingConfigFile, *zikaTaxon]
+          segments:
+            - name: main
+              references:
+                - name: "singleReference"
+                  nextclade_dataset_name: community/itps/zikav
+                  nextclade_dataset_tag: 2026-04-14--11-55-23Z
+                  genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
     ingest:
       <<: *ingest
       configFile:
@@ -4409,18 +4409,18 @@ organisms:
             scientific_name: "Chikungunya virus"
             molecule_type: "genomic RNA"
     preprocessing:
-    - <<: *preprocessing
-      version:
-        - 1
-      configFile:
-        <<: [*preprocessingConfigFile, *chikungunyaTaxon]
-        segments:
-          - name: main
-            references:
-            - name: singleReference
-              nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
-              nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: [*preprocessingConfigFile, *chikungunyaTaxon]
+          segments:
+            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
+                  nextclade_dataset_tag: 2026-04-14--11-55-23Z
+                  genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
     ingest:
       <<: *ingest
       configFile:
