@@ -1143,6 +1143,7 @@ def run_check(
     skip_remote_checks: bool = False,
     verbosity: int = 1,
     allow_removed_keys: bool = False,
+    strict: bool = False,
 ) -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -1308,8 +1309,9 @@ def run_check(
             errors += model_errors
         except Problem as exc:
             # Offline, most likely. The rest of check is still worth having, so say what
-            # was skipped rather than failing the whole run over it.
-            warnings.append(f"skipped configFile model validation: {exc}")
+            # was skipped rather than failing the whole run over it -- unless --strict,
+            # where a gate that silently did not run must not pass.
+            (errors if strict else warnings).append(f"skipped configFile model validation: {exc}")
 
     # 10. Everything above is local. These two are not knowable from the file alone: a
     #     misspelled dataset name, or a tag that was never published, only shows up when
@@ -1320,12 +1322,12 @@ def run_check(
     #     forces them to move together.
     infos: list[str] = []
     if not skip_remote_checks:
-        remote_errors, remote_warnings, remote_infos = _verify_remote(doc, organisms)
+        remote_errors, remote_warnings, remote_infos = _verify_remote(doc, organisms, strict)
         errors += remote_errors
         warnings += remote_warnings
         infos += remote_infos
 
-        coverage_errors, coverage_warnings = _verify_lineage_coverage(doc, organisms)
+        coverage_errors, coverage_warnings = _verify_lineage_coverage(doc, organisms, strict)
         errors += coverage_errors
         warnings += coverage_warnings
 
@@ -1486,7 +1488,9 @@ def _dataset_index(server: str, cache: dict[str, dict[str, set[str]]]) -> dict[s
     return cache[server]
 
 
-def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str], list[str]]:
+def _verify_remote(
+    doc: Doc, organisms: list[str], strict: bool = False
+) -> tuple[list[str], list[str], list[str]]:
     """Check that every dataset and lineage definition the config names actually exists.
 
     A misspelled dataset name or a tag that was never published is a runtime failure the
@@ -1494,7 +1498,8 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
     Returns (errors, warnings, infos): a missing dataset or tag is an error because
     preprocessing cannot run without it; anything that merely failed to fetch is a
     warning, since a transient outage should not be indistinguishable from a broken
-    config; and a pinned tag that is simply no longer the newest is information, not a
+    config -- or an error under `strict`, where not having checked must not pass; and a
+    pinned tag that is simply no longer the newest is information, not a
     problem -- staying on a known dataset is usually deliberate.
     """
     import requests  # noqa: PLC0415  (only this code path needs it)
@@ -1502,6 +1507,7 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
     errors: list[str] = []
     warnings: list[str] = []
     infos: list[str] = []
+    unchecked = errors if strict else warnings
     index_cache: dict[str, dict[str, set[str]]] = {}
 
     for name in organisms:
@@ -1514,7 +1520,7 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
             try:
                 available = _dataset_index(server, index_cache)
             except Exception as exc:
-                warnings.append(f"{where}: could not read {server}/index.json ({exc})")
+                unchecked.append(f"{where}: could not read {server}/index.json ({exc})")
                 continue
             if dataset not in available:
                 errors.append(f"{where}: dataset {dataset} does not exist on {server}")
@@ -1545,7 +1551,7 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
     for url, status in _fetch_parallel(set(where), head).items():
         name, system, version = where[url]
         if isinstance(status, Exception):
-            warnings.append(f"{name}: could not reach {system}.{version} at {url} ({status})")
+            unchecked.append(f"{name}: could not reach {system}.{version} at {url} ({status})")
         elif status >= 400:
             errors.append(f"{name}: lineageSystemDefinitions.{system}.{version} is {status} at {url}")
     return errors, warnings, infos
@@ -1635,7 +1641,9 @@ def _hierarchy_names(url: str) -> set[str]:
     return names
 
 
-def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]]:
+def _verify_lineage_coverage(
+    doc: Doc, organisms: list[str], strict: bool = False
+) -> tuple[list[str], list[str]]:
     """Assert the lineage hierarchy defines every lineage the dataset can assign.
 
     The only cross-artifact check here: everything else asks whether the config is
@@ -1651,18 +1659,20 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
     with its own hierarchy URL, and a superseded-but-still-running version whose pairing
     is broken is a live failure, not a stale preference.
     """
-    units, warnings = _coverage_units(doc, organisms)
+    errors: list[str] = []
+    units, warnings = _coverage_units(doc, organisms, errors if strict else None)
     trees = _fetch_parallel({t for unit in units for t in unit.trees}, lambda t: _tree_values(*t))
     hierarchies = _fetch_parallel({unit.url for unit in units}, _hierarchy_names)
 
-    errors: list[str] = []
+    # Under `strict`, a fetch that failed means coverage was not checked, which must fail.
+    unchecked = errors if strict else warnings
     for unit in units:
         assignable: set[str] = set()
         unresolved = False
         for tree in unit.trees:
             got = trees[tree]
             if isinstance(got, Exception):
-                warnings.append(
+                unchecked.append(
                     f"{unit.organism}: could not read the reference tree for {tree[1]} at "
                     f"{tree[2]} ({got}); coverage not checked."
                 )
@@ -1674,7 +1684,7 @@ def _verify_lineage_coverage(doc: Doc, organisms: list[str]) -> tuple[list[str],
 
         defined = hierarchies[unit.url]
         if isinstance(defined, Exception):
-            warnings.append(f"{unit.organism}: could not read {unit.url} ({defined}); coverage not checked.")
+            unchecked.append(f"{unit.organism}: could not read {unit.url} ({defined}); coverage not checked.")
             continue
         if missing := sorted(assignable - defined):
             shown = ", ".join(missing[:8])
@@ -1698,15 +1708,18 @@ class _CoverageUnit:
     trees: tuple[tuple[str, str, str, str], ...]  # (server, dataset, tag, attribute)
 
 
-def _coverage_units(doc: Doc, organisms: list[str]) -> tuple[list[_CoverageUnit], list[str]]:
+def _coverage_units(
+    doc: Doc, organisms: list[str], unchecked: list[str] | None = None
+) -> tuple[list[_CoverageUnit], list[str]]:
     """Resolve what has to be compared, without fetching any of it.
 
     Kept separate so every tree and hierarchy can be fetched in one parallel batch: the
     trees are the slow part of `check` by an order of magnitude, and they are all
-    independent.
+    independent. A failed index fetch goes to `unchecked` when given, else to warnings.
     """
     units: list[_CoverageUnit] = []
     warnings: list[str] = []
+    unchecked = warnings if unchecked is None else unchecked
     index_cache: dict[str, dict[str, set[str]]] = {}
 
     for name in organisms:
@@ -1757,7 +1770,7 @@ def _coverage_units(doc: Doc, organisms: list[str]) -> tuple[list[_CoverageUnit]
                             try:
                                 available = _dataset_index(server, index_cache).get(dataset)
                             except Exception as exc:
-                                warnings.append(f"{name}: could not read {server}/index.json ({exc})")
+                                unchecked.append(f"{name}: could not read {server}/index.json ({exc})")
                                 continue
                             if not available:
                                 continue  # missing dataset: already an error above
@@ -2218,6 +2231,12 @@ def main(argv: list[str] | None = None) -> int:
     common(sp)
     sp.add_argument("--allow-empty-segments", action="store_true")
     removed_keys(sp)
+    sp.add_argument(
+        "--strict",
+        action="store_true",
+        help="fail when a check could not run -- loculus or a dataset server unreachable -- "
+        "instead of warning. For CI, where not having checked must not pass.",
+    )
     sp.add_argument("-q", "--quiet", action="store_true", help="errors only")
     sp.add_argument("-v", "--verbose", action="store_true", help="also show info, e.g. a newer dataset tag")
     sp.add_argument(
@@ -2255,6 +2274,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.skip_remote_checks,
                 verbosity=0 if args.quiet else 2 if args.verbose else 1,
                 allow_removed_keys=args.allow_removed_keys,
+                strict=args.strict,
             )
 
         expand_only: list[str] = []

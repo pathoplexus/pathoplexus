@@ -16,6 +16,8 @@ out one commit, and branch SHAs vanish on squash-merge). The most important case
 live in production during the 2026-08-05 mpox incident.
 """
 
+import contextlib
+import os
 import re
 import sys
 from pathlib import Path
@@ -41,7 +43,8 @@ INCIDENT = FIXTURES / "incident-9764d15.yaml"
 BASE = FIXTURES / "base-24b71a8.yaml"
 
 # A loculus checkout, needed to validate a configFile against the preprocessing
-# pipeline's own pydantic model. Sibling of the pathoplexus clone; skipped when absent.
+# pipeline's own pydantic model. Sibling of the pathoplexus clone, used only when the
+# pinned commit cannot be fetched.
 LOCULUS = REPO.parent / "loculus"
 
 
@@ -58,15 +61,21 @@ def work(tmp_path: Path) -> Path:
     return path
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def loculus() -> Path:
-    """Use the sibling clone so tests never depend on the network.
+    """The loculus commit this checkout pins, fetched the way `check` fetches it.
 
-    `check` fetches the pinned commit itself when this is not passed.
+    Falls back to a sibling clone offline. In CI not having it fails rather than skips:
+    these are the tests of the check most likely to break on a loculusVersion bump.
     """
-    if not (LOCULUS / ".git").exists():
-        pytest.skip(f"no loculus checkout at {LOCULUS}")
-    return LOCULUS
+    try:
+        return pv._fetch_loculus(pv.pinned_loculus_version(REPO))
+    except pv.Problem as exc:
+        if (LOCULUS / ".git").exists():
+            return LOCULUS
+        if os.environ.get("CI"):
+            raise
+        pytest.skip(f"loculus unavailable ({exc}) and no checkout at {LOCULUS}")
 
 
 def _run(path: Path, *args: str) -> int:
@@ -944,6 +953,37 @@ def test_remote_check_catches_an_unreachable_lineage_url(tmp_path, fake_server, 
     assert "is 404 at" in capsys.readouterr().err
 
 
+def test_strict_fails_when_the_model_check_could_not_run(tmp_path, monkeypatch, capsys):
+    """Offline locally, a skipped check is a warning. In CI it must not pass."""
+
+    def unreachable(ref):
+        raise pv.Problem("could not fetch loculus")
+
+    monkeypatch.setattr(pv, "_fetch_loculus", unreachable)
+    path = tmp_path / "seg.yaml"
+    path.write_text(MULTI_SEGMENT)
+    assert _run(path, "check", "--skip-remote-checks") == 0
+    assert "skipped configFile model validation" in capsys.readouterr().out
+    assert _run(path, "check", "--skip-remote-checks", "--strict") == 1
+    assert "skipped configFile model validation" in capsys.readouterr().err
+
+
+def test_strict_fails_when_a_server_could_not_be_reached(tmp_path, monkeypatch, capsys):
+    def down(url, **kw):
+        raise requests.ConnectionError("down")
+
+    monkeypatch.setattr(requests, "get", down)
+    monkeypatch.setattr(requests, "head", down)
+    path = tmp_path / "lin.yaml"
+    path.write_text(MULTI_LINEAGE)
+    assert _run(path, "check", "--skip-model-check") == 0
+    assert "could not read" in capsys.readouterr().out
+    assert _run(path, "check", "--skip-model-check", "--strict") == 1
+    err = capsys.readouterr().err
+    assert "could not read" in err
+    assert "could not reach" in err
+
+
 # ----------------------------------------------------------------------- anchors
 
 
@@ -1566,6 +1606,9 @@ def test_coverage_warns_on_an_input_that_is_not_read_from_a_reference_tree(tmp_p
 
 
 if __name__ == "__main__":
+    # Fetch loculus once up front, so parallel workers do not race to populate the cache.
+    with contextlib.suppress(pv.Problem):  # the `loculus` fixture then falls back or skips
+        pv._fetch_loculus(pv.pinned_loculus_version(REPO))
     # Each test re-parses a 4000-line file, so this is embarrassingly parallel.
     extra = sys.argv[1:] or ["-n", "auto"]
     sys.exit(pytest.main([__file__, "-q", *extra]))
