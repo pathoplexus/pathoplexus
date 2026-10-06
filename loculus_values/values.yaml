@@ -4513,7 +4513,7 @@ organisms:
       singleReference:
         configFile:
           <<: &oropoucheTaxon
-            taxon_id: 3052429
+            taxon_id: 118655
             scientific_name: "orthobunyavirus oropoucheense"
             molecule_type: "genomic RNA"    
     preprocessing:
@@ -4546,7 +4546,7 @@ organisms:
       <<: *ingest
       configFile:
         <<: *defaultIngestConfigFile
-        taxon_id: 118655
+        taxon_id: 3052429
         segment_identification:
           method: "align"
           nextclade_dataset_name: community/itps/orov
