@@ -1445,14 +1445,23 @@ defaultOrganismConfig: &defaultOrganismConfig
         orderOnDetailsPage: 2300
         desired: true
       - name: breadthOfCoverage
-        ontology_id: GENEPIO:0001475
-        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (`depthOfCoverage`).
+        ontology_id: GENEPIO:0001472
+        definition: The percentage of the reference genome covered by the sequenced data, at a prescribed depth (`depthThresholdForBreadthOfCoverage`).
         guidance: Provide the percentage as a number.
         example: "95"
         displayName: Breadth of coverage
         type: int
         header: Sequencing
         orderOnDetailsPage: 2320
+      - name: depthThresholdForBreadthOfCoverage
+        ontology_id: GENEPIO:0001475
+        definition: The threshold used as a cut-off for the depth of coverage.
+        guidance: Provide the threshold as a fold of coverage (as a number). This is the depth used when calculating `breadthOfCoverage`.
+        example: "100"
+        displayName: Depth threshold for breadth of coverage
+        type: int
+        header: Sequencing
+        orderOnDetailsPage: 2330
       - name: qualityControlMethodName
         ontology_id: GENEPIO:0100557
         definition: The name of the method used to assess whether a sequence passed a predetermined quality control threshold.
