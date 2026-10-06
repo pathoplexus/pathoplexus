@@ -1941,9 +1941,9 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaZaireTaxon
-            taxon_id: 186538
             scientific_name: "Zaire ebolavirus"
             molecule_type: "genomic RNA"
+          taxon_id: 186538
     preprocessing:
       - <<: *preprocessing
         replicas: 1
@@ -2007,9 +2007,9 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaSudanTaxon
-            taxon_id: 186540
             scientific_name: "Sudan ebolavirus"
             molecule_type: "genomic RNA"
+          taxon_id: 186540
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2114,23 +2114,20 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaBdbvTaxon
-            taxon_id: 565995
             scientific_name: "Bundibugyo virus"
             molecule_type: "genomic RNA"
+          taxon_id: 565995
     preprocessing:
-      - &ebolaBdbvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 7
           - 8
-        configFile: &ebolaBdbvPreprocessingConfigFile
+        configFile:
           <<: [*preprocessingConfigFile, *ebolaBdbvTaxon]
           segments:
-            - &ebolaBdbvPreprocessingSegment
-              name: main
+            - name: main
               references:
-                - &ebolaBdbvPreprocessingReference
-                  name: "singleReference"
+                - name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
                   nextclade_dataset_tag: "2026-05-18--20-09-34Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
@@ -2298,7 +2295,6 @@ organisms:
           segment_classification_method: "minimizer"
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           # TODO(https://github.com/loculus-project/loculus/issues/5673)
-          taxon_id: 12637
           scientific_name: "Dengue virus"
           molecule_type: "genomic RNA"
           segments:
@@ -2514,12 +2510,11 @@ organisms:
       singleReference:
         configFile:
           <<: &westNileTaxon
-            taxon_id: 11082
             scientific_name: "West Nile virus"
             molecule_type: "genomic RNA"
+          taxon_id: 11082
     preprocessing:
-      - &westNilePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 29
           - 30
@@ -2532,10 +2527,6 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *westNilePreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 30
     ingest:
       <<: *ingest
       configFile:
@@ -2622,9 +2613,9 @@ organisms:
       singleReference:
         configFile:
           <<: &andvTaxon
-            taxon_id: 1980456
             scientific_name: "Orthohantavirus andesense"
             molecule_type: "genomic RNA"
+          taxon_id: 1980456
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2778,9 +2769,9 @@ organisms:
       singleReference:
         configFile:
           <<: &cchfTaxon
-            taxon_id: 3052518
             scientific_name: "Orthonairovirus haemorrhagiae"
             molecule_type: "genomic RNA"
+          taxon_id: 3052518
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2947,26 +2938,25 @@ organisms:
       singleReference:
         configFile:
           <<: &mpoxTaxon
-            taxon_id: 10244
             scientific_name: "Monkeypox virus"
             molecule_type: "genomic DNA"
+          taxon_id: 10244
     preprocessing:
       - &mpoxPreprocessing
         <<: *preprocessing
         replicas: 1
         version:
           - 28
-        configFile: &mpoxPreprocessingConfigFile
+        configFile:
           <<: [*preprocessingConfigFile, *mpoxTaxon]
           batch_size: 5
           segments:
-            - &mpoxDataset
-              name: main
+            - name: main
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
@@ -3572,9 +3562,9 @@ organisms:
       singleReference:
         configFile:
           <<: &rsvATaxon
-            taxon_id: 208893
             scientific_name: "Human respiratory syncytial virus A"
             molecule_type: "genomic RNA"
+          taxon_id: 208893
     preprocessing:
       - &rsvaPreprocessing
         <<: *preprocessing
@@ -3701,9 +3691,9 @@ organisms:
       singleReference:
         configFile:
           <<: &rsvBTaxon
-            taxon_id: 208895
             scientific_name: "Human respiratory syncytial virus B"
             molecule_type: "genomic RNA"
+          taxon_id: 208895
     preprocessing:
       - &rsvbPreprocessing
         <<: *preprocessing
@@ -3819,9 +3809,9 @@ organisms:
       singleReference:
         configFile:
           <<: &hmpvTaxon
-            taxon_id: 162145
             scientific_name: "Human metapneumovirus"
             molecule_type: "genomic RNA"
+          taxon_id: 162145
     preprocessing:
       - &hmpvPreprocessing
         <<: *preprocessing
@@ -3947,9 +3937,9 @@ organisms:
       singleReference:
         configFile:
           <<: &measlesTaxon
-            taxon_id: 11234
             scientific_name: "Measles morbillivirus"
             molecule_type: "genomic RNA"
+          taxon_id: 11234
     preprocessing:
       - &measlesPreprocessing
         <<: *preprocessing
@@ -4049,9 +4039,9 @@ organisms:
       singleReference:
         configFile:
           <<: &marburgTaxon
-            taxon_id: 3052505
             scientific_name: "Orthomarburgvirus marburgense"
             molecule_type: "viral cRNA"
+          taxon_id: 3052505
     preprocessing:
       - <<: *preprocessing
         version:
@@ -4174,9 +4164,9 @@ organisms:
       singleReference:
         configFile:
           <<: &yellowFeverTaxon
-            taxon_id: 11089
             scientific_name: "Yellow fever virus"
             molecule_type: "genomic RNA"
+          taxon_id: 11089
     preprocessing:
       - <<: *preprocessing
         version:
@@ -4288,23 +4278,23 @@ organisms:
       singleReference:
         configFile:
           <<: &zikaTaxon
-            taxon_id: 64320
             scientific_name: "Zika virus"
             molecule_type: "genomic RNA"
+          taxon_id: 64320
     preprocessing:
-    - <<: *preprocessing
-      version:
-        - 1
-        - 2
-      configFile:
-        <<: [*preprocessingConfigFile, *zikaTaxon]
-        segments:
-          - name: main
-            references:
-            - name: "singleReference"
-              nextclade_dataset_name: community/itps/zikav
-              nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
+      - <<: *preprocessing
+        version:
+          - 1
+          - 2
+        configFile:
+          <<: [*preprocessingConfigFile, *zikaTaxon]
+          segments:
+            - name: main
+              references:
+                - name: "singleReference"
+                  nextclade_dataset_name: community/itps/zikav
+                  nextclade_dataset_tag: 2026-04-14--11-55-23Z
+                  genes: [ancC, "C", "prM", "pr", "E", "M", "NS1", "NS2A", "NS2B", "NS3", "NS4A", 2K, "NS4B", "NS5"]
     ingest:
       <<: *ingest
       configFile:
@@ -4405,22 +4395,22 @@ organisms:
       singleReference:
         configFile:
           <<: &chikungunyaTaxon
-            taxon_id: 37124
             scientific_name: "Chikungunya virus"
             molecule_type: "genomic RNA"
+          taxon_id: 37124
     preprocessing:
-    - <<: *preprocessing
-      version:
-        - 1
-      configFile:
-        <<: [*preprocessingConfigFile, *chikungunyaTaxon]
-        segments:
-          - name: main
-            references:
-            - name: singleReference
-              nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
-              nextclade_dataset_tag: 2026-04-14--11-55-23Z
-              genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: [*preprocessingConfigFile, *chikungunyaTaxon]
+          segments:
+            - name: main
+              references:
+                - name: singleReference
+                  nextclade_dataset_name: community/v-gen-lab/chikV/genotypes
+                  nextclade_dataset_tag: 2026-04-14--11-55-23Z
+                  genes: [nsP1, nsP2, nsP3, nsP4, C, E3, E2, 6K, E1]
     ingest:
       <<: *ingest
       configFile:
