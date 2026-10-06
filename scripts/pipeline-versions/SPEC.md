@@ -42,9 +42,10 @@ Consequences the tool depends on:
 **flattened** list. That index is also in the Deployment's `spec.selector.matchLabels`, which
 Kubernetes will not allow to change.
 
-**Requirement:** edits must only ever append to, or remove from, the tail of an organism's
-list. Inserting mid-list renumbers every later entry, deleting and recreating Deployments whose
-config did not change.
+**Requirement:** `bump` must only ever append to the tail of an organism's list. Inserting
+mid-list renumbers every later entry, deleting and recreating Deployments whose config did not
+change. `prune` necessarily removes from the head, so the survivor is renumbered to index 0 and
+its Deployment is recreated once — harmless, as its pods roll on the config change anyway.
 
 ### 1.3 `lineageSystemDefinitions` is keyed by pipeline version
 
@@ -230,7 +231,7 @@ Requirements:
 
 ### 2.2 `prune` — drop superseded versions
 
-Keeps the highest version, removes the rest, and removes any leftover commented-out stub.
+Keeps the highest version and removes the rest.
 
 Two collapses, selected by whether the entries' **resolved** configs differ:
 
@@ -241,7 +242,8 @@ Two collapses, selected by whether the entries' **resolved** configs differ:
   into the survivor**, re-indented to its new position.
 
 Replicas return to the oldest entry's count — the steady-state value from before the bump
-raised it.
+raised it. Compare resolved counts: if the oldest entry declares no `replicas:` of its own, the
+survivor's line is removed rather than rewritten, and verification asserts the counts agree.
 
 Lineage keys: remove every key for a version **no surviving entry uses**. Not "below the
 highest" — a stale key can sit above the current version, and one can be left behind by a
@@ -277,9 +279,11 @@ already have decided about. A tag that is merely no longer newest is info, and o
 **latest** version -- a superseded entry pinning an older dataset is exactly what it is for.
 
 **Network.** Assertions 8b--8e reach out: 8b fetches the pinned loculus commit (shallow, cached
-under the temp dir), 8c reads each dataset server's `index.json`, 8d HEADs each URL. A fetch
-that fails is a warning, not an error, so a transient outage is not indistinguishable from a
-broken config. `--skip-model-check` and `--skip-remote-checks` disable them; `bump` and `prune`
+per user in `${XDG_CACHE_HOME:-~/.cache}/pathoplexus-pipeline-versions` -- per user because the
+model is imported from it), 8c reads each dataset server's `index.json`, 8d HEADs each URL. A
+fetch that fails is a warning, not an error, so a transient outage is not indistinguishable
+from a broken config. `--strict` makes it an error; CI runs with it, because a gate that could
+not check must not pass. `--skip-model-check` and `--skip-remote-checks` disable them; `bump` and `prune`
 run neither, since they copy config verbatim and should not need the network to write a file.
 
 **A refusal aborts the whole run.** Every organism's problem is collected and reported, then
@@ -295,12 +299,11 @@ operate on the **resolved** (merge-key-expanded) view.
 | # | assertion | severity |
 |---|---|---|
 | 1 | no duplicate version within an organism | error |
-| 2 | no entry is missing a `configFile` key that a **lower-version** entry declares | error |
+| 2 | no entry is missing a `configFile` key that a **lower-version** entry declares | error (warning with `--allow-removed-keys`) |
 | 3 | every entry has non-empty `segments`, every segment non-empty `references`, and every reference a `nextclade_dataset_name` and non-empty `genes` (unless `--allow-empty-segments`) | error |
 | 4 | an organism's flattened versions are in ascending order | error |
 | 5 | every referenced lineage system exists, and every declared version has a key under it | error |
 | 6 | no lineage key for a version no entry uses | warning |
-| 7 | no commented-out stub naming an already-active version | warning |
 | 8 | every dataset reference pins a `nextclade_dataset_tag` | warning |
 | 8a | every preprocessing entry key appears in the chart's `values.schema.json` | error |
 | 8b | `configFile` validates against the preprocessing pipeline's own model, unknown keys included | error |
@@ -314,7 +317,9 @@ operate on the **resolved** (merge-key-expanded) view.
 **Assertion 2 is the incident check and its asymmetry is deliberate.** A newer entry *adding* a
 key is an ordinary config change and is exactly what hand-editing a generated draft looks like;
 failing on that would make the check get reverted. A newer entry *losing* a key is the
-incident's signature. Assertion 4 guarantees "earlier" means "lower version".
+incident's signature. Assertion 4 guarantees "earlier" means "lower version". Dropping a key on
+purpose (reverting it to the default) is legitimate too, so `--allow-removed-keys` downgrades
+assertion 2 to a warning; assertion 3 still catches an entry left without segments.
 
 Assertion 5 distinguishes an absent lineage *system* from an absent *version key* — they are
 different mistakes.
@@ -325,7 +330,7 @@ way: empty means the pipeline quietly does *less*, never that it errors. No segm
 it is neither aligned nor annotated; a reference with no genes produces no amino acid sequences.
 None of it can come from the pipeline's model — `references` and `genes` are
 `Field(default_factory=list)` because loculus supports organisms that legitimately have none.
-**Requiring them is PPX policy**, true of all 14 organisms today. If an organism ever
+**Requiring them is PPX policy**, true of every PPX organism today. If an organism ever
 legitimately has no genes, this is the assertion to revisit, not to work around.
 
 **Everything assertion 8b reports is an error, unknown keys included.** A key the model does not
@@ -386,24 +391,16 @@ CI needs both:
 
 ## 3. Repository facts a reimplementation will trip over
 
-### 3.1 Leftover commented-out stubs are booby-trapped
+### 3.1 `preprocessing:` lists are indented two ways
 
-Historically `prune` commented the superseded entry out instead of deleting it, leaving a
-template for the next bump:
+Most organisms indent the dash under `preprocessing:` (items at 6 spaces); zika and chikungunya
+were added in YAML's compact form, dash level with the key (items at 4). Both are valid and
+render identically. Read the item column per organism from its first item, and generate new
+lines at that organism's own column. Anything else after `preprocessing:` is a refusal naming
+the organism (§4.2).
 
-```yaml
-      # - <<: *denguePreprocessing
-      #   replicas: 3
-      #   version:
-      #     - 32
-```
-
-**Every such stub in the file names a version that is already active** (dengue's says 32 while
-dengue is at 32). Uncommenting one verbatim — the established manual workflow — produces a
-duplicate version and aborts the chart render.
-
-This tool abandons the idiom: `prune` deletes, `bump` generates. It still parses stubs, reuses
-their position and replicas, and always overwrites their version.
+A commented-out entry is a comment, nothing more: older prunes left such stubs as templates.
+The tool does not parse them; one that sits below an entry is part of that entry's text.
 
 ### 3.2 Anchors are necessary, not incidental
 
@@ -511,10 +508,14 @@ Error messages state the problem. They do not speculate about its cause.
 
 ## 5. Testing requirements
 
-- Fixtures come from the repo's own git history, pinned by commit — **not** the working tree,
-  which the tool itself edits. `9764d15` is the incident config and **`check` must fail on it**;
-  that is the single most important test.
-- Derive version numbers from the fixture rather than hardcoding, so re-pinning is cheap.
+- Fixtures are real `values.yaml` files from the repo's history, vendored under `fixtures/` —
+  **not** the working tree, which the tool itself edits, and not `git show <sha>`, which fails on
+  a shallow CI checkout and on any branch SHA once the PR is squash-merged.
+  `incident-9764d15.yaml` is the incident config and **`check` must fail on it**; that is the
+  single most important test.
+- Derive version numbers from the fixture rather than hardcoding wherever it costs nothing.
+- The configFile model tests run against the pinned loculus commit, fetched as `check` fetches
+  it, and fail rather than skip in CI.
 - Assert resolved-config equality across **every** organism after a bump. With helm unavailable
   locally this is the closest stand-in for diffing the rendered chart.
 - Assert that layout drift *raises*, not merely that benign formatting does not.

@@ -19,6 +19,15 @@ uv run scripts/pipeline-versions/pipeline_versions.py status
 | | |
 |---|---|
 | `status` | versions, replicas, entry count, nextclade dataset tags, lineage definition URLs |
+| `bump`   | add the next version, leaving the current one running |
+| `prune`  | drop superseded versions once reprocessing is done |
+| `check`  | assert the invariants; exit 1 on failure. Runs in CI |
+
+`--organisms mpox,rsv-a` scopes any command; omitted means all.
+`--dry-run` on `bump`/`prune` runs every check and writes nothing.
+
+Every run prints a diff and a summary of what it did before writing, re-parses the result, and
+re-runs `check` over it.
 
 `status` columns:
 
@@ -37,15 +46,6 @@ actually pulls:
 ```bash
 uv run scripts/pipeline-versions/pipeline_versions.py status --columns datasetName,datasetServer
 ```
-| `bump`   | add the next version, leaving the current one running |
-| `prune`  | drop superseded versions once reprocessing is done |
-| `check`  | assert the invariants; exit 1 on failure. Runs in CI |
-
-`--organisms mpox,rsv-a` scopes any command; omitted means all.
-`--dry-run` on `bump`/`prune` runs every check and writes nothing.
-
-Every run prints a diff and a summary of what it did before writing, re-parses the result, and
-re-runs `check` over it.
 
 ## Bumping
 
@@ -67,7 +67,9 @@ uv run scripts/pipeline-versions/pipeline_versions.py bump --organisms cchf --mo
 everything while flattening just the ones you intend to edit.
 
 After an expand bump, **edit the new entry** — that is what it is for. `check` will tell you if
-the edit dropped something the old entry had.
+the edit dropped something the old entry had. If dropping it is the point — reverting a key to
+the pipeline default — pass `--allow-removed-keys` to `check` (and to `bump`/`prune`, which run
+`check` over what they write); it is then a warning. An entry left with no `segments` still fails.
 
 Replicas for the new entry default to 3 -- more pods clear the reprocessing backlog faster.
 Override with `--replicas N`.
@@ -93,10 +95,8 @@ uv run scripts/pipeline-versions/pipeline_versions.py prune --organisms dengue
 ```
 
 Keeps the highest version, deletes the rest, drops stale lineage keys, and returns replicas to
-their steady-state value. It also clears any leftover commented-out entry it finds — older
-prunes left those behind as templates, and every one named an already-active version, so
-uncommenting it verbatim aborted the chart render. They were removed in `24b71a8` and the tool
-does not create new ones.
+the oldest entry's steady-state value — removing the survivor's `replicas:` line when the oldest
+entry inherited its count rather than declaring one.
 
 If the surviving entry inherits from the one being deleted via a merge key
 (`<<: *mpoxPreprocessing`), prune re-points it at the global `*preprocessing` so it becomes
@@ -116,7 +116,9 @@ uv run scripts/pipeline-versions/pipeline_versions.py check
 ```
 
 `-q` shows errors only, `-v` adds info such as a newer dataset tag being available.
-`--skip-remote-checks` and `--skip-model-check` keep it offline.
+`--skip-remote-checks` and `--skip-model-check` keep it offline. A check that could not run —
+loculus or a dataset server unreachable — is a warning, so a network blip does not block local
+work; `--strict` makes it an error, and CI runs with it.
 
 It also confirms that every nextclade dataset named actually exists on its server and carries
 the tag pinned, and that every lineage definition URL resolves — neither is knowable from the
@@ -141,10 +143,11 @@ whose lineage field names no segment — is a warning rather than a guess.
 
 This is the expensive part of `check`: a reference tree per dataset per tag, several MB each.
 They are all resolved first and then fetched concurrently, so the wait is the slowest single
-tree rather than their sum. Extracted value sets are also cached under the temp dir (a tag is
-immutable, so they cannot go stale), which helps repeated local runs but not CI.
+tree rather than their sum. Extracted value sets are also cached in
+`${XDG_CACHE_HOME:-~/.cache}/pathoplexus-pipeline-versions` (a tag is immutable, so they cannot
+go stale), which helps repeated local runs but not CI.
 
-Runs on every PR touching `loculus_values/**` via `helm-template-check.yml`. It catches what
+Runs with `--strict` on every PR touching `loculus_values/**` via `helm-template-check.yml`. It catches what
 `helm template` cannot: a pipeline entry that silently lost `segments:` to a shallow merge-key
 override, and a `lineageSystemDefinitions` version key whose absence only surfaces inside the
 SILO importer at runtime.
@@ -153,7 +156,7 @@ Against the 2026-08-05 incident config it fails with:
 
 ```
 ERROR: mpox: entry 1 (version [27]) is missing configFile key(s) ['segments'] that a
-       lower-version entry declares.
+       lower-version entry declares. Pass --allow-removed-keys if that is intended.
 ERROR: mpox: entry 1 (version [27]) has no segments.
 ```
 
@@ -172,10 +175,10 @@ That catches unknown keys, misspellings (including inside `segments:` and `refer
 wrong types, bad enum values and nested-model errors in one step, with pydantic's own
 messages — and it cannot drift, because it *is* the model, at the version being deployed.
 
-The commit is fetched shallow into `~/.cache/pathoplexus-pipeline-versions` and reused, so
-only the first run touches the network. `--loculus <path>` uses an existing clone instead;
-offline with no cache, the step is skipped with a warning and the rest of `check` still
-runs. `--skip-model-check` turns it off outright.
+The commit is fetched shallow into `${XDG_CACHE_HOME:-~/.cache}/pathoplexus-pipeline-versions`
+and reused, so only the first run touches the network. `--loculus <path>` uses an existing clone
+instead; offline with no cache, the step is skipped with a warning (an error under `--strict`)
+and the rest of `check` still runs. `--skip-model-check` turns it off outright.
 
 Everything it reports is an **error**, unknown keys included: pydantic drops them, so the config
 reads as configured while doing nothing. It also checks the entry's own keys — `configFiles:` instead of
@@ -186,11 +189,11 @@ an entry may pin its own image tag.)
 What the model *cannot* catch is emptiness. `references` and `genes` default to empty lists
 because loculus supports organisms that have none, so `check` asserts separately that every
 segment has references and every reference has a dataset name and genes — PPX policy, true of
-all 14 organisms. A missing `genes:` otherwise means no amino acid sequences, silently.
+every PPX organism. A missing `genes:` otherwise means no amino acid sequences, silently.
 
 It matters because an unknown key is **silently dropped**: pydantic ignores extras, and
 `values.schema.json` sets `additionalProperties: false` on `segments` and `references` but
-not on `configFile` itself, so helm renders it happily. andv has two — a
+not on `configFile` itself, so helm renders it happily. andv carried two until #1108 — a
 `nextclade_dataset_tag` in the position it occupied before loculus `d3c43c019` moved it
 onto the reference, and a stray `taxon_id` belonging to the ingest config.
 
@@ -202,12 +205,18 @@ automatically.
 ## Tests
 
 ```bash
-uv run scripts/pipeline-versions/test_pipeline_versions.py   # tests
-uv run --with ruff ruff check scripts/pipeline-versions      # lint
+uv run scripts/pipeline-versions/test_pipeline_versions.py           # tests
+uv run --with ruff==0.16.10 ruff check scripts/pipeline-versions     # lint
+uv run --with ruff==0.16.10 ruff format scripts/pipeline-versions    # format
 ```
 
-Config for both is in `pyproject.toml` next to the scripts.
+Config for both is in `pyproject.toml` next to the scripts; the ruff version matches CI's.
 
-Parallel by default. Fixtures come from pinned commits in this repo's history, not the working
-tree — the tool edits the working tree, so tests must not depend on it. If `values.yaml`'s
-structure changes enough that tests fail on version numbers, re-pin `BASE_COMMIT`.
+Parallel by default. Fixtures are real `values.yaml` files from this repo's history, vendored
+under `fixtures/` — not the working tree, which the tool edits, and not `git show`, which needs
+history a CI checkout or a squash-merge does not have. `base-24b71a8.yaml` is the behavioural
+baseline; `incident-9764d15.yaml` is the config live during the mpox incident.
+
+The configFile model tests need the pinned loculus commit and fetch it the way `check` does
+(falling back to a sibling `../loculus` clone offline); in CI they fail rather than skip
+without it.
