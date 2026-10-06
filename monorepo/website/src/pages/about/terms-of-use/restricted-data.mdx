@@ -12,52 +12,73 @@ import InfoBox from '../../../components/asides/InfoBox.astro';
 </InfoBox>
 
 # Summary
-Restricted Data on Pathoplexus is subject to specific use conditions for a limited time period, up to one year after submission. Afterwards the data automatically becomes Open Data. In the following, we state the main Data Use terms for Restricted Data as a summary.
+Restricted-Use Data on Pathoplexus is subject to specific use conditions for a limited time period, up to one year after submission. Afterwards the data automatically becomes Open Data. In the following, we state the main Data Use Terms for Restricted-Use Data as a summary.
 
 # Key Points
-1. **Availability & Usage**: Restricted Data is freely accessible to all users, but with restrictions on how it can be used.
-2. **Duration**: Data can be restricted for up to 1 year after submission, as set by the submitter.
-3. **Onward Submission**: Restricted data is made available on INSDC after the restricted period ends.
+1. **Availability & Usage**: Restricted-Use Data is available to all users at no cost, on condition of acceptance of the [Data Use Terms](/about/terms-of-use/data-use-terms). By accessing the data in any form, users agree to these terms, which restrict how the data can be used.
+2. **Duration**: Data can be restricted for up to 1 year after submission, as set by the submitter. Submitters can shorten or end the restricted period at any time.
+3. **Onward Submission**: When the restricted period ends, the data becomes Open Data and is released on INSDC.
 4. **Attribution**: Data **must** be attributed according to the requirements detailed below.
 
 # Usage Requirements
 
 ## Unpublished and Un-Preprinted Work
-- Restricted data can be used for unpublished work (e.g., graphical representations, blog posts, reports).
-- Data submitters **must** be acknowledged by providing accession numbers or using a SeqSet when using restricted data.
+([full terms](/about/terms-of-use/data-use-terms#421-unpublished-and-un-preprinted-work))
+- Restricted-Use Data can be used for unpublished work (e.g., graphical representations, blog posts, social media, public health and governmental reports, web programs and applications). For web programs and applications, see also [Third Party Data Sharing](#third-party-data-sharing) below.
+- Data submitters **must** be acknowledged by providing a list of the accession numbers used or using a SeqSet. If more than 5 sequences are used, creating a SeqSet is highly recommended.
 - Work **must** link back to Pathoplexus for original data and submitters.
-- The institution and leading author(s) need to be credited if all sequences are from one institution.
+- If all sequences are from one institution, the institution and leading author(s) should be credited explicitly.
 
 ## Publications and Preprints
-- Use of restricted data often requires explicit permission from the Submitting Group.
-- Users **must** create a SeqSet, generate a DOI, and cite it in the manuscript.
-- Users need to specify the division of sequences into “Focal Set” and “Background Set” (see below, and full terms for details).
+([full terms](/about/terms-of-use/data-use-terms#422-publications-and-preprints))
+- Users **must** divide the sequences they use into a “Focal Set” and a “Background Set” (see below).
+- Restricted-Use Data in a **Focal Set always** requires the consent of the Submitting Group. Restricted-Use Data in a Background Set does not, but its classification as background must be carefully justified.
+- Users **must** create a SeqSet, generate a DOI, and cite it in the References section of the manuscript.
 
 ### Focal Set Use
-- Sequences are part of the focal set if they are key to the analysis being performed: without these sequences the analysis would not be possible
-- Usage requires the consent of the Submitting Group, as indicated by either:
-  1. Inclusion of one or more Submitters as authors on the manuscript, as the result of an agreed collaboration, or
-  2. Obtaining explicit written permission ("Authorship Waiver") from the Submitting Group.
+- Sequences are part of the Focal Set if they are key to the analysis and its conclusions: they could not be removed, or replaced with a randomly selected similar set, without significantly changing the results. This should be interpreted broadly.
+- Sequences are part of the Focal Set if **any** of the following apply ([full terms](/about/terms-of-use/data-use-terms#423-deciding-if-restricted-use-data-is-part-of-a-focal-or-background-set)):
+  - Removing them would make the analysis impossible or the result completely different.
+  - Replacing them with sequences from another country or time period would make the analysis impossible or completely different.
+  - The accessions or sequence names are mentioned explicitly in the manuscript.
+  - They are from a specific geographic area that the analysis focuses on (e.g., where a new variant originated or where a mutation of interest is present).
+- If Restricted-Use Data is part of the Focal Set, **all three** of the following are required:
+  1. Consent of the Submitting Group, shown by either:
+     - Inclusion of one or more Submitters as authors on the manuscript, as agreed with the Submitting Group (“Authorship”), or
+     - Explicit written permission from the Submitting Group, giving permission to publish and turning down authorship, included as a supplemental document to the manuscript (“Authorship Waiver”).
+  2. A SeqSet containing all Focal Set data from Pathoplexus, with a DOI cited as a reference in the manuscript.
+  3. The following statement in the Acknowledgement section of the manuscript: “We confirm that we have adhered to the Data Use Terms of Pathoplexus.”
 
 ### Background Set Use
-- Sequences are part of the background set if they could be replaced with other sequences with the same analysis outcome
-- The Background set may be used without authorship or waiver, but careful consideration is required to determine if the sequences are background sequences.
-- Users **must** create a SeqSet, generate a DOI, and cite it in the manuscript.
+- Sequences may be part of the Background Set only if **all** of the following are true:
+  - They could be replaced with other, *randomly selected* sequences from the entire dataset and the analysis would still be meaningful, with the same result.
+  - If sequences from multiple countries or regions are used, any one country or region could be removed without affecting the main results. Any country or region for which this is not true belongs in the Focal Set.
+- The Background Set may be used without authorship or waiver, but careful consideration is required to determine if the sequences are background sequences.
+- Users **must** create a SeqSet containing all Background Set data from Pathoplexus, generate a DOI, and cite it in the manuscript.
+
+**If unsure whether data should be in the Focal or Background Set, treat it as part of the Focal Set.**
 
 # Third Party Data Sharing
-When sharing Restricted Data from Pathoplexus onward:
+([full terms](/about/terms-of-use/data-use-terms#424-third-party-data-sharing))
+
+When sharing Restricted-Use Data from Pathoplexus onward:
 - Clearly communicate the Data Use Terms.
-- Keep the Data Use Terms columns intact in the metadata.
-- If displayed publicly, include a direct link to the original sequence page on Pathoplexus.
-- If re-sharing Pathoplexus data as part of a database with many users, access restrictions may not be imposed
+- Keep the Data Use Terms columns (`dataUseTerms`, `dataUseTermsRestrictedUntil` and `dataUseTermsUrl`) intact in the metadata.
+- If displayed on a website or in another database, each sequence **must** have a direct link to the original sequence page on Pathoplexus and display the Pathoplexus accession.
+- If sharing the data onward as a database, or as part of a database, it **must not** be placed behind access restrictions. Private use by small groups or labs with up to 200 users is an exception. For an access-restricted database with more than 200 users, contact Pathoplexus ([help@pathoplexus.org](mailto:help@pathoplexus.org)) to request permission.
 
 # Using All Data
-To study general viral properties or patterns, such as mutation frequencies, across broad regions or globally, it is sometimes permissible to use all sequences for a pathogen as a “Background Set”.
+([full terms](/about/terms-of-use/data-use-terms#43-using-all-data))
 
-- The dataset must contain contributions from many submitting groups
+To study overarching sequence properties, such as mutation frequencies, globally or across continents, it is sometimes permissible to use all sequences for a pathogen as a “Background Set”.
+
+- The dataset must contain contributions from a large number of submitting groups.
+- The analysis must address only global or international trends, with no specific focus on a country or region (especially one where a virus, variant, strain or clade originated, or where a mutation of interest is only found).
 - Users **must** create a SeqSet containing all the data, generate a DOI, and cite it in the manuscript.
 
 If only a few submitters have generated sequences for a pathogen, it’s unethical to use all sequences from that pathogen without contacting and involving those submitters.
+
+During an outbreak, key data may come from a small number of submitting groups and still be Restricted-Use. Such data should be treated as part of the Focal Set, not as background.
 
 # Ethical Considerations
 - Avoid "scooping" others' work.
