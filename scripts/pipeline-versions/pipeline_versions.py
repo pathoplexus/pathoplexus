@@ -43,6 +43,7 @@ import argparse
 import difflib
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -1396,9 +1397,6 @@ def _fetch_loculus(ref: str) -> Path:
     Means `check` needs no setup and cannot be pointed at the wrong version: the commit
     comes from the pathoplexus checkout in hand. Only that one commit is fetched, into a
     bare repo -- `git archive` is all that is needed of it. Same approach as sync.sh.
-
-    Kept under the temp dir rather than a cache dir: repeated runs reuse it, and the OS
-    clears it up eventually without the tool having to own a cache it never invalidates.
     """
     cache = _cache_dir() / "loculus.git"
     if not (cache / "HEAD").exists():
@@ -1576,8 +1574,13 @@ def _tree_attribute(input_path: str) -> str | None:
 
 
 def _cache_dir(*parts: str) -> Path:
-    """A directory under the OS temp dir, reused between runs and cleaned up by the OS."""
-    path = Path(tempfile.gettempdir()).joinpath("pathoplexus-pipeline-versions", *parts)
+    """A per-user cache directory, reused between runs.
+
+    Per-user rather than under the shared temp dir: `check` imports Python from the
+    loculus commit cached here, so nobody else may be able to plant it.
+    """
+    base = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache")
+    path = base.joinpath("pathoplexus-pipeline-versions", *parts)
     path.mkdir(parents=True, exist_ok=True)
     return path
 
