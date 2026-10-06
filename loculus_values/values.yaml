@@ -4494,10 +4494,6 @@ organisms:
         - <<: *idConfig
           definition:
         - <<: *hostConfig
-      metadataAdd:
-        - <<: *hostTaxonIdConfig
-          required: true
-          initiallyVisible: true
       website:
         <<: *website
         tableColumns:
