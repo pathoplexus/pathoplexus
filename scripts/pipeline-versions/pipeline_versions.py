@@ -1142,6 +1142,7 @@ def run_check(
     skip_model_check: bool = False,
     skip_remote_checks: bool = False,
     verbosity: int = 1,
+    allow_removed_keys: bool = False,
 ) -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -1170,14 +1171,19 @@ def run_check(
         #    change (a new alignment_requirement, create_embl_file, ...) and is exactly
         #    what someone hand-editing a generated draft would do, so it must not fail CI.
         #    Entries are in ascending version order; check 4 enforces that.
+        #
+        #    Dropping a key on purpose -- reverting to the pipeline default is a real reason
+        #    to bump -- needs --allow-removed-keys, which downgrades this to a warning. An
+        #    entry without segments still fails check 3.
         # `or {}`, not a default: `configFile:` with nothing under it parses to None.
         keysets = [frozenset(e.get("configFile") or {}) for e in entries]
         for idx, (entry, ks) in enumerate(zip(entries, keysets, strict=False)):
             older = frozenset().union(*keysets[:idx]) if idx else frozenset()
             if lost := sorted(older - ks):
-                errors.append(
+                (warnings if allow_removed_keys else errors).append(
                     f"{name}: entry {idx} (version {entry['version']}) is missing "
-                    f"configFile key(s) {lost} that a lower-version entry declares."
+                    f"configFile key(s) {lost} that a lower-version entry declares. "
+                    f"Pass --allow-removed-keys if that is intended."
                 )
 
         # 3. An empty piece of the segment tree means the pipeline quietly does less,
@@ -2075,6 +2081,7 @@ def _emit(
     organisms: list[str],
     cmd: str,
     ignore_dataset_tags: bool = False,
+    allow_removed_keys: bool = False,
 ) -> int:
     if not notes:
         print("nothing to do")
@@ -2126,6 +2133,7 @@ def _emit(
         allow_empty_segments=False,
         skip_model_check=True,
         skip_remote_checks=True,
+        allow_removed_keys=allow_removed_keys,
     )
     if rc:
         print("\nthe written file FAILS check -- review the diff above", file=sys.stderr)
@@ -2144,6 +2152,14 @@ def main(argv: list[str] | None = None) -> int:
 
     def common(sp):
         sp.add_argument("--organisms", help="comma-separated; default: all")
+
+    def removed_keys(sp):
+        sp.add_argument(
+            "--allow-removed-keys",
+            action="store_true",
+            help="a newer entry dropping a configFile key an older one declares is a "
+            "warning rather than an error -- for a bump that reverts a key to its default",
+        )
 
     sp = sub.add_parser("status", help="show current pipeline versions")
     common(sp)
@@ -2191,14 +2207,17 @@ def main(argv: list[str] | None = None) -> int:
         "the server publishes. The entry being superseded keeps its tag.",
     )
     sp.add_argument("--dry-run", action="store_true")
+    removed_keys(sp)
 
     sp = sub.add_parser("prune", help="remove superseded pipeline versions")
     common(sp)
     sp.add_argument("--dry-run", action="store_true")
+    removed_keys(sp)
 
     sp = sub.add_parser("check", help="assert config invariants (exit 1 on failure)")
     common(sp)
     sp.add_argument("--allow-empty-segments", action="store_true")
+    removed_keys(sp)
     sp.add_argument("-q", "--quiet", action="store_true", help="errors only")
     sp.add_argument("-v", "--verbose", action="store_true", help="also show info, e.g. a newer dataset tag")
     sp.add_argument(
@@ -2235,6 +2254,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.skip_model_check,
                 args.skip_remote_checks,
                 verbosity=0 if args.quiet else 2 if args.verbose else 1,
+                allow_removed_keys=args.allow_removed_keys,
             )
 
         expand_only: list[str] = []
@@ -2298,6 +2318,7 @@ def main(argv: list[str] | None = None) -> int:
             organisms,
             args.cmd,
             ignore_dataset_tags=getattr(args, "update_datasets", False),
+            allow_removed_keys=args.allow_removed_keys,
         )
 
     except Problem as exc:

@@ -260,6 +260,58 @@ def test_check_is_directional_newer_may_add_but_not_lose_keys(work, capsys):
     assert "lower-version entry" in err
 
 
+def _drop_last_line_matching(path: Path, org: str, needle: str) -> None:
+    """Delete the last line in `org`'s preprocessing list containing `needle`."""
+    doc = pv.load(path)
+    org_ = doc.organisms[org]
+    lines = list(doc.lines)
+    i = max(i for i in range(org_.prepro_key_line, org_.prepro_end) if needle in lines[i])
+    del lines[i]
+    path.write_text("\n".join(lines))
+
+
+def test_removing_a_configfile_key_needs_allow_removed_keys(work, capsys):
+    """Reverting a key to the pipeline default is a real reason to bump, so dropping one
+    on purpose must be possible -- but explicit, since losing one by accident is the
+    incident."""
+    assert _run(work, "bump", "--expand-organisms", "andv", "--organisms", "andv") == 0
+    _drop_last_line_matching(work, "andv", "alignment_requirement: ANY")
+
+    args = ("check", "--skip-model-check", "--skip-remote-checks", "--organisms", "andv")
+    assert _run(work, *args) == 1
+    assert "missing configFile key(s) ['alignment_requirement']" in capsys.readouterr().err
+
+    assert _run(work, *args, "--allow-removed-keys") == 0
+    assert "missing configFile key(s) ['alignment_requirement']" in capsys.readouterr().out
+
+    # prune runs check over the file it wrote, so it takes the flag too.
+    assert _run(work, "prune", "--organisms", "andv", "--dry-run", "--allow-removed-keys") == 0
+
+
+def test_allow_removed_keys_does_not_excuse_lost_segments(work, capsys):
+    ref = {"name": "r", "nextclade_dataset_name": "ds", "genes": ["G"]}
+    seg = {"segments": [{"name": "main", "references": [ref]}]}
+    doc = pv.load(work)
+    doc.resolved["organisms"]["andv"]["preprocessing"] = [
+        {"version": [1], "configFile": seg},
+        {"version": [2], "configFile": {"batch_size": 5}},
+    ]
+    doc.organisms["andv"].lineage_fields = []
+    doc.organisms["andv"].items = []
+    assert (
+        pv.run_check(
+            doc,
+            ["andv"],
+            allow_empty_segments=False,
+            skip_model_check=True,
+            skip_remote_checks=True,
+            allow_removed_keys=True,
+        )
+        == 1
+    )
+    assert "has no segments" in capsys.readouterr().err
+
+
 def test_bump_leaves_untouched_organisms_byte_identical(work):
     original = work.read_text().split("\n")
     doc_before = pv.load(work)
