@@ -22,3 +22,6 @@ __pycache__/
 .coverage.*
 .pytest_cache/
 scripts/pipeline-versions/uv.lock
+
+# Local DB connection settings for scripts/db-clone (created on the bastion)
+scripts/db-clone/env.sh

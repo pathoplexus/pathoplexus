@@ -2,9 +2,22 @@
 
 set -x
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-export PGHOST=pathoplexus3.cluster-che6ccwa8oie.eu-central-1.rds.amazonaws.com
+# Load local connection settings (PGHOST) if present.
+if [ -f "$SCRIPT_DIR/env.sh" ]; then
+    # shellcheck disable=SC1091
+    source "$SCRIPT_DIR/env.sh"
+fi
+
 export PGUSER=postgres
+
+if [ -z "${PGHOST:-}" ]; then
+    echo "Error: PGHOST is not set." >&2
+    echo "Export it in the environment on the bastion/server, or create" >&2
+    echo "$SCRIPT_DIR/env.sh (copy env.sh.example). See README.md." >&2
+    exit 1
+fi
 
 print_usage() {
     echo "Usage: $0 <action> <database> <file> [new_owner_username]"
