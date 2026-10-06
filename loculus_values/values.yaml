@@ -2531,10 +2531,6 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *westNilePreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 30
     ingest:
       <<: *ingest
       configFile:
