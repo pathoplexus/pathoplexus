@@ -1941,9 +1941,9 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaZaireTaxon
-            taxon_id: 186538
             scientific_name: "Zaire ebolavirus"
             molecule_type: "genomic RNA"
+          taxon_id: 186538
     preprocessing:
       - <<: *preprocessing
         replicas: 1
@@ -2007,9 +2007,9 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaSudanTaxon
-            taxon_id: 186540
             scientific_name: "Sudan ebolavirus"
             molecule_type: "genomic RNA"
+          taxon_id: 186540
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2114,9 +2114,9 @@ organisms:
       singleReference:
         configFile:
           <<: &ebolaBdbvTaxon
-            taxon_id: 565995
             scientific_name: "Bundibugyo virus"
             molecule_type: "genomic RNA"
+          taxon_id: 565995
     preprocessing:
       - &ebolaBdbvPreprocessing
         <<: *preprocessing
@@ -2298,7 +2298,6 @@ organisms:
           segment_classification_method: "minimizer"
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/dengue/minimizer.json"
           # TODO(https://github.com/loculus-project/loculus/issues/5673)
-          taxon_id: 12637
           scientific_name: "Dengue virus"
           molecule_type: "genomic RNA"
           segments:
@@ -2514,9 +2513,9 @@ organisms:
       singleReference:
         configFile:
           <<: &westNileTaxon
-            taxon_id: 11082
             scientific_name: "West Nile virus"
             molecule_type: "genomic RNA"
+          taxon_id: 11082
     preprocessing:
       - &westNilePreprocessing
         <<: *preprocessing
@@ -2622,9 +2621,9 @@ organisms:
       singleReference:
         configFile:
           <<: &andvTaxon
-            taxon_id: 1980456
             scientific_name: "Orthohantavirus andesense"
             molecule_type: "genomic RNA"
+          taxon_id: 1980456
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2778,9 +2777,9 @@ organisms:
       singleReference:
         configFile:
           <<: &cchfTaxon
-            taxon_id: 3052518
             scientific_name: "Orthonairovirus haemorrhagiae"
             molecule_type: "genomic RNA"
+          taxon_id: 3052518
     preprocessing:
       - <<: *preprocessing
         version:
@@ -2947,9 +2946,9 @@ organisms:
       singleReference:
         configFile:
           <<: &mpoxTaxon
-            taxon_id: 10244
             scientific_name: "Monkeypox virus"
             molecule_type: "genomic DNA"
+          taxon_id: 10244
     preprocessing:
       - &mpoxPreprocessing
         <<: *preprocessing
@@ -3572,9 +3571,9 @@ organisms:
       singleReference:
         configFile:
           <<: &rsvATaxon
-            taxon_id: 208893
             scientific_name: "Human respiratory syncytial virus A"
             molecule_type: "genomic RNA"
+          taxon_id: 208893
     preprocessing:
       - &rsvaPreprocessing
         <<: *preprocessing
@@ -3701,9 +3700,9 @@ organisms:
       singleReference:
         configFile:
           <<: &rsvBTaxon
-            taxon_id: 208895
             scientific_name: "Human respiratory syncytial virus B"
             molecule_type: "genomic RNA"
+          taxon_id: 208895
     preprocessing:
       - &rsvbPreprocessing
         <<: *preprocessing
@@ -3819,9 +3818,9 @@ organisms:
       singleReference:
         configFile:
           <<: &hmpvTaxon
-            taxon_id: 162145
             scientific_name: "Human metapneumovirus"
             molecule_type: "genomic RNA"
+          taxon_id: 162145
     preprocessing:
       - &hmpvPreprocessing
         <<: *preprocessing
@@ -3947,9 +3946,9 @@ organisms:
       singleReference:
         configFile:
           <<: &measlesTaxon
-            taxon_id: 11234
             scientific_name: "Measles morbillivirus"
             molecule_type: "genomic RNA"
+          taxon_id: 11234
     preprocessing:
       - &measlesPreprocessing
         <<: *preprocessing
@@ -4049,9 +4048,9 @@ organisms:
       singleReference:
         configFile:
           <<: &marburgTaxon
-            taxon_id: 3052505
             scientific_name: "Orthomarburgvirus marburgense"
             molecule_type: "viral cRNA"
+          taxon_id: 3052505
     preprocessing:
       - <<: *preprocessing
         version:
@@ -4174,9 +4173,9 @@ organisms:
       singleReference:
         configFile:
           <<: &yellowFeverTaxon
-            taxon_id: 11089
             scientific_name: "Yellow fever virus"
             molecule_type: "genomic RNA"
+          taxon_id: 11089
     preprocessing:
       - <<: *preprocessing
         version:
@@ -4288,9 +4287,9 @@ organisms:
       singleReference:
         configFile:
           <<: &zikaTaxon
-            taxon_id: 64320
             scientific_name: "Zika virus"
             molecule_type: "genomic RNA"
+          taxon_id: 64320
     preprocessing:
       - <<: *preprocessing
         version:
@@ -4405,9 +4404,9 @@ organisms:
       singleReference:
         configFile:
           <<: &chikungunyaTaxon
-            taxon_id: 37124
             scientific_name: "Chikungunya virus"
             molecule_type: "genomic RNA"
+          taxon_id: 37124
     preprocessing:
       - <<: *preprocessing
         version:
