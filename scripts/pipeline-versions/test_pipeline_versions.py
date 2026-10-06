@@ -7,16 +7,16 @@
 # ///
 """Tests for pipeline_versions.py.
 
-Run with:  uv run scripts/test_pipeline_versions.py
+Run with:  uv run scripts/pipeline-versions/test_pipeline_versions.py
 
-Fixtures come from the repo's own git history, so the tests assert against real
-configurations rather than invented ones. The most important case is
-``test_check_catches_the_mpox_incident``: commit 9764d15 is the config that was live
-in production during the 2026-08-05 mpox incident.
+Fixtures are real values.yaml files from the repo's history, vendored under fixtures/ so
+the tests assert against real configurations without depending on git history (CI checks
+out one commit, and branch SHAs vanish on squash-merge). The most important case is
+``test_check_catches_the_mpox_incident``: incident-9764d15.yaml is the config that was
+live in production during the 2026-08-05 mpox incident.
 """
 
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -29,45 +29,32 @@ import pipeline_versions as pv
 
 REPO = Path(__file__).resolve().parents[2]
 VALUES = REPO / "loculus_values" / "values.yaml"
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
-INCIDENT_COMMIT = "9764d15"  # segment-less mpox v27 -- what production was serving
-PRE_INCIDENT_COMMIT = "1c04032"  # a clean prune, before the two-entry migration
+# Segment-less mpox v27 -- what production was serving during the incident (9764d15).
+INCIDENT = FIXTURES / "incident-9764d15.yaml"
 
-# Behavioural tests run against a pinned commit, not the working tree. Running the tool
-# is the normal way to edit values.yaml, so the working copy's version numbers and stubs
-# move; tests that assert on them must not depend on that. Version numbers are still
-# derived rather than hardcoded wherever it costs nothing, so re-pinning stays cheap.
-BASE_COMMIT = "24b71a8"
-
-# The last commit that still carried the commented-out stubs left behind by older prunes.
-# `24b71a8` removed them and the tool no longer produces any, but it must keep handling one
-# it finds -- in an old branch, or from a hand edit -- so those tests pin to this instead.
-LEGACY_STUB_COMMIT = "f9de729"
+# Behavioural tests run against a frozen file, not the working tree. Running the tool is
+# the normal way to edit values.yaml, so the working copy's version numbers move; tests
+# that assert on them must not depend on that. This is values.yaml as of 24b71a8: mpox
+# mid-bump ([27] anchored, [28] merging it), every other organism on one entry.
+BASE = FIXTURES / "base-24b71a8.yaml"
 
 # A loculus checkout, needed to validate a configFile against the preprocessing
 # pipeline's own pydantic model. Sibling of the pathoplexus clone; skipped when absent.
 LOCULUS = REPO.parent / "loculus"
 
 
-def _blob(commit: str) -> str:
-    return subprocess.run(
-        ["git", "-C", str(REPO), "show", f"{commit}:loculus_values/values.yaml"],
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout
-
-
-def _at(commit: str, tmp_path: Path) -> Path:
-    path = tmp_path / f"{commit}.yaml"
-    path.write_text(_blob(commit))
+def _at(fixture: Path, tmp_path: Path) -> Path:
+    path = tmp_path / fixture.name
+    path.write_text(fixture.read_text())
     return path
 
 
 @pytest.fixture
 def work(tmp_path: Path) -> Path:
     path = tmp_path / "values.yaml"
-    path.write_text(_blob(BASE_COMMIT))
+    path.write_text(BASE.read_text())
     return path
 
 
@@ -80,14 +67,6 @@ def loculus() -> Path:
     if not (LOCULUS / ".git").exists():
         pytest.skip(f"no loculus checkout at {LOCULUS}")
     return LOCULUS
-
-
-@pytest.fixture
-def legacy(tmp_path: Path) -> Path:
-    """A config that still has the old commented-out stubs. See LEGACY_STUB_COMMIT."""
-    path = tmp_path / "legacy.yaml"
-    path.write_text(_blob(LEGACY_STUB_COMMIT))
-    return path
 
 
 def _run(path: Path, *args: str) -> int:
@@ -133,7 +112,7 @@ def test_check_catches_the_mpox_incident(tmp_path, capsys):
     """The whole point. A segment-less pipeline entry must not pass."""
     assert (
         _run(
-            _at(INCIDENT_COMMIT, tmp_path),
+            _at(INCIDENT, tmp_path),
             "check",
             "--skip-model-check",
             "--skip-remote-checks",
@@ -147,10 +126,8 @@ def test_check_catches_the_mpox_incident(tmp_path, capsys):
     assert "has no segments" in err
 
 
-def test_check_passes_on_a_clean_historical_config(tmp_path):
-    assert (
-        _run(_at(PRE_INCIDENT_COMMIT, tmp_path), "check", "--skip-model-check", "--skip-remote-checks") == 0
-    )
+def test_check_passes_on_a_clean_historical_config(work):
+    assert _run(work, "check", "--skip-model-check", "--skip-remote-checks") == 0
 
 
 def test_check_catches_a_missing_lineage_version(work, capsys):
@@ -168,7 +145,7 @@ def test_check_catches_a_missing_lineage_version(work, capsys):
 
 def test_check_catches_duplicate_versions(work, capsys):
     doc = pv.load(work)
-    item = doc.organisms["mpox"].active[-1]
+    item = doc.organisms["mpox"].items[-1]
     lines = list(doc.lines)
     lines[max(item.version_value_lines)] = "          - 27"  # collide with entry 0
     work.write_text("\n".join(lines))
@@ -176,53 +153,33 @@ def test_check_catches_duplicate_versions(work, capsys):
     assert "version 27 declared by entries" in capsys.readouterr().err
 
 
-def test_check_warns_about_stale_stubs(legacy, capsys):
-    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks")
-    out = capsys.readouterr().out
-    assert "dengue: commented-out stub declares version [32], which is already active" in out
-
-
 # -------------------------------------------------------------------------- bump
-
-
-def test_bump_ignores_a_leftover_stub_rather_than_reusing_it(legacy):
-    """Stubs are a dead idiom: bump appends, and prune is what clears them.
-
-    Reusing one meant inheriting a version that is stale by construction. The entry is
-    appended after the current highest instead, which is also the only position that
-    keeps existing Deployment indices stable.
-    """
-    assert _run(legacy, "bump", "--organisms", "dengue") == 0
-    org = pv.load(legacy).organisms["dengue"]
-    assert org.versions == [32, 33]
-    assert org.active[-1].start > org.active[0].end - 1  # appended after the current entry
-    assert len(org.stubs) == 1  # untouched; prune removes it
 
 
 def test_bump_replicas_override_wins(work):
     assert _run(work, "bump", "--organisms", "west-nile", "--replicas", "5") == 0
-    new = max(pv.load(work).organisms["west-nile"].active, key=lambda i: i.max_version)
+    new = max(pv.load(work).organisms["west-nile"].items, key=lambda i: i.max_version)
     assert new.replicas == 5
 
 
 def test_bump_adds_an_anchor_when_the_entry_has_none(work):
     assert _run(work, "bump", "--organisms", "ebola-zaire") == 0
     org = pv.load(work).organisms["ebola-zaire"]
-    assert org.active[0].anchor == "ebolaZairePreprocessing"
-    assert org.active[1].merge_alias == "ebolaZairePreprocessing"
+    assert org.items[0].anchor == "ebolaZairePreprocessing"
+    assert org.items[1].merge_alias == "ebolaZairePreprocessing"
     assert org.versions == [31, 32]
 
 
 def test_bump_names_a_new_anchor_after_its_organism(work):
     assert _run(work, "bump", "--organisms", "yellow-fever") == 0
-    assert pv.load(work).organisms["yellow-fever"].active[0].anchor == "yellowFeverPreprocessing"
+    assert pv.load(work).organisms["yellow-fever"].items[0].anchor == "yellowFeverPreprocessing"
 
 
 def test_bump_qualifies_an_anchor_name_already_taken_within_the_organism(work):
     """mpox mid-bump: entry 27 already holds `mpoxPreprocessing`, so entry 28 needs
     a distinct name. The suffix is temporary -- prune removes the entry carrying it."""
     assert _run(work, "bump", "--organisms", "mpox") == 0
-    anchors = [i.anchor for i in pv.load(work).organisms["mpox"].active]
+    anchors = [i.anchor for i in pv.load(work).organisms["mpox"].items]
     assert anchors[:2] == ["mpoxPreprocessing", "mpoxPreprocessingV28"]
 
 
@@ -234,11 +191,11 @@ def test_bump_adds_the_lineage_version_key(work):
 def test_bump_append_mode_extends_the_version_list(work):
     assert _run(work, "bump", "--organisms", "cchf", "--mode", "append") == 0
     org = pv.load(work).organisms["cchf"]
-    assert len(org.active) == 1
+    assert len(org.items) == 1
     assert org.versions == [25, 26]
 
 
-ALL_ORGANISMS = sorted(yaml.safe_load(_blob(BASE_COMMIT))["organisms"])
+ALL_ORGANISMS = sorted(yaml.safe_load(BASE.read_text())["organisms"])
 
 
 @pytest.mark.parametrize("org", ALL_ORGANISMS)
@@ -256,7 +213,7 @@ def test_bumped_entry_inherits_the_full_config(work, org):
     assert entries[-1]["configFile"] == entries[-2]["configFile"]
     assert entries[-1]["configFile"].get("segments")
     # Structural checks only: this is about what bump generated, and andv carries two
-    # dead configFile keys at BASE_COMMIT that predate it.
+    # dead configFile keys in BASE that predate it.
     assert _run(work, "check", "--organisms", org, "--skip-model-check", "--skip-remote-checks") == 0
 
 
@@ -327,30 +284,30 @@ def test_bump_dry_run_writes_nothing(work):
 
 
 def test_prune_is_a_noop_when_there_is_nothing_to_do(work, capsys):
-    """andv has one version and no stub, so prune has nothing to change."""
+    """andv has one version, so prune has nothing to change."""
     assert _run(work, "prune", "--organisms", "andv") == 0
     assert "nothing to do" in capsys.readouterr().out
 
 
-def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(legacy):
+def test_prune_rebases_a_survivors_merge_key_off_the_doomed_entry(work):
     """mpox: entry 28 is `- <<: *mpoxPreprocessing`, an anchor on entry 27.
 
     Deleting 27 would orphan that merge key, and a merge key cannot be relocated the way
     a value alias can. All it supplies is what the global *preprocessing also supplies,
     so the survivor is re-pointed there and the collapse proceeds.
     """
-    before = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    before = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
     v28 = next(e for e in before if e["version"] == [28])
 
-    assert _run(legacy, "prune", "--organisms", "mpox") == 0
+    assert _run(work, "prune", "--organisms", "mpox") == 0
 
-    doc = pv.load(legacy)
+    doc = pv.load(work)
     org = doc.organisms["mpox"]
     assert org.versions == [28]
-    assert org.active[0].merge_alias == "preprocessing"
-    assert org.active[0].replicas == 1  # back to steady state from 3
+    assert org.items[0].merge_alias == "preprocessing"
+    assert org.items[0].replicas == 1  # back to steady state from 3
 
-    after = yaml.safe_load(legacy.read_text())["organisms"]["mpox"]["preprocessing"]
+    after = yaml.safe_load(work.read_text())["organisms"]["mpox"]["preprocessing"]
     assert len(after) == 1
     assert pv._config_signature(after[0]) == pv._config_signature(v28)
     assert len(after[0]["configFile"]["segments"][0]["references"][0]["genes"]) == 175
@@ -672,15 +629,14 @@ def test_model_rejects_a_wrongly_typed_value(tmp_path, loculus, capsys):
 def test_model_accepts_every_key_the_real_config_uses(work, loculus, capsys):
     """Guards against a model so strict it fires on legitimate config.
 
-    Read from a pinned commit, not the working tree: this asserts something about the
+    Read from a frozen fixture, not the working tree: this asserts something about the
     *model*, and running it against a file someone is mid-edit on tests their edit
     instead. If it starts failing after a loculusVersion bump, the config needs fixing
     or the model has changed -- not this test loosening.
     """
     _run(work, "check", "--loculus", str(loculus), "--skip-remote-checks")
     unknown = [ln for ln in capsys.readouterr().err.splitlines() if "Extra inputs are not permitted" in ln]
-    # Not `assert unknown`: andv's two dead keys are the only ones at BASE_COMMIT, and
-    # the commit that removes them must not turn this red.
+    # Not `assert unknown`: andv's two dead keys are the only ones in BASE.
     assert all("andv" in ln for ln in unknown), unknown
 
 
@@ -949,36 +905,29 @@ def test_anchors_come_from_the_yaml_scanner_not_a_regex(work):
     assert doc.anchors.uses["preprocessing"]
 
 
-def test_a_commented_out_alias_does_not_count_as_a_use(legacy):
-    """A stub's `<<: *denguePreprocessing` is a comment, so the anchor is unused."""
-    doc = pv.load(legacy)
-    assert "denguePreprocessing" in doc.anchors.defs
-    assert "denguePreprocessing" in doc.anchors.unused()
-
-
-def test_prune_drops_anchors_nothing_aliases(legacy):
+def test_prune_drops_anchors_nothing_aliases(work):
     """The rule: an anchor exists to be referenced, so prune removes any with no referent.
 
     Which anchors used to survive a prune was an accident of where the remaining text
     happened to sit; this makes it a decision instead.
     """
-    before = yaml.safe_load(legacy.read_text())
-    assert "denguePreprocessing" in pv.load(legacy).anchors.unused()
+    before = yaml.safe_load(work.read_text())
+    assert "measlesPreprocessing" in pv.load(work).anchors.unused()
 
-    # dengue has one version, so this prune only clears a stub and an unused anchor.
-    assert _run(legacy, "prune", "--organisms", "dengue") == 0
+    # measles has one version, so this prune only clears an unused anchor.
+    assert _run(work, "prune", "--organisms", "measles") == 0
 
-    assert "denguePreprocessing" not in pv.load(legacy).anchors.defs
+    assert "measlesPreprocessing" not in pv.load(work).anchors.defs
     # Purely cosmetic: nothing Helm renders may change.
-    assert yaml.safe_load(legacy.read_text()) == before
+    assert yaml.safe_load(work.read_text()) == before
 
 
-def test_dropping_an_anchor_alone_on_a_dash_line_keeps_the_yaml_valid(legacy):
-    """`- &denguePreprocessing` has the mapping on the following lines. Deleting the line
+def test_dropping_an_anchor_alone_on_a_dash_line_keeps_the_yaml_valid(work):
+    """`- &measlesPreprocessing` has the mapping on the following lines. Deleting the line
     would orphan it, so the next key is pulled up onto the dash."""
-    assert _run(legacy, "prune", "--organisms", "dengue") == 0
-    doc = pv.load(legacy)
-    item = doc.organisms["dengue"].active[0]
+    assert _run(work, "prune", "--organisms", "measles") == 0
+    doc = pv.load(work)
+    item = doc.organisms["measles"].items[0]
     assert doc.lines[item.start] == "      - <<: *preprocessing"
     assert item.merge_alias == "preprocessing"
 
@@ -999,20 +948,20 @@ def test_an_anchor_may_not_share_the_dash_line_with_a_key(tmp_path, capsys):
     assert "it binds the key, not the entry" in capsys.readouterr().err
 
 
-def test_check_warns_about_an_unused_anchor(legacy, capsys):
-    _run(legacy, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "dengue")
-    assert "anchor &denguePreprocessing is defined but never aliased" in capsys.readouterr().out
+def test_check_warns_about_an_unused_anchor(work, capsys):
+    _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "measles")
+    assert "anchor &measlesPreprocessing is defined but never aliased" in capsys.readouterr().out
 
 
-def test_prune_refuses_to_rebase_when_the_doomed_entry_supplies_more(legacy, capsys):
+def test_prune_refuses_to_rebase_when_the_doomed_entry_supplies_more(work, capsys):
     """If the entry being removed provides something *preprocessing does not, the merge
     key cannot be re-pointed and the tool must decline rather than silently drop it."""
-    lines = pv.load(legacy).lines
+    lines = pv.load(work).lines
     anchor_line = next(i for i, l in enumerate(lines) if l.strip() == "- &mpoxPreprocessing")
     lines.insert(anchor_line + 2, '        dockerTag: "pinned-for-this-organism"')
-    legacy.write_text("\n".join(lines))
+    work.write_text("\n".join(lines))
 
-    assert _run(legacy, "prune", "--organisms", "mpox") != 0
+    assert _run(work, "prune", "--organisms", "mpox") != 0
     err = capsys.readouterr().err
     assert "dockerTag" in err and "global *preprocessing does not supply" in err
 
@@ -1023,9 +972,8 @@ def test_bump_then_prune_returns_to_a_single_entry(work):
     assert _run(work, "prune", "--organisms", "measles") == 0
     org = pv.load(work).organisms["measles"]
     assert org.versions == [29]
-    assert len(org.active) == 1
-    assert org.active[0].replicas == 1  # back down from the bump's 3
-    assert org.stubs == []  # clean add/remove, no commented-out leftovers
+    assert len(org.items) == 1
+    assert org.items[0].replicas == 1  # back down from the bump's 3
     assert _run(work, "check", "--skip-model-check", "--skip-remote-checks", "--organisms", "measles") == 0
 
 
@@ -1078,21 +1026,6 @@ def test_prune_drops_stale_lineage_versions(work):
     assert sorted(pv.load(work).lineage["hmpv"]) == [26]
 
 
-def test_prune_removes_stubs_by_default(work):
-    assert _run(work, "bump", "--organisms", "rsv-a") == 0
-    assert _run(work, "prune", "--organisms", "rsv-a") == 0
-    org = pv.load(work).organisms["rsv-a"]
-    assert org.versions == [24]
-    assert len(org.stubs) == 0
-
-
-def test_prune_clears_a_preexisting_stale_stub(legacy):
-    assert len(pv.load(legacy).organisms["dengue"].stubs) == 1
-    assert _run(legacy, "prune", "--organisms", "dengue") == 0
-    org = pv.load(legacy).organisms["dengue"]
-    assert org.stubs == [] and org.versions == [32]
-
-
 # ------------------------------------------------------------- expand (flattened)
 
 
@@ -1104,7 +1037,7 @@ def test_expand_bump_spells_out_the_config_for_hand_editing(work):
     assert [e["version"] for e in entries] == [[28], [29]]
     assert entries[0]["configFile"] == entries[1]["configFile"]
     doc = pv.load(work)
-    new = doc.organisms["measles"].active[-1]
+    new = doc.organisms["measles"].items[-1]
     body = "\n".join(doc.lines[new.start : new.end])
     assert "nextclade_dataset_tag" in body  # editable in place, not hidden behind a merge
     assert new.merge_alias == "preprocessing"  # independent of its sibling
@@ -1113,8 +1046,8 @@ def test_expand_bump_spells_out_the_config_for_hand_editing(work):
 def test_expand_duplicates_short_lists_but_anchors_long_ones(work):
     assert _run(work, "bump", "--organisms", "measles,mpox", "--expand-organisms", "measles,mpox") == 0
     doc = pv.load(work)
-    measles = doc.organisms["measles"].active[-1]
-    mpox = doc.organisms["mpox"].active[-1]
+    measles = doc.organisms["measles"].items[-1]
+    mpox = doc.organisms["mpox"].items[-1]
     # measles: 8 genes on one line -> duplicated inline.
     assert "genes: [" in "\n".join(doc.lines[measles.start : measles.end])
     # mpox: 175 genes -> aliased rather than copied, so the entry stays small.
@@ -1152,11 +1085,11 @@ def test_expand_then_prune_relocates_the_gene_anchor(work):
 
 def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):
     assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a", "--replicas", "4") == 0
-    assert pv.load(work).organisms["rsv-a"].active[-1].replicas == 4
+    assert pv.load(work).organisms["rsv-a"].items[-1].replicas == 4
     assert _run(work, "prune", "--organisms", "rsv-a") == 0
     org = pv.load(work).organisms["rsv-a"]
     assert org.versions == [24]
-    assert org.active[0].replicas == 1
+    assert org.items[0].replicas == 1
 
 
 def test_anchor_threshold_is_configurable(work):
@@ -1190,7 +1123,7 @@ def test_expand_copy_never_redefines_an_anchor(work):
     """
     for org in ALL_ORGANISMS:
         w = work.with_name(f"{org}.yaml")
-        w.write_text(_blob(BASE_COMMIT))
+        w.write_text(BASE.read_text())
         if (
             pv.main(
                 [
@@ -1209,7 +1142,7 @@ def test_expand_copy_never_redefines_an_anchor(work):
         ):
             continue
         doc = pv.load(w)
-        new = doc.organisms[org].active[-1]
+        new = doc.organisms[org].items[-1]
         defined = re.findall(r"(?<![\w*])&(\w+)", "\n".join(doc.lines[new.start : new.end]))
         assert defined == [], f"{org}: generated entry redefines {defined}"
 
@@ -1251,19 +1184,64 @@ def test_benign_formatting_does_not_trip_the_cross_check(work):
     pv.load(work)  # trailing whitespace is fine
 
 
+def _reindent_list(path: Path, org: str, shift: int) -> None:
+    """Move every line of `org`'s preprocessing list `shift` columns (negative = left)."""
+    lines = path.read_text().split("\n")
+    o = pv.load(path).organisms[org]
+    for i in range(o.prepro_key_line + 1, o.prepro_end):
+        if lines[i].strip():
+            lines[i] = " " * shift + lines[i] if shift > 0 else lines[i][-shift:]
+    path.write_text("\n".join(lines))
+
+
+@pytest.mark.parametrize("shift", [-2, 2])
+def test_any_list_indentation_is_read_and_kept(work, shift):
+    """zika and chikungunya use the compact form, `- ` level with `preprocessing:`, which
+    YAML allows as much as the indented one. Both must work, and edits must follow the
+    organism's own indentation rather than a global one."""
+    _reindent_list(work, "rsv-a", shift)
+    before = yaml.safe_load(work.read_text())
+
+    assert _run(work, "bump", "--organisms", "rsv-a", "--expand-organisms", "rsv-a") == 0
+    entries = yaml.safe_load(work.read_text())["organisms"]["rsv-a"]["preprocessing"]
+    assert entries[-1]["configFile"] == entries[-2]["configFile"]
+    org = pv.load(work).organisms["rsv-a"]
+    assert {i.indent for i in org.items} == {6 + shift}
+
+    assert _run(work, "prune", "--organisms", "rsv-a") == 0
+    after = yaml.safe_load(work.read_text())
+    assert [e["version"] for e in after["organisms"]["rsv-a"]["preprocessing"]] == [[24]]
+    assert {o: c for o, c in after["organisms"].items() if o != "rsv-a"} == {
+        o: c for o, c in before["organisms"].items() if o != "rsv-a"
+    }
+
+
+def test_a_preprocessing_block_that_is_not_a_list_is_a_clear_error(tmp_path):
+    path = tmp_path / "notalist.yaml"
+    path.write_text(
+        "lineageSystemDefinitions: {}\n"
+        "organisms:\n"
+        "  x:\n"
+        "    schema: {metadata: []}\n"
+        "    preprocessing:\n"
+        "      version: 1\n"
+    )
+    with pytest.raises(pv.Problem, match="x: expected the first line after 'preprocessing:'"):
+        pv.load(path)
+
+
 def test_layout_drift_raises_rather_than_mis_editing(work):
     """The guard that justifies editing this file textually at all.
 
-    If the indentation the line scanner assumes ever changes, every edit below it
-    would be unsafe -- so load() cross-checks its textual scan against the parsed
-    document and refuses rather than proceeding on a partial view.
+    A layout the line scanner does not read -- here a compact `version:` list -- would
+    make every edit below it unsafe, so load() cross-checks its textual scan against the
+    parsed document and refuses rather than proceeding on a partial view.
     """
-    lines = work.read_text().split("\n")
     org = pv.load(work).organisms["dengue"]
-    for i in range(org.prepro_key_line + 1, org.prepro_end):
-        if lines[i].strip():
-            lines[i] = "  " + lines[i]  # re-indent the whole list by 2
-    lines[org.prepro_key_line] = "    preprocessing:"
+    item = org.items[0]
+    lines = work.read_text().split("\n")
+    for ln in item.version_value_lines:
+        lines[ln] = lines[ln][2:]  # `- 32` level with `version:`
     work.write_text("\n".join(lines))
     with pytest.raises(pv.Problem, match="textual scan"):
         pv.load(work)
@@ -1272,8 +1250,8 @@ def test_layout_drift_raises_rather_than_mis_editing(work):
 def test_version_mismatch_between_scan_and_parser_raises(work, monkeypatch):
     real = pv._parse_item
 
-    def lying(lines, start, end, commented):
-        item = real(lines, start, end, commented)
+    def lying(lines, start, end, indent):
+        item = real(lines, start, end, indent)
         if item.versions == [32]:
             item.versions = [99]
         return item

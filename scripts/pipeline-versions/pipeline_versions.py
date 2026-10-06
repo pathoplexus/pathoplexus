@@ -61,11 +61,10 @@ LOCULUS_URL = "https://github.com/loculus-project/loculus.git"
 # Config.nextclade_dataset_server's default in the preprocessing model.
 DEFAULT_DATASET_SERVER = "https://data.clades.nextstrain.org/v3"
 
-# Indentation of the organisms.<org>.preprocessing list items. The file is uniform
-# here; _locate() asserts its textual scan against the parsed document, so a layout
-# change surfaces as a hard error rather than a silent mis-edit.
-ITEM_INDENT = 6
-KEY_INDENT = 8
+# Indentation of the organisms.<org>.preprocessing list items is read per organism:
+# most organisms indent the dash under `preprocessing:` (6 spaces), some use the compact
+# form (4). _parse() asserts the textual scan against the parsed document, so any other
+# layout change surfaces as a hard error rather than a silent mis-edit.
 
 
 def _anchor_re(anchor: str) -> str:
@@ -86,7 +85,7 @@ class Item:
 
     start: int  # 0-based, inclusive: the "- " line
     end: int  # 0-based, exclusive
-    commented: bool
+    indent: int  # column of the "- "
     versions: list[int]
     version_key_line: int | None  # line of "version:"
     version_value_lines: list[int]  # lines of the "- N" entries, parallel to versions
@@ -96,6 +95,11 @@ class Item:
     merge_alias: str | None  # "<<: *name" at the item's top level
     merge_alias_line: int | None  # line carrying it
     has_own_config_file: bool
+
+    @property
+    def key_indent(self) -> int:
+        """Column of the entry's own keys (`version:`, `configFile:`, ...)."""
+        return self.indent + 2
 
     @property
     def max_version(self) -> int:
@@ -133,16 +137,8 @@ class Organism:
         return sorted({f.system for f in self.lineage_fields})
 
     @property
-    def active(self) -> list[Item]:
-        return [i for i in self.items if not i.commented]
-
-    @property
-    def stubs(self) -> list[Item]:
-        return [i for i in self.items if i.commented]
-
-    @property
     def versions(self) -> list[int]:
-        return sorted(v for i in self.active for v in i.versions)
+        return sorted(v for i in self.items for v in i.versions)
 
     @property
     def max_version(self) -> int:
@@ -196,25 +192,9 @@ def _scan_anchors(text: str) -> Anchors:
     return Anchors(defs=defs, uses=uses)
 
 
-def _strip_comment(line: str) -> str:
-    """Turn a commented-out stub line back into what it would be if uncommented."""
-    m = re.match(r"^(\s*)# ?(.*)$", line)
-    if not m:
-        return line
-    return m.group(1) + m.group(2)
-
-
-def _is_item_start(line: str) -> tuple[bool, bool]:
-    """Return (is_item_start, is_commented)."""
-    if re.match(rf"^ {{{ITEM_INDENT}}}- \S", line):
-        return True, False
-    if re.match(rf"^ {{{ITEM_INDENT}}}# ?- \S", line):
-        return True, True
-    return False, False
-
-
-def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item:
-    body = [_strip_comment(l) if commented else l for l in lines[start:end]]
+def _parse_item(lines: list[str], start: int, end: int, indent: int) -> Item:
+    body = lines[start:end]
+    key_indent = indent + 2
 
     versions: list[int] = []
     version_key_line: int | None = None
@@ -229,7 +209,7 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     # An entry's anchor has to sit alone on the "- " line. `- &name key: value` is legal
     # YAML but binds the anchor to the *key scalar*, so the alias resolves to the string
     # "key" rather than the mapping -- usually with no error at all. check flags it.
-    head = body[0][ITEM_INDENT + 2 :]
+    head = body[0][key_indent:]
     if m := re.match(r"^&(\w+)\s*$", head):
         anchor = m.group(1)
     elif m := re.match(r"^<<:\s*\*(\w+)\s*$", head):
@@ -240,15 +220,15 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
         # Normalise the "- " lead-in so the first line's key parses like the rest.
         text = raw
         if off == 0:
-            text = " " * (ITEM_INDENT + 2) + head
+            text = " " * key_indent + head
 
-        if (m2 := re.match(rf"^ {{{KEY_INDENT}}}<<:\s*\*(\w+)", text)) and merge_alias is None:
+        if (m2 := re.match(rf"^ {{{key_indent}}}<<:\s*\*(\w+)", text)) and merge_alias is None:
             merge_alias, merge_alias_line = m2.group(1), lineno
-        if re.match(rf"^ {{{KEY_INDENT}}}configFile:", text):
+        if re.match(rf"^ {{{key_indent}}}configFile:", text):
             has_own_config_file = True
-        if m := re.match(rf"^ {{{KEY_INDENT}}}replicas:\s*(\d+)\s*$", text):
+        if m := re.match(rf"^ {{{key_indent}}}replicas:\s*(\d+)\s*$", text):
             replicas, replicas_line = int(m.group(1)), lineno
-        if m := re.match(rf"^ {{{KEY_INDENT}}}version:\s*(.*)$", text):
+        if m := re.match(rf"^ {{{key_indent}}}version:\s*(.*)$", text):
             version_key_line = lineno
             rest = m.group(1).strip()
             if m2 := re.match(r"^\[([^\]]*)\]$", rest):  # flow list
@@ -262,7 +242,7 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     if version_key_line is not None and not versions:
         for off in range(version_key_line - start + 1, len(body)):
             text = body[off]
-            if m := re.match(rf"^ {{{KEY_INDENT + 2}}}-\s*(\d+)\s*$", text):
+            if m := re.match(rf"^ {{{key_indent + 2}}}-\s*(\d+)\s*$", text):
                 versions.append(int(m.group(1)))
                 version_value_lines.append(start + off)
             else:
@@ -271,7 +251,7 @@ def _parse_item(lines: list[str], start: int, end: int, commented: bool) -> Item
     return Item(
         start=start,
         end=end,
-        commented=commented,
+        indent=indent,
         versions=versions,
         version_key_line=version_key_line,
         version_value_lines=version_value_lines,
@@ -330,30 +310,47 @@ def _locate_organisms(lines: list[str], resolved: dict) -> dict[str, Organism]:
 
 
 def _locate_prepro(lines: list[str], org: str, key_line: int) -> Organism:
-    # The list runs until a line at indent <= 4 that is not blank and not part of it.
+    # The dash column comes from the first item: `preprocessing:` at 4, items at 6 or, in
+    # the compact form YAML equally allows, at 4.
+    key_col = _indent(lines[key_line])
+    first = next(
+        (
+            j
+            for j in range(key_line + 1, len(lines))
+            if lines[j].strip() and not lines[j].lstrip().startswith("#")
+        ),
+        None,
+    )
+    m = re.match(r"^( *)- \S", lines[first]) if first is not None else None
+    if m is None or len(m.group(1)) < key_col:
+        raise Problem(
+            f"{org}: expected the first line after 'preprocessing:' (line {key_line + 2}) to "
+            f"start a list item ('- ' indented at least {key_col} spaces). The values.yaml "
+            f"layout has changed; this tool needs updating before it is safe to use."
+        )
+    indent = len(m.group(1))
+
+    # The list runs until a non-blank line left of the dash column, or a line at the dash
+    # column that does not start a new item (the next key of a compact-form organism).
     end = len(lines)
     for j in range(key_line + 1, len(lines)):
         line = lines[j]
         if not line.strip():
             continue
-        indent = len(line) - len(line.lstrip())
-        if indent <= 4:
+        col = _indent(line)
+        if col < indent or (col == indent and not line[col:].startswith(("- ", "#"))):
             end = j
             break
 
-    starts: list[tuple[int, bool]] = []
-    for j in range(key_line + 1, end):
-        is_start, commented = _is_item_start(lines[j])
-        if is_start:
-            starts.append((j, commented))
+    starts = [j for j in range(key_line + 1, end) if re.match(rf"^ {{{indent}}}- \S", lines[j])]
 
     items: list[Item] = []
-    for idx, (start, commented) in enumerate(starts):
-        stop = starts[idx + 1][0] if idx + 1 < len(starts) else end
+    for idx, start in enumerate(starts):
+        stop = starts[idx + 1] if idx + 1 < len(starts) else end
         # Trim trailing blank lines out of the item's span.
         while stop > start + 1 and not lines[stop - 1].strip():
             stop -= 1
-        items.append(_parse_item(lines, start, stop, commented))
+        items.append(_parse_item(lines, start, stop, indent))
 
     return Organism(name=org, prepro_key_line=key_line, prepro_end=end, items=items)
 
@@ -402,13 +399,13 @@ def _parse(path: Path, text: str) -> Doc:
     # below would be unsafe.
     for name, org in organisms.items():
         parsed = resolved["organisms"][name].get("preprocessing", [])
-        if len(parsed) != len(org.active):
+        if len(parsed) != len(org.items):
             raise Problem(
-                f"{name}: textual scan found {len(org.active)} active pipeline "
+                f"{name}: textual scan found {len(org.items)} pipeline "
                 f"entries but the parser found {len(parsed)}. The values.yaml layout "
                 f"has changed; this tool needs updating before it is safe to use."
             )
-        for item, pitem in zip(org.active, parsed, strict=False):
+        for item, pitem in zip(org.items, parsed, strict=False):
             pv = pitem.get("version")
             pv = pv if isinstance(pv, list) else [pv]
             if not [v for v in pv if v is not None]:
@@ -534,11 +531,11 @@ def plan_bump(
     update_datasets: bool = False,
 ) -> list[Edit]:
     org = doc.organisms[org_name]
-    if not org.active:
+    if not org.items:
         raise Problem(f"{org_name}: no active preprocessing entries")
 
     new_version = org.max_version + 1
-    target = max(org.active, key=lambda i: i.max_version)
+    target = max(org.items, key=lambda i: i.max_version)
 
     if mode == "append":
         edits = _bump_append(org_name, target, new_version)
@@ -568,7 +565,7 @@ def _bump_append(org_name: str, target: Item, new_version: int) -> list[Edit]:
             Edit(
                 last + 1,
                 last + 1,
-                [f"{' ' * (KEY_INDENT + 2)}- {new_version}"],
+                [f"{' ' * (target.key_indent + 2)}- {new_version}"],
                 f"{org_name}: version {new_version} appended to the existing entry",
             )
         ]
@@ -576,8 +573,8 @@ def _bump_append(org_name: str, target: Item, new_version: int) -> list[Edit]:
         Edit(
             target.version_key_line,
             target.version_key_line + 1,
-            [f"{' ' * KEY_INDENT}version:"]
-            + [f"{' ' * (KEY_INDENT + 2)}- {v}" for v in [*target.versions, new_version]],
+            [f"{' ' * target.key_indent}version:"]
+            + [f"{' ' * (target.key_indent + 2)}- {v}" for v in [*target.versions, new_version]],
             f"{org_name}: 'version:' rewritten as a block list, {new_version} added",
         )
     ]
@@ -595,12 +592,12 @@ def _ensure_anchor(doc: Doc, org_name: str, target: Item) -> tuple[str, list[Edi
         anchor = f"{anchor}V{target.max_version}"
     if anchor in taken:
         raise Problem(f"{org_name}: no free anchor name (tried '{anchor}')")
-    head = doc.lines[target.start][ITEM_INDENT + 2 :]
+    head = doc.lines[target.start][target.key_indent :]
     return anchor, [
         Edit(
             target.start,
             target.start + 1,
-            [f"{' ' * ITEM_INDENT}- &{anchor}", f"{' ' * KEY_INDENT}{head}"],
+            [f"{' ' * target.indent}- &{anchor}", f"{' ' * target.key_indent}{head}"],
             f"{org_name}: added anchor &{anchor} to the existing entry so the new one can inherit it",
         )
     ]
@@ -629,10 +626,10 @@ def _bump_inherit(
     anchor, edits = _ensure_anchor(doc, org_name, target)
     n_replicas = replicas if replicas is not None else DEFAULT_BUMP_REPLICAS
     block = [
-        f"{' ' * ITEM_INDENT}- <<: *{anchor}",
-        f"{' ' * KEY_INDENT}replicas: {n_replicas}",
-        f"{' ' * KEY_INDENT}version:",
-        f"{' ' * (KEY_INDENT + 2)}- {new_version}",
+        f"{' ' * target.indent}- <<: *{anchor}",
+        f"{' ' * target.key_indent}replicas: {n_replicas}",
+        f"{' ' * target.key_indent}version:",
+        f"{' ' * (target.key_indent + 2)}- {new_version}",
     ]
     return edits + _place(target, block, org_name, new_version, n_replicas)
 
@@ -662,9 +659,9 @@ def _bump_expand(
     lines = doc.lines
     merge_base, base_edits = _expand_merge_base(doc, org_name, org, target)
     cfg_line = None
-    for item in reversed(org.active[: org.active.index(target) + 1]):
+    for item in reversed(org.items[: org.items.index(target) + 1]):
         for i in range(item.start, item.end):
-            if re.match(rf"^ {{{KEY_INDENT}}}configFile:", lines[i]):
+            if re.match(rf"^ {{{item.key_indent}}}configFile:", lines[i]):
                 cfg_line = i
                 break
         if cfg_line is not None:
@@ -719,17 +716,17 @@ def _bump_expand(
 
     notes: list[str] = []
     if update_datasets:
-        server = (_resolved_entries(doc, org_name)[org.active.index(target)].get("configFile") or {}).get(
+        server = (_resolved_entries(doc, org_name)[org.items.index(target)].get("configFile") or {}).get(
             "nextclade_dataset_server"
         ) or DEFAULT_DATASET_SERVER
         cfg, notes = _retag_to_newest(cfg, server, org_name)
 
     n_replicas = replicas if replicas is not None else DEFAULT_BUMP_REPLICAS
     block = [
-        f"{' ' * ITEM_INDENT}- <<: *{merge_base}",
-        f"{' ' * KEY_INDENT}replicas: {n_replicas}",
-        f"{' ' * KEY_INDENT}version:",
-        f"{' ' * (KEY_INDENT + 2)}- {new_version}",
+        f"{' ' * target.indent}- <<: *{merge_base}",
+        f"{' ' * target.key_indent}replicas: {n_replicas}",
+        f"{' ' * target.key_indent}version:",
+        f"{' ' * (target.key_indent + 2)}- {new_version}",
         *cfg,
     ]
     placed = _place(target, block, org_name, new_version, n_replicas)
@@ -810,7 +807,7 @@ def _global_merge_gap(doc: Doc, org_name: str, org: Organism, item: Item, declar
     one and stop depending on its siblings -- which is what lets prune delete them.
     `declared` names the keys the entry supplies itself, where the merge base is moot.
     """
-    resolved_item = _resolved_entries(doc, org_name)[org.active.index(item)]
+    resolved_item = _resolved_entries(doc, org_name)[org.items.index(item)]
     global_base = doc.resolved.get("defaultOrganismConfig", {}).get("preprocessing", [{}])[0]
 
     def residual(entry: dict) -> dict:
@@ -891,16 +888,11 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
     exactly what the highest entry resolved to before.
     """
     org = doc.organisms[org_name]
-    if not org.active:
+    if not org.items:
         raise Problem(f"{org_name}: no active preprocessing entries")
 
     keep_version = org.max_version
     edits: list[Edit] = []
-
-    # Older prunes commented the superseded entry out as a template for the next bump.
-    # That idiom is gone -- bump generates the entry now -- but clear any that survive.
-    for stub in org.stubs:
-        edits.append(Edit(stub.start, stub.end, [], f"{org_name}: removed leftover commented-out stub"))
 
     if len(org.versions) == 1:
         # Still fall through to the lineage sweep: a stale key can outlive the entry
@@ -908,8 +900,8 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
         # ever removes it.
         return _finish_prune(doc, org, edits, keep_version)
 
-    if len(org.active) == 1:
-        item = org.active[0]
+    if len(org.items) == 1:
+        item = org.items[0]
         if len(set(item.version_value_lines)) != len(item.version_value_lines):
             raise Problem(f"{org_name}: 'version:' is not a block list")
         for version, ln in zip(item.versions, item.version_value_lines, strict=False):
@@ -922,15 +914,15 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
     uniform = all(yaml.safe_dump(s, sort_keys=True) == yaml.safe_dump(sigs[0], sort_keys=True) for s in sigs)
 
     if uniform:
-        keep, doomed = org.active[0], org.active[1:]
+        keep, doomed = org.items[0], org.items[1:]
         replicas_edit: list[Edit] = []
         note_extra = f", replicas stays {keep.replicas if keep.replicas is not None else 1}"
     else:
-        keep, doomed = org.active[-1], org.active[:-1]
+        keep, doomed = org.items[-1], org.items[:-1]
         # Reprocessing is over, so drop back to the steady-state replica count -- that of
         # the oldest entry, which is the one that was running before the bump raised it.
         # With the usual two entries this is the second-highest version.
-        steady = org.active[0]
+        steady = org.items[0]
         replicas_edit = []
         if (
             keep.replicas_line is not None
@@ -941,7 +933,7 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
                 Edit(
                     keep.replicas_line,
                     keep.replicas_line + 1,
-                    [f"{' ' * KEY_INDENT}replicas: {steady.replicas}"],
+                    [f"{' ' * keep.key_indent}replicas: {steady.replicas}"],
                     f"{org_name}: replicas back to {steady.replicas} now reprocessing is done",
                 )
             ]
@@ -965,7 +957,7 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
             Edit(
                 first,
                 last + 1,
-                [f"{' ' * (KEY_INDENT + 2)}- {keep_version}"],
+                [f"{' ' * (keep.key_indent + 2)}- {keep_version}"],
                 f"{org_name}: surviving entry set to version {keep_version}{note_extra}",
             )
         )
@@ -992,7 +984,7 @@ def plan_strip_unused_anchors(doc: Doc, organisms: list[str]) -> list[Edit]:
     out: list[Edit] = []
     for name in organisms:
         org = doc.organisms[name]
-        for item in org.active:
+        for item in org.items:
             for anchor in _anchors_in(doc, item.start, item.end):
                 if doc.anchors.uses.get(anchor):
                     continue
@@ -1264,17 +1256,6 @@ def run_check(
                         f"(no pipeline entry uses version {v})"
                     )
 
-        # 6. Stale commented-out stubs. Uncommenting one verbatim -- the established
-        #    workflow -- yields a duplicate version and a failed render. `bump` always
-        #    overwrites them, but a hand edit will not.
-        for stub in org.stubs:
-            clash = sorted(set(stub.versions) & set(org.versions))
-            if clash:
-                warnings.append(
-                    f"{name}: commented-out stub declares version {clash}, which is already "
-                    f"active. Run `pipeline_versions.py prune` to remove it."
-                )
-
         # 7. Anchors with no referent. An anchor exists to be aliased, so one that is not
         #    is either a leftover or a sign that the alias meant to use it went missing.
         # 8. An unpinned nextclade dataset. The pipeline version is meant to identify a
@@ -1289,7 +1270,7 @@ def run_check(
                     f"so its dataset is not pinned to this pipeline version."
                 )
 
-        for item in org.active:
+        for item in org.items:
             for anchor in _anchors_in(doc, item.start, item.end):
                 if not doc.anchors.uses.get(anchor):
                     warnings.append(
@@ -1502,7 +1483,7 @@ def _verify_remote(doc: Doc, organisms: list[str]) -> tuple[list[str], list[str]
     """Check that every dataset and lineage definition the config names actually exists.
 
     A misspelled dataset name or a tag that was never published is a runtime failure the
-    config cannot reveal on its own -- nothing local knows what the server holds. Returns
+    config cannot reveal on its own -- nothing local knows what the server holds.
     Returns (errors, warnings, infos): a missing dataset or tag is an error because
     preprocessing cannot run without it; anything that merely failed to fetch is a
     warning, since a transient outage should not be indistinguishable from a broken
@@ -1964,8 +1945,8 @@ class StatusRow:
 STATUS_COLUMNS: dict[str, Callable[[StatusRow], str]] = {
     "organism": lambda c: c.org.name,
     "versions": lambda c: ",".join(map(str, c.org.versions)),
-    "replicas": lambda c: ",".join(str(i.replicas if i.replicas is not None else 1) for i in c.org.active),
-    "entries": lambda c: str(len(c.org.active)),
+    "replicas": lambda c: ",".join(str(i.replicas if i.replicas is not None else 1) for i in c.org.items),
+    "entries": lambda c: str(len(c.org.items)),
     "nextcladeDatasetTag": lambda c: _describe(c.refs, "nextclade_dataset_tag", "unpinned"),
     "lineageDefinitions": lambda c: _lineage_urls(c.doc, c.org),
     # Not shown by default -- useful for spot-checking what a pipeline actually pulls.
@@ -2187,8 +2168,7 @@ def main(argv: list[str] | None = None) -> int:
         "--replicas",
         type=int,
         default=None,
-        help="replicas for the new entry. Default: reuse the value from a "
-        f"leftover stub if there is one, else {DEFAULT_BUMP_REPLICAS}.",
+        help=f"replicas for the new entry (default: {DEFAULT_BUMP_REPLICAS})",
     )
     sp.add_argument(
         "--anchor-threshold",
