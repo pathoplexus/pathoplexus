@@ -2118,19 +2118,16 @@ organisms:
             molecule_type: "genomic RNA"
           taxon_id: 565995
     preprocessing:
-      - &ebolaBdbvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 7
           - 8
-        configFile: &ebolaBdbvPreprocessingConfigFile
+        configFile:
           <<: [*preprocessingConfigFile, *ebolaBdbvTaxon]
           segments:
-            - &ebolaBdbvPreprocessingSegment
-              name: main
+            - name: main
               references:
-                - &ebolaBdbvPreprocessingReference
-                  name: "singleReference"
+                - name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
                   nextclade_dataset_tag: "2026-05-18--20-09-34Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
@@ -2517,8 +2514,7 @@ organisms:
             molecule_type: "genomic RNA"
           taxon_id: 11082
     preprocessing:
-      - &westNilePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
           - 29
           - 30
@@ -2951,17 +2947,16 @@ organisms:
         replicas: 1
         version:
           - 28
-        configFile: &mpoxPreprocessingConfigFile
+        configFile:
           <<: [*preprocessingConfigFile, *mpoxTaxon]
           batch_size: 5
           segments:
-            - &mpoxDataset
-              name: main
+            - name: main
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
