@@ -1092,6 +1092,24 @@ def test_prune_restores_steady_state_replicas_after_an_expand_bump(work):
     assert org.items[0].replicas == 1
 
 
+def test_prune_restores_inherited_replicas_after_an_expand_bump(work):
+    """cchf's entry has no `replicas:` line of its own -- it inherits 1 from
+    *preprocessing. The survivor's `replicas: 3` must go, not stay."""
+    assert _run(work, "bump", "--organisms", "cchf", "--expand-organisms", "cchf") == 0
+    doc = pv.load(work)
+    new = doc.organisms["cchf"].items[-1]
+    lines = list(doc.lines)
+    i = next(i for i in range(new.start, new.end) if lines[i].strip() == "log_level: DEBUG")
+    lines[i] = lines[i].replace("DEBUG", "INFO")  # so the entries differ
+    work.write_text("\n".join(lines))
+
+    assert _run(work, "prune", "--organisms", "cchf") == 0
+    org = pv.load(work).organisms["cchf"]
+    assert org.versions == [26]
+    assert org.items[0].replicas_line is None
+    assert yaml.safe_load(work.read_text())["organisms"]["cchf"]["preprocessing"][0]["replicas"] == 1
+
+
 def test_anchor_threshold_is_configurable(work):
     """Raising the threshold above a list's length duplicates it instead of aliasing.
 

@@ -921,20 +921,21 @@ def plan_prune(doc: Doc, org_name: str) -> list[Edit]:
         keep, doomed = org.items[-1], org.items[:-1]
         # Reprocessing is over, so drop back to the steady-state replica count -- that of
         # the oldest entry, which is the one that was running before the bump raised it.
-        # With the usual two entries this is the second-highest version.
+        # With the usual two entries this is the second-highest version. An oldest entry
+        # with no `replicas:` line of its own inherits the count, so the survivor's line
+        # goes rather than being rewritten; _verify asserts the resolved counts agree.
         steady = org.items[0]
         replicas_edit = []
-        if (
-            keep.replicas_line is not None
-            and steady.replicas is not None
-            and keep.replicas != steady.replicas
-        ):
+        if keep.replicas_line is not None and keep.replicas != steady.replicas:
+            steady_replicas = entries[0].get("replicas")
             replicas_edit = [
                 Edit(
                     keep.replicas_line,
                     keep.replicas_line + 1,
-                    [f"{' ' * keep.key_indent}replicas: {steady.replicas}"],
-                    f"{org_name}: replicas back to {steady.replicas} now reprocessing is done",
+                    [f"{' ' * keep.key_indent}replicas: {steady.replicas}"]
+                    if steady.replicas is not None
+                    else [],
+                    f"{org_name}: replicas back to {steady_replicas} now reprocessing is done",
                 )
             ]
         note_extra = ""
@@ -2037,6 +2038,12 @@ def _verify(
                 problems.append(
                     f"{name}: after prune the surviving entry does not resolve to the "
                     f"highest version's config"
+                )
+            # Steady state is what the oldest entry ran with before the bump raised it.
+            if (want_replicas := old[0].get("replicas")) != (got_replicas := new_entries[-1].get("replicas")):
+                problems.append(
+                    f"{name}: after prune the surviving entry runs {got_replicas} replica(s), "
+                    f"not the steady-state {want_replicas}"
                 )
         elif len(new_entries) > len(old):
             want = _config_signature(max(old, key=lambda e: max(_vlist(e))))
