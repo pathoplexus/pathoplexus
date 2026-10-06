@@ -57,7 +57,7 @@ uv run scripts/pipeline-versions/pipeline_versions.py bump --organisms dengue
 
 # The config needs editing too (a new nextclade dataset tag is the usual reason).
 # Writes the new entry with its configFile spelled out, ready to hand-edit.
-uv run scripts/pipeline-versions/pipeline_versions.py bump --expand-organisms mpox
+uv run scripts/pipeline-versions/pipeline_versions.py bump --organisms mpox --mode expand
 
 # Nothing changes but the counter -- adds to the existing entry's version list.
 uv run scripts/pipeline-versions/pipeline_versions.py bump --organisms cchf --mode append
@@ -82,7 +82,7 @@ the server publishes, and pins a reference that had none — usually the whole r
 bump. Opt-in, and only ever the new entry; the one being superseded keeps its tag.
 
 ```bash
-uv run scripts/pipeline-versions/pipeline_versions.py bump --expand-organisms mpox --update-datasets
+uv run scripts/pipeline-versions/pipeline_versions.py bump --organisms mpox --mode expand --update-datasets
 ```
 
 ## Pruning
