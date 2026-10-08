@@ -4451,6 +4451,128 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/6K.fasta]]"
             - name: E1
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"
+  oropouche:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      submissionDataTypes:
+        <<:  *defaultSubmissionDataTypes
+        maxSequencesPerEntry: 3
+      organismName: "Oropouche Virus"
+      nucleotideSequences: [L, M, S]
+      image: "/images/organisms/oropouche_virus.jpg"
+      linkOuts:
+        - name: "Nextclade (L)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 3000 # Oropouche is
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/orov/L/refseq"
+        - name: "Nextclade (M)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/orov/M/refseq"
+        - name: "Nextclade (S)"
+          category: "Nextclade"
+          maxNumberOfRecommendedEntries: 2500
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=community/itps/orov/S/refseq"  
+        - name: "Sealion (L)"
+          category: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Sealion (M)"
+          category: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Sealion (S)"
+          category: "Sealion"
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}" 
+        - name: "Country map"
+          category: "Other"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *idConfig
+          definition:
+        - <<: *hostConfig
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length_L
+          - length_M
+          - length_S
+          - hostNameScientific
+        defaultOrderBy: sampleCollectionDate
+        defaultOrder: descending
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &oropoucheTaxon
+            taxon_id: 118655
+            scientific_name: "orthobunyavirus oropoucheense"
+            molecule_type: "genomic RNA"    
+    preprocessing:
+      - <<: *preprocessing
+        version:
+          - 1
+        configFile:
+          <<: *preprocessingConfigFile
+          segments:
+            - name: L
+              references:
+              - name: singleReferenceL
+                nextclade_dataset_name: community/itps/orov/L/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [L]
+            - name: M
+              references:
+              - name: singleReferenceM
+                nextclade_dataset_name: community/itps/orov/M/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [M]
+            - name: S
+              references:
+              - name: singleReferenceS
+                nextclade_dataset_name: community/itps/orov/S/refseq
+                nextclade_dataset_tag: 2026-05-12--16-39-06Z
+                genes: [N, NSs]
+          segement_classification_method: "align"      
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3052429
+        segment_identification:
+          method: "align"
+          nextclade_dataset_name: community/itps/orov
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReferenceL
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/L.fasta]]"
+          insdcAccessionFull: NC_005776.1
+          genes:
+            - name: L
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/L.fasta]]"
+        - name: singleReferenceM
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/M.fasta]]"
+          insdcAccessionFull: NC_005775.1
+          genes:
+            - name: M
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/M.fasta]]"
+        - name: singleReferenceS
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/S.fasta]]"
+          insdcAccessionFull: NC_005777.1
+          genes:
+            - name: N
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/N.fasta]]"
+            - name: NSs
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/NSs.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
