@@ -16,6 +16,12 @@ monorepo/**/GEMINI.md
 !monorepo/website/src/pages/docs/GEMINI.md
 
 /tmp/
+__pycache__/
+.venv/
+.coverage
+.coverage.*
+.pytest_cache/
+scripts/pipeline-versions/uv.lock
 
 # Local DB connection settings for scripts/db-clone (created on the bastion)
 scripts/db-clone/env.sh
