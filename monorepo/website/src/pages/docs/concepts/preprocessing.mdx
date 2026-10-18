@@ -3,11 +3,11 @@ layout: ../../../layouts/DocLayout.astro
 title: "Preprocessing"
 ---
 
-Pathoplexus processes submitted data to validate, harmonize, and standardize it, aiming to include as much submitted data as possible. This page describes the checks, tools and thresholds we currently use. The principles governing *why* and under what circumstances data can be rejected are set out in [Data Processing](/about/governance/data-submission#3-data-processing) in our governance documents; this page may change over time as our tools and processes evolve, but data will only ever be rejected for the reasons described there.
+Pathoplexus processes submitted data to validate, harmonize, and standardize it, aiming to include as much submitted data as possible. This page describes the checks, tools and thresholds we currently use, and may change over time as our tools and processes evolve. The principles governing *why* and under what circumstances data can be rejected are set out in [Data Processing](/about/governance/data-submission#3-data-processing) in our governance documents.
 
 We use [Nextclade](https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli/reference.html#nextclade-run) for sequence alignment, mutation calling, quality checks and clade assignment.
 
-Submissions that fail to meet the requirements below are rejected by the preprocessing pipeline, which provides a detailed error message explaining the reason for rejection.
+Submissions that fail to meet the requirements below are rejected by the preprocessing pipeline, which provides an error message explaining the reason for rejection.
 
 ## Sequences
 
