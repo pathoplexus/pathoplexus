@@ -38,9 +38,11 @@ As used in Database Terms of Service, the following terms shall have the followi
 
 # 2. Data Submission and Access
 
-Submitters can submit sequences to Pathoplexus for supported pathogens with associated, non-sensitive metadata, either with time-limited restrictions on its use ("Restricted-Use Data") or openly ("Open Data"). 
-Open Data (whether open from submission or becoming open after the period of restriction ends) is also submitted by Pathoplexus to INSDC (via ENA), where it becomes additionally available on all INSDC platforms. 
+Submitters can submit sequences to Pathoplexus for supported pathogens with associated, non-sensitive metadata, either with time-limited restrictions on its use ("Restricted-Use Data") or openly ("Open Data"). A submission can also include raw reads alongside the consensus sequence and metadata. Consensus sequences, metadata and raw reads are treated equally under these Terms: the same Restricted-Use / Open status, the maximum one-year restriction period, and onward submission to INSDC described in this section apply to all of them.
+
+Open Data (whether open from submission or becoming open after the period of restriction ends) is also submitted by Pathoplexus to INSDC, where it becomes additionally available on all INSDC platforms. 
 Open Data also includes data pulled in from INSDC for supported pathogens to make it available to all Users alongside Restricted-Use Data.
+See [INSDC Submission](/docs/concepts/insdc-submission) for more detail on how this currently works.
 
 Restricted-Use Data is available only within Pathoplexus, and can only be used in accordance with the [Data Use Terms](/about/terms-of-use/data-use-terms). 
 It is **critical** that all Users familiarize themselves with the Data Use Terms, and in particular requirements for authorship and acknowledgement. 
@@ -50,25 +52,14 @@ Users can specify the time period for which data is "Restricted-Use Data", up to
 
 All data within Pathoplexus must be used ethically, and in accordance with scientific and community etiquette (see [Data Use Terms](/about/terms-of-use/data-use-terms)), and accession numbers should always be provided (see [Data Use Terms](/about/terms-of-use/data-use-terms)).
 
+Submitters are responsible for ensuring that submitted data (including sequences, metadata, and raw reads) contains no human genetic data or information that could identify individuals. Pathoplexus performs additional screening and may reject data that appears to contain human genetic data, but this screening does not replace the submitter's responsibility. See the [raw reads upload guide](/docs/how-to/upload-raw-reads#dehosting-host-read-removal) for guidance on removing host reads before submission.
+
 # 3. Data Processing
 Pathoplexus processes submitted data to validate, harmonize, and standardize the data and maximize utility. After initial submission and processing, data is available as version 1, and subsequent changes are reflected in incremented versions. By default, the latest version of all data is displayed unless another version is explicitly requested
 
-To allow Users maximum flexibility in accessing data that is most useful for them, only data without the minimum required metadata values and sequences that fail to be identified (via seed-matching) as the specified pathogen are rejected.
+To give Users maximum flexibility in accessing the data most useful to them, we aim to include as much submitted data as possible. Data is rejected only if it lacks the minimum required metadata, if the sequence cannot be identified as the specified pathogen, or if it poses a risk to privacy (for example, raw reads containing an excessive number of likely-human reads).
 
-Data processing includes measures such as:
-
-Sequences:
-- Checks that the sequence matches the virus specified by the user
-- Alignment with the reference genome
-- Translation of genes/coding regions
-- Quantification of mutations in number and type (both nucleotide and AA)
-- Labeling of deletions and insertions
-- Quality control scoring
-- Assignment of clades/lineages (where applicable)
-
-Metadata:
-- All dates are converted to standard ISO format
-- Location information is standardized 
+Processing includes validating, aligning and annotating sequences; standardizing metadata; and validating raw read files. The specific checks, tools and criteria we currently use are described in [Preprocessing](/docs/concepts/preprocessing). These may change over time, but data will only be rejected for the reasons above.
 
 # 4. Data Fields
 

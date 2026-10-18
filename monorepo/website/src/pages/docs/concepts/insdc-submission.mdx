@@ -3,7 +3,9 @@ layout: ../../../layouts/DocLayout.astro
 title: "INSDC Submission"
 ---
 
-[Open](/about/terms-of-use/data-use-terms#41-open-data) sequences will be made publicly available through the [INSDC databases (ENA, DDBJ, NCBI)](https://www.insdc.org/). To accomplish this, we will upload sequences on your behalf to [ENA](https://www.ebi.ac.uk/ena/browser/about). After successful submission to ENA (this can take up to 48 hours) we will return the accessions of your sequences in ENA.
+This page describes how we currently submit data to INSDC. It is current practice and may change over time; the underlying commitments are set out in [Data Submission and Access](/about/governance/data-submission#2-data-submission-and-access) in our governance documents. The same process applies equally to consensus sequences, associated metadata, and any raw reads submitted alongside them.
+
+[Open](/about/terms-of-use/data-use-terms#41-open-data) data (consensus sequences, metadata, and any raw reads submitted with them) will be made publicly available through the [INSDC databases (ENA, DDBJ, NCBI)](https://www.insdc.org/). To accomplish this, we will upload data on your behalf to [ENA](https://www.ebi.ac.uk/ena/browser/about). After successful submission to ENA (this can take up to 48 hours) we will return the accessions of your sequences (and, if applicable, your raw reads) in ENA.
 
 When submitting to ENA we use the `institution` on your group page as your `center name`, [center name](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/programmatic.html#identifying-submitters) is used by ENA as an identifier to facilitate the recognition and attribution of your sequences within the INSDC.
 
@@ -14,6 +16,14 @@ We urge users to not upload their sequences independently to INSDC to prevent da
 In order to submit your sequences to ENA we need to create a Project, Sample and Assembly on your behalf, plus an Experiment and Run for any raw reads you submitted, see [ENA's metadata model](https://ena-docs.readthedocs.io/en/latest/submit/general-guide/metadata.html) for more information.
 
 In ENA, Projects contain general information on your group and the organism being sequenced. We create one Project per each group and organism. In ENA Samples contain metadata information and Assemblies contain the actual sequences. We create one Sample and one Assembly object per consensus sequence, and additionally one Experiment and one Run object if you also submitted raw reads.
+
+## Raw Reads
+
+If you submit raw reads alongside a consensus sequence, they are submitted to ENA on the same terms as the consensus sequence and its metadata: once the data is Open (whether open from submission, or after a Restricted-Use period ends), the raw reads are uploaded to ENA together with the rest of the submission.
+
+Raw reads are linked to the same ENA Sample as their consensus sequence, and are submitted as an Experiment and a Run object. If raw reads for a sequence are already available in the INSDC, we link to the existing Run, BioSample, and BioProject rather than submitting a second copy (see [Uploading raw reads](/docs/how-to/upload-raw-reads) for how to supply these accessions).
+
+{/* TODO(dev): describe any raw-reads-specific ENA submission steps (e.g. file upload mechanism, timing relative to the consensus sequence submission) beyond what's captured above. */}
 
 ## Citing your Sequences
 
