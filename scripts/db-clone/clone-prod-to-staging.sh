@@ -15,8 +15,24 @@ STAGING_KC_DB="pathoplexus_staging_keycloak"
 STAGING_LOC_DB="pathoplexus_staging_loculus"
 STAGING_KC_USER="staging_keycloak_user"
 STAGING_LOC_USER="staging_loculus_user"
+PROD_KC_READER="prod_keycloak_clone_reader"
+PROD_LOC_READER="prod_loculus_clone_reader"
 PROD_S3_BUCKET="ppx-s3-bucket"
 STAGING_S3_BUCKET="ppx-staging-s3-bucket"
+
+# The dumps contain user data, don't leave them lying around on the bastion
+trap 'rm -f "$PROD_KC_DUMP" "$PROD_LOC_DUMP"' EXIT
+
+# Row-level security should hide the realm keys and secrets from the reader role (see
+# setup-clone-roles.sql). A Keycloak upgrade that recreates a table would silently drop its
+# policy, so double check that none of these rows made it into the dump.
+assert_no_keycloak_secrets() {
+    local file="$1"
+    if grep -qE $'\t(privateKey|secret)\t' "$file"; then
+        echo "Error: $file contains Keycloak realm keys. Check the RLS policies on prod. Aborting."
+        exit 1
+    fi
+}
 
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
@@ -52,10 +68,11 @@ sync_s3_buckets() {
 }
 
 echo "Dumping production Loculus database..."
-$CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP
+$CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP $PROD_LOC_READER
 
 echo "Dumping production Keycloak database..."
-$CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
+$CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP $PROD_KC_READER
+assert_no_keycloak_secrets $PROD_KC_DUMP
 
 # Sync files after the dump so no files referenced by the dumped db can be missing (there might
 # be additional unreferenced files in the bucket but that is ok, to prevent additional files we
@@ -73,4 +90,5 @@ echo "Loading Loculus dump to staging..."
 $CHILD_SCRIPT load $STAGING_LOC_DB $PROD_LOC_DUMP $STAGING_LOC_USER
 
 echo "Cloning process completed successfully!"
-echo "Please restart the backend to apply changes."
+echo "Please restart Keycloak and the backend to apply changes."
+echo "Keycloak will generate new realm keys on startup."
