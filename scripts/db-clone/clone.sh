@@ -10,7 +10,9 @@ if [ -f "$SCRIPT_DIR/env.sh" ]; then
     source "$SCRIPT_DIR/env.sh"
 fi
 
-export PGUSER=postgres
+# Only restricted roles are used (see setup-clone-roles.sql), the bastion must not hold
+# credentials for postgres or the prod owner roles.
+CLONE_LOADER="staging_clone_loader"
 
 if [ -z "${PGHOST:-}" ]; then
     echo "Error: PGHOST is not set." >&2
@@ -20,13 +22,13 @@ if [ -z "${PGHOST:-}" ]; then
 fi
 
 print_usage() {
-    echo "Usage: $0 <action> <database> <file> [new_owner_username]"
+    echo "Usage: $0 <action> <database> <file> <username>"
     echo "Actions:"
-    echo "  dump - Dump the specified database to a file"
-    echo "  load - Load a dump file into the specified database"
+    echo "  dump - Dump the specified database to a file, connecting as <username>"
+    echo "  load - Load a dump file into the specified database, owned by <username>"
     echo "Examples:"
-    echo "  $0 dump production temp_dump.sql"
-    echo "  $0 load staging temp_dump.sql staging_keycloak_user"
+    echo "  $0 dump pathoplexus_prod_keycloak temp_dump.sql prod_keycloak_clone_reader"
+    echo "  $0 load pathoplexus_staging_keycloak temp_dump.sql staging_keycloak_user"
 }
 
 check_command() {
@@ -39,7 +41,11 @@ check_command() {
 dump_database() {
     local db_name="$1"
     local dump_file="$2"
-    pg_dump --if-exists --no-owner --clean "$db_name" > "$dump_file"
+    local db_user="$3"
+    echo "Dumping $db_name database to $dump_file..."
+    # --enable-row-security: dump only the rows the user may see (hides Keycloak realm keys),
+    # without it pg_dump errors out on tables with RLS
+    pg_dump -U "$db_user" --enable-row-security --if-exists --no-owner --clean "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
     echo "Database dump completed successfully!"
 }
@@ -113,39 +119,27 @@ load_database() {
     local dump_file="$2"
     local new_owner="$3"
 
-    psql -U postgres -d postgres -c "
-        SELECT pg_terminate_backend(pid)
-        FROM pg_stat_activity
-        WHERE pid <> pg_backend_pid()
-        AND datname = '$db_name';
-    "
+    # The loader is a member of the owner role, which allows it to drop the database
+    # and terminate remaining connections (FORCE)
+    psql -U "$CLONE_LOADER" -d postgres -c "DROP DATABASE IF EXISTS \"$db_name\" WITH (FORCE);"
+    check_command "Failed to drop $db_name"
 
-    psql -U postgres -d postgres -c "REVOKE postgres FROM $new_owner"
-    psql -U postgres -d postgres -c "REVOKE $new_owner FROM postgres"
-    psql -U postgres -d postgres -c "GRANT $new_owner TO postgres"
+    psql -U "$CLONE_LOADER" -d postgres -c "CREATE DATABASE \"$db_name\" WITH OWNER = \"$new_owner\";"
+    check_command "Failed to create $db_name"
 
-    psql -U $new_owner -d postgres -c "DROP DATABASE IF EXISTS \"$db_name\" WITH (FORCE);"
-
-    psql -U postgres -d postgres -c "CREATE DATABASE \"$db_name\" WITH OWNER = \"$new_owner\";"
-    psql -U postgres -d postgres -c "REVOKE CONNECT ON DATABASE $db_name FROM \"$new_owner\";"
-
-    psql -U postgres -d postgres -c "REVOKE $new_owner FROM postgres"
-
-    psql -U postgres -d "$db_name" <<EOF
-GRANT postgres TO "$new_owner";
+    psql -U "$CLONE_LOADER" -d "$db_name" -v ON_ERROR_STOP=1 <<EOF
 BEGIN;
 SET ROLE "$new_owner";
 -- Load the dump file
 \i $dump_file;
 COMMIT;
-SET ROLE "postgres";
-REVOKE postgres FROM "$new_owner";
 EOF
+    check_command "Failed to load $dump_file into $db_name"
 
     echo "Database loading completed successfully!"
 }
 
-if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
+if [ "$#" -ne 4 ]; then
     print_usage
     exit 1
 fi
@@ -153,14 +147,14 @@ fi
 ACTION="$1"
 DB_NAME="$2"
 FILE="$3"
-NEW_OWNER="${4:-}"
+DB_USER="$4"
 
 case "$ACTION" in
     dump)
-        dump_database "$DB_NAME" "$FILE"
+        dump_database "$DB_NAME" "$FILE" "$DB_USER"
         ;;
     load)
-        load_database "$DB_NAME" "$FILE" "$NEW_OWNER"
+        load_database "$DB_NAME" "$FILE" "$DB_USER"
         ;;
     *)
         echo "Invalid action: $ACTION"

@@ -23,15 +23,24 @@ must provide `PGHOST` on the bastion/server, in one of two ways:
   # then edit env.sh and set PGHOST to the RDS cluster endpoint
   ```
 
-## Passwords
+## Database roles and passwords
 
-Passwords for the following users need to be set in the environment variables:
+The script only uses restricted roles, so that the bastion holds no credentials that can read the
+prod Keycloak realm keys (which would allow forging prod login tokens) or write to prod:
 
-- `prod_loculus_user`
-- `staging_loculus_user`
-- `prod_keycloak_user`
-- `staging_keycloak_user`
-- `postgres`
+- `prod_keycloak_clone_reader`: reads the prod Keycloak DB. Row-level security hides the realm keys.
+- `prod_loculus_clone_reader`: reads the prod Loculus DB.
+- `staging_clone_loader`: drops, recreates and loads the staging DBs. It is a member of
+  `staging_keycloak_user` and `staging_loculus_user` and has no access to prod.
+
+They are created once by an admin with [`setup-clone-roles.sql`](setup-clone-roles.sql) (see the
+header of that file for how to run it). Run it from an admin machine, not from the bastion.
+
+Passwords for these three roles need to be available to `psql`/`pg_dump` on the bastion (e.g. in
+`~/.pgpass`). Do **not** store passwords for `postgres`, `prod_keycloak_user` or `prod_loculus_user`
+on the bastion.
+
+After a clone, staging Keycloak has freshly generated realm keys.
 
 You will need to configure the `db-clone` AWS IAM user profile on the bastion, this can be done with:
 
