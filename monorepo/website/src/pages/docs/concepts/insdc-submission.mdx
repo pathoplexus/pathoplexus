@@ -21,7 +21,9 @@ In ENA, Projects contain general information on your group and the organism bein
 
 If you submit raw reads alongside a consensus sequence, they are submitted to ENA on the same terms as the consensus sequence and its metadata: once the data is Open (whether open from submission, or after a Restricted-Use period ends), the raw reads are uploaded to ENA together with the rest of the submission.
 
-Raw reads are linked to the same ENA Sample as their consensus sequence, and are submitted as an Experiment and a Run object. If raw reads for a sequence are already available in the INSDC, we link to the existing Run, BioSample, and BioProject rather than submitting a second copy (see [Uploading raw reads](/docs/how-to/upload-raw-reads) for how to supply these accessions).
+Raw reads are linked to the same ENA Sample as their consensus sequence, and are submitted as an Experiment and a Run object. Consensus sequences are linked to their associated raw reads via the Run accession.
+
+If you have already submitted the raw reads for a sequence to the INSDC you can supply the appropriate accessions and we will ensure to link to the existing Run, BioSample, and BioProject when we submit consensus sequences on your behalf to the INSDC (see [Uploading raw reads](/docs/how-to/upload-raw-reads) for how to supply these accessions).
 
 {/* TODO(dev): describe any raw-reads-specific ENA submission steps (e.g. file upload mechanism, timing relative to the consensus sequence submission) beyond what's captured above. */}
 
