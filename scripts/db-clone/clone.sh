@@ -20,18 +20,18 @@ if [ -z "${PGHOST:-}" ]; then
 fi
 
 print_usage() {
-    echo "Usage: $0 <action> <database> <file> [new_owner_username]"
-    echo "Actions:"
-    echo "  dump - Dump the specified database to a file"
-    echo "  load - Load a dump file into the specified database"
-    echo "Examples:"
-    echo "  $0 dump production temp_dump.sql"
-    echo "  $0 load staging temp_dump.sql staging_keycloak_user"
+    echo "Usage: $0 <action> <database> <file> [new_owner_username]" >&2
+    echo "Actions:" >&2
+    echo "  dump - Dump the specified database to a file (use /dev/stdout to stream)" >&2
+    echo "  load - Load a dump file into the specified database" >&2
+    echo "Examples:" >&2
+    echo "  $0 dump production temp_dump.sql" >&2
+    echo "  $0 load staging temp_dump.sql staging_keycloak_user" >&2
 }
 
 check_command() {
     if [ $? -ne 0 ]; then
-        echo "Error: $1"
+        echo "Error: $1" >&2
         exit 1
     fi
 }
@@ -39,17 +39,17 @@ check_command() {
 dump_database() {
     local db_name="$1"
     local dump_file="$2"
-    echo "Dumping $db_name database to $dump_file..."
+    echo "Dumping $db_name database to $dump_file..." >&2
     pg_dump --if-exists --no-owner --clean "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
-    echo "Database dump completed successfully!"
-    echo "Dump file: $dump_file"
+    echo "Database dump completed successfully!" >&2
+    echo "Dump file: $dump_file" >&2
 }
 
 prepare_database() {
     local db_name="$1"
     local db_user="$2"
-    echo "Preparing database $db_name..."
+    echo "Preparing database $db_name..." >&2
     psql -d postgres -U "$db_user" <<EOF
         SELECT pg_terminate_backend(pid) 
         FROM pg_stat_activity 
@@ -63,7 +63,7 @@ EOF
 restore_limited_access() {
     local db_name="$1"
     local db_user="$2"
-    echo "Restoring limited access for postgres user only on $db_name..."
+    echo "Restoring limited access for postgres user only on $db_name..." >&2
     psql -d postgres -U "$db_user" <<EOF
         SELECT pg_terminate_backend(pid) 
         FROM pg_stat_activity 
@@ -77,7 +77,7 @@ EOF
 restore_full_access() {
     local db_name="$1"
     local db_user="$2"
-    echo "Restoring full access for all users on $db_name..."
+    echo "Restoring full access for all users on $db_name..." >&2
     psql -d postgres -U "$db_user" <<EOF
         GRANT CONNECT ON DATABASE $db_name TO public;
         ALTER DATABASE $db_name CONNECTION LIMIT -1;
@@ -88,7 +88,7 @@ EOF
 change_ownership() {
     local db_name="$1"
     local new_owner="$2"
-    echo "Changing ownership to $new_owner"
+    echo "Changing ownership to $new_owner" >&2
     psql -d "$db_name" <<EOF
     DO \$\$
     DECLARE
@@ -144,7 +144,7 @@ SET ROLE "postgres";
 REVOKE postgres FROM "$new_owner";
 EOF
 
-    echo "Database loading completed successfully!"
+    echo "Database loading completed successfully!" >&2
 }
 
 if [ "$#" -lt 3 ] || [ "$#" -gt 4 ]; then
@@ -165,7 +165,7 @@ case "$ACTION" in
         load_database "$DB_NAME" "$FILE" "$NEW_OWNER"
         ;;
     *)
-        echo "Invalid action: $ACTION"
+        echo "Invalid action: $ACTION" >&2
         print_usage
         exit 1
         ;;
