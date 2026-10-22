@@ -88,6 +88,8 @@ enaDeposition:
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
   enaSuppressedListTestUrl: "https://pathoplexus.github.io/ena-submission/suppressed/ppx-accessions-suppression-list.txt"
+  configFile:
+    allow_revision_with_manifest_changes: false
 seqSets:
   enabled: True
   crossRef:
