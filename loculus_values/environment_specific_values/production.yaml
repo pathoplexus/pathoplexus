@@ -96,6 +96,8 @@ enaDeposition:
   enaDbName: Pathoplexus
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
+  configFile:
+    allow_revision_with_manifest_changes: false
 resources:
   website:
     requests:
