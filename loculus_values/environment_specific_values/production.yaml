@@ -8,6 +8,11 @@ submissionBannerMessageURL: "https://pathoplexus.github.io/announcement_banners/
 robotsNoindexHeader: false
 subdomainSeparator: "."
 secrets:
+  website-oidc-cookie-secret:
+    type: sealedsecret
+    clusterWide: "true"
+    encryptedData:
+      oidcTransactionCookieSecret: AgAW2X4YErZL2WZm9X43Y6Bpm9G/AN/HfBNlJnvGW8r4/s40ZBp0NK0AZjSKGZhksWyzATRsj14eGUh+qYkn04lZPIj3W16wP9EPAQFo8n8TeSitVPRlv2y9l7MofiqwXnrsc9wfKZXEKgJqH4bJ11nDydCERGyz8mAbdTCCKHfc75n7Kvn1r7qTXUM9GdZw0OaTRXRTJ3wt0SsuHhnC55pb40Ixsnput+14G54zncxwCIhIE/3+/jeIHMDUXjRFvik8NxfFsoJl51F1Uzq6hUhZM/0Hx2GreII1lnQexHnzJjzutHYh4UrKp47N4Y6fRWpa2C+FVVn2K9lul+CtJzKLMRA87s1Y9GdYWhxqXA26UVmi8PCE5RGqFnjKkb5sFcmxHA6UrjC1+5NfrWs26qhumkNPt0KRshb/aTs2Qz/0xSrLkycTlBTts10n5WmbQM1XGWfUhM3WVW0cWfufwvVj3U8qJ4qhrS0Q1IYDkXFq1TURoO38m+RtNyZxBer9P0UpbiUsltr7bz3T6xLrrI92UD0vLqv6/Qp0og7L4UBBYY8vNlZAvGwzS1DK7HRpKTz8C7KWAiSyQ0xQ9+Ox3gva+kYAccdXL93/aERTvKwyUjh0venfTx/QZx+zwyPmGiLYU8pAeXQSAVhVV+aEvBad9SocxCDdBC3vRQp+EAqci5mlAmi7YXoJVbL6BRjv4OO+WMTiuiGmdaezxK9aDpy+tW7n2JqtY2yrp7ZVnN0DIc7/8HHbrxcaENTiXn1Jg0XP7F/Mzom1E8Bw+1QA2x5Q
   keycloak-admin:
     type: sealedsecret
     clusterWide: "true"
