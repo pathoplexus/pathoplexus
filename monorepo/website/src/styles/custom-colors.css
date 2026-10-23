@@ -1,3 +1,9 @@
+/*
+ * BaseLayout loads this overlay stylesheet on every page. Use that global
+ * hook for the footer override without copying the upstream layout;
+ * extraStyles.css is loaded only by prose layouts, so it cannot cover the
+ * site-wide footer. Keep the layout rules in their own file.
+ */
 @import './footer.css';
 
 /*

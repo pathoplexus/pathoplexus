@@ -1,21 +1,27 @@
-/* Keep footer labels intact and let whole links wrap on smaller screens. */
-footer {
+/*
+ * BaseLayout.astro places the site footer directly inside the body's
+ * min-h-screen wrapper. Match that boundary to exclude content/widget footers.
+ * The two direct divs below are its outer row and navigation links container;
+ * revisit these selectors if the upstream BaseLayout markup changes.
+ */
+body > div.min-h-screen > footer {
     height: auto;
     min-height: 5rem;
     padding-block: 1rem;
 }
 
-footer > div {
+body > div.min-h-screen > footer > div {
     gap: 1.25rem;
 }
 
-footer > div > div {
+body > div.min-h-screen > footer > div > div {
     flex-wrap: wrap;
     row-gap: 0.5rem;
     min-width: 0;
 }
 
-footer a {
+body > div.min-h-screen > footer > div > a,
+body > div.min-h-screen > footer > div > div > a {
     flex-shrink: 0;
     white-space: nowrap;
 }

@@ -20,8 +20,13 @@
 </script>
 
 <style>
-    /* Override the embedded widget's own font and button rules. */
-    #zsfeedbackwidgetdiv :global(*) {
+    /* Override text fonts only, preserving any icon fonts supplied by Zoho. */
+    #zsfeedbackwidgetdiv :global(.zstitlemini),
+    #zsfeedbackwidgetdiv :global(label),
+    #zsfeedbackwidgetdiv :global(input),
+    #zsfeedbackwidgetdiv :global(textarea),
+    #zsfeedbackwidgetdiv :global(button),
+    #zsfeedbackwidgetdiv :global(.redtxt) {
         font-family: var(--font-sans) !important;
     }
 
