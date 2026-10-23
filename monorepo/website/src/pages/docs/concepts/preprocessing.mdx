@@ -3,26 +3,40 @@ layout: ../../../layouts/DocLayout.astro
 title: "Preprocessing"
 ---
 
-Pathoplexus processes submitted data to validate, harmonize, and standardize it. We ensure users have maximum flexibility in accessing the most useful data for their needs by rejecting only submissions that lack essential metadata values, whose sequences are not identifiable as the specified pathogen, or whose raw reads contain an excessive number of likely-human reads.
+Pathoplexus processes submitted data to validate, harmonize, and standardize it, aiming to include as much submitted data as possible. This page describes the checks, tools and thresholds we currently use, and may change over time as our tools and processes evolve. The principles governing *why* and under what circumstances data can be rejected are set out in [Data Processing](/about/governance/data-submission#3-data-processing) in our governance documents.
 
-We use [Nextclade](https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli/reference.html#nextclade-run) for alignment, mutation calling, quality checks and clade assignment.
+We use [Nextclade](https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli/reference.html#nextclade-run) for sequence alignment, mutation calling, quality checks and clade assignment.
 
-The data preprocessing steps encompass:
+Submissions that fail to meet the requirements below are rejected by the preprocessing pipeline, which provides an error message explaining the reason for rejection.
 
-- Sequences:
-  - Verification that the sequence corresponds to the virus specified by the user.
-  - Alignment with the reference genome.
-  - Removal of terminal Ns.
-  - Translation of genes/coding regions.
-  - Quantification of mutations by number and type (including nucleotide and amino acid variations).
-  - Identification and labeling of deletions and insertions.
-  - Assignment of specific clades/lineages.
-- Metadata:
-  - Standardization of collection date formats.
-  - Standardization of location information using [INSDC-standards](https://www.ebi.ac.uk/ena/browser/api/xml/ERC000011).
-  - Ensure required values are set
-  - Ensure metadata fields are of correct type (e.g. string, int, date)
-- Raw reads:
-  - File format and content validation
+## Sequences
 
-Submissions that fail to meet these requirements are rejected by the preprocessing pipeline, which provides a detailed error message explaining the reason for rejection.
+- Verification that the sequence corresponds to the virus specified by the user.
+- Alignment with the reference genome.
+- Removal of terminal Ns.
+- Translation of genes/coding regions.
+- Quantification of mutations by number and type (including nucleotide and amino acid variations).
+- Identification and labeling of deletions and insertions.
+- Quality control (QC) scoring, based on Nextclade's quality metrics (e.g. frame shifts, premature stop codons, and other alignment quality indicators).
+- Assignment of specific clades/lineages.
+
+A sequence is rejected if it cannot be identified (via seed-matching) as the specified pathogen.
+
+{/* TODO(dev): describe whether/when a low Nextclade QC score (as opposed to a failed clade assignment) causes rejection vs. a warning, and link to or summarize the Nextclade dataset(s) used per organism. */}
+
+## Metadata
+
+- Standardization of collection date formats.
+- Standardization of location information using [INSDC-standards](https://www.ebi.ac.uk/ena/browser/api/xml/ERC000011).
+- Ensure required values are set.
+- Ensure metadata fields are of correct type (e.g. string, int, date).
+
+Metadata is rejected if a value required for the organism is missing, or is not of the correct type.
+
+## Raw reads
+
+- File format and content validation.
+
+A raw reads file is rejected if it poses a risk to privacy, for example if it contains an excessive number of reads that are likely to be human. See [Uploading raw reads](/docs/how-to/upload-raw-reads#dehosting-host-read-removal) for submitter guidance on removing host reads before submission.
+
+{/* TODO(dev): describe the tool(s)/thresholds used for human-read screening of raw reads, and what other file format/content checks are performed. */}
