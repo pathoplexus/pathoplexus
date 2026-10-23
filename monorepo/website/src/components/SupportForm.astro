@@ -1,0 +1,61 @@
+<div id='zsfeedbackwidgetdiv'></div>
+<script
+    is:inline
+    src='https://desk.zoho.eu/portal/api/feedbackwidget/167952000000219216?orgId=20097676067&displayType=embeded'
+></script>
+
+<script>
+    const container = document.getElementById('zsfeedbackwidgetdiv');
+    if (container) {
+        const updateTitle = () => {
+            const title = container.querySelector('.zstitlemini');
+            if (title && title.textContent !== 'Contact Pathoplexus') {
+                title.textContent = 'Contact Pathoplexus';
+            }
+        };
+        // Zoho inserts the form asynchronously and may rebuild it after submission.
+        new MutationObserver(updateTitle).observe(container, { childList: true, subtree: true });
+        updateTitle();
+    }
+</script>
+
+<style>
+    /* Override the embedded widget's own font and button rules. */
+    #zsfeedbackwidgetdiv :global(*) {
+        font-family: var(--font-sans) !important;
+    }
+
+    #zsfeedbackwidgetdiv :global(#popupTitle) {
+        height: auto;
+    }
+
+    #zsfeedbackwidgetdiv :global(.zstitlemini) {
+        color: var(--color-main);
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    #zsfeedbackwidgetdiv :global(input),
+    #zsfeedbackwidgetdiv :global(textarea) {
+        font-size: 16px;
+    }
+
+    #zsfeedbackwidgetdiv :global(#feedbPopupSbmtBtn) {
+        background: var(--color-primary-600);
+        border-color: var(--color-primary-600);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    #zsfeedbackwidgetdiv :global(#feedbPopupSbmtBtn:hover) {
+        background: var(--color-primary-700);
+        border-color: var(--color-primary-700);
+    }
+
+    #zsfeedbackwidgetdiv :global(#feedbPopupSbmtBtn:focus-visible) {
+        outline: 2px solid var(--color-primary-700);
+        outline-offset: 2px;
+    }
+</style>

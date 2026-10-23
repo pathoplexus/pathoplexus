@@ -1,0 +1,21 @@
+/* Keep footer labels intact and let whole links wrap on smaller screens. */
+footer {
+    height: auto;
+    min-height: 5rem;
+    padding-block: 1rem;
+}
+
+footer > div {
+    gap: 1.25rem;
+}
+
+footer > div > div {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    min-width: 0;
+}
+
+footer a {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
