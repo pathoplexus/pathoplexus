@@ -23,7 +23,6 @@ STAGING_S3_BUCKET="ppx-staging-s3-bucket"
 # For now not an issue but might eventually want to be more surgical
 perform_sed_replacements() {
     local name="$1"
-    echo "Performing sed replacements on $name..." >&2
 
     # Do not perform replacements on lines that contain the protected URL
     # see https://github.com/pathoplexus/pathoplexus/issues/1127
@@ -51,10 +50,10 @@ sync_s3_buckets() {
 
 # The dump is written to fd 3 (the pipe), while the child script's logs on stdout are sent to stderr
 # so they don't end up in the dump
-echo "Dumping production Loculus database..."
+echo "Dumping production Loculus database to '$PROD_LOC_DUMP' and performing sed replacements..."
 { $CHILD_SCRIPT dump $PROD_LOC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_LOC_DUMP > $PROD_LOC_DUMP
 
-echo "Dumping production Keycloak database..."
+echo "Dumping production Keycloak database to '$PROD_KC_DUMP' and performing sed replacements..."
 { $CHILD_SCRIPT dump $PROD_KC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_KC_DUMP > $PROD_KC_DUMP
 
 # Sync files after the dump so no files referenced by the dumped db can be missing (there might

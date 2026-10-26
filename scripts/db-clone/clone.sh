@@ -39,11 +39,9 @@ check_command() {
 dump_database() {
     local db_name="$1"
     local dump_file="$2"
-    echo "Dumping $db_name database to $dump_file..."
     pg_dump --if-exists --no-owner --clean "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
     echo "Database dump completed successfully!"
-    echo "Dump file: $dump_file"
 }
 
 prepare_database() {
