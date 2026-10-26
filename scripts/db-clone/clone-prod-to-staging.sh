@@ -43,29 +43,31 @@ perform_sed_replacements() {
 }
 
 sync_s3_buckets() {
-    echo "Syncing S3 buckets from production to staging..." >&2
+    echo "Syncing S3 buckets from production to staging..."
     aws configure set s3.max_concurrent_requests 50 --profile db-clone
-    aws s3 sync s3://$PROD_S3_BUCKET s3://$STAGING_S3_BUCKET --delete --profile db-clone || { echo "Error: Failed to sync S3 buckets" >&2; exit 1; }
-    echo "S3 bucket sync completed successfully!" >&2
+    aws s3 sync s3://$PROD_S3_BUCKET s3://$STAGING_S3_BUCKET --delete --profile db-clone || { echo "Error: Failed to sync S3 buckets"; exit 1; }
+    echo "S3 bucket sync completed successfully!"
 }
 
-echo "Dumping production Loculus database..." >&2
-$CHILD_SCRIPT dump $PROD_LOC_DB /dev/stdout | perform_sed_replacements $PROD_LOC_DUMP > $PROD_LOC_DUMP
+# The dump is written to fd 3 (the pipe), while the child script's logs on stdout are sent to stderr
+# so they don't end up in the dump
+echo "Dumping production Loculus database..."
+{ $CHILD_SCRIPT dump $PROD_LOC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_LOC_DUMP > $PROD_LOC_DUMP
 
-echo "Dumping production Keycloak database..." >&2
-$CHILD_SCRIPT dump $PROD_KC_DB /dev/stdout | perform_sed_replacements $PROD_KC_DUMP > $PROD_KC_DUMP
+echo "Dumping production Keycloak database..."
+{ $CHILD_SCRIPT dump $PROD_KC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_KC_DUMP > $PROD_KC_DUMP
 
 # Sync files after the dump so no files referenced by the dumped db can be missing (there might
 # be additional unreferenced files in the bucket but that is ok, to prevent additional files we
 # could enable s3 versioning and pick whichever version has LastModified <= T
-echo "Syncing S3 buckets..." >&2
+echo "Syncing S3 buckets..."
 sync_s3_buckets
 
-echo "Loading Keycloak dump to staging..." >&2
+echo "Loading Keycloak dump to staging..."
 $CHILD_SCRIPT load $STAGING_KC_DB $PROD_KC_DUMP $STAGING_KC_USER
 
-echo "Loading Loculus dump to staging..." >&2
+echo "Loading Loculus dump to staging..."
 $CHILD_SCRIPT load $STAGING_LOC_DB $PROD_LOC_DUMP $STAGING_LOC_USER
 
-echo "Cloning process completed successfully!" >&2
-echo "Please restart the backend to apply changes." >&2
+echo "Cloning process completed successfully!"
+echo "Please restart the backend to apply changes."
