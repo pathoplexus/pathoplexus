@@ -4490,9 +4490,9 @@ organisms:
           category: "Other"
           maxNumberOfRecommendedEntries: 45000
           url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
-      extraInputFields:
+        # Extending id definition for oropouche to include info specific to multi-segmented organisms
         - <<: *idConfig
-          definition:
+          definition: "Your sequence identifier (if no `fastaIds` column is provided, this sample ID will be used to associate the metadata with the sequence). This ID may be parsed and incorporated in the display name of this sequence on the website if `specimenCollectorSampleId` is not set."
         - <<: *hostConfig
       website:
         <<: *website
@@ -4569,7 +4569,7 @@ organisms:
           sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/segments/S.fasta]]"
           insdcAccessionFull: NC_005777.1
           genes:
-            - name: N
+            - name: "N"
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/N.fasta]]"
             - name: NSs
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/oropouche/genes/NSs.fasta]]"
