@@ -71,6 +71,7 @@ echo "Dumping production Loculus database to '$PROD_LOC_DUMP' and performing sed
 
 echo "Dumping production Keycloak database to '$PROD_KC_DUMP' and performing sed replacements..."
 { $CHILD_SCRIPT dump $PROD_KC_DB /dev/fd/3 3>&1 1>&2 $PROD_KC_READER; } | perform_sed_replacements $PROD_KC_DUMP > $PROD_KC_DUMP
+assert_no_keycloak_secrets $PROD_KC_DUMP
 
 # Sync files after the dump so no files referenced by the dumped db can be missing (there might
 # be additional unreferenced files in the bucket but that is ok, to prevent additional files we
