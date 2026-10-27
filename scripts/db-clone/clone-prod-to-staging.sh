@@ -18,30 +18,27 @@ STAGING_LOC_USER="staging_loculus_user"
 PROD_S3_BUCKET="ppx-s3-bucket"
 STAGING_S3_BUCKET="ppx-staging-s3-bucket"
 
+# Filters a dump from stdin to stdout, so no intermediate copy of the dump is written to disk
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
 perform_sed_replacements() {
-    local file="$1"
-    echo "Performing sed replacements on $file..."
-    # Abort the script if a line with `@` contains the word "prod" to prevent altering sensitive data
-    if awk '/@/ && /prod_/ { found=1; exit } END { exit !found }' "$file"; then
-        echo "Error: Found 'prod' in line with '@' in $file. Aborting to prevent changing sensitive data."
-        exit 1
-    fi
+    local name="$1"
 
     # Do not perform replacements on lines that contain the protected URL
     # see https://github.com/pathoplexus/pathoplexus/issues/1127
     local protected_url='https://pathoplexus.org/about/governance/minutes/2026-06-01_EB_Resolutions.pdf'
     local placeholder='__PROTECTED_PATHOPLEXUS_URL__'
-    sed -i "s#${protected_url}#${placeholder}#g" "$file"
 
-    sed -i 's/prod_loculus_user/staging_loculus_user/g' "$file"
-    sed -i 's/prod_keycloak_user/staging_keycloak_user/g' "$file"
-    sed -i 's#//pathoplexus.org#//staging.pathoplexus.org#g' "$file"
-    sed -i 's#authentication.pathoplexus.org#authentication-staging.pathoplexus.org#g' "$file"
-
-    # Restore the protected string
-    sed -i "s#${placeholder}#${protected_url}#g" "$file"
+    # Abort the script if a line with `@` contains the word "prod" to prevent altering sensitive data
+    # (checked on the unmodified stream, before any replacements)
+    awk -v msg="Error: Found 'prod' in line with '@' in $name. Aborting to prevent changing sensitive data." \
+        '/@/ && /prod_/ { print msg > "/dev/stderr"; exit 1 } { print }' |
+    sed -e "s#${protected_url}#${placeholder}#g" \
+        -e 's/prod_loculus_user/staging_loculus_user/g' \
+        -e 's/prod_keycloak_user/staging_keycloak_user/g' \
+        -e 's#//pathoplexus.org#//staging.pathoplexus.org#g' \
+        -e 's#authentication.pathoplexus.org#authentication-staging.pathoplexus.org#g' \
+        -e "s#${placeholder}#${protected_url}#g"
 }
 
 sync_s3_buckets() {
@@ -51,20 +48,19 @@ sync_s3_buckets() {
     echo "S3 bucket sync completed successfully!"
 }
 
-echo "Dumping production Loculus database..."
-$CHILD_SCRIPT dump $PROD_LOC_DB $PROD_LOC_DUMP
+# The dump is written to fd 3 (the pipe), while the child script's logs on stdout are sent to stderr
+# so they don't end up in the dump
+echo "Dumping production Loculus database to '$PROD_LOC_DUMP' and performing sed replacements..."
+{ $CHILD_SCRIPT dump $PROD_LOC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_LOC_DUMP > $PROD_LOC_DUMP
 
-echo "Dumping production Keycloak database..."
-$CHILD_SCRIPT dump $PROD_KC_DB $PROD_KC_DUMP
+echo "Dumping production Keycloak database to '$PROD_KC_DUMP' and performing sed replacements..."
+{ $CHILD_SCRIPT dump $PROD_KC_DB /dev/fd/3 3>&1 1>&2; } | perform_sed_replacements $PROD_KC_DUMP > $PROD_KC_DUMP
 
 # Sync files after the dump so no files referenced by the dumped db can be missing (there might
 # be additional unreferenced files in the bucket but that is ok, to prevent additional files we
 # could enable s3 versioning and pick whichever version has LastModified <= T
 echo "Syncing S3 buckets..."
 sync_s3_buckets
-
-perform_sed_replacements $PROD_KC_DUMP
-perform_sed_replacements $PROD_LOC_DUMP
 
 echo "Loading Keycloak dump to staging..."
 $CHILD_SCRIPT load $STAGING_KC_DB $PROD_KC_DUMP $STAGING_KC_USER

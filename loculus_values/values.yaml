@@ -52,7 +52,7 @@ secrets:
 name: Pathoplexus
 accessionPrefix: "PPD_"
 dateFieldForGroupGraph: earliestReleaseDate
-additionalHeadHTML: '<script defer data-domain="pathoplexus.org" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script><script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script><meta property="og:type" content="website" /><meta property="og:image" content="https://pathoplexus.org/images/pathoplexus-preview.png" /><meta property="og:description" content="Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data, fostering global collaboration and public health response." />'
+additionalHeadHTML: '<script defer data-domain="pathoplexus.org" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.js"></script><script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script><meta property="og:type" content="website" /><meta property="og:image" content="https://pathoplexus.org/images/pathoplexus-preview.png" /><meta property="og:description" content="Pathoplexus is a new, open-source database dedicated to the efficient sharing of human viral pathogen genomic data, fostering global collaboration and public health response." /><script>    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})    (window,document,"script","https://assets.mailerlite.com/js/universal.js","ml");    ml("account", "1078519");</script>'
 website:
   websiteConfig:
     enableLoginNavigationItem: true
@@ -778,11 +778,11 @@ defaultOrganismConfig: &defaultOrganismConfig
         definition: "Accession of public BioProject in the INSDC your consensus sequences should be uploaded to."
         example: "PRJNA123456"
         preprocessing:
-          function: check_regex
+          function: check_ena_accession
           inputs:
-            regex_field: bioprojectAccession
+            accession: bioprojectAccession
           args:
-            pattern: "^PRJ(E|D|N)[A-Z][0-9]+$"
+            accession_type: bioproject
       - name: biosampleAccession
         displayName: BioSample accession
         customDisplay:
@@ -802,11 +802,11 @@ defaultOrganismConfig: &defaultOrganismConfig
         example: "SAMN12345678"
         oneHeader: true
         preprocessing:
-          function: check_regex
+          function: check_ena_accession
           inputs:
-            regex_field: biosampleAccession
+            accession: biosampleAccession
           args:
-            pattern: "^SAM(E|D|N)[A-Z]?[0-9]+$"
+            accession_type: biosample
       - name: gcaAccession
         displayName: GCA accession
         definition: The GenBank genome assembly accession number for the sequence.
@@ -1673,16 +1673,13 @@ defaultOrganismConfig: &defaultOrganismConfig
         includeInDownloadsByDefault: true
         ingest: ncbiSraAccessions
         guidance: "Only add this field if you have already submitted raw reads to the INSDC, read more at https://pathoplexus.org/docs/how-to/upload-raw-reads."
-        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368."
+        definition: "Accession of corresponding raw reads in the INSDC, e.g. SRR27477368. Multiple raw reads accessions can be provided in comma-separated format, e.g. SRR27477368,SRR27477369"
         preprocessing:
-          function: check_regex
+          function: check_ena_accession
           inputs:
-            regex_field: insdcRawReadsAccession
+            accession: insdcRawReadsAccession
           args:
-            # NCBI can output comma-separated lists of SRR accessions
-            # Also accept ERS/SRS for now, as NCBI virus occasionally sends those
-            # See https://github.com/ncbi/datasets/issues/516
-            pattern: "^(E|D|S)R(R|S)[0-9]{6,}(,(E|D|S)R(R|S)[0-9]{6,})*$"
+            accession_type: raw_reads
       - name: totalSnps
         type: int
         definition: "Total count of nucleotide substitutions."

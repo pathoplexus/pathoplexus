@@ -11,6 +11,11 @@ secrets:
     clusterWide: true
     encryptedData:
       users: AgAD+1AiAj59kHkb9Yz+LXATMxWjnJcIXXcKM5yP156vN+XFdZ9Gih6PeKwsn0VvpIxNt5h8B1rkZhJ4GPVEA6FWKUqbhImB7gI3fqqYXhhjY3/GPgDE5BlkDS1uVQXpIsx0HKNLp+6W7l0tG83rmEwdvksGe5qC7xWrzmfuiGWEHxxl7awj4jfvcrcrXxp7bi5DvLfmVM/12ZmQQdW+sjOHf35Q5aMiw7ch7rOami0+hgss5EI/Tf3+SaahXFq6NLi95UB82JQveJztVIu0ZkfW9bBF9R/PxtLnp6ZLrNalhR4QAM4/cApxlO4oguuncMcGyMQHUCfvzEiRp2duLc8Ep7izwfNtH99sBxGler6wFJBeF+fADgo/OHLTmfzEwjoc0nvBiwKeWdxDGvQJT+ueEhT1/YKq0uS1X07A9MUdbFfP4uK16WYzRIej7ojnPpHsAYDohtZybCLeLcS1o120Rbh2zdnQKZVOjIRNmttUqwzPceI2128505/KzEM6Rjdq8bCZAONRRIvibyFyBTeHz2RFnSiN1Aa1iD8TMDG7hRLoJoLUGqxQIatJa8xnfnu8ZPzyNisXZgFW+Ci3kgoIUa43kpBjF/hTbZTMD5/HS/LcNT8QP6xMshoa5nKX1ctM36RvFgjzvB98+ix08xlDiIzfd5DjkbdJ16ew2GkIy5CDN+BnPEqWgKRwrQW+XGP9jT3mTem4tJbiyIPwKAadUpddMbjRR2uqmEcS1Z4BKSS8mBMlLamq
+  website-oidc-cookie-secret:
+    type: sealedsecret
+    clusterWide: true
+    encryptedData:
+      oidcTransactionCookieSecret: AgA1XsHKEbR9JK9Ktr9kvuiNbmWs7zgr7AwWqmbNPioWcPIW4HITGmsKoBurXT0pyA6KwS82K/iLyS/44K7HgiEEtsUUvsG5ieibVBfMbgrTuaL7BjEaF5UiMXmGJhXg7t2u6zggP4LllqTK0Tv0QB1EwPj4IEKz+HcBEuHolgXL0fDOOCIeqNGamCmZ0XHrR+2W0hdtljfoLEoG26ncth+lup5IDxsjkAkfOU0c/6KOr3YDRUCwGO+A+dJ3/c7yy1VkZe/UybEAWrUyJI6httkjJahMbDf+Q6VH8peDyqrW8XuuObaKUoAG0rVnlTMQbuqDnDIl7l8NlosTprCElghLH370FDvDSzdLOks5K9iGNAndI+sXR0/sih7xa5FFM0LqEc1BW5bdV6voHIOLY1aVdPGpt20m5LO6QelTX+QaY6VI1/wjSjoelrtD52fpzCGEN7rBKj9sVZJdmr5onIpjIUrDwWU50lDDThuDjHbCO4AJmujvpasizcRifzvS/MpsyQadGDvnLSM5TS0+TDkDeX50jeZ/VzYwCCf93hNnb+k2AKIYD13C/CmPJxtttWeg3gDRCvQbP1XI8yyxEF9FjwPSwgyc1KGLabkIZacA0xvV6+Zna5MtippZZ2g3ZxjyVZdP7hQ+vv9GEXB8NBYCvL2euhCmrbYobhyx2/+tEAnkzJVeQ4erGD9FTKyRPGMnL8QqvQcsyARfNcSdoFLWI0rt4210JXd7yl2jU6wkx2pqxSUVvCgHvgck4PN7NWIxLRcfwuEsfWgigBHCl5sw
   keycloak-admin:
     type: sealedsecret
     clusterWide: "true"
@@ -88,6 +93,8 @@ enaDeposition:
   enaUniqueSuffix: Pathoplexus
   enaIsBroker: True
   enaSuppressedListTestUrl: "https://pathoplexus.github.io/ena-submission/suppressed/ppx-accessions-suppression-list.txt"
+  configFile:
+    allow_revision_with_manifest_changes: false
 seqSets:
   enabled: True
   crossRef:
