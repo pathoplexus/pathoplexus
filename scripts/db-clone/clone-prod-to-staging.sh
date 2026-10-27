@@ -34,20 +34,6 @@ assert_no_keycloak_secrets() {
     fi
 }
 
-# The dumps contain user data, don't leave them lying around on the bastion
-trap 'rm -f "$PROD_KC_DUMP" "$PROD_LOC_DUMP"' EXIT
-
-# Row-level security should hide the realm keys and secrets from the reader role (see
-# setup-clone-roles.sql). A Keycloak upgrade that recreates a table would silently drop its
-# policy, so double check that none of these rows made it into the dump.
-assert_no_keycloak_secrets() {
-    local file="$1"
-    if grep -qE $'\t(privateKey|secret)\t' "$file"; then
-        echo "Error: $file contains Keycloak realm keys. Check the RLS policies on prod. Aborting."
-        exit 1
-    fi
-}
-
 # Filters a dump from stdin to stdout, so no intermediate copy of the dump is written to disk
 # Note: Could screw up columns and values that contain `prod` etc
 # For now not an issue but might eventually want to be more surgical
