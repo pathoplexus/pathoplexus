@@ -40,7 +40,22 @@ Passwords for these three roles need to be available to `psql`/`pg_dump` on the 
 `~/.pgpass`). Do **not** store passwords for `postgres`, `prod_keycloak_user` or `prod_loculus_user`
 on the bastion.
 
-After a clone, staging Keycloak has freshly generated realm keys.
+## Staging Keycloak realm keys
+
+The prod realm keys are never cloned. Instead, every clone adds the same fixed staging signing key,
+so staging tokens stay valid across clones. The key lives in `staging-keycloak-key.pem` on the
+bastion (gitignored). Create it once before the first clone:
+
+```sh
+umask 077
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out staging-keycloak-key.pem
+openssl req -x509 -key staging-keycloak-key.pem -days 36500 -subj "/CN=loculus" >> staging-keycloak-key.pem
+```
+
+Keycloak generates its other (non-signing) realm keys itself on startup.
+
+After a clone, restart staging Keycloak, or clear its realm, user and keys caches (admin console:
+Realm settings → Action), so it doesn't serve stale cached data.
 
 You will need to configure the `db-clone` AWS IAM user profile on the bastion, this can be done with:
 
