@@ -77,6 +77,13 @@ GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO prod_loculus_clone_reader;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO prod_loculus_clone_reader;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO prod_loculus_clone_reader;
 
+GRANT USAGE ON SCHEMA ena_deposition_schema TO prod_loculus_clone_reader;
+GRANT SELECT ON ALL TABLES IN SCHEMA ena_deposition_schema TO prod_loculus_clone_reader;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA ena_deposition_schema TO prod_loculus_clone_reader;
+-- Keep tables added by future Flyway migrations dumpable
+ALTER DEFAULT PRIVILEGES IN SCHEMA ena_deposition_schema GRANT SELECT ON TABLES TO prod_loculus_clone_reader;
+ALTER DEFAULT PRIVILEGES IN SCHEMA ena_deposition_schema GRANT SELECT ON SEQUENCES TO prod_loculus_clone_reader;
+
 RESET ROLE;
 
 \connect postgres
