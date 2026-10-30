@@ -43,8 +43,11 @@ on the bastion.
 ## Staging Keycloak realm keys
 
 The prod realm keys are never cloned. Instead, every clone adds the same fixed staging signing key,
-so staging tokens stay valid across clones. The key lives in `staging-keycloak-key.pem` on the
-bastion (gitignored). Create it once before the first clone:
+so staging access tokens issued before a clone stay valid until they expire. Refresh tokens do not
+survive a clone: the staging sessions are replaced with the ones from prod and the refresh tokens
+are signed with a realm key that Keycloak regenerates. So users logged in to staging are logged out
+once their access token expires and have to log in again. The key lives in `staging-keycloak-key.pem`
+on the bastion (gitignored). Create it once before the first clone:
 
 ```sh
 umask 077
