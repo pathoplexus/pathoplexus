@@ -45,7 +45,9 @@ dump_database() {
     echo "Dumping $db_name database to $dump_file..."
     # --enable-row-security: dump only the rows the user may see (hides Keycloak realm keys),
     # without it pg_dump errors out on tables with RLS
-    pg_dump -U "$db_user" --enable-row-security --if-exists --no-owner --clean "$db_name" > "$dump_file"
+    # --no-privileges: prod has default privileges FOR ROLE postgres, which only members of postgres
+    # can restore. Staging doesn't need any grants, its owner role owns all objects.
+    pg_dump -U "$db_user" --enable-row-security --if-exists --no-owner --no-privileges --clean "$db_name" > "$dump_file"
     check_command "Failed to dump $db_name database"
     echo "Database dump completed successfully!"
 }
