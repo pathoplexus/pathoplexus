@@ -58,7 +58,7 @@ To facilitate data standardization we map our metadata to ENA's [ENA virus patho
 | ---------------------- | ----------------------------------------------------- |
 | INSTRUMENT             | sequencingInstrument                                  |
 | PLATFORM               | sequencingInstrument                                    |
-| LIBRARY_SOURCE         | sequencingLibrarySource, default=OTHER                |
-| LIBRARY_SELECTION      | sequencingLibrarySelection, default=unspecified       |
-| LIBRARY_STRATEGY       | sequencingAssayType, default=OTHER                    |
+| LIBRARY_SOURCE         | derived from sequencingApproach, default=OTHER        |
+| LIBRARY_SELECTION      | derived from sequencingApproach, default=unspecified  |
+| LIBRARY_STRATEGY       | derived from sequencingApproach, otherwise sequencingAssayType (deprecated), default=OTHER |
 | INSERT_SIZE            | pairedEndInsertSize (only if reads are paired) |
