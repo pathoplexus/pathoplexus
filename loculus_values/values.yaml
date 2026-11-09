@@ -110,6 +110,7 @@ lineageSystemDefinitions:
   dengue:
     33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
     34: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
+    35: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
     submissionDataTypes: &defaultSubmissionDataTypes
@@ -2317,10 +2318,15 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *denguePreprocessing
+      - &denguePreprocessingV34
+        <<: *denguePreprocessing
         replicas: 3
         version:
           - 34
+      - <<: *denguePreprocessingV34
+        replicas: 10
+        version:
+          - 35
     ingest:
       <<: *ingest
       configFile:
