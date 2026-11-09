@@ -87,6 +87,10 @@ taxonomyService:
   taxonomyDbPath: "/data/taxonomy.sqlite" # this is where the init container mounts the database
   taxonomy_service_url: &taxonomy_service_url http://loculus-taxonomy-service:5000
 pipelineVersionUpgradeCheckIntervalSeconds: 300
+# HikariCP defaults to 10 connections, which slow preprocessing claims can exhaust and starve every
+# other endpoint (https://github.com/loculus-project/loculus/issues/7725)
+backendExtraJvmOpts:
+  - "-Dspring.datasource.hikari.maximum-pool-size=100"
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
