@@ -77,35 +77,24 @@ def url(w):
 
 rule sequence_download:
     output:
-        "results/{organism}_{segment}_{instance}.fasta",
+        temp("results/{organism}_{segment}_{instance}.seq.tsv"),
     params:
         url=url,
     shell:
         """
-        curl "{params.url}" | zstdcat > {output}
+        echo "{key_field}\tsequence" > {output}
+        curl -fsS "{params.url}" | zstdcat | seqkit fx2tab --name --seq-hash --case-sensitive >> {output}
         """
 
 
 rule metadata_download:
     output:
-        "results/{organism}_{instance}.tsv",
+        temp("results/{organism}_{instance}.tsv"),
     params:
         url=url,
     shell:
         """
-        curl "{params.url}" | zstdcat > {output}
-        """
-
-
-rule sequence_tsv:
-    input:
-        "results/{organism}_{segment}_{instance}.fasta",
-    output:
-        "results/{organism}_{segment}_{instance}.seq.tsv",
-    shell:
-        """
-        echo "{key_field}\tsequence" > {output}
-        seqkit fx2tab {input} >> {output}
+        curl -fsS "{params.url}" | zstdcat > {output}
         """
 
 
@@ -116,7 +105,7 @@ rule join_tsv:
         ),
         details="results/{organism}_{instance}.tsv",
     output:
-        "results/{organism}_{instance}.joined.tsv",
+        temp("results/{organism}_{instance}.joined.tsv"),
     params:
         tmp_pre="results/{organism}_{instance}.joined.tmp.zst",
         tmp_post="results/{organism}_{instance}.joined.tmp2.zst",
@@ -164,7 +153,7 @@ rule invariant_subset:
     input:
         "results/{organism}_{instance}.joined.tsv",
     output:
-        "results/{organism}_{instance}.invariant.tsv",
+        temp("results/{organism}_{instance}.invariant.tsv"),
     params:
         exclude_fields=exclude_fields_option(),
         file_url_fields=" ".join(file_url_fields),
@@ -185,8 +174,8 @@ rule invariant_subsets:
     input:
         "results/{organism}_{instance}.invariant.tsv",
     output:
-        sequences="results/{organism}_{instance}.invariant.seq.tsv",
-        metadata="results/{organism}_{instance}.invariant.meta.tsv",
+        sequences=temp("results/{organism}_{instance}.invariant.seq.tsv"),
+        metadata=temp("results/{organism}_{instance}.invariant.meta.tsv"),
     params:
         segment_names=lambda w: ",".join(map(lambda x: x + "_sequence", segments(w))),
     shell:

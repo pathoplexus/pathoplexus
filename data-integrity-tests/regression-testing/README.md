@@ -38,6 +38,8 @@ Results are stored in the `results/` directory. Key files to inspect:
 
 1. Diff files: `results/{organism}.{seq|meta}.{instance1}.{instance2}.diff`
    - These show differences between instances for sequence data and metadata.
+   - Sequences are compared as MD5 hashes (`seqkit fx2tab --seq-hash`), so a sequence diff lists the accessions whose sequence differs; fetch those sequences from LAPIS to see the change.
+   - Intermediate files are deleted once used. Run `snakemake --notemp` to keep them for debugging.
 
 2. To view a summary of differences:
 
