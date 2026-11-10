@@ -82,7 +82,7 @@ rule sequence_download:
     shell:
         """
         echo "{key_field}\tsequence" > {output}
-        curl -fsS "{params.url}" | zstdcat | ./bin/fasta-hashes.py >> {output}
+        curl -fsS "{params.url}" | zstdcat | seqkit fx2tab --name --seq-hash --case-sensitive >> {output}
         """
 
 
