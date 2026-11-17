@@ -270,8 +270,14 @@ def check_sequence_status(nucleotide_id: str, results: GenbankStatusResults) -> 
     elif status == "replaced" and replaced_by and replaced_by.split(".")[0] != nucleotide_id.split(".")[0]:
         logger.info(f"The sequence {nucleotide_id} has been replaced by {replaced_by}.")
         results.replaced[nucleotide_id] = replaced_by
-    else:
+    elif status == "live":
         logger.info(f"The sequence {nucleotide_id} is not suppressed or replaced.")
+        results.unchanged.append(nucleotide_id)
+    else:
+        logger.warning(
+            f"The sequence {nucleotide_id} has unexpected status '{status}' "
+            f"(replaced by: {replaced_by}), not revoking. Check manually."
+        )
         results.unchanged.append(nucleotide_id)
 
 
