@@ -1,6 +1,7 @@
 ## This script revokes sequences that have been suppressed on Genbank.
 ## It assumes the person running the script has curation rights
 import logging
+from dataclasses import dataclass, field
 from time import sleep
 from typing import Any
 import requests
@@ -91,74 +92,46 @@ def make_request(  # noqa: PLR0913, PLR0917
     return response
 
 
-def revoke(organism: str, username: str, password: str, accessions_list: list[str]):
+def revoke(
+    organism: str, username: str, password: str, version_comments: dict[str, str]
+):
     """
-    Get the loculus accession for the given INSDC accessions and revoke them.
+    Get the loculus accessions for the given INSDC accessions and revoke them.
+    `version_comments` maps each INSDC accession to the revocation version comment.
     """
+    if not version_comments:
+        logger.info("Nothing to revoke.")
+        return
+
     response = make_request(
         f"{LAPIS_URL}/{organism}/sample/details",
         username,
         password,
         json_body={
-            "insdcAccessionBase": accessions_list,
+            "insdcAccessionBase": list(version_comments.keys()),
             "downloadAsFile": False,
             "dataFormat": "JSON",
-            "fields": ["accession"],
+            "fields": ["accession", "insdcAccessionBase"],
         },
     )
     entries = response.json()["data"]
     logger.info(entries)
 
     url = f"{BACKEND_URL}/{organism}/revoke"
-    revoked_accessions = []
+    revoked_accessions = set()
     for entry in entries:
         accession = entry["accession"]
         if accession in revoked_accessions:
             logger.info(f"Already revoked {accession}, skipping.")
             continue
-        logger.debug(f"revoking: {accession}")
         body = {
             "accessions": [accession],
-            "versionComment": "Record has been suppressed on Genbank",
+            "versionComment": version_comments[entry["insdcAccessionBase"]],
         }
         logger.info(f"Revoking {accession} with body: {body}")
         make_request(url, username, password, json_body=body)
-        revoked_accessions.append(accession)
+        revoked_accessions.add(accession)
 
-def revoke_with_replacement(organism: str, username: str, password: str, accessions_dict: dict[str, str]):
-    """
-    Get the loculus accession for the given INSDC accessions and revoke them.
-    """
-    for accession, replacement in accessions_dict.items():
-        response = make_request(
-            f"{LAPIS_URL}/{organism}/sample/details",
-            username,
-            password,
-            json_body={
-                "insdcAccessionBase": accession,
-                "downloadAsFile": False,
-                "dataFormat": "JSON",
-                "fields": ["accession"],
-            },
-        )
-        entries = response.json()["data"]
-        logger.info(entries)
-
-        url = f"{BACKEND_URL}/{organism}/revoke"
-        revoked_accessions = []
-        for entry in entries:
-            accession = entry["accession"]
-            if accession in revoked_accessions:
-                logger.info(f"Already revoked {accession}, skipping.")
-                continue
-            logger.debug(f"revoking: {accession}")
-            body = {
-                "accessions": [accession],
-                "versionComment": f"Record has been replaced by {replacement} on Genbank",
-            }
-            logger.info(f"Revoking {accession} with body: {body}")
-            make_request(url, username, password, json_body=body)
-            revoked_accessions.append(accession)
 
 def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     """
@@ -173,53 +146,56 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     return response.json()
 
 
-def is_sequence_suppressed(nucleotide_id):
+@dataclass
+class GenbankStatusResults:
+    suppressed: list[str] = field(default_factory=list)
+    replaced: dict[str, str] = field(default_factory=dict)  # accession -> replaced by
+    failed: list[str] = field(default_factory=list)  # status could not be determined
+    unchanged: list[str] = field(default_factory=list)  # not suppressed or replaced
+
+
+def check_sequence_status(nucleotide_id: str, results: GenbankStatusResults) -> None:
+    """
+    Query NCBI for the given accession and add it to the matching bucket in `results`.
+    Suppressed takes precedence over replaced.
+    """
     base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
     params = {"db": "nucleotide", "id": nucleotide_id, "retmode": "xml"}
 
     try:
-        response = requests.get(base_url, params=params)
+        response = requests.get(base_url, params=params, timeout=60)
         response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-        return None
-
-    try:
         root = ET.fromstring(response.text)
-        for docsum in root.findall("DocSum"):
-            for item in docsum.findall("Item"):
-                if item.get("Name") == "Status":
-                    status = item.text.strip().lower()
-                    return status == "suppressed"
-        print("Status not found in the response.")
-        return None
-    except ET.ParseError as e:
-        print(f"Failed to parse XML: {e}")
-        return None
-
-def is_sequence_replaced(nucleotide_id):
-    base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
-    params = {"db": "nucleotide", "id": nucleotide_id, "retmode": "xml"}
-
-    try:
-        response = requests.get(base_url, params=params)
-        response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-        return None
-
-    try:
-        root = ET.fromstring(response.text)
-        for docsum in root.findall("DocSum"):
-            for item in docsum.findall("Item"):
-                if item.get("Name") == "ReplacedBy":
-                    replaced_by = item.text.strip()
-                    return replaced_by if replaced_by else None
-        print("Status not found in the response.")
-        return None
+        logger.error(f"Request failed for {nucleotide_id}: {e}")
+        results.failed.append(nucleotide_id)
+        return
     except ET.ParseError as e:
-        print(f"Failed to parse XML: {e}")
-        return None
+        logger.error(f"Failed to parse XML for {nucleotide_id}: {e}")
+        results.failed.append(nucleotide_id)
+        return
+
+    status = None
+    replaced_by = None
+    for docsum in root.findall("DocSum"):
+        for item in docsum.findall("Item"):
+            if item.get("Name") == "Status" and item.text:
+                status = item.text.strip().lower()
+            elif item.get("Name") == "ReplacedBy" and item.text:
+                replaced_by = item.text.strip() or None
+
+    if status is None:
+        logger.error(f"Status not found in the response for {nucleotide_id}.")
+        results.failed.append(nucleotide_id)
+    elif status == "suppressed":
+        logger.info(f"The sequence {nucleotide_id} is suppressed.")
+        results.suppressed.append(nucleotide_id)
+    elif replaced_by:
+        logger.info(f"The sequence {nucleotide_id} has been replaced by {replaced_by}.")
+        results.replaced[nucleotide_id] = replaced_by
+    else:
+        logger.info(f"The sequence {nucleotide_id} is not suppressed or replaced.")
+        results.unchanged.append(nucleotide_id)
 
 
 def parse_comma_separated(ctx, param, value):
@@ -246,28 +222,37 @@ def parse_comma_separated(ctx, param, value):
     type=str,
 )
 def main(insdc_accession, organism, username, password):
-    to_revoke = []
-    to_revoke_with_replacement = {}
     logger.info(f"Parsed list: {insdc_accession}")
+    results = GenbankStatusResults()
     for sequence_id in insdc_accession:
-        print(f"Checking sequence ID: {sequence_id}")
-        if is_sequence_suppressed(sequence_id):
-            logger.info(f"The sequence {sequence_id} is suppressed.")
-            to_revoke.append(sequence_id)
-            continue
-        replaced_by = is_sequence_replaced(sequence_id)
-        if replaced_by:
-            logger.info(f"The sequence {sequence_id} has been replaced by {replaced_by}.")
-            to_revoke_with_replacement[sequence_id] = replaced_by
-        else:
-            logger.warning(
-                f"The sequence {sequence_id} is not suppressed or could not be determined."
-            )
+        logger.info(f"Checking sequence ID: {sequence_id}")
+        check_sequence_status(sequence_id, results)
+
     logger.info("Starting revocation process...")
-    revoke(organism, username, password, accessions_list=to_revoke)
-    revoke_with_replacement(organism, username, password, accessions_dict=to_revoke_with_replacement)
-    logger.info(f"Revoked {len(to_revoke)} sequences and {len(to_revoke_with_replacement)} sequences with replacements.")
-    logger.info(f"Did not revoke {set(insdc_accession) - set(to_revoke) - set(to_revoke_with_replacement.keys())} sequences that were not suppressed or replaced (or could not be determined).")
+    version_comments = {
+        acc: "Record has been suppressed on Genbank" for acc in results.suppressed
+    }
+    version_comments.update(
+        {
+            acc: f"Record has been replaced by {replaced_by} on Genbank"
+            for acc, replaced_by in results.replaced.items()
+        }
+    )
+    revoke(organism, username, password, version_comments)
+    logger.info(
+        f"Revoked {len(results.suppressed)} suppressed sequences and "
+        f"{len(results.replaced)} replaced sequences."
+    )
+    if results.unchanged:
+        logger.info(
+            f"Did not revoke {len(results.unchanged)} sequences that were not "
+            f"suppressed or replaced: {results.unchanged}"
+        )
+    if results.failed:
+        logger.warning(
+            f"Could not determine status of {len(results.failed)} sequences: "
+            f"{results.failed}"
+        )
     approve(organism, username, password)
 
 
