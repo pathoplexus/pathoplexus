@@ -124,6 +124,7 @@ def revoke(
 
     url = f"{BACKEND_URL}/{organism}/revoke"
     revoked_accessions = set()
+    failed_accessions = []
     for entry in entries:
         accession = entry["accession"]
         if accession in revoked_accessions:
@@ -134,8 +135,18 @@ def revoke(
             "versionComment": version_comments[entry["insdcAccessionBase"]],
         }
         logger.info(f"Revoking {accession} with body: {body}")
-        make_request(url, username, password, json_body=body)
+        try:
+            make_request(url, username, password, json_body=body)
+        except requests.exceptions.RequestException as e:
+            # e.g. 422 if a revocation is pending approval or not yet in LAPIS
+            logger.error(f"Failed to revoke {accession}: {e}")
+            failed_accessions.append(accession)
+            continue
         revoked_accessions.add(accession)
+    if failed_accessions:
+        logger.warning(
+            f"Failed to revoke {len(failed_accessions)} accessions: {failed_accessions}"
+        )
 
 
 def approve(organism: str, username: str, password: str) -> dict[str, Any]:
