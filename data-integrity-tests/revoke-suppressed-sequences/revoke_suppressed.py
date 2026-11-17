@@ -175,6 +175,32 @@ def revoke(
     return revoked_insdc_accessions
 
 
+def find_ppx_accessions(
+    organism: str, username: str, password: str, insdc_accessions: list[str]
+) -> dict[str, str]:
+    """
+    Map each INSDC accession (base, without version) to the PPX accession of its latest version.
+    """
+    if not insdc_accessions:
+        return {}
+    response = make_request(
+        f"{LAPIS_URL}/{organism}/sample/details",
+        username,
+        password,
+        json_body={
+            "insdcAccessionBase": insdc_accessions,
+            "versionStatus": "LATEST_VERSION",
+            "downloadAsFile": False,
+            "dataFormat": "JSON",
+            "fields": ["accession", "insdcAccessionBase"],
+        },
+    )
+    return {
+        entry["insdcAccessionBase"]: entry["accession"]
+        for entry in response.json()["data"]
+    }
+
+
 def approve(
     organism: str, username: str, password: str, revocations: list[dict[str, Any]]
 ) -> dict[str, Any]:
@@ -279,13 +305,30 @@ def main(insdc_accession, organism, username, password):
         logger.info(f"Checking sequence ID: {sequence_id}")
         check_sequence_status(sequence_id, results)
 
+    replacement_ppx_accessions = find_ppx_accessions(
+        organism,
+        username,
+        password,
+        [replaced_by.split(".")[0] for replaced_by in results.replaced.values()],
+    )
+
+    def replaced_comment(replaced_by: str) -> str:
+        ppx_accession = replacement_ppx_accessions.get(replaced_by.split(".")[0])
+        if ppx_accession is None:
+            logger.warning(f"Replacement {replaced_by} is not on PPX (yet).")
+            return f"Record has been replaced by {replaced_by} on Genbank"
+        return (
+            f"Record has been replaced by {replaced_by} on Genbank "
+            f"(PPX accession {ppx_accession})"
+        )
+
     logger.info("Starting revocation process...")
     version_comments = {
         acc: "Record has been suppressed on Genbank" for acc in results.suppressed
     }
     version_comments.update(
         {
-            acc: f"Record has been replaced by {replaced_by} on Genbank"
+            acc: replaced_comment(replaced_by)
             for acc, replaced_by in results.replaced.items()
         }
     )
