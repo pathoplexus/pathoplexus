@@ -2,7 +2,7 @@
 ## It assumes the person running the script has curation rights
 import logging
 from dataclasses import dataclass, field
-from time import sleep
+from time import monotonic, sleep
 from typing import Any
 import requests
 import xml.etree.ElementTree as ET
@@ -30,10 +30,16 @@ KEYCLOAK_CLIENT_ID = "backend-client"
 INSDC_INGEST_GROUP_ID = 1
 
 
+_jwt_cache: dict[str, tuple[str, float]] = {}  # username -> (token, expiry)
+
+
 def get_jwt(username: str, password: str) -> str:
     """
-    Get a JWT token for the given username and password
+    Get a JWT token for the given username and password, reusing it until 10 min before expiry
     """
+    cached = _jwt_cache.get(username)
+    if cached and monotonic() < cached[1]:
+        return cached[0]
 
     data = {
         "username": username,
@@ -58,6 +64,10 @@ def get_jwt(username: str, password: str) -> str:
     response.raise_for_status()
 
     jwt_keycloak = response.json()
+    _jwt_cache[username] = (
+        jwt_keycloak["access_token"],
+        monotonic() + jwt_keycloak["expires_in"] - 600,
+    )
     return jwt_keycloak["access_token"]
 
 
