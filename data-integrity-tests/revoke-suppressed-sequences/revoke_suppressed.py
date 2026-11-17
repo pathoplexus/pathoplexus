@@ -28,6 +28,7 @@ KEYCLOAK_CLIENT_ID = "backend-client"
 # "Automated Ingest from INSDC/NCBI Virus by Loculus" on prod and staging. Records in other
 # groups are direct submissions; brokered ones also carry insdcAccessionBase and must not be revoked.
 INSDC_INGEST_GROUP_ID = 1
+MAX_LOCKED_RETRIES = 10  # 423 retries, 30 s apart
 
 
 _jwt_cache: dict[str, tuple[str, float]] = {}  # username -> (token, expiry)
@@ -81,17 +82,17 @@ def make_request(  # noqa: PLR0913, PLR0917
     """
     Generic request function to handle repetitive tasks like fetching JWT and setting headers.
     """
-    jwt = get_jwt(username, password)
-    headers = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
     timeout = 600
-    response = requests.post(
-        url, headers=headers, json=json_body, params=params, timeout=timeout
-    )
-
-    if response.status_code == 423:
+    for attempt in range(MAX_LOCKED_RETRIES + 1):
+        jwt = get_jwt(username, password)
+        headers = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
+        response = requests.post(
+            url, headers=headers, json=json_body, params=params, timeout=timeout
+        )
+        if response.status_code != 423 or attempt == MAX_LOCKED_RETRIES:
+            break
         logger.warning(f"Got 423 from {url}. Retrying after 30 seconds.")
         sleep(30)
-        return make_request(url, username, password, params, json_body)
 
     if not response.ok:
         error_message = (
