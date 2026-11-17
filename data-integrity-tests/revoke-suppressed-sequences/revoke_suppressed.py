@@ -136,27 +136,47 @@ def revoke(
         }
         logger.info(f"Revoking {accession} with body: {body}")
         try:
-            make_request(url, username, password, json_body=body)
+            revocations = make_request(url, username, password, json_body=body).json()
         except requests.exceptions.RequestException as e:
             # e.g. 422 if a revocation is pending approval or not yet in LAPIS
             logger.error(f"Failed to revoke {accession}: {e}")
             failed_accessions.append(accession)
             continue
+        if not revocations:
+            # /revoke only returns revocation versions that are ready for approval
+            logger.error(f"Revoked {accession} but got no revocation version back")
+            failed_accessions.append(accession)
+            continue
+        try:
+            approve(organism, username, password, revocations)
+        except requests.exceptions.RequestException as e:
+            logger.error(
+                f"Revoked {accession} but could not approve {revocations}, "
+                f"approve it in the review UI: {e}"
+            )
+            failed_accessions.append(accession)
+            continue
         revoked_accessions.add(accession)
     if failed_accessions:
         logger.warning(
-            f"Failed to revoke {len(failed_accessions)} accessions: {failed_accessions}"
+            f"Failed to revoke or approve {len(failed_accessions)} accessions: "
+            f"{failed_accessions}"
         )
 
 
-def approve(organism: str, username: str, password: str) -> dict[str, Any]:
+def approve(
+    organism: str, username: str, password: str, revocations: list[dict[str, Any]]
+) -> dict[str, Any]:
     """
-    Approve all sequences
+    Approve exactly the given revocation versions, as returned by /revoke
     """
     payload = {
-        "scope": "ALL",
+        "accessionVersionsFilter": [
+            {"accession": r["accession"], "version": r["version"]} for r in revocations
+        ],
         "submitterNamesFilter": [username],
         "groupIdsFilter": [INSDC_INGEST_GROUP_ID],
+        "scope": "WITHOUT_WARNINGS",  # revocations are never preprocessed: always NO_ISSUES
     }
 
     url = f"{BACKEND_URL}/{organism}/approve-processed-data"
@@ -273,7 +293,6 @@ def main(insdc_accession, organism, username, password):
             f"Could not determine status of {len(results.failed)} sequences: "
             f"{results.failed}"
         )
-    approve(organism, username, password)
 
 
 if __name__ == "__main__":
