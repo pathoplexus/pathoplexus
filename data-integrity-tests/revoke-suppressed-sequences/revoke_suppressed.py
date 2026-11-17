@@ -97,14 +97,15 @@ def make_request(  # noqa: PLR0913, PLR0917
 
 def revoke(
     organism: str, username: str, password: str, version_comments: dict[str, str]
-):
+) -> set[str]:
     """
     Get the loculus accessions for the given INSDC accessions and revoke them.
     `version_comments` maps each INSDC accession to the revocation version comment.
+    Returns the INSDC accessions whose PPX record was revoked and approved.
     """
     if not version_comments:
         logger.info("Nothing to revoke.")
-        return
+        return set()
 
     response = make_request(
         f"{LAPIS_URL}/{organism}/sample/details",
@@ -121,9 +122,17 @@ def revoke(
     )
     entries = response.json()["data"]
     logger.info(entries)
+    not_on_ppx = set(version_comments) - {e["insdcAccessionBase"] for e in entries}
+    if not_on_ppx:
+        logger.warning(
+            f"{len(not_on_ppx)} INSDC accessions have no current PPX record in the "
+            f"INSDC ingest group (already revoked, never ingested, or a direct "
+            f"submission): {sorted(not_on_ppx)}"
+        )
 
     url = f"{BACKEND_URL}/{organism}/revoke"
     revoked_accessions = set()
+    revoked_insdc_accessions = set()
     failed_accessions = []
     for entry in entries:
         accession = entry["accession"]
@@ -157,11 +166,13 @@ def revoke(
             failed_accessions.append(accession)
             continue
         revoked_accessions.add(accession)
+        revoked_insdc_accessions.add(entry["insdcAccessionBase"])
     if failed_accessions:
         logger.warning(
             f"Failed to revoke or approve {len(failed_accessions)} accessions: "
             f"{failed_accessions}"
         )
+    return revoked_insdc_accessions
 
 
 def approve(
@@ -278,9 +289,11 @@ def main(insdc_accession, organism, username, password):
             for acc, replaced_by in results.replaced.items()
         }
     )
-    revoke(organism, username, password, version_comments)
+    revoked = revoke(organism, username, password, version_comments)
     logger.info(
-        f"Revoked {len(results.suppressed)} suppressed sequences and "
+        f"Revoked {len(revoked.intersection(results.suppressed))} of "
+        f"{len(results.suppressed)} suppressed sequences and "
+        f"{len(revoked.intersection(results.replaced))} of "
         f"{len(results.replaced)} replaced sequences."
     )
     if results.unchanged:
