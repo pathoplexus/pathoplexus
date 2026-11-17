@@ -281,6 +281,20 @@ def check_sequence_status(nucleotide_id: str, results: GenbankStatusResults) -> 
         results.unchanged.append(nucleotide_id)
 
 
+def check_organism_supported(organism: str) -> None:
+    """
+    Exit early for organisms without a single insdcAccessionBase field (segmented organisms).
+    """
+    response = requests.get(f"{LAPIS_URL}/{organism}/sample/databaseConfig", timeout=60)
+    response.raise_for_status()
+    fields = {m["name"] for m in response.json()["schema"]["metadata"]}
+    if "insdcAccessionBase" not in fields:
+        raise click.ClickException(
+            f"{organism} has no insdcAccessionBase field (segmented organism?); "
+            "this script only supports single-segmented organisms."
+        )
+
+
 def parse_comma_separated(ctx, param, value):
     if value:
         return [item.strip() for item in value.split(",")]
@@ -306,6 +320,7 @@ def parse_comma_separated(ctx, param, value):
 )
 def main(insdc_accession, organism, username, password):
     logger.info(f"Parsed list: {insdc_accession}")
+    check_organism_supported(organism)
     results = GenbankStatusResults()
     for sequence_id in insdc_accession:
         logger.info(f"Checking sequence ID: {sequence_id}")
