@@ -6,7 +6,7 @@ Organism: mpox; 10 previously ingested INSDC accessions not found in re-ingested
 ```
 For example: https://loculus.slack.com/archives/C08CLH54PFD/p1748184967120199
 
-Running this script will check if the flagged sequences have indeed been suppressed in the INSDC and will revoke them on PPX with a note that they have been suppressed on the INSDC. We assume that you run this script as a curator. If any of the sequences have not been suppressed the script will error and manual review is required. 
+Running this script will check if the flagged sequences have indeed been suppressed or replaced on the INSDC and will revoke them on PPX with a note that they have been suppressed or replaced on the INSDC (if replaced the accession they were replaced by is added to the version comment). We assume that you run this script as a curator. The script will also log an error if it is unable to determine the status of a sequence, this might require manual investigation.
 
 1. Install micromamba if you haven't already.
 2. Create and activate the environment:

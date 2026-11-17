@@ -1,4 +1,4 @@
-## This script revokes sequences that have been suppressed on Genbank.
+## This script revokes sequences that have been suppressed or replaced on Genbank.
 ## It assumes the person running the script has curation rights
 import logging
 from dataclasses import dataclass, field
