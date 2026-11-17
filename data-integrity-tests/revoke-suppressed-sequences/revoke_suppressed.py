@@ -109,6 +109,7 @@ def revoke(
         password,
         json_body={
             "insdcAccessionBase": list(version_comments.keys()),
+            "versionStatus": "LATEST_VERSION",
             "downloadAsFile": False,
             "dataFormat": "JSON",
             "fields": ["accession", "insdcAccessionBase"],
