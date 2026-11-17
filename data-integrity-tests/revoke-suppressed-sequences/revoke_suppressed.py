@@ -25,6 +25,9 @@ BACKEND_URL = (
 )
 LAPIS_URL = "https://lapis.pathoplexus.org"  # https://lapis-staging.pathoplexus.org
 KEYCLOAK_CLIENT_ID = "backend-client"
+# "Automated Ingest from INSDC/NCBI Virus by Loculus" on prod and staging. Records in other
+# groups are direct submissions; brokered ones also carry insdcAccessionBase and must not be revoked.
+INSDC_INGEST_GROUP_ID = 1
 
 
 def get_jwt(username: str, password: str) -> str:
@@ -109,6 +112,7 @@ def revoke(
         password,
         json_body={
             "insdcAccessionBase": list(version_comments.keys()),
+            "groupId": INSDC_INGEST_GROUP_ID,
             "versionStatus": "LATEST_VERSION",
             "downloadAsFile": False,
             "dataFormat": "JSON",
@@ -138,7 +142,11 @@ def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     """
     Approve all sequences
     """
-    payload = {"scope": "ALL", "submitterNamesFilter": [username]}
+    payload = {
+        "scope": "ALL",
+        "submitterNamesFilter": [username],
+        "groupIdsFilter": [INSDC_INGEST_GROUP_ID],
+    }
 
     url = f"{BACKEND_URL}/{organism}/approve-processed-data"
 
