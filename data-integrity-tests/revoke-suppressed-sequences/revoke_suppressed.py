@@ -2,7 +2,7 @@
 ## It assumes the person running the script has curation rights
 import logging
 from dataclasses import dataclass, field
-from time import sleep
+from time import monotonic, sleep
 from typing import Any
 import requests
 import xml.etree.ElementTree as ET
@@ -25,12 +25,22 @@ BACKEND_URL = (
 )
 LAPIS_URL = "https://lapis.pathoplexus.org"  # https://lapis-staging.pathoplexus.org
 KEYCLOAK_CLIENT_ID = "backend-client"
+# "Automated Ingest from INSDC/NCBI Virus by Loculus" on prod and staging. Records in other
+# groups are direct submissions; brokered ones also carry insdcAccessionBase and must not be revoked.
+INSDC_INGEST_GROUP_ID = 1
+MAX_LOCKED_RETRIES = 10  # 423 retries, 30 s apart
+
+
+_jwt_cache: dict[str, tuple[str, float]] = {}  # username -> (token, expiry)
 
 
 def get_jwt(username: str, password: str) -> str:
     """
-    Get a JWT token for the given username and password
+    Get a JWT token for the given username and password, reusing it until 10 min before expiry
     """
+    cached = _jwt_cache.get(username)
+    if cached and monotonic() < cached[1]:
+        return cached[0]
 
     data = {
         "username": username,
@@ -55,6 +65,10 @@ def get_jwt(username: str, password: str) -> str:
     response.raise_for_status()
 
     jwt_keycloak = response.json()
+    _jwt_cache[username] = (
+        jwt_keycloak["access_token"],
+        monotonic() + jwt_keycloak["expires_in"] - 600,
+    )
     return jwt_keycloak["access_token"]
 
 
@@ -68,17 +82,17 @@ def make_request(  # noqa: PLR0913, PLR0917
     """
     Generic request function to handle repetitive tasks like fetching JWT and setting headers.
     """
-    jwt = get_jwt(username, password)
-    headers = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
     timeout = 600
-    response = requests.post(
-        url, headers=headers, json=json_body, params=params, timeout=timeout
-    )
-
-    if response.status_code == 423:
+    for attempt in range(MAX_LOCKED_RETRIES + 1):
+        jwt = get_jwt(username, password)
+        headers = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
+        response = requests.post(
+            url, headers=headers, json=json_body, params=params, timeout=timeout
+        )
+        if response.status_code != 423 or attempt == MAX_LOCKED_RETRIES:
+            break
         logger.warning(f"Got 423 from {url}. Retrying after 30 seconds.")
         sleep(30)
-        return make_request(url, username, password, params, json_body)
 
     if not response.ok:
         error_message = (
@@ -94,14 +108,15 @@ def make_request(  # noqa: PLR0913, PLR0917
 
 def revoke(
     organism: str, username: str, password: str, version_comments: dict[str, str]
-):
+) -> set[str]:
     """
     Get the loculus accessions for the given INSDC accessions and revoke them.
     `version_comments` maps each INSDC accession to the revocation version comment.
+    Returns the INSDC accessions whose PPX record was revoked and approved.
     """
     if not version_comments:
         logger.info("Nothing to revoke.")
-        return
+        return set()
 
     response = make_request(
         f"{LAPIS_URL}/{organism}/sample/details",
@@ -109,6 +124,8 @@ def revoke(
         password,
         json_body={
             "insdcAccessionBase": list(version_comments.keys()),
+            "groupId": INSDC_INGEST_GROUP_ID,
+            "versionStatus": "LATEST_VERSION",
             "downloadAsFile": False,
             "dataFormat": "JSON",
             "fields": ["accession", "insdcAccessionBase"],
@@ -116,9 +133,18 @@ def revoke(
     )
     entries = response.json()["data"]
     logger.info(entries)
+    not_on_ppx = set(version_comments) - {e["insdcAccessionBase"] for e in entries}
+    if not_on_ppx:
+        logger.warning(
+            f"{len(not_on_ppx)} INSDC accessions have no current PPX record in the "
+            f"INSDC ingest group (already revoked, never ingested, or a direct "
+            f"submission): {sorted(not_on_ppx)}"
+        )
 
     url = f"{BACKEND_URL}/{organism}/revoke"
     revoked_accessions = set()
+    revoked_insdc_accessions = set()
+    failed_accessions = []
     for entry in entries:
         accession = entry["accession"]
         if accession in revoked_accessions:
@@ -129,15 +155,77 @@ def revoke(
             "versionComment": version_comments[entry["insdcAccessionBase"]],
         }
         logger.info(f"Revoking {accession} with body: {body}")
-        make_request(url, username, password, json_body=body)
+        try:
+            revocations = make_request(url, username, password, json_body=body).json()
+        except requests.exceptions.RequestException as e:
+            # e.g. 422 if a revocation is pending approval or not yet in LAPIS
+            logger.error(f"Failed to revoke {accession}: {e}")
+            failed_accessions.append(accession)
+            continue
+        if not revocations:
+            # /revoke only returns revocation versions that are ready for approval
+            logger.error(f"Revoked {accession} but got no revocation version back")
+            failed_accessions.append(accession)
+            continue
+        try:
+            approve(organism, username, password, revocations)
+        except requests.exceptions.RequestException as e:
+            logger.error(
+                f"Revoked {accession} but could not approve {revocations}, "
+                f"approve it in the review UI: {e}"
+            )
+            failed_accessions.append(accession)
+            continue
         revoked_accessions.add(accession)
+        revoked_insdc_accessions.add(entry["insdcAccessionBase"])
+    if failed_accessions:
+        logger.warning(
+            f"Failed to revoke or approve {len(failed_accessions)} accessions: "
+            f"{failed_accessions}"
+        )
+    return revoked_insdc_accessions
 
 
-def approve(organism: str, username: str, password: str) -> dict[str, Any]:
+def find_ppx_accessions(
+    organism: str, username: str, password: str, insdc_accessions: list[str]
+) -> dict[str, str]:
     """
-    Approve all sequences
+    Map each INSDC accession (base, without version) to the PPX accession of its latest version.
     """
-    payload = {"scope": "ALL", "submitterNamesFilter": [username]}
+    if not insdc_accessions:
+        return {}
+    response = make_request(
+        f"{LAPIS_URL}/{organism}/sample/details",
+        username,
+        password,
+        json_body={
+            "insdcAccessionBase": insdc_accessions,
+            "versionStatus": "LATEST_VERSION",
+            "downloadAsFile": False,
+            "dataFormat": "JSON",
+            "fields": ["accession", "insdcAccessionBase"],
+        },
+    )
+    return {
+        entry["insdcAccessionBase"]: entry["accession"]
+        for entry in response.json()["data"]
+    }
+
+
+def approve(
+    organism: str, username: str, password: str, revocations: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """
+    Approve exactly the given revocation versions, as returned by /revoke
+    """
+    payload = {
+        "accessionVersionsFilter": [
+            {"accession": r["accession"], "version": r["version"]} for r in revocations
+        ],
+        "submitterNamesFilter": [username],
+        "groupIdsFilter": [INSDC_INGEST_GROUP_ID],
+        "scope": "WITHOUT_WARNINGS",  # revocations are never preprocessed: always NO_ISSUES
+    }
 
     url = f"{BACKEND_URL}/{organism}/approve-processed-data"
 
@@ -193,9 +281,29 @@ def check_sequence_status(nucleotide_id: str, results: GenbankStatusResults) -> 
     elif status == "replaced" and replaced_by and replaced_by.split(".")[0] != nucleotide_id.split(".")[0]:
         logger.info(f"The sequence {nucleotide_id} has been replaced by {replaced_by}.")
         results.replaced[nucleotide_id] = replaced_by
-    else:
+    elif status == "live":
         logger.info(f"The sequence {nucleotide_id} is not suppressed or replaced.")
         results.unchanged.append(nucleotide_id)
+    else:
+        logger.warning(
+            f"The sequence {nucleotide_id} has unexpected status '{status}' "
+            f"(replaced by: {replaced_by}), not revoking. Check manually."
+        )
+        results.unchanged.append(nucleotide_id)
+
+
+def check_organism_supported(organism: str) -> None:
+    """
+    Exit early for organisms without a single insdcAccessionBase field (segmented organisms).
+    """
+    response = requests.get(f"{LAPIS_URL}/{organism}/sample/databaseConfig", timeout=60)
+    response.raise_for_status()
+    fields = {m["name"] for m in response.json()["schema"]["metadata"]}
+    if "insdcAccessionBase" not in fields:
+        raise click.ClickException(
+            f"{organism} has no insdcAccessionBase field (segmented organism?); "
+            "this script only supports single-segmented organisms."
+        )
 
 
 def parse_comma_separated(ctx, param, value):
@@ -223,10 +331,28 @@ def parse_comma_separated(ctx, param, value):
 )
 def main(insdc_accession, organism, username, password):
     logger.info(f"Parsed list: {insdc_accession}")
+    check_organism_supported(organism)
     results = GenbankStatusResults()
     for sequence_id in insdc_accession:
         logger.info(f"Checking sequence ID: {sequence_id}")
         check_sequence_status(sequence_id, results)
+
+    replacement_ppx_accessions = find_ppx_accessions(
+        organism,
+        username,
+        password,
+        [replaced_by.split(".")[0] for replaced_by in results.replaced.values()],
+    )
+
+    def replaced_comment(replaced_by: str) -> str:
+        ppx_accession = replacement_ppx_accessions.get(replaced_by.split(".")[0])
+        if ppx_accession is None:
+            logger.warning(f"Replacement {replaced_by} is not on PPX (yet).")
+            return f"Record has been replaced by {replaced_by} on Genbank"
+        return (
+            f"Record has been replaced by {replaced_by} on Genbank "
+            f"(PPX accession {ppx_accession})"
+        )
 
     logger.info("Starting revocation process...")
     version_comments = {
@@ -234,13 +360,15 @@ def main(insdc_accession, organism, username, password):
     }
     version_comments.update(
         {
-            acc: f"Record has been replaced by {replaced_by} on Genbank"
+            acc: replaced_comment(replaced_by)
             for acc, replaced_by in results.replaced.items()
         }
     )
-    revoke(organism, username, password, version_comments)
+    revoked = revoke(organism, username, password, version_comments)
     logger.info(
-        f"Revoked {len(results.suppressed)} suppressed sequences and "
+        f"Revoked {len(revoked.intersection(results.suppressed))} of "
+        f"{len(results.suppressed)} suppressed sequences and "
+        f"{len(revoked.intersection(results.replaced))} of "
         f"{len(results.replaced)} replaced sequences."
     )
     if results.unchanged:
@@ -253,7 +381,6 @@ def main(insdc_accession, organism, username, password):
             f"Could not determine status of {len(results.failed)} sequences: "
             f"{results.failed}"
         )
-    approve(organism, username, password)
 
 
 if __name__ == "__main__":
