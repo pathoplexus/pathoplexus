@@ -190,7 +190,7 @@ def check_sequence_status(nucleotide_id: str, results: GenbankStatusResults) -> 
     elif status == "suppressed":
         logger.info(f"The sequence {nucleotide_id} is suppressed.")
         results.suppressed.append(nucleotide_id)
-    elif replaced_by:
+    elif status == "replaced" and replaced_by and replaced_by.split(".")[0] != nucleotide_id.split(".")[0]:
         logger.info(f"The sequence {nucleotide_id} has been replaced by {replaced_by}.")
         results.replaced[nucleotide_id] = replaced_by
     else:
