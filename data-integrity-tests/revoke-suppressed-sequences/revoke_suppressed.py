@@ -11,7 +11,6 @@ from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    encoding="utf-8",
     level=logging.INFO,
     format="%(asctime)s %(levelname)8s %(filename)s - %(message)s ",
     datefmt="%H:%M:%S",
@@ -126,6 +125,40 @@ def revoke(organism: str, username: str, password: str, accessions_list: list[st
         make_request(url, username, password, json_body=body)
         revoked_accessions.append(accession)
 
+def revoke_with_replacement(organism: str, username: str, password: str, accessions_dict: dict[str, str]):
+    """
+    Get the loculus accession for the given INSDC accessions and revoke them.
+    """
+    for accession, replacement in accessions_dict.items():
+        response = make_request(
+            f"{LAPIS_URL}/{organism}/sample/details",
+            username,
+            password,
+            json_body={
+                "insdcAccessionBase": accession,
+                "downloadAsFile": False,
+                "dataFormat": "JSON",
+                "fields": ["accession"],
+            },
+        )
+        entries = response.json()["data"]
+        logger.info(entries)
+
+        url = f"{BACKEND_URL}/{organism}/revoke"
+        revoked_accessions = []
+        for entry in entries:
+            accession = entry["accession"]
+            if accession in revoked_accessions:
+                logger.info(f"Already revoked {accession}, skipping.")
+                continue
+            logger.debug(f"revoking: {accession}")
+            body = {
+                "accessions": [accession],
+                "versionComment": f"Record has been replaced by {replacement} on Genbank",
+            }
+            logger.info(f"Revoking {accession} with body: {body}")
+            make_request(url, username, password, json_body=body)
+            revoked_accessions.append(accession)
 
 def approve(organism: str, username: str, password: str) -> dict[str, Any]:
     """
@@ -164,6 +197,30 @@ def is_sequence_suppressed(nucleotide_id):
         print(f"Failed to parse XML: {e}")
         return None
 
+def is_sequence_replaced(nucleotide_id):
+    base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+    params = {"db": "nucleotide", "id": nucleotide_id, "retmode": "xml"}
+
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
+
+    try:
+        root = ET.fromstring(response.text)
+        for docsum in root.findall("DocSum"):
+            for item in docsum.findall("Item"):
+                if item.get("Name") == "ReplacedBy":
+                    replaced_by = item.text.strip()
+                    return replaced_by if replaced_by else None
+        print("Status not found in the response.")
+        return None
+    except ET.ParseError as e:
+        print(f"Failed to parse XML: {e}")
+        return None
+
 
 def parse_comma_separated(ctx, param, value):
     if value:
@@ -190,17 +247,27 @@ def parse_comma_separated(ctx, param, value):
 )
 def main(insdc_accession, organism, username, password):
     to_revoke = []
+    to_revoke_with_replacement = {}
     logger.info(f"Parsed list: {insdc_accession}")
     for sequence_id in insdc_accession:
         print(f"Checking sequence ID: {sequence_id}")
         if is_sequence_suppressed(sequence_id):
             logger.info(f"The sequence {sequence_id} is suppressed.")
             to_revoke.append(sequence_id)
+            continue
+        replaced_by = is_sequence_replaced(sequence_id)
+        if replaced_by:
+            logger.info(f"The sequence {sequence_id} has been replaced by {replaced_by}.")
+            to_revoke_with_replacement[sequence_id] = replaced_by
         else:
             logger.warning(
                 f"The sequence {sequence_id} is not suppressed or could not be determined."
             )
+    logger.info("Starting revocation process...")
     revoke(organism, username, password, accessions_list=to_revoke)
+    revoke_with_replacement(organism, username, password, accessions_dict=to_revoke_with_replacement)
+    logger.info(f"Revoked {len(to_revoke)} sequences and {len(to_revoke_with_replacement)} sequences with replacements.")
+    logger.info(f"Did not revoke {set(insdc_accession) - set(to_revoke) - set(to_revoke_with_replacement.keys())} sequences that were not suppressed or replaced (or could not be determined).")
     approve(organism, username, password)
 
 
