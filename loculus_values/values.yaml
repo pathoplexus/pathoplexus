@@ -91,25 +91,18 @@ pipelineVersionUpgradeCheckIntervalSeconds: 300
 zstdCompressionLevel: 15
 lineageSystemDefinitions:
   mpoxOutbreakLineage:
-    28: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
     29: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/mpox/2026-07-07--14-07-11Z/outbreak-lineages.yaml
   rsv-a:
-    23: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
     24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-a/2025-08-25--09-00-35Z/lineages.yaml
   rsv-b:
-    24: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
     25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/rsv-b/2025-08-25--09-00-35Z/lineages.yaml
   hmpv:
-    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/hmpv/2025-09-09--12-13-13Z/lineages.yaml
   cchfS:
-    25: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
     26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/cchf/S/2025-09-24--07-29-03Z/lineages.yaml
   marburg:
-    26: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
     27: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/marburg/2025-09-09--12-13-13Z/lineages.yaml
   dengue:
-    33: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
     34: https://pathoplexus.github.io/silo-lineage-hierarchy-definitions/definitions/dengue/all/2025-09-09--12-13-13Z/lineages.yaml
 defaultOrganismConfig: &defaultOrganismConfig
   schema: &schema
@@ -1946,7 +1939,6 @@ organisms:
       - <<: *preprocessing
         replicas: 1
         version:
-          - 31
           - 32
         configFile:
           <<: [*preprocessingConfigFile, *ebolaZaireTaxon]
@@ -2011,7 +2003,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 28
           - 29
         configFile:
           <<: [*preprocessingConfigFile, *ebolaSudanTaxon]
@@ -2116,19 +2107,15 @@ organisms:
             scientific_name: "Bundibugyo virus"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &ebolaBdbvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 7
           - 8
-        configFile: &ebolaBdbvPreprocessingConfigFile
+        configFile:
           <<: [*preprocessingConfigFile, *ebolaBdbvTaxon]
           segments:
-            - &ebolaBdbvPreprocessingSegment
-              name: main
+            - name: main
               references:
-                - &ebolaBdbvPreprocessingReference
-                  name: "singleReference"
+                - name: "singleReference"
                   nextclade_dataset_name: nextstrain/orthoebolavirus/bdbv
                   nextclade_dataset_tag: "2026-05-18--20-09-34Z"
                   genes: [NP, VP35, VP40, GP, GP_003, VP30, VP24, L]
@@ -2286,10 +2273,9 @@ organisms:
         defaultOrder: descending
         referenceIdentifierField: serotype
     preprocessing:
-      - &denguePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 33
+          - 34
         replicas: 1
         configFile:
           <<: *preprocessingConfigFile
@@ -2318,10 +2304,6 @@ organisms:
                   nextclade_dataset_name: community/v-gen-lab/dengue/denv4
                   nextclade_dataset_tag: 2025-09-09--12-13-13Z
                   genes: [C, prM, E, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      - <<: *denguePreprocessing
-        replicas: 3
-        version:
-          - 34
     ingest:
       <<: *ingest
       configFile:
@@ -2516,10 +2498,8 @@ organisms:
             scientific_name: "West Nile virus"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &westNilePreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 29
           - 30
         configFile:
           <<: [*preprocessingConfigFile, *westNileTaxon]
@@ -2530,10 +2510,6 @@ organisms:
                 nextclade_dataset_name: nextstrain/wnv/all-lineages
                 nextclade_dataset_tag: "2026-03-04--12-40-26Z"
                 genes: [capsid, prM, env, NS1, NS2A, NS2B, NS3, NS4A, 2K, NS4B, NS5]
-      # - <<: *westNilePreprocessing
-      #   replicas: 2
-      #   version:
-      #     - 30
     ingest:
       <<: *ingest
       configFile:
@@ -2626,7 +2602,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 8
           - 9
         configFile:
           <<: [*preprocessingConfigFile, *andvTaxon]
@@ -2782,7 +2757,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 25
           - 26
         configFile:
           <<: [*preprocessingConfigFile, *cchfTaxon]
@@ -2949,22 +2923,20 @@ organisms:
             scientific_name: "Monkeypox virus"
             molecule_type: "genomic DNA"
     preprocessing:
-      - &mpoxPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         replicas: 1
         version:
-          - 28
-        configFile: &mpoxPreprocessingConfigFile
+          - 29
+        configFile:
           <<: [*preprocessingConfigFile, *mpoxTaxon]
           batch_size: 5
           segments:
-            - &mpoxDataset
-              name: main
+            - name: main
               references:
               - name: singleReference
                 nextclade_dataset_name: nextstrain/mpox/all-clades
                 nextclade_dataset_tag: 2026-07-07--14-07-11Z
-                genes: &mpoxGenes
+                genes:
                   - OPG001
                   - OPG002
                   - OPG003
@@ -3140,10 +3112,6 @@ organisms:
                   - OPG208
                   - OPG209
                   - OPG210
-      - <<: *mpoxPreprocessing
-        replicas: 3
-        version:
-          - 29
     ingest:
       <<: *ingest
       configFile:
@@ -3574,10 +3542,9 @@ organisms:
             scientific_name: "Human respiratory syncytial virus A"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &rsvaPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 23
+          - 24
         replicas: 1
         configFile:
           <<: [*preprocessingConfigFile, *rsvATaxon]
@@ -3592,10 +3559,6 @@ organisms:
                   - rsv-a
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *rsvaPreprocessing
-        replicas: 3
-        version:
-          - 24
     ingest:
       <<: *ingest
       configFile:
@@ -3703,10 +3666,9 @@ organisms:
             scientific_name: "Human respiratory syncytial virus B"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &rsvbPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 24
+          - 25
         replicas: 1
         configFile:
           <<: [*preprocessingConfigFile, *rsvBTaxon]
@@ -3721,10 +3683,6 @@ organisms:
                 genes: [ "F", "G", "L", "M", "M2-1", "M2-2", "N", "NS1", "NS2", "P", "SH" ]
           require_nextclade_sort_match: true
           minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/rsv/minimizer.json"
-      - <<: *rsvbPreprocessing
-        replicas: 3
-        version:
-          - 25
     ingest:
       <<: *ingest
       configFile:
@@ -3821,11 +3779,10 @@ organisms:
             scientific_name: "Human metapneumovirus"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &hmpvPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         replicas: 1
         version:
-          - 25
+          - 26
         configFile:
           <<: [*preprocessingConfigFile, *hmpvTaxon]
           segments:
@@ -3835,10 +3792,6 @@ organisms:
                 nextclade_dataset_name: "nextstrain/hmpv/all-clades/NC_039199"
                 nextclade_dataset_tag: "2025-04-25--12-24-24Z"
                 genes: [ "F", "G", "L", "M", "N", "M2-1", "M2-2", "P", "SH" ]
-      - <<: *hmpvPreprocessing
-        replicas: 2
-        version:
-          - 26
     ingest:
       <<: *ingest
       configFile:
@@ -3949,10 +3902,9 @@ organisms:
             scientific_name: "Measles morbillivirus"
             molecule_type: "genomic RNA"
     preprocessing:
-      - &measlesPreprocessing
-        <<: *preprocessing
+      - <<: *preprocessing
         version:
-          - 28
+          - 29
         replicas: 1
         configFile:
           <<: [*preprocessingConfigFile, *measlesTaxon]
@@ -3963,10 +3915,6 @@ organisms:
                 nextclade_dataset_name: "nextstrain/measles/genome/WHO-2012"
                 nextclade_dataset_tag: "2025-08-11--19-06-01Z"
                 genes: [ "C", "F", "H", "L", "M", "N", "P", "V" ]
-      - <<: *measlesPreprocessing
-        replicas: 3
-        version:
-          - 29
     ingest:
       <<: *ingest
       configFile:
@@ -4053,7 +4001,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 26
           - 27
         replicas: 1
         configFile:
@@ -4178,7 +4125,6 @@ organisms:
     preprocessing:
       - <<: *preprocessing
         version:
-          - 31
           - 32
         configFile:
           <<: [*preprocessingConfigFile, *yellowFeverTaxon]
@@ -4292,7 +4238,6 @@ organisms:
     preprocessing:
     - <<: *preprocessing
       version:
-        - 1
         - 2
       configFile:
         <<: [*preprocessingConfigFile, *zikaTaxon]
