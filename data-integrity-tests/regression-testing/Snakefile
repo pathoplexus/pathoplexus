@@ -82,7 +82,7 @@ rule sequence_download:
         url=url,
     shell:
         """
-        echo "{key_field}\tsequence" > {output}
+        echo "{key_field}\tsequence_md5" > {output}
         curl -fsS "{params.url}" | zstdcat | seqkit fx2tab --name --seq-hash --case-sensitive >> {output}
         """
 
@@ -117,7 +117,7 @@ rule join_tsv:
             zstdcat {params.tmp_pre} \
             | tsv-join -H \
                 --write-all "''" \
-                --append-fields "sequence" \
+                --append-fields "sequence_md5" \
                 --filter-file $f \
                 --key-fields {key_field} \
                 --prefix $(echo $segment)_ \
@@ -177,7 +177,7 @@ rule invariant_subsets:
         sequences=temp("results/{organism}_{instance}.invariant.seq.tsv"),
         metadata=temp("results/{organism}_{instance}.invariant.meta.tsv"),
     params:
-        segment_names=lambda w: ",".join(map(lambda x: x + "_sequence", segments(w))),
+        segment_names=lambda w: ",".join(map(lambda x: x + "_sequence_md5", segments(w))),
     shell:
         """
         tsv-select -H \
