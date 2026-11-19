@@ -6,7 +6,7 @@ Organism: mpox; 10 previously ingested INSDC accessions not found in re-ingested
 ```
 For example: https://loculus.slack.com/archives/C08CLH54PFD/p1748184967120199
 
-Running this script will check if the flagged sequences have indeed been suppressed or replaced on the INSDC and will revoke them on PPX with a note that they have been suppressed or replaced on the INSDC (if replaced the accession they were replaced by is added to the version comment). We assume that you run this script as a curator. The script will also log an error if it is unable to determine the status of a sequence, this might require manual investigation.
+Running this script will check if the flagged sequences have indeed been suppressed or replaced on the INSDC and will revoke them on PPX with a note that they have been suppressed or replaced on the INSDC (if replaced, the accession they were replaced by is added to the version comment). We assume that you run this script as a curator. The script will also log an error if it is unable to determine the status of a sequence, this might require manual investigation.
 
 Warning: this script currently only works for single-segmented organisms!
 

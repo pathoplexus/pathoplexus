@@ -238,11 +238,11 @@ def main(insdc_accession, organism, username, password):
             for acc, replaced_by in results.replaced.items()
         }
     )
-    revoke(organism, username, password, version_comments)
     logger.info(
-        f"Revoked {len(results.suppressed)} suppressed sequences and "
-        f"{len(results.replaced)} replaced sequences."
-    )
+            f"Revoking {len(results.suppressed)} suppressed sequences and "
+            f"{len(results.replaced)} replaced sequences."
+        )
+    revoke(organism, username, password, version_comments)
     if results.unchanged:
         logger.info(
             f"Did not revoke {len(results.unchanged)} sequences that were not "
