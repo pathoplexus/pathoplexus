@@ -4,9 +4,11 @@ title: "Data Submission and Processing"
 order: 3
 ---
 
-These Terms were updated on 11 May 2026 and are the current and valid version.
+These Terms were updated on 6 November 2026 and are the current and valid version.
 
 These Terms constitute the legal agreement between you (a “User”) and Pathoplexus (“we”, “us”, “our”) (of Pathoplexus, Basel-Stadt, Switzerland), governing what data can be submitted to Pathoplexus and how it is processed and can be changed.
+
+Technical documentation and how-to guides linked from this document describe how Pathoplexus currently implements these Terms. They do not form part of these Terms and may be updated without Executive Board approval. In case of any conflict, these Terms prevail.
 
 This document is governed by the [Pathoplexus Values](/about/governance/values) and should be interpreted in light of the Pathoplexus Values. The Executive Board can modify and make changes to this document, in line with the purpose and commitments of the Pathoplexus Values, via 2/3 majority vote of the entire Board. If the Board has 5 members, this is interpreted as 4/5 votes in favor. 
 
@@ -23,7 +25,7 @@ This document is governed by the [Pathoplexus Values](/about/governance/values) 
     - [8.2 Deletion](#82-deletion)
 
 # 1. Definitions
-As used in Database Terms of Service, the following terms shall have the following meanings:
+As used in Data Submission and Processing, the following terms shall have the following meanings:
 
 <div class="indent"><div class="indent">
 1.1 The term “User” shall mean everyone who accesses the web service (https://pathoplexus.org) in any form
@@ -38,37 +40,28 @@ As used in Database Terms of Service, the following terms shall have the followi
 
 # 2. Data Submission and Access
 
-Submitters can submit sequences to Pathoplexus for supported pathogens with associated, non-sensitive metadata, either with time-limited restrictions on its use ("Restricted-Use Data") or openly ("Open Data"). 
-Open Data (whether open from submission or becoming open after the period of restriction ends) is also submitted by Pathoplexus to INSDC (via ENA), where it becomes additionally available on all INSDC platforms. 
-Open Data also includes data pulled in from INSDC for supported pathogens to make it available to all Users alongside Restricted-Use Data.
+Submitters can submit sequences to Pathoplexus for supported pathogens with associated, non-sensitive metadata, either with time-limited restrictions on its use ("Restricted-Use Data") or openly ("Open Data"). A submission can also include raw reads alongside the consensus sequence and metadata. Consensus sequences, metadata and raw reads are treated equally under these Terms: the same Restricted-Use / Open status, the maximum restriction period, and onward submission to INSDC described in this section apply to all of them.
 
-Restricted-Use Data is available only within Pathoplexus, and can only be used in accordance with the [Data Use Terms](/about/terms-of-use/data-use-terms). 
+Open Data (whether open from submission or becoming open after the period of restriction ends) is submitted by Pathoplexus to one member database of INSDC, where it becomes additionally available on all INSDC platforms. 
+Open Data also includes data pulled in from INSDC for supported pathogens to make it available to all Users alongside Restricted-Use Data.
+See [INSDC Submission](/docs/concepts/insdc-submission) for more detail on how this currently works.
+
+Restricted-Use Data is available only within Pathoplexus, or via redistribution alongside the Data Use Terms, and can only be used in accordance with the [Data Use Terms](/about/terms-of-use/data-use-terms).
 It is **critical** that all Users familiarize themselves with the Data Use Terms, and in particular requirements for authorship and acknowledgement. 
 Pathoplexus expects ethical use of all data (see [Data Use Terms](/about/terms-of-use/data-use-terms)).
 
 Users can specify the time period for which data is "Restricted-Use Data", up to a maximum of one year, and also manually release data from Restricted Use before the time period expires. When the Restricted Use period has ended, Restricted-Use Data becomes Open Data within Pathoplexus, and is submitted on user's behalf to the INSDC.
 
-All data within Pathoplexus must be used ethically, and in accordance with scientific and community etiquette (see [Data Use Terms](/about/terms-of-use/data-use-terms)), and accession numbers should always be provided (see [Data Use Terms](/about/terms-of-use/data-use-terms)).
+All data within Pathoplexus must be used in accordance with scientific and community etiquette (see [Data Use Terms](/about/terms-of-use/data-use-terms)), and data provenance should be reported transparently through accession numbers or SeqSets (see [Data Use Terms](/about/terms-of-use/data-use-terms)). Data use might be subject to benefit sharing obligations and it is the Users' responsibility to comply.
+
+Submitters are responsible for ensuring that submitted data (including sequences, metadata, and raw reads) contains no human genetic data or information that could identify individuals. Pathoplexus performs additional screening and may reject data that appears to contain human genetic data, but this screening does not replace the submitter's responsibility. See the [raw reads upload guide](/docs/how-to/upload-raw-reads#dehosting-host-read-removal) for guidance on removing host reads before submission. Submitters are also responsible for ensuring that their data is not subject to any restrictions that prohibit its sharing.
 
 # 3. Data Processing
 Pathoplexus processes submitted data to validate, harmonize, and standardize the data and maximize utility. After initial submission and processing, data is available as version 1, and subsequent changes are reflected in incremented versions. By default, the latest version of all data is displayed unless another version is explicitly requested
 
-To allow Users maximum flexibility in accessing data that is most useful for them, only data without the minimum required metadata values and sequences that fail to be identified (via seed-matching) as the specified pathogen are rejected.
+To give Users maximum flexibility in accessing the data most useful to them, we aim to include as much submitted data as possible. Data is rejected only if it lacks the minimum required metadata, if the sequence cannot be identified as the specified pathogen, or if it poses a risk to identifiability or privacy (for example, raw reads containing an excessive number of likely-human reads).
 
-Data processing includes measures such as:
-
-Sequences:
-- Checks that the sequence matches the virus specified by the user
-- Alignment with the reference genome
-- Translation of genes/coding regions
-- Quantification of mutations in number and type (both nucleotide and AA)
-- Labeling of deletions and insertions
-- Quality control scoring
-- Assignment of clades/lineages (where applicable)
-
-Metadata:
-- All dates are converted to standard ISO format
-- Location information is standardized 
+Processing includes validating, aligning and annotating sequences; standardizing metadata; and validating raw read files. The specific checks, tools and criteria we currently use are described in [Preprocessing](/docs/concepts/preprocessing).
 
 # 4. Data Fields
 
@@ -100,7 +93,7 @@ In the case where the error cannot be corrected (it’s clear there’s an error
 
 <div class="indent">
 
-Submitters, and the Submitting Group, can correct a submission anytime by submitting a Revision. Revisions by submitters can edit either the metadata or the sequence itself, and allow incorrect data to be fixed, data to be improved (perhaps a better-quality sequence or changing a date from year-only to year-month-day), or data to be added (perhaps symptom information has become available). Revisions of any kind increment the version of a sequence, and the previous states of the data are preserved in previous revisions, which can be accessed at any time.
+Submitters, and the Submitting Group, can correct a submission anytime by submitting a Revision. Revisions by submitters can edit any combination of the metadata, raw reads, or the consensus sequence, and allow incorrect data to be fixed, data to be improved (perhaps a better-quality sequence or changing a date from year-only to year-month-day), or data to be added (perhaps symptom information has become available). Revisions of any kind increment the version of a sequence, and the previous states of the data are preserved in previous revisions, which can be accessed at any time.
 
 You can find out how to submit a Revision [here](/docs/how-to/revise-submissions).
 
