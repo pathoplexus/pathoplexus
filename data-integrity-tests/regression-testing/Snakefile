@@ -32,6 +32,7 @@ rule all:
                 "measles",
                 "yellow-fever",
                 "zika",
+                "chikungunya",
             ],
             difftype=["seq", "meta"],
         ),
@@ -76,35 +77,24 @@ def url(w):
 
 rule sequence_download:
     output:
-        "results/{organism}_{segment}_{instance}.fasta",
+        temp("results/{organism}_{segment}_{instance}.seq.tsv"),
     params:
         url=url,
     shell:
         """
-        curl "{params.url}" | zstdcat > {output}
+        echo "{key_field}\tsequence_md5" > {output}
+        curl -fsS "{params.url}" | zstdcat | seqkit fx2tab --name --seq-hash --case-sensitive >> {output}
         """
 
 
 rule metadata_download:
     output:
-        "results/{organism}_{instance}.tsv",
+        temp("results/{organism}_{instance}.tsv"),
     params:
         url=url,
     shell:
         """
-        curl "{params.url}" | zstdcat > {output}
-        """
-
-
-rule sequence_tsv:
-    input:
-        "results/{organism}_{segment}_{instance}.fasta",
-    output:
-        "results/{organism}_{segment}_{instance}.seq.tsv",
-    shell:
-        """
-        echo "{key_field}\tsequence" > {output}
-        seqkit fx2tab {input} >> {output}
+        curl -fsS "{params.url}" | zstdcat > {output}
         """
 
 
@@ -115,7 +105,7 @@ rule join_tsv:
         ),
         details="results/{organism}_{instance}.tsv",
     output:
-        "results/{organism}_{instance}.joined.tsv",
+        temp("results/{organism}_{instance}.joined.tsv"),
     params:
         tmp_pre="results/{organism}_{instance}.joined.tmp.zst",
         tmp_post="results/{organism}_{instance}.joined.tmp2.zst",
@@ -127,7 +117,7 @@ rule join_tsv:
             zstdcat {params.tmp_pre} \
             | tsv-join -H \
                 --write-all "''" \
-                --append-fields "sequence" \
+                --append-fields "sequence_md5" \
                 --filter-file $f \
                 --key-fields {key_field} \
                 --prefix $(echo $segment)_ \
@@ -155,13 +145,18 @@ def exclude_fields_option():
         return ""
 
 
+# File fields whose URLs contain the instance hostname, which is stripped before comparing.
+file_url_fields = ["annotations", "rawReads"]
+
+
 rule invariant_subset:
     input:
         "results/{organism}_{instance}.joined.tsv",
     output:
-        "results/{organism}_{instance}.invariant.tsv",
+        temp("results/{organism}_{instance}.invariant.tsv"),
     params:
         exclude_fields=exclude_fields_option(),
+        file_url_fields=" ".join(file_url_fields),
     shell:
         """
         tsv-select -H \
@@ -169,6 +164,7 @@ rule invariant_subset:
             -f "{key_field}" \
             --rest last \
             {input} \
+        | ./bin/strip-url-hosts.py {params.file_url_fields} \
         | keep-header - -- ./bin/tsv-sort -k1,1 \
         > {output}
         """
@@ -178,10 +174,10 @@ rule invariant_subsets:
     input:
         "results/{organism}_{instance}.invariant.tsv",
     output:
-        sequences="results/{organism}_{instance}.invariant.seq.tsv",
-        metadata="results/{organism}_{instance}.invariant.meta.tsv",
+        sequences=temp("results/{organism}_{instance}.invariant.seq.tsv"),
+        metadata=temp("results/{organism}_{instance}.invariant.meta.tsv"),
     params:
-        segment_names=lambda w: ",".join(map(lambda x: x + "_sequence", segments(w))),
+        segment_names=lambda w: ",".join(map(lambda x: x + "_sequence_md5", segments(w))),
     shell:
         """
         tsv-select -H \
