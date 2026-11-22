@@ -4513,7 +4513,7 @@ organisms:
       singleReference:
         configFile:
           <<: &oropoucheTaxon
-            taxon_id: 118655  # please verify this matches scientific_name
+            taxon_id: 3052429
             scientific_name: "Orthobunyavirus oropoucheense"
             molecule_type: "genomic RNA"
     preprocessing:
