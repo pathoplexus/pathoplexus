@@ -4394,6 +4394,127 @@ organisms:
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/6K.fasta]]"
             - name: E1
               sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/chikV/E1.fasta]]"
+  hcv:
+    <<: *defaultOrganismConfig
+    schema:
+      <<: *schema
+      organismName: "Hepatitis C Virus"
+      image: "/images/organisms/hcv.jpg" # TODO: placeholder, add image
+      linkOuts:
+        - name: Nextclade
+          maxNumberOfRecommendedEntries: 3000 # HCV is ~9.6kb
+          url: "https://clades.nextstrain.org/?input-fasta={{[unalignedNucleotideSequences+rich|fasta]}}&dataset-name=nextstrain/hcv/NC_004102"
+        - name: Sealion
+          maxNumberOfRecommendedEntries: 3000
+          url: "https://artic-network.github.io/sealion/?fastaUrl={{[alignedNucleotideSequences+rich|fasta]}}"
+        - name: "Country map"
+          maxNumberOfRecommendedEntries: 45000
+          url: "https://mapoplexus.genomium.org/?url={{[metadata]}}"
+      extraInputFields:
+        - <<: *idConfig
+        - <<: *hostConfig
+          desired: false
+          required: true
+      metadataAdd:
+        - <<: *hostTaxonIdConfig
+          required: true
+          initiallyVisible: true
+        - name: clade
+          displayName: Genotype
+          definition: "Genotype assigned by Nextclade, see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hcv/NC_004102/2026-11-24--15-17-06Z/tree.json for a view of the Nextclade dataset."
+          isSequenceFilter: true
+          header: "Genotype & Subtype"
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          noInput: true
+          preprocessing:
+            inputs: { input: nextclade.clade }
+          columnWidth: 80
+          order: 5
+          orderOnDetailsPage: 740
+        - name: subtype
+          displayName: Subtype
+          definition: "Subtype assigned by Nextclade (subtype of the nearest neighbour in the reference tree), see https://nextstrain.org/fetch/data.clades.nextstrain.org/v3/nextstrain/hcv/NC_004102/2026-11-24--15-17-06Z/tree.json?c=subtype for a view of the Nextclade dataset."
+          isSequenceFilter: true
+          header: "Genotype & Subtype"
+          generateIndex: true
+          autocomplete: true
+          initiallyVisible: true
+          includeInDownloadsByDefault: true
+          noInput: true
+          preprocessing:
+            inputs: { input: nextclade.customNodeAttributes.subtype }
+          columnWidth: 80
+          order: 6
+          orderOnDetailsPage: 750
+        - <<: *gisaidIsolateIdMetadataField
+      website:
+        <<: *website
+        tableColumns:
+          - sampleCollectionDate
+          - earliestReleaseDate
+          - authors
+          - authorAffiliations
+          - geoLocCountry
+          - geoLocAdmin1
+          - length
+          - clade
+          - subtype
+          - hostNameScientific
+    enaDeposition:
+      singleReference:
+        configFile:
+          <<: &hcvTaxon
+            taxon_id: 11103
+            scientific_name: "Hepatitis C virus"
+            molecule_type: "genomic RNA"
+    preprocessing:
+    - <<: *preprocessing
+      version:
+        - 1
+      configFile:
+        <<: [*preprocessingConfigFile, *hcvTaxon]
+        segments:
+          - name: main
+            references:
+            - name: singleReference
+              nextclade_dataset_name: nextstrain/hcv/NC_004102
+              nextclade_dataset_tag: 2026-11-24--15-17-06Z
+              genes: [core, E1, E2, p7, NS2, NS3, NS4A, NS4B, NS5A, NS5B]
+    ingest:
+      <<: *ingest
+      configFile:
+        <<: *defaultIngestConfigFile
+        taxon_id: 3052230 #Hepacivirus hominis
+    referenceGenomes:
+      - name: "main"
+        references:
+        - name: singleReference
+          sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/reference.fasta]]"
+          insdcAccessionFull: NC_004102.1
+          genes:
+            - name: core
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/core.fasta]]"
+            - name: E1
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/E1.fasta]]"
+            - name: E2
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/E2.fasta]]"
+            - name: p7
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/p7.fasta]]"
+            - name: NS2
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS2.fasta]]"
+            - name: NS3
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS3.fasta]]"
+            - name: NS4A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS4A.fasta]]"
+            - name: NS4B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS4B.fasta]]"
+            - name: NS5A
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS5A.fasta]]"
+            - name: NS5B
+              sequence: "[[URL:https://pathoplexus.github.io/reference_store/artefacts/hcv/NS5B.fasta]]"
 ingest:
   mirrorBucket: "https://hel1.your-objectstorage.com/loculus-public/mirror/"
 defaultResources:
