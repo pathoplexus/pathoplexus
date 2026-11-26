@@ -4495,7 +4495,7 @@ organisms:
         taxon_id: 3052429
         segment_identification:
           method: "minimizer"
-          minimiizer_url:
+          minimiizer_url: https://loculus-project.github.io/nextclade-sort-minimizers/data/oropouche/minimizer.json"
     referenceGenomes:
       - name: L
         references:
