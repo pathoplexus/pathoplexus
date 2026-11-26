@@ -4494,8 +4494,8 @@ organisms:
         <<: *defaultIngestConfigFile
         taxon_id: 3052429
         segment_identification:
-          method: "align"
-          nextclade_dataset_name: community/itps/orov
+          method: "minimizer"
+          minimiizer_url:
     referenceGenomes:
       - name: L
         references:
