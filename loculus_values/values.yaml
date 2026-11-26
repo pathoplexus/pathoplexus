@@ -71,6 +71,12 @@ auth:
   identityProviders:
     orcid:
       clientId: "APP-P1P7N7T9YVBHQ4EH"
+# Keycloak admin console/API (/admin) and master realm (/realms/master) only
+# reachable via kubectl port-forward to Traefik. See the Loculus docs:
+# https://loculus.org/for-administrators/user-administration/
+adminAllowedSourceRanges:
+  - 127.0.0.1/32
+  - ::1/128
 disableEnaSubmission: true
 disableTaxonomyService: false
 disableRawReadsProcessingService: false
