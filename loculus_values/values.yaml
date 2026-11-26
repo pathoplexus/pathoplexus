@@ -4488,6 +4488,7 @@ organisms:
                 nextclade_dataset_tag: 2026-11-18--10-44-04Z
                 genes: ["N", NSs]
           segment_classification_method: "minimizer"
+          minimizer_url: "https://loculus-project.github.io/nextclade-sort-minimizers/data/oropouche/minimizer.json"
     ingest:
       <<: *ingest
       configFile:
@@ -4495,7 +4496,7 @@ organisms:
         taxon_id: 3052429
         segment_identification:
           method: "minimizer"
-          minimiizer_url: https://loculus-project.github.io/nextclade-sort-minimizers/data/oropouche/minimizer.json"
+          minimizer_url: https://loculus-project.github.io/nextclade-sort-minimizers/data/oropouche/minimizer.json"
     referenceGenomes:
       - name: L
         references:
