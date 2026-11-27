@@ -21,6 +21,10 @@ export const bottomNavigationItems = [
         path: '/contact',
     },
     {
+        text: 'Mailing list',
+        path: '/about/mailing-list',
+    },
+    {
         text: 'Status',
         path: 'https://status.pathoplexus.org/',
     },
